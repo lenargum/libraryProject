@@ -1,27 +1,18 @@
-import java.util.ArrayList;
+import java.util.Array;
+import java.util.Date;
 
 public class Book extends Document{
     String Publisher;
     int editionYear;
+    Date publishingDate;
 
-    public Book(String title, ArrayList<String> authors, int id){
-        super(authors, title,  id);
+    public Book(){ //constructor
+	
     }
 
-    public void setPublisher(String publisher){
-        this.Publisher = publisher;
-    }
+    //setters&getters&?
 
-    public void setEditionYear(int edition){
-        this.editionYear = edition;
-    }
+    
 
-    public int getEditionYear(){
-        return this.editionYear;
-    }
-
-    public String getPublisher(){
-        return Publisher;
-    }
-
+    
 }

@@ -7,20 +7,9 @@ public class JournalArticle extends Document{
     Date publishingDate;
     String journalPublisher;
 
-    public JournalArticle(String title, ArrayList<String> authors, int id){
-        super(authors, title,  id);
+    public JournalArticle(){ //constructor
+
     }
 
-    public void setJournalTitle(String jourTitle){
-        this.journalTitle = jourTitle;
-    }
-
-    public void setPublishingDate(Date publDate){
-        this.publishingDate = publDate;
-    }
-
-    public void setJournalPublisher(String publisher){
-        this.journalPublisher = publisher;
-    }
     //setters&getters&?
 }
