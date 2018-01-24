@@ -18,6 +18,10 @@ public class Librarian extends User {
         //TODO:
     }
 
+    public void giveABook(Patron p){
+
+    }
+
     public void setNamePatron(Patron patron, String name) {
         patron.setName(name);
     }
