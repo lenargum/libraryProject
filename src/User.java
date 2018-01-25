@@ -7,7 +7,7 @@ public class User {
 
     User() {}
 
-    User(String nsme, int id){
+    User(String name, int id){
         this.name = name;
         this.id = id;
         address = null;
