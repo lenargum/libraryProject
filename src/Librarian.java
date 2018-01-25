@@ -15,19 +15,20 @@ public class Librarian extends User {
     }
 
     public void deletePatron(Patron patron){
-        patron.setName(null);
-        patron.setAddress(null);
-        patron.setPhoneNumber(null);
-        patron.setId(-1);
-        patron.setStatus("deleted");
+        setNamePatron(patron, null);
+        setAddressPatron(patron, null);
+        setPhoneNumberPatron(patron, null);
+        setIdPatron(patron, -1);
+        setStatusPatron(patron, "Deleted");
     }
 
     public void giveABook(Patron patron, Document document){
         //TODO: Patron's access to the document!!!
+        patron.getListOfDocuments().add(document);
     }
 
-    public void addCopy(int i){
-
+    public void addCopy(Document document){
+        //TODO: problem with list pf copies in each document object
     }
 
     public void setNamePatron(Patron patron, String name) {
