@@ -14,11 +14,15 @@ public class Librarian extends User {
         setStatusPatron(patron, st);
     }
 
-    public void deletePatron(int i){
-        //TODO:
+    public void deletePatron(Patron patron){
+
     }
 
     public void giveABook(Patron p){
+
+    }
+
+    public void addCopy(int i){
 
     }
 

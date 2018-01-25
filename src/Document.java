@@ -9,18 +9,16 @@ public class Document{
     private boolean checked;
     private User User;
     private int DocID;
-
     
     public Document(String authors, String Title int DocId){
         this.Authors = authors;
         this.Title = Title;
         this.DocID = DocId;
-        this.checked = null;
-        this.Price = null;
-        this.reference = null;
+        this.checked = false;
+        this.Price = 0;
+        this.reference = false;
         this.User = null;
     }
-
 
     public void setTitle(String title){
 	this.Title = title;
@@ -60,11 +58,8 @@ public class Document{
     }
 
 
-
     public void addCopy(){
     
     }
-    
 
-    
 }
