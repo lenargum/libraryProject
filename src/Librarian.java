@@ -15,11 +15,15 @@ public class Librarian extends User {
     }
 
     public void deletePatron(Patron patron){
-
+        patron.setName(null);
+        patron.setAddress(null);
+        patron.setPhoneNumber(null);
+        patron.setId(-1);
+        patron.setStatus("deleted");
     }
 
-    public void giveABook(Patron p){
-
+    public void giveABook(Patron patron, Document document){
+        //TODO: Patron's access to the document!!!
     }
 
     public void addCopy(int i){
