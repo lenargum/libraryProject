@@ -5,15 +5,6 @@ public class User {
     private String phoneNumber;
     private int id;
 
-    User() {}
-
-    User(String name, int id){
-        this.name = name;
-        this.id = id;
-        address = null;
-        phoneNumber = null;
-    }
-
     User(String name, String address, String phoneNumber, int id) {
         this.name = name;
         this.id = id;

@@ -1,22 +1,24 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Librarian extends User {
+
+    private List<Patron> patrons;
 
     Librarian(String name, String address, String phoneNumber, int id){
         super(name, address, phoneNumber, id);
+        patrons = new ArrayList<>();
     }
 
-    public void createPatron(String n, String ad, String phone,String st, int i){
-        Patron patron = new Patron(n, i);
-        setAddressPatron(patron, ad);
-        setPhoneNumberPatron(patron, phone);
-        setStatusPatron(patron, st);
+    public void createPatron(String name, String address, String phoneNumber, String status, int id){
+        Patron patron = new Patron(name, address, phoneNumber, status, id);
+        patrons.add(id, patron);
+        //TODO: add new patron to database (if database exists)
     }
 
-    public void deletePatron(Patron patron){
-        setNamePatron(patron, null);
-        setAddressPatron(patron, null);
-        setPhoneNumberPatron(patron, null);
-        setIdPatron(patron, -1);
-        setStatusPatron(patron, "Deleted");
+    public void deletePatron(int patronId){
+        patrons.remove(patronId);
+        //TODO: remove from database (if database exists)
     }
 
     public void giveABook(Patron patron, Document document){

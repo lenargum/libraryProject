@@ -5,8 +5,9 @@ public class Patron extends User{
     private ArrayList<Document> listOfDocuments;
     private int debts;
 
-    Patron(String name, int id){
-        super(name, id);
+    Patron(String name, String address, String phoneNumber, String status, int id){
+        super(name, address, phoneNumber, id);
+        this.status = status;
     }
 
     public void setStatus(String status) {
