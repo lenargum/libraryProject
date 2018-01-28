@@ -50,7 +50,12 @@ public class Librarian extends User {
         patron.setStatus(status);
     }
 
-    public List<Patron> getPatrons() {
+    public void printListOfPatrons(){
+        for (int i = 0 ; i < getPatrons().size(); i++)
+            System.out.println( "ID: " + getPatrons().get(i).getId() + "      Name: " + getPatrons().get(i).getName());
+    }
+
+    private List<Patron> getPatrons() {
         return patrons;
     }
 }
