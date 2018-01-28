@@ -41,6 +41,9 @@ public class Document{
         this.DocID = id;
     }
 
+    public int getDocID() {
+        return DocID;
+    }
 
     public String getTitle(){
 	return Title;

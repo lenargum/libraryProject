@@ -23,16 +23,17 @@ public class Patron extends User{
         return listOfDocuments;
     }
 
+    public void printListOfDocuments(){
+        for(int i = 0; i < getListOfDocuments().size(); i++)
+            System.out.println("ID: " + getListOfDocuments().get(i).getDocID() + "      Authors" +  getListOfDocuments().get(i).getAuthors()
+                    + "        Title: " +  getListOfDocuments().get(i).getTitle());
+    }
     public void setDebts(int debts) {
         this.debts = debts;
     }
 
     public int getDebts() {
         return debts;
-    }
-
-    public void getRequest(Document document){
-
     }
 
 }
