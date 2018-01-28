@@ -1,10 +1,7 @@
 public class Librarian extends User {
 
     Librarian(String name, String address, String phoneNumber, int id){
-        setName(name);
-        setAddress(address);
-        setPhoneNumber(phoneNumber);
-        setId(id);
+        super(name, address, phoneNumber, id);
     }
 
     public void createPatron(String n, String ad, String phone,String st, int i){

@@ -14,6 +14,13 @@ public class User {
         phoneNumber = null;
     }
 
+    User(String name, String address, String phoneNumber, int id) {
+        this.name = name;
+        this.id = id;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
