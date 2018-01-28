@@ -12,7 +12,7 @@ public class Librarian extends User {
 
     public void createPatron(String name, String address, String phoneNumber, String status, int id){
         Patron patron = new Patron(name, address, phoneNumber, status, id);
-        patrons.add(id, patron);
+        patrons.add (patron);
         //TODO: add new patron to database (if database exists)
     }
 
@@ -50,4 +50,7 @@ public class Librarian extends User {
         patron.setStatus(status);
     }
 
+    public List<Patron> getPatrons() {
+        return patrons;
+    }
 }
