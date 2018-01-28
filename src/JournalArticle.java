@@ -7,17 +7,8 @@ public class JournalArticle extends Document{
     Date publishingDate;
     String journalPublisher;
 
-    public JournalArticle(String title, ArrayList<String> authors, boolean is_reference, float price, int id, String jourTitle, Date publDate, String publisher){
-        setTitle(title);
-        setAuthors(authors);
-        setPrice(price);
-        setID(id);
-        setJournalPublisher(publisher);
-        setJournalTitle(jourTitle);
-        setPublishingDate(publDate);
-        this.reference = is_reference;
-        this.checked = false;
-        this.User = null;
+    public JournalArticle(String title, ArrayList<String> authors, int id){
+        super(authors, title,  id);
     }
 
     public void setJournalTitle(String jourTitle){

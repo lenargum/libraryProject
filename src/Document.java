@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+//documentation
 public class Document{
     
     private ArrayList <String>  Authors;
@@ -9,8 +10,8 @@ public class Document{
     private boolean checked;
     private User User;
     private int DocID;
-    private boolean allowedForStudents;
-    public ArrayList <Document> listOfCopies;
+    private boolean isAllowedForStudents;
+    //  public ArrayList <Document> listOfCopies;TODO: solve problem of storage -- databases
 
 
     public Document(ArrayList<String> authors, String Title, int DocId){
@@ -21,7 +22,7 @@ public class Document{
         this.Price = 0;
         this.reference = false;
         this.User = null;
-        this.allowedForStudents = true;
+        this.isAllowedForStudents = true;
     }
 
 
@@ -41,8 +42,8 @@ public class Document{
         this.DocID = id;
     }
 
-    public int getDocID() {
-        return DocID;
+    public void setAllowedForStudents(boolean allowedForStudents) {
+       this.isAllowedForStudents = allowedForStudents;
     }
 
     public String getTitle(){
@@ -65,6 +66,18 @@ public class Document{
 	return User;
     }
 
+    public boolean isAllowedForStudents() {
+        return isAllowedForStudents;
+    }
 
-    
+    public boolean isFaculty(Patron x){
+        Typetester t = new Typetester();
+        t.setType(x);
+        return t.getType().equals("faculty");
+    }
+
+    public boolean canTake(Patron user){
+        if(isFaculty(user)) return true;
+        return isAllowedForStudents();
+    }
 }

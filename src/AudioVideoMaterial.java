@@ -1,18 +1,15 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * class implements "Audio and Video materials" type of Document
+ */
 public class AudioVideoMaterial extends Document{
 
     public Date publishingDate;
 
-    public AudioVideoMaterial(String title, ArrayList<String> authors, boolean is_reference, float price, int id, Date publDate){
-        setTitle(title);
-        setAuthors(authors);
-        setPrice(price);
-        setID(id);
-        this.reference = is_reference;
-        this.checked = false;
-        this.User = null;
+    public AudioVideoMaterial(String title, ArrayList<String> authors, int id){
+        super(authors, title,  id);
     }
 
     public void setPublishingDate(Date publDate){
