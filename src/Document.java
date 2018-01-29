@@ -7,14 +7,14 @@ public class Document{
     private String Title;
     private boolean reference;
     private float Price;
-    private boolean checked;
+    private boolean checked;    //Взяли книгу или нет
     private User User;
     private int DocID;
     private boolean isAllowedForStudents;
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
-    public Document(String authors, String Title, int DocId){
+    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents){
         this.Authors = authors;
         this.Title = Title;
         this.DocID = DocId;

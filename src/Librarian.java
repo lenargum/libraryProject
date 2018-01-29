@@ -26,8 +26,11 @@ public class Librarian extends User {
 
     public void giveABook(Patron patron, Document document){
         //TODO: Patron's access to the document!!!
-        patron.getListOfDocuments().add(document);
+        if (patron.checkCapability(document))
+            patron.getListOfDocuments().add(document);
     }
+
+
 
     public void addCopy(Document document){
         //TODO: problem with list pf copies in each document object

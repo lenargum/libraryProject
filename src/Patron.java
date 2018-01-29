@@ -36,4 +36,21 @@ public class Patron extends User{
         return debts;
     }
 
+    public boolean checkCapability(Document document){
+        if (this.getStatus() == "faculty"){
+            return true;
+        } else {
+            return document.isAllowedForStudents();
+        }
+    }
+
+    public void takeDocument(Librarian librarian, Document document){
+        librarian.giveABook(this, document);
+    }
+
+    public void printListOfDocument(){
+        //TODO: just check
+    }
+
+
 }
