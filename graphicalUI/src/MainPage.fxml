@@ -76,11 +76,12 @@
             </Button>
          </children>
       </GridPane>
-      <ListView layoutX="516.0" layoutY="190.0" prefHeight="362.0" prefWidth="282.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="190.0" />
+      <ListView fx:id="recentList" layoutX="516.0" layoutY="190.0" prefHeight="362.0" prefWidth="282.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="190.0" />
       <Text layoutX="516.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recent" AnchorPane.rightAnchor="235.78515625" AnchorPane.topAnchor="144.41796875">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
+      <Text fx:id="noRecentText" layoutX="557.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No recent documents available" textAlignment="CENTER" wrappingWidth="200.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="208.8134765625" />
    </children>
 </AnchorPane>
