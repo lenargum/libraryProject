@@ -18,7 +18,5 @@ public class MainPage extends Application {
 		primaryStage.setMinHeight(768);
 		primaryStage.setScene(new Scene(welcome, 1024, 768));
 		primaryStage.show();
-
-
 	}
 }
