@@ -7,7 +7,7 @@ public class JournalArticle extends Document{
     Date publishingDate;
     String journalPublisher;
 
-    public JournalArticle(String title, ArrayList<String> authors, int id){
+    public JournalArticle(String title, String authors, int id){
         super(authors, title,  id);
     }
 

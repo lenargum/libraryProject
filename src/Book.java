@@ -4,7 +4,7 @@ public class Book extends Document{
     String Publisher;
     int editionYear;
 
-    public Book(String title, ArrayList<String> authors, int id){
+    public Book(String title, String authors, int id){
         super(authors, title,  id);
     }
 

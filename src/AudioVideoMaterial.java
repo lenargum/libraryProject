@@ -8,7 +8,7 @@ public class AudioVideoMaterial extends Document{
 
     public Date publishingDate;
 
-    public AudioVideoMaterial(String title, ArrayList<String> authors, int id){
+    public AudioVideoMaterial(String title, String authors, int id){
         super(authors, title,  id);
     }
 

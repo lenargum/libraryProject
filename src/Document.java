@@ -3,7 +3,7 @@ import java.util.ArrayList;
 //documentation
 public class Document{
     
-    private ArrayList <String>  Authors;
+    private String  Authors;    //TODO: solve problem: if document has more then one author
     private String Title;
     private boolean reference;
     private float Price;
@@ -11,10 +11,10 @@ public class Document{
     private User User;
     private int DocID;
     private boolean isAllowedForStudents;
-    //  public ArrayList <Document> listOfCopies;TODO: solve problem of storage -- databases
+    //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
-    public Document(ArrayList<String> authors, String Title, int DocId){
+    public Document(String authors, String Title, int DocId){
         this.Authors = authors;
         this.Title = Title;
         this.DocID = DocId;
@@ -25,12 +25,11 @@ public class Document{
         this.isAllowedForStudents = true;
     }
 
-
     public void setTitle(String title){
 	this.Title = title;
     }
 
-    public void setAuthors(ArrayList<String> authors){
+    public void setAuthors(String authors){
 	this.Authors = authors;
     }
 
@@ -50,7 +49,7 @@ public class Document{
 	return Title;
     }
 
-    public ArrayList <String> getAuthors(){
+    public String getAuthors(){
 	return Authors;
     }
 
@@ -62,8 +61,12 @@ public class Document{
 	return checked;
     }
 
-    public User whoTookDoc(){
-	return User;
+    public int getDocID() {
+        return DocID;
+    }
+
+    public int whoTookDoc(){
+	return User.getId();
     }
 
     public boolean isAllowedForStudents() {
@@ -73,7 +76,7 @@ public class Document{
     public boolean isFaculty(Patron x){
         Typetester t = new Typetester();
         t.setType(x);
-        return t.getType().equals("faculty");
+        return t.getType().equals("Faculty");
     }
 
     public boolean canTake(Patron user){

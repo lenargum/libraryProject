@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Librarian extends User {
 
-    private List<Patron> patrons;
-    private List<Document> documents;
+    private List<Patron> patrons = new LinkedList<>();
+    private List<Document> documents = new LinkedList<>();
 
     Librarian(String name, String address, String phoneNumber, int id){
         super(name, address, phoneNumber, id);
@@ -64,17 +65,25 @@ public class Librarian extends User {
         return documents;
     }
 
-    public void addDocumentInTheLibrary(Document document){
+    public void addDocumentInTheLibrary (Document document){
         documents.add(document);
     }
 
     public void deleteDocumentFromTheLibrary(Document document){
-        documents.remove(document);
+        if (documents.size() == 0){
+            System.out.println("Library is empty");
+        } else{
+            documents.remove(document);
+        }
     }
 
     public void printLibrary(){
-        for(int i = 0; i < getDocuments().size(); i++)
-            System.out.println("ID: " + getDocuments().get(i).getDocID() + "      Authors" +  getDocuments().get(i).getAuthors()
-                    + "        Title: " +  getDocuments().get(i).getTitle());
+        if(documents.size() == 0 ){
+            System.out.println("Library is empty");
+        } else {
+            for(int i = 0; i < getDocuments().size(); i++)
+                System.out.println("ID: " + getDocuments().get(i).getDocID() + "      Authors: " +  getDocuments().get(i).getAuthors()
+                        + "        Title: " +  getDocuments().get(i).getTitle());
+        }
     }
 }
