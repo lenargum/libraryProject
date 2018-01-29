@@ -20,7 +20,7 @@ public class Librarian extends User {
     }
 
     public void deletePatron(int patronId){
-        patrons.remove(patronId);
+        patrons.remove(patronId - 1);
         //TODO: remove from database (if database exists)
     }
 
@@ -53,8 +53,15 @@ public class Librarian extends User {
     }
 
     public void printListOfPatrons(){
-        for (int i = 0 ; i < getPatrons().size(); i++)
-            System.out.println( "ID: " + getPatrons().get(i).getId() + "      Name: " + getPatrons().get(i).getName());
+        if (patrons.size() == 0){
+            System.out.println("Patrons don't exist yet");
+        } else {
+            System.out.println("________________________________________________________________________________________");
+            System.out.println("LIST OF PATRONS");
+            for (int i = 0; i < getPatrons().size(); i++)
+                System.out.println("ID: " + getPatrons().get(i).getId() + "      Name: " + getPatrons().get(i).getName());
+            System.out.println("________________________________________________________________________________________");
+        }
     }
 
     private List<Patron> getPatrons() {
@@ -69,11 +76,11 @@ public class Librarian extends User {
         documents.add(document);
     }
 
-    public void deleteDocumentFromTheLibrary(Document document){
+    public void deleteDocumentFromTheLibrary(int idDocument){
         if (documents.size() == 0){
             System.out.println("Library is empty");
         } else{
-            documents.remove(document);
+            documents.remove(idDocument - 1);
         }
     }
 
@@ -81,9 +88,12 @@ public class Librarian extends User {
         if(documents.size() == 0 ){
             System.out.println("Library is empty");
         } else {
+            System.out.println("________________________________________________________________________________________");
+            System.out.println("LIST OF DOCUMENTS");
             for(int i = 0; i < getDocuments().size(); i++)
                 System.out.println("ID: " + getDocuments().get(i).getDocID() + "      Authors: " +  getDocuments().get(i).getAuthors()
                         + "        Title: " +  getDocuments().get(i).getTitle());
+            System.out.println("________________________________________________________________________________________");
         }
     }
 }
