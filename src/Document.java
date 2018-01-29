@@ -33,12 +33,12 @@ public class Document{
 	this.Authors = authors;
     }
 
-    public void setPrice(float price){
-	this.Price = price;
+    public void setDocID(int id){
+        this.DocID = id;
     }
 
-    public void setID(int id){
-        this.DocID = id;
+    public void setPrice(float price){
+	this.Price = price;
     }
 
     public void setAllowedForStudents(boolean allowedForStudents) {
@@ -65,10 +65,6 @@ public class Document{
 	return checked;
     }
 
-    public int getDocID() {
-        return DocID;
-    }
-
     public int whoTookDoc(){
 	return User.getId();
     }
@@ -80,11 +76,16 @@ public class Document{
     public boolean isFaculty(Patron x){
         Typetester t = new Typetester();
         t.setType(x);
-        return t.getType().equals("Faculty");
+        return t.getType().equals("faculty");
     }
 
     public boolean canTake(Patron user){
-        if(isFaculty(user)) return true;
-        return isAllowedForStudents();
+        if(isFaculty(user) && !checked) return true;
+        return isAllowedForStudents() && !checked;
     }
+
+    public void addAuthor(String newAuthor){
+        this.Authors += " " + newAuthor;
+    }
+
 }
