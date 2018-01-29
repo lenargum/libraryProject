@@ -57,6 +57,10 @@ public class Document{
 	return Price;
     }
 
+    public int getDocID(){
+        return DocID;
+    }
+
     public boolean isChecked(){
 	return checked;
     }
