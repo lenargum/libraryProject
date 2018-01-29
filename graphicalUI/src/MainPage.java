@@ -2,6 +2,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Stage;
 
 public class MainPage extends Application {
@@ -18,5 +20,17 @@ public class MainPage extends Application {
 		primaryStage.setMinHeight(768);
 		primaryStage.setScene(new Scene(welcome, 1024, 768));
 		primaryStage.show();
+
+		Button loginButton = (Button) welcome.lookup("#loginButton");
+
+		Stage dialogStage = new Stage();
+		dialogStage.initOwner(primaryStage);
+
+		Parent loginScene = FXMLLoader.load(getClass().getResource("loginDialog.fxml"));
+		loginButton.setOnAction(event -> {
+			welcome.setEffect(new GaussianBlur());
+			dialogStage.setScene(new Scene(loginScene));
+			dialogStage.show();
+		});
 	}
 }
