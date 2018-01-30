@@ -22,5 +22,9 @@ public class JournalArticle extends Document{
     public void setJournalPublisher(String publisher){
         this.journalPublisher = publisher;
     }
+
+    public void setDateOfTaking(){
+        System.out.print("You can not take journal!");
+    }
     //setters&getters&?
 }
