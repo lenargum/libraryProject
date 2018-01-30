@@ -6,10 +6,10 @@ import java.util.Date;
  */
 public class AudioVideoMaterial extends Document{
 
-    public Date publishingDate;
+    private Date publishingDate;
 
-    public AudioVideoMaterial(String title, String authors, int id){
-        super(authors, title,  id);
+    public AudioVideoMaterial(String title, String authors, int id, float price){
+        super(authors, title,  id, price);
     }
 
     public void setPublishingDate(Date publDate){
