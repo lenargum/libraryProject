@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 public class Patron extends User{
     private String status;
-    private ArrayList<Document> listOfDocuments;
+    private ArrayList<Book> listOfBooksPatron;
     private int debts;
+
 
     Patron(String name, String address, String phoneNumber, String status, int id){
         super(name, address, phoneNumber, id);
@@ -19,15 +20,10 @@ public class Patron extends User{
         return status;
     }
 
-    public ArrayList<Document> getListOfDocuments() {
-        return listOfDocuments;
+    public ArrayList<Book> getListOfBooksPatron() {
+        return listOfBooksPatron;
     }
 
-    public void printListOfDocuments(){
-        for(int i = 0; i < getListOfDocuments().size(); i++)
-            System.out.println("ID: " + getListOfDocuments().get(i).getDocID() + "      Authors" +  getListOfDocuments().get(i).getAuthors()
-                    + "        Title: " +  getListOfDocuments().get(i).getTitle());
-    }
     public void setDebts(int debts) {
         this.debts = debts;
     }
@@ -44,13 +40,15 @@ public class Patron extends User{
         }
     }
 
-    public void takeDocument(Librarian librarian, Document document){
-        librarian.giveABook(this, document);
+    public void addBookInList(Book book){
+        listOfBooksPatron.add(book);
     }
 
-    public void printListOfDocument(){
-        //TODO: just check
-    }
+    public void getRequest(Book book, Librarian librarian){
+        //TODO: Request to take a book from the library
+        if (this.getStatus() == "faculty"){
 
+        }
+    }
 
 }

@@ -1,11 +1,9 @@
-import java.util.ArrayList;
-
 public class Book extends Document{
     String Publisher;
     int editionYear;
 
-    public Book(String title, String authors, int id){
-        super(authors, title,  id);
+    public Book(String title, String authors, int id, boolean allowed){
+        super(authors, title,  id, allowed);
     }
 
     public void setPublisher(String publisher){
