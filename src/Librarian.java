@@ -26,14 +26,10 @@ public class Librarian extends User {
         manager.deleteDocumentFromLibrary(idDocument);
     }
 
-    public void giveABook(int idPatron, int idDocument){
-        //TODO: Patron's access to the document!!!
-        manager.listOfUsers.get(idPatron).addBookInList(manager.listOfDocuments.get(idDocument));
-    }
-
     public void setNamePatron(Patron patron, String name) {
         patron.setName(name);
     }
+
     public void setAddressPatron(Patron patron,String address) {
         patron.setAddress(address);
     }
