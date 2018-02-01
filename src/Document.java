@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 //documentation
-public class Document{
+public class Document implements  DocumentInterface{
     
     private String  Authors;    //TODO: solve problem: if document has more then one author
     private String Title;
@@ -94,11 +94,6 @@ public class Document{
         t.setType(x);
         return t.getType().equals("faculty");
     }
-
-    /**public boolean isJournal(Document x) {
-        Typetester t = new Typetester();
-        t.setType(x);
-    }*/
 
     public boolean canTake(Patron user){
         if(isFaculty(user) && !checked) return true;
