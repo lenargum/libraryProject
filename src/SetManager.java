@@ -5,12 +5,13 @@ import java.util.List;
  * The difference between Id of Objects and positions in the Lists is 1!!!
  * Id of first user is 1. In the list this User has position 0.
  */
-public class SetManager implements SetManagerInterface {
+public class SetManager {
     public List<Patron> listOfUsers = new LinkedList<>();
     public List<Document> listOfDocuments = new LinkedList<>();
 
     public int vacantIdPatron = 1;
     public int vacantIdDocument = 1;
+    public int vacantIdAV = 1;
 
     public void addPatron(Patron patron){
         listOfUsers.add(patron);
