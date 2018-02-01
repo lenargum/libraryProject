@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 public class MainPage extends Application {
 
+	private boolean loggedIn;
 	private char[] login, password;
 
 	public static void main(String[] args) {
@@ -19,6 +20,7 @@ public class MainPage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		loggedIn = false;
 		AnchorPane welcome = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
 		primaryStage.setTitle("InnoLibrary Manager");
 		primaryStage.setMinWidth(500);
