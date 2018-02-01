@@ -27,15 +27,12 @@ public class BookSelector {
 		this.primaryStage = primaryStage;
 		this.previousScene = previousScene;
 		this.credentials = credentials;
-		FXMLLoader loader = new FXMLLoader();
-		InputStream loadStream = getClass().getResourceAsStream("BookSelector.fxml");
-		this.bookSelectorLayout = loader.load(loadStream);
+		this.bookSelectorLayout = FXMLLoader.load(getClass().getResource("BookSelector.fxml"));
 		this.bookSelectorScene = new Scene(bookSelectorLayout);
 	}
 
 	public void show() {
 		switchScene(primaryStage, bookSelectorScene);
-
 
 		Button goBackButton = (Button) bookSelectorLayout.lookup("#goBackButton");
 		goBackButton.setOnAction(event -> switchScene(primaryStage, previousScene));
