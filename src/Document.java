@@ -47,7 +47,7 @@ public class Document{
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-    }
+    } //взяли книгу или нет
 
     public void setReference(boolean reference) {
         this.reference = reference;
@@ -79,7 +79,7 @@ public class Document{
 
     public boolean isChecked(){
 	return checked;
-    }
+    } //взяли книгу или нет
 
     public boolean isReference() {
         return reference;
@@ -94,6 +94,11 @@ public class Document{
         t.setType(x);
         return t.getType().equals("faculty");
     }
+
+    /**public boolean isJournal(Document x) {
+        Typetester t = new Typetester();
+        t.setType(x);
+    }*/
 
     public boolean canTake(Patron user){
         if(isFaculty(user) && !checked) return true;
