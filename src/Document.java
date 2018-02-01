@@ -45,6 +45,14 @@ public class Document{
 	this.Price = price;
     }
 
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public void setReference(boolean reference) {
+        this.reference = reference;
+    }
+
     public void setAllowedForStudents(boolean allowedForStudents) {
        this.isAllowedForStudents = allowedForStudents;
     }
@@ -71,6 +79,10 @@ public class Document{
 
     public boolean isChecked(){
 	return checked;
+    }
+
+    public boolean isReference() {
+        return reference;
     }
 
     public boolean isAllowedForStudents() {
