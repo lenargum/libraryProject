@@ -50,7 +50,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="pickABookButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="140.0" prefWidth="170.0" text="Pick a Book" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="pickBookButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="140.0" prefWidth="170.0" text="Pick a Book" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -58,12 +58,12 @@
                               <Insets bottom="-90.0" />
                            </padding>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="25.0" mnemonicParsing="false" prefHeight="140.0" prefWidth="170.0" text="Pick an Audio" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Button fx:id="pickAVButton" alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="25.0" mnemonicParsing="false" prefHeight="140.0" prefWidth="170.0" text="Pick an Audio" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <padding>
                               <Insets bottom="-90.0" />
                            </padding>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="25.0" mnemonicParsing="false" prefHeight="140.0" prefWidth="170.0" text="Pick a Document" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="pickDocButton" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="25.0" mnemonicParsing="false" prefHeight="140.0" prefWidth="170.0" text="Pick a Document" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <padding>
                               <Insets bottom="-90.0" />
                            </padding>

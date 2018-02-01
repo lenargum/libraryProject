@@ -20,17 +20,17 @@ public class MainPage extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		loggedIn = false;
-		AnchorPane welcome = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
+		AnchorPane welcomeLayout = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
 		primaryStage.setTitle("InnoLibrary Manager");
 		primaryStage.setMinWidth(500);
 		primaryStage.setMinHeight(600);
-		Scene welcomeScene = new Scene(welcome, 1024, 768);
+		Scene welcomeScene = new Scene(welcomeLayout, 1024, 768);
 		primaryStage.setScene(welcomeScene);
 		primaryStage.show();
 
-		Button loginButton = (Button) welcome.lookup("#loginButton");
+		Button loginButton = (Button) welcomeLayout.lookup("#loginButton");
 
-		AnchorPane loginLayout = FXMLLoader.load(getClass().getResource("loginDialog.fxml"));
+		AnchorPane loginLayout = FXMLLoader.load(getClass().getResource("LoginDialog.fxml"));
 		Scene loginScene = new Scene(loginLayout);
 		loginButton.setOnAction(event -> {
 			switchScene(primaryStage, loginScene);
@@ -70,6 +70,18 @@ public class MainPage extends Application {
 				loginFailed.setVisible(true);
 			}
 		});
+
+		Button pickBookButton = (Button) welcomeLayout.lookup("#pickBookButton");
+		Button pickDocButton = (Button) welcomeLayout.lookup("#pickDocButton");
+		Button pickAVButton = (Button) welcomeLayout.lookup("#pickAVButton");
+
+		//AnchorPane bookSelectorLayout = FXMLLoader.load(getClass().getResource("BookSelector.fxml"));
+		//Scene bookSelectorScene = new Scene(bookSelectorLayout);
+		BookSelector bookSelector = new BookSelector(primaryStage, welcomeScene, credentials);
+
+		pickBookButton.setOnAction(event -> bookSelector.show());
+		pickDocButton.setOnAction(event -> bookSelector.show());
+		pickAVButton.setOnAction(event -> bookSelector.show());
 	}
 
 	private void switchScene(Stage targetStage, Scene newScene) {
