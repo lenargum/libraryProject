@@ -54,6 +54,7 @@ public class Patron extends User{
     public void getDocument(int idDocument, Librarian librarian){
         if (getRequest(idDocument, librarian.manager)){
             addBookInList(librarian.manager.listOfDocuments.get(idDocument));
+ //           librarian.manager.listOfDocuments.get(idDocument).
         } else {
             System.out.println("Access is not available");
         }
@@ -63,4 +64,8 @@ public class Patron extends User{
         return librarian.manager.listOfDocuments;
     }
 
+    public void bringBackDocument(int idDocument, Librarian librarian){
+        this.getListOfDocumentsPatron().remove(librarian.manager.listOfDocuments.get(idDocument));
+        //TODO: set/get who took document
+    }
 }
