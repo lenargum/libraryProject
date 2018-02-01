@@ -1,18 +1,17 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainPage extends Application {
 
 	private boolean loggedIn;
-	private char[] login, password;
+	private UserCredentials credentials;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -31,17 +30,10 @@ public class MainPage extends Application {
 
 		Button loginButton = (Button) welcome.lookup("#loginButton");
 
-//		Stage dialogStage = new Stage();
-//		dialogStage.setResizable(false);
-//		dialogStage.initOwner(primaryStage);
-
 		AnchorPane loginLayout = FXMLLoader.load(getClass().getResource("loginDialog.fxml"));
 		Scene loginScene = new Scene(loginLayout);
 		loginButton.setOnAction(event -> {
 			switchScene(primaryStage, loginScene);
-
-//			dialogStage.setScene(new Scene(loginScene));
-//			dialogStage.show();
 		});
 
 		Button goBackButton = (Button) loginLayout.lookup("#goBackButton");
@@ -57,13 +49,8 @@ public class MainPage extends Application {
 			PasswordField passField = (PasswordField) loginLayout.lookup("#passField");
 
 			if (loginField.getLength() > 0 && passField.getLength() > 0) {
-				login = loginField.getText().toCharArray();
-				password = passField.getText().toCharArray();
-
-				passField.clear();
-				// TODO Remove login button after successful authorization
-				//removeFromParent(loginLayout, loginButton);
-				switchScene(primaryStage, welcomeScene);
+				credentials = new UserCredentials(loginField.getText(), passField.getText());
+				loggedIn = credentials.isAuthorized();
 			} else {
 				if (loginField.getLength() < 1) {
 					loginField.setStyle("-fx-border-color: RED");
@@ -72,15 +59,21 @@ public class MainPage extends Application {
 					passField.setStyle("-fx-border-color: RED");
 				}
 			}
+
+			Text loginFailed = (Text) loginLayout.lookup("#loginFailedText");
+			if (loggedIn) {
+				passField.clear();
+				loginButton.setDisable(true);
+				loginButton.setVisible(false);
+				switchScene(primaryStage, welcomeScene);
+			} else {
+				loginFailed.setVisible(true);
+			}
 		});
 	}
 
 	private void switchScene(Stage targetStage, Scene newScene) {
 		targetStage.setScene(newScene);
 		targetStage.show();
-	}
-
-	private void removeFromParent(Pane parent, Node toRemove) {
-		parent.getChildren().remove(toRemove);
 	}
 }
