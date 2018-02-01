@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class Librarian extends User {
     //TODO make interfaces
     SetManager manager = new SetManager();
@@ -22,17 +18,17 @@ public class Librarian extends User {
         //TODO: remove from database (if database exists)
     }
 
-    public void addBookInLibrary(Book book){
-        manager.addBookInLibrary(book);
+    public void addDocumentInLibrary(Document document){
+        manager.addDocumentInLibrary(document);
     }
 
-    public void deleteBookFromLibrary(int idBook){
-        manager.deleteBookFromLibrary(idBook);
+    public void deleteDocumentFromLibrary(int idDocument){
+        manager.deleteDocumentFromLibrary(idDocument);
     }
 
-    public void giveABook(int idPatron, int idBook){
+    public void giveABook(int idPatron, int idDocument){
         //TODO: Patron's access to the document!!!
-        manager.listOfUsers.get(idPatron).addBookInList(manager.listOfBooks.get(idBook));
+        manager.listOfUsers.get(idPatron).addBookInList(manager.listOfDocuments.get(idDocument));
     }
 
     public void setNamePatron(Patron patron, String name) {

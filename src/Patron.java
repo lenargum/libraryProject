@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.zip.DeflaterOutputStream;
 
 public class Patron extends User{
     private String status;
-    private ArrayList<Book> listOfBooksPatron;
+    private ArrayList<Document> listOfDocumentsPatron;
     private int debts;
 
 
@@ -20,8 +23,8 @@ public class Patron extends User{
         return status;
     }
 
-    public ArrayList<Book> getListOfBooksPatron() {
-        return listOfBooksPatron;
+    public ArrayList<Document> getListOfDocumentsPatron() {
+        return listOfDocumentsPatron;
     }
 
     public void setDebts(int debts) {
@@ -32,23 +35,32 @@ public class Patron extends User{
         return debts;
     }
 
-    public boolean checkCapability(Document document){
+    public void addBookInList(Document document){
+        listOfDocumentsPatron.add(document);
+    }
+
+    public boolean getRequest(int idDocument, SetManager manager){
+        //TODO: Request to take a book from the library
         if (this.getStatus() == "faculty"){
             return true;
         } else {
-            return document.isAllowedForStudents();
+            if (manager.listOfDocuments.get(idDocument).isAllowedForStudents())
+                return true;
+            else
+                return false;
         }
     }
 
-    public void addBookInList(Book book){
-        listOfBooksPatron.add(book);
+    public void getDocument(int idDocument, Librarian librarian){
+        if (getRequest(idDocument, librarian.manager)){
+            addBookInList(librarian.manager.listOfDocuments.get(idDocument));
+        } else {
+            System.out.println("Access is not available");
+        }
     }
 
-    public void getRequest(Book book, Librarian librarian){
-        //TODO: Request to take a book from the library
-        if (this.getStatus() == "faculty"){
-
-        }
+    public List<Document> getDocumentsInLibrary(Librarian librarian){
+        return librarian.manager.listOfDocuments;
     }
 
 }
