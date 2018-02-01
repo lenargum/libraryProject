@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public interface DocumentInterface {
     public void setTitle(String Title);
 
@@ -15,6 +17,8 @@ public interface DocumentInterface {
 
     public void setAllowedForStudents(boolean allowedForStudents);
 
+    public void setDateOfTaking(Date dateOfTaking);
+
     public String getTitle();
 
     public String getAuthors();
@@ -24,6 +28,8 @@ public interface DocumentInterface {
     public int getDocID();
 
     public int getUserID();
+
+    public Date getDateOfTaking();
 
     public boolean isChecked();
 

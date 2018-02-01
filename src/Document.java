@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Date;
+
 
 //documentation
 public class Document implements  DocumentInterface{
@@ -11,6 +13,7 @@ public class Document implements  DocumentInterface{
     private int userID;
     private int DocID;
     private boolean isAllowedForStudents;
+    private Date dateOfTaking; //TODO: разобраться с датами
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
@@ -22,6 +25,7 @@ public class Document implements  DocumentInterface{
         setPrice(price);
         this.reference = false;
         this.userID = 0;
+        this.dateOfTaking = null;
         setAllowedForStudents(isAllowedForStudents);
     }
 
@@ -57,6 +61,10 @@ public class Document implements  DocumentInterface{
        this.isAllowedForStudents = allowedForStudents;
     }
 
+    public void setDateOfTaking(Date dateOfTaking){
+        this.dateOfTaking = dateOfTaking;
+    }
+
     public String getTitle(){
 	return Title;
     }
@@ -75,6 +83,10 @@ public class Document implements  DocumentInterface{
 
     public int getUserID(){
         return userID;
+    }
+
+    public Date getDateOfTaking(){
+        return dateOfTaking;
     }
 
     public boolean isChecked(){
@@ -103,5 +115,7 @@ public class Document implements  DocumentInterface{
     public void addAuthor(String newAuthor){
         this.Authors += " " + newAuthor;
     }
+
+
 
 }
