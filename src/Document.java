@@ -14,15 +14,15 @@ public class Document{
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
-    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents){
+    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price){
         this.Authors = authors;
         this.Title = Title;
         this.DocID = DocId;
         this.checked = false;
-        this.Price = 0;
+        setPrice(price);
         this.reference = false;
         this.User = null;
-        this.isAllowedForStudents = true;
+        setAllowedForStudents(isAllowedForStudents);
     }
 
     public void setTitle(String title){

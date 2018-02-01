@@ -8,8 +8,8 @@ public class AudioVideoMaterial extends Document{
 
     private Date publishingDate;
 
-    public AudioVideoMaterial(String title, String authors, int id, float price){
-        super(authors, title,  id, price);
+    public AudioVideoMaterial(String title, String authors, int id, float price, boolean isAllowedForStudents){
+        super(authors, title,  id, isAllowedForStudents, price);
     }
 
     public void setPublishingDate(Date publDate){

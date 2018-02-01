@@ -2,8 +2,8 @@ public class Book extends Document{
     String Publisher;
     int editionYear;
 
-    public Book(String title, String authors, int id, boolean allowed){
-        super(authors, title,  id, allowed);
+    public Book(String title, String authors, int id, boolean allowed, float price){
+        super(authors, title,  id, allowed, price);
     }
 
     public void setPublisher(String publisher){

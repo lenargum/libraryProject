@@ -7,8 +7,8 @@ public class JournalArticle extends Document{
     Date publishingDate;
     String journalPublisher;
 
-    public JournalArticle(String title, String authors, int id, boolean isAllowedForStudents){
-        super(authors, title, id, isAllowedForStudents);
+    public JournalArticle(String title, String authors, int id, float price, boolean isAllowedForStudents){
+        super(authors, title, id, isAllowedForStudents, price);
     }
 
     public void setJournalTitle(String jourTitle){
