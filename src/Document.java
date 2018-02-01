@@ -8,7 +8,7 @@ public class Document{
     private boolean reference;
     private float Price;
     private boolean checked;    //Взяли книгу или нет
-    private User User;
+    private int userID;
     private int DocID;
     private boolean isAllowedForStudents;
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
@@ -21,12 +21,16 @@ public class Document{
         this.checked = false;
         setPrice(price);
         this.reference = false;
-        this.User = null;
+        this.userID = 0;
         setAllowedForStudents(isAllowedForStudents);
     }
 
     public void setTitle(String title){
 	this.Title = title;
+    }
+
+    public void setUserID(int userID){
+        this.userID = userID;
     }
 
     public void setAuthors(String authors){
@@ -61,12 +65,12 @@ public class Document{
         return DocID;
     }
 
-    public boolean isChecked(){
-	return checked;
+    public int getUserID(){
+        return userID;
     }
 
-    public int whoTookDoc(){
-	return User.getId();
+    public boolean isChecked(){
+	return checked;
     }
 
     public boolean isAllowedForStudents() {

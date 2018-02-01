@@ -11,7 +11,7 @@ public class SetManager {
 
     public int vacantIdPatron = 1;
     public int vacantIdDocument = 1;
-    public int vacantIdAV = 1;
+   // public int vacantIdAV = 1;
 
     public void addPatron(Patron patron){
         listOfUsers.add(patron);
