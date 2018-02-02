@@ -16,7 +16,7 @@ Classes that holds document information and its metadata.
 
 [Go to Documents branch](https://github.com/lenargum/libraryProject/tree/Documents)
 
-## Graphical User Interface
+## Graphical users.User Interface
 Contains desktop app source code.
 
-[Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
+[Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-users.User-Interface)

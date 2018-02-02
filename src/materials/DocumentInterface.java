@@ -1,3 +1,6 @@
+package materials;
+
+import users.Patron;
 
 import java.util.HashSet;
 
@@ -34,9 +37,9 @@ public interface DocumentInterface {
 
     public boolean isAllowedForStudents();
 
-    public boolean canTake(Patron user);
+//    public boolean canTake(Patron user);
 
-    public boolean isFaculty(Patron x);
+//    public boolean isFaculty(Patron x);
 
     public void addAuthor(String newAuthor);
 

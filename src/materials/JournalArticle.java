@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package materials;
+
 import java.util.Date;
 
 public class JournalArticle extends Document{

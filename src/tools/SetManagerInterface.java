@@ -1,3 +1,8 @@
+package tools;
+
+import materials.Document;
+import users.Patron;
+
 public interface SetManagerInterface {
 
     public void addPatron(Patron patron);
