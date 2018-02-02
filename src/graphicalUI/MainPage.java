@@ -9,18 +9,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import users.User;
+
+import java.io.IOException;
 
 public class MainPage extends Application {
 
 	private boolean loggedIn;
 	private UserCredentials credentials;
+	private User user;
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) throws IOException {
 		loggedIn = false;
 		AnchorPane welcomeLayout = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
 		primaryStage.setTitle("InnoLibrary Manager");
@@ -49,20 +53,21 @@ public class MainPage extends Application {
 		completeLoginButton.setOnAction(event -> {
 			TextField loginField = (TextField) loginLayout.lookup("#loginField");
 			PasswordField passField = (PasswordField) loginLayout.lookup("#passField");
+			Text loginFailed = (Text) loginLayout.lookup("#loginFailedText");
 
 			if (loginField.getLength() > 0 && passField.getLength() > 0) {
 				credentials = new UserCredentials(loginField.getText(), passField.getText());
+				user = credentials.authorize();
 				loggedIn = credentials.isAuthorized();
 			} else {
 				if (loginField.getLength() < 1) {
 					loginField.setStyle("-fx-border-color: RED");
 				}
-				if (passField.getLength() < 1) {
+				if (passField.getLength() < 8) {
 					passField.setStyle("-fx-border-color: RED");
 				}
 			}
 
-			Text loginFailed = (Text) loginLayout.lookup("#loginFailedText");
 			if (loggedIn) {
 				passField.clear();
 				loginButton.setDisable(true);
@@ -76,14 +81,14 @@ public class MainPage extends Application {
 		Button pickBookButton = (Button) welcomeLayout.lookup("#pickBookButton");
 		Button pickDocButton = (Button) welcomeLayout.lookup("#pickDocButton");
 		Button pickAVButton = (Button) welcomeLayout.lookup("#pickAVButton");
+		Button pickArticleButton = (Button) welcomeLayout.lookup("#pickArticleButton");
 
-		//AnchorPane bookSelectorLayout = FXMLLoader.load(getClass().getResource("BookSelector.fxml"));
-		//Scene bookSelectorScene = new Scene(bookSelectorLayout);
 		BookSelector bookSelector = new BookSelector(primaryStage, welcomeScene);
 
-		pickBookButton.setOnAction(event -> bookSelector.show(credentials));
-		pickDocButton.setOnAction(event -> bookSelector.show(credentials));
-		pickAVButton.setOnAction(event -> bookSelector.show(credentials));
+		pickBookButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, user));
+		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.DOCUMENT, user));
+		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AV, user));
+		pickArticleButton.setOnAction(event -> bookSelector.show(SelectorIntent.ARTICLE, user));
 	}
 
 	private void switchScene(Stage targetStage, Scene newScene) {

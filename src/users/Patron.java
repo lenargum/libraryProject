@@ -1,3 +1,8 @@
+package users;
+
+import materials.Document;
+import tools.SetManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +12,7 @@ public class Patron extends User {
 	private int debts;
 
 
-	Patron(String name, String address, String phoneNumber, String status, int id) {
+	public Patron(String name, String address, String phoneNumber, String status, int id) {
 		super(name, address, phoneNumber, id);
 		this.status = status;
 	}

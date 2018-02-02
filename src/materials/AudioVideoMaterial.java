@@ -1,7 +1,9 @@
+package materials;
+
 import java.util.Date;
 
 /**
- * class implements "Audio and Video materials" type of Document
+ * class implements "Audio and Video materials" type of materials.Document
  */
 public class AudioVideoMaterial extends Document {
 

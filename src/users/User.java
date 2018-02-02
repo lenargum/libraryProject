@@ -1,3 +1,7 @@
+package users;
+
+import materials.Document;
+
 import java.util.LinkedList;
 import java.util.List;
 

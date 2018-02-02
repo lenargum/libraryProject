@@ -1,3 +1,8 @@
+package materials;
+
+import tools.Typetester;
+import users.Patron;
+
 import java.util.HashSet;
 
 
@@ -12,7 +17,7 @@ public class Document implements IDocument {
 	private int userID;
 	private int DocID;
 	private boolean isAllowedForStudents;
-	//  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
+	//  public ArrayList <materials.Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
 	public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price) {
@@ -27,12 +32,16 @@ public class Document implements IDocument {
 		setAllowedForStudents(isAllowedForStudents);
 	}
 
+	public String getTitle() {
+		return Title;
+	}
+
 	public void setTitle(String title) {
 		this.Title = title;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public String getAuthors() {
+		return Authors.toString();
 	}
 
 	public void setAuthors(String authors) {
@@ -41,56 +50,52 @@ public class Document implements IDocument {
 		}
 	}
 
-	public void setDocID(int id) {
-		this.DocID = id;
+	public float getPrice() {
+		return Price;
 	}
 
 	public void setPrice(float price) {
 		this.Price = price;
 	}
 
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	} //взяли книгу или нет
-
-	public void setReference(boolean reference) {
-		this.reference = reference;
-	}
-
-	public void setAllowedForStudents(boolean allowedForStudents) {
-		this.isAllowedForStudents = allowedForStudents;
-	}
-
-	public String getTitle() {
-		return Title;
-	}
-
-	public String getAuthors() {
-		return Authors.toString();
-	}
-
-	public float getPrice() {
-		return Price;
-	}
-
 	public int getDocID() {
 		return DocID;
+	}
+
+	public void setDocID(int id) {
+		this.DocID = id;
 	}
 
 	public int getUserID() {
 		return userID;
 	}
 
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
 	public boolean isChecked() {
 		return checked;
+	} //взяли книгу или нет
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	} //взяли книгу или нет
 
 	public boolean isReference() {
 		return reference;
 	}
 
+	public void setReference(boolean reference) {
+		this.reference = reference;
+	}
+
 	public boolean isAllowedForStudents() {
 		return isAllowedForStudents;
+	}
+
+	public void setAllowedForStudents(boolean allowedForStudents) {
+		this.isAllowedForStudents = allowedForStudents;
 	}
 
 	public boolean isFaculty(Patron x) {

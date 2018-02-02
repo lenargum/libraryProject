@@ -1,3 +1,11 @@
+package tools;
+
+import materials.AudioVideoMaterial;
+import materials.Book;
+import materials.JournalArticle;
+import users.Librarian;
+import users.Patron;
+
 public class Typetester {
 	private String Type;
 

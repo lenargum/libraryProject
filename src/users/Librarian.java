@@ -1,8 +1,13 @@
+package users;
+
+import materials.Document;
+import tools.SetManager;
+
 public class Librarian extends User {
 	//TODO make interfaces
 	SetManager manager = new SetManager();
 
-	Librarian(String name, String address, String phoneNumber, int id) {
+	public Librarian(String name, String address, String phoneNumber, int id) {
 		super(name, address, phoneNumber, id);
 	}
 
