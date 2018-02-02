@@ -1,51 +1,51 @@
 package users;
 
-import materials.Document;
+public class User implements UserInterface {
 
-import java.util.LinkedList;
-import java.util.List;
+    private String name;
+    private String address;
+    private String phoneNumber;
+    private int id;
 
-public class User implements IUser {
+    User(String name, String address, String phoneNumber, int id) {
+        this.name = name;
+        this.id = id;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
 
-	private String name;
-	private String address;
-	private String phoneNumber;
-	private int id;
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<Document> documents = new LinkedList<>();
+    @Override
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	User(String name, String address, String phoneNumber, int id) {
-		this.name = name;
-		this.id = id;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-	}
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    @Override
+    public String getAddress() {
+        return address;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    @Override
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public String getName() {
-		return name;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public int getId() {
-		return id;
-	}
+    @Override
+    public int getId() {
+        return id;
+    }
 }

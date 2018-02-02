@@ -6,32 +6,37 @@ import materials.JournalArticle;
 import users.Librarian;
 import users.Patron;
 
-public class Typetester {
-	private String Type;
+public class Typetester implements TypeTesterIntarface {
+    private String Type;
 
-	public void setType(Librarian x) {
-		this.Type = "librarian";
-	}
+    @Override
+    public void setType(Librarian x) {
+        this.Type = "librarian";
+    }
 
-	public void setType(Patron x) {
-		this.Type = x.getStatus().toLowerCase();
-	}
+    @Override
+    public void setType(Patron x) {
+        this.Type = x.getStatus().toLowerCase();
+    }
 
-	public void setType(Book x) {
-		this.Type = "book";
-	}
+    @Override
+    public void setType(Book x) {
+        this.Type = "book";
+    }
 
-	public void setType(JournalArticle x) {
-		this.Type = "journal article";
-	}
+    @Override
+    public void setType(JournalArticle x) {
+        this.Type = "journal article";
+    }
 
-	public void setType(AudioVideoMaterial x) {
-		this.Type = "audio-video material";
-	}
+    @Override
+    public void setType(AudioVideoMaterial x) {
+        this.Type = "audio-video material";
+    }
 
-	public String getType() {
-		return Type;
-	}
-
+    @Override
+    public String getType() {
+        return Type;
+    }
 
 }
