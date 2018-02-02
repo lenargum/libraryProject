@@ -60,4 +60,8 @@ public class Librarian extends User implements LibrarianInterface {
     public LinkedList<Patron> getListOfPatrons(){
         return manager.listOfUsers;
     }
+
+    public LinkedList<Document> getListOfDocuments(){
+        return manager.listOfDocuments;
+    }
 }
