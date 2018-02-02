@@ -6,7 +6,7 @@ import java.util.HashSet;
 //documentation
 public class Document implements  DocumentInterface{
     
-    private HashSet<String>  Authors;    //TODO: solve problem: if document has more then one author - solved 
+    private HashSet<String>  Authors;    //TODO: what if authors are teken like string?
     private String Title;
     private boolean reference;
     private float Price;
@@ -18,7 +18,7 @@ public class Document implements  DocumentInterface{
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
-    public Document(String[] authors, String Title, int DocId, boolean isAllowedForStudents, float price){
+    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price){
         this.Authors = new HashSet<>();
         setAuthors(authors);
         this.Title = Title;
@@ -39,8 +39,10 @@ public class Document implements  DocumentInterface{
         this.userID = userID;
     }
 
-    public void setAuthors(String[] authors){
-	    for(int i = 0; i < authors.length; i++) addAuthor(authors[i]);
+    public void setAuthors(String authors){
+        for (String newAuthor : authors.split(", ")) {
+            addAuthor(newAuthor);
+        }
     }
 
     public void setDocID(int id){
@@ -71,8 +73,8 @@ public class Document implements  DocumentInterface{
 	return Title;
     }
 
-    public HashSet<String> getAuthors(){
-	return Authors;
+    public String getAuthors(){
+	return Authors.toString();
     }
 
     public float getPrice(){

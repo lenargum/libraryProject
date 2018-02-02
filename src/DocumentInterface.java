@@ -4,7 +4,7 @@ import java.util.HashSet;
 public interface DocumentInterface {
     public void setTitle(String Title);
 
-    public void setAuthors(String[] Authors);
+    public void setAuthors(String Authors);
 
     public void setUserID(int userID);
 
@@ -22,7 +22,7 @@ public interface DocumentInterface {
 
     public String getTitle();
 
-    public HashSet<String> getAuthors();
+    public String getAuthors();
 
     public float getPrice();
 
