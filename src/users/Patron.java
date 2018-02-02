@@ -10,7 +10,7 @@ public class Patron extends User implements PatronInterface {
     private int debts;
 
 
-    Patron(String name, String address, String phoneNumber, String status, int id) {
+    public Patron(String name, String address, String phoneNumber, String status, int id) {
         super(name, address, phoneNumber, id);
         this.status = status;
     }
