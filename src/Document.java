@@ -66,10 +66,10 @@ public class Document implements  DocumentInterface{
        this.isAllowedForStudents = allowedForStudents;
     }
 
-    public void setDateOfTaking(Date dateOfTaking, long sec){
+  /*  public void setDateOfTaking(Date dateOfTaking, long sec){
         this.dateOfTaking = dateOfTaking;
         this.seconds = sec;
-    }
+    }*/
 
     public String getTitle(){
 	return Title;
@@ -91,17 +91,17 @@ public class Document implements  DocumentInterface{
         return userID;
     }
 
-    public String getDateOfTaking(){
+   /* public String getDateOfTaking(){
         return dateOfTaking.toString();
-    }
+    }*/
 
-    public String tillWhenShouldReturn(Patron user){
+    /*public String tillWhenShouldReturn(Patron user){
         Date date = new Date();
         if(!isFaculty(user))
             date.setTime(seconds + 14*24*60*60*1000);
         else date.setTime(seconds + 21*24*60*60*1000);
         return date.toString();
-    }
+    }*/
 
     public boolean isChecked(){
 	return checked;
