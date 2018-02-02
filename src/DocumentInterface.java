@@ -30,13 +30,13 @@ public interface DocumentInterface {
 
     public int getUserID();
 
-    public String getDateOfTaking();
+    public String getDateOfTaking(); //дата(переведенная в строку), когда взяли документ
 
-    public String tillWhenShouldReturn(Patron user);
+    public String tillWhenShouldReturn(Patron user); //функция должна возвращать дату(переведенную в строку), до которой пользователь должен вернуть книгу
 
-    public boolean isChecked();
+    public boolean isChecked(); //взяли книгу или нет
 
-    public boolean isReference();
+    public boolean isReference(); //является ли документ справочным(влияет на возможность забрать его из библиотеки)
 
     public boolean isAllowedForStudents();
 

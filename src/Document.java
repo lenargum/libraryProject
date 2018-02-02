@@ -6,7 +6,7 @@ import java.util.HashSet;
 //documentation
 public class Document implements  DocumentInterface{
     
-    private HashSet<String>  Authors;    //TODO: what if authors are teken like string?
+    private HashSet<String>  Authors;    //TODO: i hope DONE
     private String Title;
     private boolean reference;
     private float Price;
@@ -14,7 +14,7 @@ public class Document implements  DocumentInterface{
     private int userID;
     private int DocID;
     private boolean isAllowedForStudents;
-    private Date dateOfTaking;//TODO: разобраться с датами
+    private Date dateOfTaking;//TODO: разобраться с датами -- вроде DONE
     private long seconds;
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
