@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import users.User;
 
 import java.io.IOException;
 
@@ -23,9 +24,9 @@ public class BookSelector {
 	@FXML
 	private AnchorPane bookSelectorLayout;
 
-	private UserCredentials credentials;
+	private User user;
 
-	private String pickedBook;
+	private String pickedItem;
 
 	public BookSelector() {
 	}
@@ -37,8 +38,8 @@ public class BookSelector {
 		this.bookSelectorScene = new Scene(bookSelectorLayout);
 	}
 
-	public void show(UserCredentials credentials) {
-		this.credentials = credentials;
+	public void show(SelectorIntent intent, User user) {
+		this.user = user;
 		switchScene(primaryStage, bookSelectorScene);
 		ListView<String> bookList = (ListView<String>) bookSelectorLayout.lookup("#bookList");
 
@@ -48,15 +49,32 @@ public class BookSelector {
 			bookList.getItems().clear();
 		});
 
-		ObservableList<String> availableBooks = FXCollections.<String>observableArrayList("Touch of Class",
-				"Introduction to Algorithms", "Algorithms in Java");
-		bookList.getItems().addAll(availableBooks);
+		ObservableList<String> availableItems;
+		switch (intent) {
+			case BOOK:
+				availableItems = FXCollections.observableArrayList("Touch of Class",
+						"Introduction to Algorithms", "Algorithms in Java");
+				break;
+			case DOCUMENT:
+				availableItems = FXCollections.observableArrayList("Document 1", "Document 2", "Document 3");
+				break;
+			case AV:
+				availableItems = FXCollections.observableArrayList("Audio 1", "Video 1", "Video 2", "Audio 2");
+				break;
+			case ARTICLE:
+				availableItems = FXCollections.observableArrayList("Article 1", "Article 2", "Article 3");
+				break;
+			default:
+				availableItems = FXCollections.emptyObservableList();
+		}
+
+		bookList.getItems().addAll(availableItems);
 
 		Button bookThisButton = (Button) bookSelectorLayout.lookup("#bookThisButton");
 		bookThisButton.setOnAction(event -> {
-			if (credentials != null && credentials.isAuthorized()) {
-				pickedBook = bookList.getSelectionModel().getSelectedItem();
-				System.out.println("Given " + pickedBook + " to " + credentials.getLoginString()); //DEBUGGING OUTPUT
+			if (user != null) {
+				pickedItem = bookList.getSelectionModel().getSelectedItem();
+				System.out.println("Given " + pickedItem + " to " + user.getName()); //DEBUGGING OUTPUT
 			} else {
 				Alert notAuthorizedAlert = new Alert(Alert.AlertType.WARNING);
 				notAuthorizedAlert.setTitle("Authorization needed");
