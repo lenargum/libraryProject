@@ -11,11 +11,15 @@ public class UserCredentials {
 		return login;
 	}
 
+	public String getLoginString() {
+		return String.copyValueOf(login);
+	}
+
 	public char[] getPassword() {
 		return password;
 	}
 
-	public boolean isAuthorized(){
+	public boolean isAuthorized() {
 		//TODO Implement isAuthorized
 		return true;
 	}
