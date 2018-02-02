@@ -41,7 +41,7 @@ public class Document implements  DocumentInterface{
 
     public void setAuthors(String authors){
         for (String newAuthor : authors.split(", ")) {
-            addAuthor(newAuthor);
+            addAuthor(newAuthor.toLowerCase());
         }
     }
 
@@ -116,10 +116,13 @@ public class Document implements  DocumentInterface{
         return isAllowedForStudents() && !checked;
     }
 
-   public void addAuthor(String newAuthor){
+    public void addAuthor(String newAuthor){
         this.Authors.add(newAuthor);
     }
 
-
+    public boolean isWrittenBy(String author){
+        author = author.toLowerCase();
+        return Authors.contains(author);
+    } //если мы хотuм проверить есть ли среди авторов документа данный автор
 
 }

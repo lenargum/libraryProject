@@ -44,4 +44,6 @@ public interface DocumentInterface {
 
     public void addAuthor(String newAuthor);
 
+    public boolean isWrittenBy(String author);
+
 }
