@@ -1,8 +1,5 @@
 package graphicalUI;
 
-import users.Patron;
-import users.User;
-
 public class UserCredentials {
 	private char[] login;
 	private char[] password;
@@ -30,8 +27,10 @@ public class UserCredentials {
 		return authorized;
 	}
 
-	public User authorize() {
-		authorized = true;
-		return new Patron("Evdakia", "1, Universitetskaya st., Innopolis", "+79871234567", "student", 2);
+	public VirtualServer authorize() {
+		//return new Patron("Name", "1, Universitetskaya", "+79871234567", "STUDENT", 2);
+		VirtualServer server = new VirtualServer();
+		authorized = server.authorize(String.copyValueOf(login));
+		return server;
 	}
 }
