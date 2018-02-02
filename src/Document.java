@@ -14,7 +14,8 @@ public class Document implements  DocumentInterface{
     private int userID;
     private int DocID;
     private boolean isAllowedForStudents;
-    private Date dateOfTaking; //TODO: разобраться с датами
+    private Date dateOfTaking;//TODO: разобраться с датами
+    private long seconds;
     //  public ArrayList <Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
@@ -65,8 +66,9 @@ public class Document implements  DocumentInterface{
        this.isAllowedForStudents = allowedForStudents;
     }
 
-    public void setDateOfTaking(Date dateOfTaking){
+    public void setDateOfTaking(Date dateOfTaking, long sec){
         this.dateOfTaking = dateOfTaking;
+        this.seconds = sec;
     }
 
     public String getTitle(){
@@ -89,8 +91,16 @@ public class Document implements  DocumentInterface{
         return userID;
     }
 
-    public Date getDateOfTaking(){
-        return dateOfTaking;
+    public String getDateOfTaking(){
+        return dateOfTaking.toString();
+    }
+
+    public String tillWhenShouldReturn(Patron user){
+        Date date = new Date();
+        if(!isFaculty(user))
+            date.setTime(seconds + 14*24*60*60*1000);
+        else date.setTime(seconds + 21*24*60*60*1000);
+        return date.toString();
     }
 
     public boolean isChecked(){

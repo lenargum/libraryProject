@@ -18,7 +18,7 @@ public interface DocumentInterface {
 
     public void setAllowedForStudents(boolean allowedForStudents);
 
-    public void setDateOfTaking(Date dateOfTaking);
+    public void setDateOfTaking(Date dateOfTaking, long sec);
 
     public String getTitle();
 
@@ -30,7 +30,9 @@ public interface DocumentInterface {
 
     public int getUserID();
 
-    public Date getDateOfTaking();
+    public String getDateOfTaking();
+
+    public String tillWhenShouldReturn(Patron user);
 
     public boolean isChecked();
 
