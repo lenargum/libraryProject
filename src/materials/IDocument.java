@@ -1,3 +1,7 @@
+package materials;
+
+import users.Patron;
+
 public interface IDocument {
 	public String getTitle();
 
