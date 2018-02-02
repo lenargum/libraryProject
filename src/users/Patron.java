@@ -1,74 +1,85 @@
 package users;
 
 import materials.Document;
-import tools.SetManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
-public class Patron extends User {
-	private String status;
-	private ArrayList<Document> listOfDocumentsPatron;
-	private int debts;
+public class Patron extends User implements PatronInterface {
+    private String status;
+    private LinkedList<Document> listOfDocumentsPatron;
+    private int debts;
 
 
-	public Patron(String name, String address, String phoneNumber, String status, int id) {
-		super(name, address, phoneNumber, id);
-		this.status = status;
-	}
+    public Patron(String name, String address, String phoneNumber, String status, int id) {
+        super(name, address, phoneNumber, id);
+        this.status = status;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-		this.debts = 0;
-	}
+    @Override
+    public void setStatus(String status) {
+        this.status = status;
+        this.debts = 0;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    @Override
+    public String getStatus() {
+        return status;
+    }
 
-	public ArrayList<Document> getListOfDocumentsPatron() {
-		return listOfDocumentsPatron;
-	}
+    @Override
+    public LinkedList<Document> getListOfDocumentsPatron() {
+        return listOfDocumentsPatron;
+    }
 
-	public void setDebts(int debts) {
-		this.debts = debts;
-	}
+    @Override
+    public void setDebts(int debts) {
+        this.debts = debts;
+    }
 
-	public int getDebts() {
-		return debts;
-	}
+    @Override
+    public int getDebts() {
+        return debts;
+    }
 
-	public void addBookInList(Document document) {
-		listOfDocumentsPatron.add(document);
-	}
+    @Override
+    public void addDocumentInList(Document document) {
+        listOfDocumentsPatron.add(document);
+    }
 
-	public boolean getRequest(int idDocument, SetManager manager) {
-		//TODO: Request to take a book from the library
-		if (this.getStatus() == "faculty") {
-			return true;
-		} else {
-			if (manager.listOfDocuments.get(idDocument).isAllowedForStudents())
-				return true;
-			else
-				return false;
-		}
-	}
+    @Override
+    public boolean getRequest(int idDocument, Librarian librarian) {
+        //TODO: Request to take a book from the library
+        if (this.getStatus() == "faculty") {
+            return true;
+        } else {
+            if (librarian.manager.listOfDocuments.get(idDocument).isAllowedForStudents())
+                return true;
+            else
+                return false;
+        }
+    }
 
-	public void getDocument(int idDocument, Librarian librarian) {
-		if (getRequest(idDocument, librarian.manager)) {
-			addBookInList(librarian.manager.listOfDocuments.get(idDocument));
-			//           librarian.manager.listOfDocuments.get(idDocument).
-		} else {
-			System.out.println("Access is not available");
-		}
-	}
+    @Override
+    public void takeDocument(int idDocument, Librarian librarian) {
+        if (getRequest(idDocument, librarian)) {
+            this.addDocumentInList(librarian.manager.listOfDocuments.get(idDocument));
+            librarian.manager.listOfDocuments.get(idDocument).setChecked(true);
+            librarian.manager.listOfDocuments.get(idDocument).setUserID(this.getId());
+        } else {
+            System.out.println("Access is not available");
+        }
+    }
 
-	public List<Document> getDocumentsInLibrary(Librarian librarian) {
-		return librarian.manager.listOfDocuments;
-	}
+    @Override
+    public LinkedList<Document> getDocumentsInLibrary(Librarian librarian) {
+        return librarian.manager.listOfDocuments;
+    }
 
-	public void bringBackDocument(int idDocument, Librarian librarian) {
-		this.getListOfDocumentsPatron().remove(librarian.manager.listOfDocuments.get(idDocument));
-		//TODO: set/get who took document
-	}
+
+    public void bringBackDocument(int idDocument, Librarian librarian) {
+        this.getListOfDocumentsPatron().remove(librarian.manager.listOfDocuments.get(idDocument));
+        librarian.manager.listOfDocuments.get(idDocument).setChecked(false);
+        librarian.manager.listOfDocuments.get(idDocument).setUserID(-1);
+        //TODO: set/get who took document
+    }
 }

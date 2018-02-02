@@ -10,8 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import materials.Document;
 import users.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 
 public class BookSelector {
@@ -23,6 +25,8 @@ public class BookSelector {
 	private Scene bookSelectorScene;
 	@FXML
 	private AnchorPane bookSelectorLayout;
+
+	private UserCredentials credentials;
 
 	private User user;
 
@@ -38,8 +42,8 @@ public class BookSelector {
 		this.bookSelectorScene = new Scene(bookSelectorLayout);
 	}
 
-	public void show(SelectorIntent intent, User user) {
-		this.user = user;
+	public void show(SelectorIntent intent, VirtualServer server) {
+		//this.credentials = credentials;
 		switchScene(primaryStage, bookSelectorScene);
 		ListView<String> bookList = (ListView<String>) bookSelectorLayout.lookup("#bookList");
 
@@ -49,11 +53,12 @@ public class BookSelector {
 			bookList.getItems().clear();
 		});
 
+		user = server.getPatron();
 		ObservableList<String> availableItems;
 		switch (intent) {
 			case BOOK:
-				availableItems = FXCollections.observableArrayList("Touch of Class",
-						"Introduction to Algorithms", "Algorithms in Java");
+				//availableItems = FXCollections.observableArrayList("Touch of Class", "Introduction to Algorithms", "Algorithms in Java");
+				availableItems = server.getBookTitles();
 				break;
 			case DOCUMENT:
 				availableItems = FXCollections.observableArrayList("Document 1", "Document 2", "Document 3");
@@ -74,7 +79,8 @@ public class BookSelector {
 		bookThisButton.setOnAction(event -> {
 			if (user != null) {
 				pickedItem = bookList.getSelectionModel().getSelectedItem();
-				System.out.println("Given " + pickedItem + " to " + user.getName()); //DEBUGGING OUTPUT
+				server.bookItem(pickedItem, server.getPatron());
+				System.out.println("Given " + pickedItem + " to " + user); //DEBUGGING OUTPUT
 			} else {
 				Alert notAuthorizedAlert = new Alert(Alert.AlertType.WARNING);
 				notAuthorizedAlert.setTitle("Authorization needed");

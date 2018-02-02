@@ -17,7 +17,7 @@ public class MainPage extends Application {
 
 	private boolean loggedIn;
 	private UserCredentials credentials;
-	private User user;
+	private VirtualServer server;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -57,7 +57,7 @@ public class MainPage extends Application {
 
 			if (loginField.getLength() > 0 && passField.getLength() > 0) {
 				credentials = new UserCredentials(loginField.getText(), passField.getText());
-				user = credentials.authorize();
+				server = credentials.authorize();
 				loggedIn = credentials.isAuthorized();
 			} else {
 				if (loginField.getLength() < 1) {
@@ -85,10 +85,10 @@ public class MainPage extends Application {
 
 		BookSelector bookSelector = new BookSelector(primaryStage, welcomeScene);
 
-		pickBookButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, user));
-		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.DOCUMENT, user));
-		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AV, user));
-		pickArticleButton.setOnAction(event -> bookSelector.show(SelectorIntent.ARTICLE, user));
+		pickBookButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
+		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.DOCUMENT, server));
+		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AV, server));
+		pickArticleButton.setOnAction(event -> bookSelector.show(SelectorIntent.ARTICLE, server));
 	}
 
 	private void switchScene(Stage targetStage, Scene newScene) {
