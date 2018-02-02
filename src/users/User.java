@@ -1,18 +1,11 @@
 package users;
 
-import materials.Document;
-
-import java.util.LinkedList;
-import java.util.List;
-
 public class User implements UserInterface {
 
     private String name;
     private String address;
     private String phoneNumber;
     private int id;
-
-    public List<Document> documents = new LinkedList<>();
 
     User(String name, String address, String phoneNumber, int id) {
         this.name = name;

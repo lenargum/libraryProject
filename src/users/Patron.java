@@ -2,9 +2,7 @@ package users;
 
 import materials.Document;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Patron extends User implements PatronInterface {
     private String status;

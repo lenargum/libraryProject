@@ -3,9 +3,7 @@ package tools;
 import materials.Document;
 import users.Patron;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * The difference between Id of Objects and positions in the Lists is 1!!!

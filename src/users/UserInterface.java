@@ -1,6 +1,6 @@
 package users;
 
-public interface UserInterface  {
+public interface UserInterface {
     public void setName(String name);
 
     public void setAddress(String address);

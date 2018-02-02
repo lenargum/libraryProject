@@ -1,9 +1,5 @@
 package materials;
 
-import users.Patron;
-
-import java.util.HashSet;
-
 public interface DocumentInterface {
     public void setTitle(String Title);
 

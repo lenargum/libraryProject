@@ -1,15 +1,12 @@
 package materials;
 
-import tools.Typetester;
-import users.Patron;
-
 import java.util.HashSet;
 
 
 //documentation
-public class Document implements  DocumentInterface{
-    
-    private HashSet<String>  Authors;    //TODO: i hope DONE
+public class Document implements DocumentInterface {
+
+    private HashSet<String> Authors;    //TODO: i hope DONE
     private String Title;
     private boolean reference;
     private float Price;
@@ -20,7 +17,7 @@ public class Document implements  DocumentInterface{
     //  public ArrayList <materials.Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
-    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price){
+    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price) {
         this.Authors = new HashSet<>();
         setAuthors(authors);
         this.Title = Title;
@@ -33,30 +30,30 @@ public class Document implements  DocumentInterface{
     }
 
     @Override
-    public void setTitle(String title){
-	this.Title = title;
+    public void setTitle(String title) {
+        this.Title = title;
     }
 
     @Override
-    public void setUserID(int userID){
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
     @Override
-    public void setAuthors(String authors){
+    public void setAuthors(String authors) {
         for (String newAuthor : authors.split(", ")) {
             addAuthor(newAuthor.toLowerCase());
         }
     }
 
     @Override
-    public void setDocID(int id){
+    public void setDocID(int id) {
         this.DocID = id;
     }
 
     @Override
-    public void setPrice(float price){
-	this.Price = price;
+    public void setPrice(float price) {
+        this.Price = price;
     }
 
     @Override
@@ -71,37 +68,37 @@ public class Document implements  DocumentInterface{
 
     @Override
     public void setAllowedForStudents(boolean allowedForStudents) {
-       this.isAllowedForStudents = allowedForStudents;
+        this.isAllowedForStudents = allowedForStudents;
     }
 
     @Override
-    public String getTitle(){
-	return Title;
+    public String getTitle() {
+        return Title;
     }
 
     @Override
-    public String getAuthors(){
-	return Authors.toString();
+    public String getAuthors() {
+        return Authors.toString();
     }
 
     @Override
-    public float getPrice(){
-	return Price;
+    public float getPrice() {
+        return Price;
     }
 
     @Override
-    public int getDocID(){
+    public int getDocID() {
         return DocID;
     }
 
     @Override
-    public int getUserID(){
+    public int getUserID() {
         return userID;
     }
 
     @Override
-    public boolean isChecked(){
-	return checked;
+    public boolean isChecked() {
+        return checked;
     } //взяли книгу или нет
 
     @Override
@@ -126,12 +123,12 @@ public class Document implements  DocumentInterface{
 //    }
 
     @Override
-    public void addAuthor(String newAuthor){
+    public void addAuthor(String newAuthor) {
         this.Authors.add(newAuthor);
     }
 
     @Override
-    public boolean isWrittenBy(String author){
+    public boolean isWrittenBy(String author) {
         author = author.toLowerCase();
         return Authors.contains(author);
     } //если мы хотuм проверить есть ли среди авторов документа данный автор

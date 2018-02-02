@@ -2,7 +2,6 @@ package users;
 
 import materials.Document;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public interface PatronInterface {
