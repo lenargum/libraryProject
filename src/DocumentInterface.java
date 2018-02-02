@@ -1,4 +1,4 @@
-import java.util.Date;
+
 import java.util.HashSet;
 
 public interface DocumentInterface {
@@ -18,8 +18,6 @@ public interface DocumentInterface {
 
     public void setAllowedForStudents(boolean allowedForStudents);
 
-    //public void setDateOfTaking(Date dateOfTaking, long sec);
-
     public String getTitle();
 
     public String getAuthors();
@@ -29,10 +27,6 @@ public interface DocumentInterface {
     public int getDocID();
 
     public int getUserID();
-
-  //  public String getDateOfTaking(); //дата(переведенная в строку), когда взяли документ
-
-   // public String tillWhenShouldReturn(Patron user); //функция должна возвращать дату(переведенную в строку), до которой пользователь должен вернуть книгу
 
     public boolean isChecked(); //взяли книгу или нет
 
