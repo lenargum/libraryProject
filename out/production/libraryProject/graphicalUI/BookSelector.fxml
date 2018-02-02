@@ -7,24 +7,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="767.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.BookSelector">
+<AnchorPane prefHeight="767.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.BookSelector">
 	<children>
-		<Text layoutX="32.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What do you want?"
-		      AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="40.0">
+		<Text layoutX="32.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What do you want?" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="40.0">
 			<font>
-				<Font size="30.0"/>
+				<Font size="30.0" />
 			</font>
 		</Text>
-		<ListView fx:id="bookList" layoutX="32.0" layoutY="100.0" prefHeight="591.0" prefWidth="535.0"
-		          AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0"/>
-		<ButtonBar layoutX="386.0" layoutY="722.0" prefHeight="31.0" prefWidth="215.0" AnchorPane.bottomAnchor="14.0"
-		           AnchorPane.rightAnchor="32.0">
+		<ListView fx:id="bookList" layoutX="32.0" layoutY="100.0" prefHeight="591.0" prefWidth="535.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" />
+		<ButtonBar layoutX="386.0" layoutY="722.0" prefHeight="31.0" prefWidth="215.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="32.0">
 			<buttons>
-				<Button fx:id="goBackButton" mnemonicParsing="false" style="-fx-background-radius: 20;" text="Go back"/>
-				<Button fx:id="bookThisButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="103.0"
-				        style="-fx-background-color:  #26B6F9; -fx-background-radius: 20;" text="Book this"
-				        textFill="WHITE"/>
+				<Button fx:id="goBackButton" mnemonicParsing="false" style="-fx-background-radius: 20;" text="Go back" />
+				<Button fx:id="bookThisButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="103.0" style="-fx-background-color:  #26B6F9; -fx-background-radius: 20;" text="Book this" textFill="WHITE" />
 			</buttons>
 		</ButtonBar>
 	</children>

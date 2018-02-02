@@ -1,10 +1,8 @@
 package graphicalUI;
 
-/**
- * Enumerator with document types.
- */
 public enum SelectorIntent {
 	BOOK,
+	DOCUMENT,
 	ARTICLE,
-	AUDIOVIDEO
+	AV
 }
