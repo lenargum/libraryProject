@@ -6,8 +6,7 @@ import java.util.HashSet;
 //documentation
 public class Document implements  DocumentInterface{
     
-    private HashSet<String>  Authors;    //TODO: solve problem: if document has more then one author
-    private int numberOfAuthors;
+    private HashSet<String>  Authors;    //TODO: solve problem: if document has more then one author - solved 
     private String Title;
     private boolean reference;
     private float Price;
