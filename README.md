@@ -11,7 +11,7 @@ Contains all documents and users classes and booking logic.
 
 [Go to Entities branch](https://github.com/lenargum/libraryProject/tree/User-Documents-Connection)
 
-## Graphical User Interface
+## Graphical users.User Interface
 Contains desktop app source code.
 
 [Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
