@@ -1,3 +1,5 @@
+package users;
+
 public interface IUser {
 	public void setName(String name);
 
