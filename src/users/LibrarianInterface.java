@@ -2,6 +2,8 @@ package users;
 
 import materials.Document;
 
+import java.util.LinkedList;
+
 public interface LibrarianInterface {
 
     public void createPatron(String name, String address, String phoneNumber, String status);
@@ -19,4 +21,6 @@ public interface LibrarianInterface {
     public void setPhoneNumberPatron(Patron patron, String phoneNumber);
 
     public void setStatusPatron(Patron patron, String status);
+
+    public LinkedList<Patron> getListOfPatrons();
 }

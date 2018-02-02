@@ -3,11 +3,13 @@ package users;
 import materials.Document;
 import tools.SetManager;
 
+import java.util.LinkedList;
+
 public class Librarian extends User implements LibrarianInterface {
-    //TODO make interfaces
+
     SetManager manager = new SetManager();
 
-    Librarian(String name, String address, String phoneNumber, int id) {
+    public Librarian(String name, String address, String phoneNumber, int id) {
         super(name, address, phoneNumber, id);
     }
 
@@ -55,4 +57,7 @@ public class Librarian extends User implements LibrarianInterface {
         patron.setStatus(status);
     }
 
+    public LinkedList<Patron> getListOfPatrons(){
+        return manager.listOfUsers;
+    }
 }
