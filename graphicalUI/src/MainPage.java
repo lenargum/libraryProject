@@ -77,11 +77,11 @@ public class MainPage extends Application {
 
 		//AnchorPane bookSelectorLayout = FXMLLoader.load(getClass().getResource("BookSelector.fxml"));
 		//Scene bookSelectorScene = new Scene(bookSelectorLayout);
-		BookSelector bookSelector = new BookSelector(primaryStage, welcomeScene, credentials);
+		BookSelector bookSelector = new BookSelector(primaryStage, welcomeScene);
 
-		pickBookButton.setOnAction(event -> bookSelector.show());
-		pickDocButton.setOnAction(event -> bookSelector.show());
-		pickAVButton.setOnAction(event -> bookSelector.show());
+		pickBookButton.setOnAction(event -> bookSelector.show(credentials));
+		pickDocButton.setOnAction(event -> bookSelector.show(credentials));
+		pickAVButton.setOnAction(event -> bookSelector.show(credentials));
 	}
 
 	private void switchScene(Stage targetStage, Scene newScene) {
