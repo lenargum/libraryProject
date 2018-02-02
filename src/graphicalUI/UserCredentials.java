@@ -1,3 +1,5 @@
+package graphicalUI;
+
 public class UserCredentials {
 	private char[] login;
 	private char[] password;
