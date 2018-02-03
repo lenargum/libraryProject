@@ -1,17 +1,17 @@
 package users;
 
 public interface UserInterface {
-    public void setName(String name);
+	public String getName();
 
-    public void setAddress(String address);
+	public void setName(String name);
 
-    public void setPhoneNumber(String phoneNumber);
+	public String getAddress();
 
-    public String getName();
+	public void setAddress(String address);
 
-    public String getAddress();
+	public String getPhoneNumber();
 
-    public String getPhoneNumber();
+	public void setPhoneNumber(String phoneNumber);
 
-    public int getId();
+	public int getId();
 }

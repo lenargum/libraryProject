@@ -6,22 +6,22 @@ import java.util.LinkedList;
 
 public interface PatronInterface {
 
-    public void setStatus(String status);
+	public String getStatus();
 
-    public String getStatus();
+	public void setStatus(String status);
 
-    public LinkedList<Document> getListOfDocumentsPatron();
+	public LinkedList<Document> getListOfDocumentsPatron();
 
-    public void setDebts(int debts);
+	public int getDebts();
 
-    public int getDebts();
+	public void setDebts(int debts);
 
-    public void addDocumentInList(Document document);
+	public void addDocumentInList(Document document);
 
-    public boolean getRequest(int idDocument, Librarian librarian);
+	public boolean getRequest(int idDocument, Librarian librarian);
 
-    public void takeDocument(int idDocument, Librarian librarian);
+	public void takeDocument(int idDocument, Librarian librarian);
 
-    public LinkedList<Document> getDocumentsInLibrary(Librarian librarian);
+	public LinkedList<Document> getDocumentsInLibrary(Librarian librarian);
 
 }

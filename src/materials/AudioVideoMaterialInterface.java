@@ -7,15 +7,17 @@ import java.util.Date;
  */
 public interface AudioVideoMaterialInterface {
 
-    /**
-     * sets date when the material was published
-     * @param publDate
-     */
-    public void setPublishingDate(Date publDate);
+	/**
+	 * returns date when the material was published
+	 *
+	 * @return
+	 */
+	public String getPublishingDate();
 
-    /**
-     * returns date when the material was published
-     * @return
-     */
-    public String getPublishingDate();
+	/**
+	 * sets date when the material was published
+	 *
+	 * @param publDate
+	 */
+	public void setPublishingDate(Date publDate);
 }
