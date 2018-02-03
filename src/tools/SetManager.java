@@ -48,8 +48,10 @@ public class SetManager implements SetManagerInterface {
             listOfDocuments.remove(idDocument );
             vacantIdDocument--;
             for (int i = 0; i < listOfUsers.size(); i++) {
-                if (listOfUsers.get(i).getListOfDocumentsPatron().contains(listOfDocuments.get(idDocument)))
-                    listOfUsers.get(i).getListOfDocumentsPatron().contains(listOfDocuments.remove(idDocument));
+                for (int j = 0; j < listOfUsers.get(i).getListOfDocumentsPatron().size(); j++){
+                    if (listOfUsers.get(i).getListOfDocumentsPatron().get(j).getDocID() == idDocument)
+                        listOfUsers.get(i).getListOfDocumentsPatron().remove(j);
+                }
             }
         }
     }
