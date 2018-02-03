@@ -17,5 +17,5 @@ public interface AudioVideoMaterialInterface {
      * returns date when the material was published
      * @return
      */
-    public Date getPublishingDate();
+    public String getPublishingDate();
 }

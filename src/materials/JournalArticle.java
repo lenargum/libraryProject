@@ -3,13 +3,13 @@ package materials;
 import java.util.Date;
 
 /**
- * class implements journal articles in materials.Document
+ * class implements "Journal Articles" type of materials.Document
  */
 public class JournalArticle extends Document implements JournalArticleInterface{
 
-    private String journalTitle;
-    private Date publishingDate;
-    private String journalPublisher;
+    private String journalTitle; //title of journal in which the article was published
+    private Date publishingDate; //date of journal publishing
+    private String journalPublisher; //name of person or company published current journal article
 
     /**
      * constructor

@@ -3,18 +3,18 @@ package materials;
 import java.util.HashSet;
 
 /**
- * class implements document type in materials.Document
+ * class implements "Document" type in materials.Document
  */
 public class Document implements DocumentInterface {
 
-    private HashSet<String> Authors;
-    private String Title;
-    private boolean reference;
-    private float Price;
-    private boolean checked;
-    private int userID;
-    private int DocID;
-    private boolean isAllowedForStudents;
+    private HashSet<String> Authors; //storage of author(group of authors) the document was created by
+    private String Title; //title of current document
+    private boolean reference; //назначение of current document
+    private float Price; //price of document
+    private boolean checked; //status of document showing if document is booked
+    private int userID; //ID of user the document was taken by
+    private int DocID; //ID of current document
+    private boolean isAllowedForStudents; //shows students' possibility to take current document
 
     /**
      * constructor

@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class AudioVideoMaterial extends Document implements AudioVideoMaterialInterface {
 
-    private Date publishingDate;
+    private Date publishingDate; // date when current Document was published
 
     /**
      * constructor
@@ -35,8 +35,8 @@ public class AudioVideoMaterial extends Document implements AudioVideoMaterialIn
      * @return
      */
     @Override
-    public Date getPublishingDate() {
-        return publishingDate;
+    public String getPublishingDate() {
+        return publishingDate.toString();
     }
 
 }

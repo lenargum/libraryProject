@@ -1,11 +1,11 @@
 package materials;
 
 /**
- * class implements books in materials.Document
+ * class implements "Book" itype of materials.Document
  */
 public class Book extends Document implements BookInterface {
-    private String Publisher;
-    private int editionYear;
+    private String Publisher; //name of person or company published current book
+    private int editionYear; //year on which the book was published
 
     /**
      * constructor
