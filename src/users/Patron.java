@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class Patron extends User implements PatronInterface {
     private String status;
-    private LinkedList<Document> listOfDocumentsPatron;
+    private LinkedList<Document> listOfDocumentsPatron = new LinkedList<>();
     private int debts;
 
 
@@ -18,7 +18,6 @@ public class Patron extends User implements PatronInterface {
     @Override
     public void setStatus(String status) {
         this.status = status;
-        this.debts = 0;
     }
 
     @Override
