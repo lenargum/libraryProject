@@ -14,8 +14,8 @@ public class SetManager implements SetManagerInterface {
     public LinkedList<Patron> listOfUsers = new LinkedList<>();
     public LinkedList<Document> listOfDocuments = new LinkedList<>();
 
-    public int vacantIdPatron = 1;
-    public int vacantIdDocument = 1;
+    public int vacantIdPatron = 0;
+    public int vacantIdDocument = 0;
 
     @Override
     public void addPatron(Patron patron) {
@@ -29,7 +29,7 @@ public class SetManager implements SetManagerInterface {
         if (listOfUsers.isEmpty()) {
             System.out.println("List of Users is empty");
         } else {
-            listOfUsers.remove(idPatron - 1);
+            listOfUsers.remove(idPatron);
             vacantIdPatron--;
         }
     }
@@ -45,7 +45,7 @@ public class SetManager implements SetManagerInterface {
         if (listOfDocuments.isEmpty()) {
             System.out.println("Library already empty");
         } else {
-            listOfDocuments.remove(idDocument - 1);
+            listOfDocuments.remove(idDocument );
             vacantIdDocument--;
             for (int i = 0; i < listOfUsers.size(); i++) {
                 if (listOfUsers.get(i).getListOfDocumentsPatron().contains(listOfDocuments.get(idDocument)))
