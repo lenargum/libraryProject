@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import users.User;
 
 import java.io.IOException;
 
@@ -17,7 +16,7 @@ public class MainPage extends Application {
 
 	private boolean loggedIn;
 	private UserCredentials credentials;
-	private VirtualServer server;
+	private ServerAPI server;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -26,6 +25,7 @@ public class MainPage extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		loggedIn = false;
+		server = new ServerAPI();
 		AnchorPane welcomeLayout = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
 		primaryStage.setTitle("InnoLibrary Manager");
 		primaryStage.setMinWidth(500);

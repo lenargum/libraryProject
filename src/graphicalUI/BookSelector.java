@@ -13,25 +13,48 @@ import javafx.stage.Stage;
 import materials.Document;
 import users.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
+import java.util.List;
 
+/**
+ * Controller for BookSelector layout.
+ */
 public class BookSelector {
+	/**
+	 * Main stage where selector is going to be displayed.
+	 */
 	@FXML
 	private Stage primaryStage;
+
+	/**
+	 * Previous scene stored for "Go back" button.
+	 */
 	@FXML
 	private Scene previousScene;
+	/**
+	 * Current scene.
+	 */
 	@FXML
 	private Scene bookSelectorScene;
+	/**
+	 * Current layout.
+	 */
 	@FXML
 	private AnchorPane bookSelectorLayout;
 
-	private UserCredentials credentials;
-
+	/**
+	 * Currnt user is stored to access booking system.
+	 */
 	private User user;
 
+	/**
+	 * Currently selected in list item.
+	 */
 	private String pickedItem;
 
+	/**
+	 * Empty constructor for FXML loader.
+	 */
 	public BookSelector() {
 	}
 
@@ -42,7 +65,7 @@ public class BookSelector {
 		this.bookSelectorScene = new Scene(bookSelectorLayout);
 	}
 
-	public void show(SelectorIntent intent, VirtualServer server) {
+	public void show(SelectorIntent intent, ServerAPI server) {
 		//this.credentials = credentials;
 		switchScene(primaryStage, bookSelectorScene);
 		ListView<String> bookList = (ListView<String>) bookSelectorLayout.lookup("#bookList");
@@ -57,8 +80,7 @@ public class BookSelector {
 		ObservableList<String> availableItems;
 		switch (intent) {
 			case BOOK:
-				//availableItems = FXCollections.observableArrayList("Touch of Class", "Introduction to Algorithms", "Algorithms in Java");
-				availableItems = server.getBookTitles();
+				availableItems = extractTitles(server.getDocuments());
 				break;
 			case DOCUMENT:
 				availableItems = FXCollections.observableArrayList("Document 1", "Document 2", "Document 3");
@@ -89,6 +111,15 @@ public class BookSelector {
 				notAuthorizedAlert.showAndWait();
 			}
 		});
+	}
+
+	private ObservableList<String> extractTitles(List<Document> documents) {
+		ObservableList<String> titles = FXCollections.emptyObservableList();
+		for (Document doc : documents) {
+			titles.add(doc.getTitle());
+		}
+
+		return titles;
 	}
 
 	private void switchScene(Stage targetStage, Scene newScene) {

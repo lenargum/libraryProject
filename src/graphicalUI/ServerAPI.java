@@ -1,18 +1,18 @@
 package graphicalUI;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import materials.AudioVideoMaterial;
 import materials.Book;
 import materials.Document;
 import users.Librarian;
 import users.Patron;
 
-public class VirtualServer {
+import java.util.List;
+
+public class ServerAPI {
 	private Librarian librarian;
 	private Patron patron;
 
-	public VirtualServer() {
+	public ServerAPI() {
 		librarian = new Librarian("MariaVanna", "1, Universitetskaya", "+79876543211", 1);
 		librarian.getListOfPatrons().add(new Patron("Name", "1, Universitetskaya", "+79871234567", "STUDENT", 2));
 
@@ -22,12 +22,13 @@ public class VirtualServer {
 		librarian.addDocumentInLibrary(new AudioVideoMaterial("Audio 1", "Author", 4, 39.99f, true));
 	}
 
-	public boolean authorize(String login) {
+	public boolean authorize(char[] login, char[] password) {
 		boolean found = false;
-		for (Patron p : librarian.getListOfPatrons()) {
-			if (p.getName().equals(login)) {
+		String loginString = String.copyValueOf(login);
+		for (Patron pat : librarian.getListOfPatrons()) {
+			if (pat.getName().equals(loginString)) {
 				found = true;
-				patron = p;
+				patron = pat;
 				break;
 			}
 		}
@@ -39,13 +40,8 @@ public class VirtualServer {
 		return patron;
 	}
 
-	public ObservableList<String> getBookTitles() {
-		ObservableList<String> li = FXCollections.observableArrayList();
-		for (Document doc : librarian.getListOfDocuments()) {
-			li.add(doc.getTitle());
-		}
-
-		return li;
+	public List<Document> getDocuments() {
+		return librarian.getListOfDocuments();
 	}
 
 	public boolean bookItem(String name, Patron pat) {
