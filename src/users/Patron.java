@@ -18,7 +18,6 @@ public class Patron extends User implements PatronInterface {
     @Override
     public void setStatus(String status) {
         this.status = status;
-        this.debts = 0;
     }
 
     @Override

@@ -20,7 +20,6 @@ public class SetManager implements SetManagerInterface {
     @Override
     public void addPatron(Patron patron) {
         listOfUsers.add(patron);
-        vacantIdPatron++;
         patron.setDebts(0);
     }
 
@@ -30,14 +29,12 @@ public class SetManager implements SetManagerInterface {
             System.out.println("List of Users is empty");
         } else {
             listOfUsers.remove(idPatron);
-            vacantIdPatron--;
         }
     }
 
     @Override
     public void addDocumentInLibrary(Document document) {
         listOfDocuments.add(document);
-        vacantIdDocument++;
     }
 
     @Override
@@ -46,7 +43,6 @@ public class SetManager implements SetManagerInterface {
             System.out.println("Library already empty");
         } else {
             listOfDocuments.remove(idDocument );
-            vacantIdDocument--;
             for (int i = 0; i < listOfUsers.size(); i++) {
                 for (int j = 0; j < listOfUsers.get(i).getListOfDocumentsPatron().size(); j++){
                     if (listOfUsers.get(i).getListOfDocumentsPatron().get(j).getDocID() == idDocument)

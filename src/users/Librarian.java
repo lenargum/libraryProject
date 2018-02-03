@@ -15,7 +15,7 @@ public class Librarian extends User implements LibrarianInterface {
 
     @Override
     public void createPatron(String name, String address, String phoneNumber, String status) {
-        Patron patron = new Patron(name, address, phoneNumber, status, manager.vacantIdPatron);
+        Patron patron = new Patron(name, address, phoneNumber, status, manager.listOfUsers.size());
         patron.setDebts(0);
         manager.addPatron(patron);
         //TODO: add new patron to database (if database exists)
