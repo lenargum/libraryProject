@@ -27,10 +27,9 @@ public class UserCredentials {
 		return authorized;
 	}
 
-	public VirtualServer authorize() {
-		//return new Patron("Name", "1, Universitetskaya", "+79871234567", "STUDENT", 2);
-		VirtualServer server = new VirtualServer();
-		authorized = server.authorize(String.copyValueOf(login));
+	public ServerAPI authorize() {
+		ServerAPI server = new ServerAPI();
+		authorized = server.authorize(login, password);
 		return server;
 	}
 }
