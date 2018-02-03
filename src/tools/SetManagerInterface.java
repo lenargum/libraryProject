@@ -3,6 +3,9 @@ package tools;
 import materials.Document;
 import users.Patron;
 
+/**
+ * The interface represents managing functions of librarian
+ */
 public interface SetManagerInterface {
 
     /**

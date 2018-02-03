@@ -6,6 +6,7 @@ import users.Patron;
 import java.util.LinkedList;
 
 /**
+ * class implements "SetManager" in tools.SetManager
  * The difference between Id of Objects and positions in the Lists is 1!!!
  * Id of first user is 1. In the list this users.User has position 0.
  */
