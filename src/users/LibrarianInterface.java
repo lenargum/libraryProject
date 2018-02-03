@@ -8,6 +8,8 @@ public interface LibrarianInterface {
 
     public void createPatron(String name, String address, String phoneNumber, String status);
 
+    public void createDocumentInLibrary(String author, String tittle, boolean isAllowedForStudents, float price);
+
     public void deletePatron(int idPatron);
 
     public void addDocumentInLibrary(Document document);

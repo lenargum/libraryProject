@@ -22,6 +22,14 @@ public class Librarian extends User implements LibrarianInterface {
     }
 
     @Override
+    public void createDocumentInLibrary(String author, String tittle, boolean isAllowedForStudents, float price){
+        Document document = new Document(author, tittle, getListOfDocuments().size(), isAllowedForStudents, price );
+        addDocumentInLibrary(document);
+        document.setUserID(-1);
+        document.setChecked(false);
+    }
+
+    @Override
     public void deletePatron(int patronId) {
         manager.deletePatron(patronId);
         //TODO: remove from database (if database exists)
