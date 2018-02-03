@@ -4,17 +4,12 @@ A course project.
 
 Checkout the [Projects](https://github.com/lenargum/libraryProject/projects) tab for more info about current tasks.
 
-Different parts are placed in different branches.
+Different parts are being developed in different branches.
 
-## Users
-Classes that holds user information and types.
+## Entities
+Contains all documents and users classes and booking logic.
 
-[Go to Users branch](https://github.com/lenargum/libraryProject/tree/Users)
-
-## Documents
-Classes that holds document information and its metadata.
-
-[Go to Documents branch](https://github.com/lenargum/libraryProject/tree/Documents)
+[Go to Entities branch](https://github.com/lenargum/libraryProject/tree/User-Documents-Connection)
 
 ## Graphical users.User Interface
 Contains desktop app source code.
