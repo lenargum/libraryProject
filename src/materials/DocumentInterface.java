@@ -1,36 +1,42 @@
 package materials;
 
 /**
- * interface represents functions and properties of documents
+ * Interface describes all the documents as class
  */
 public interface DocumentInterface {
 
 	/**
-	 * @return title of current document
+	 * returns title of document
+	 *
+	 * @return
 	 */
 	public String getTitle();
 
 	/**
-	 * sets title of current document
+	 * sets title of document
 	 *
 	 * @param Title
 	 */
 	public void setTitle(String Title);
 
 	/**
-	 * @return list of author of document
+	 * returns name or list of names of author(s) the document was created by
+	 *
+	 * @return
 	 */
 	public String getAuthors();
 
 	/**
-	 * sets author(s) names
+	 * sets name or list of names of author(s) the document was created by
 	 *
 	 * @param Authors
 	 */
 	public void setAuthors(String Authors);
 
 	/**
-	 * @return price of current document
+	 * returns price of current document
+	 *
+	 * @return
 	 */
 	public float getPrice();
 
@@ -42,7 +48,9 @@ public interface DocumentInterface {
 	public void setPrice(float price);
 
 	/**
-	 * @return ID of current document
+	 * returns ID of current document
+	 *
+	 * @return
 	 */
 	public int getDocID();
 
@@ -54,48 +62,56 @@ public interface DocumentInterface {
 	public void setDocID(int id);
 
 	/**
-	 * @return ID of user who took Document
+	 * returns ID of user the Document was taken by
+	 *
+	 * @return
 	 */
 	public int getUserID();
 
 	/**
-	 * sets Id of user who takes the document
+	 * sets ID of user the Document was taken by
 	 *
 	 * @param userID
 	 */
 	public void setUserID(int userID);
 
 	/**
-	 * @return status of this document - if it is already checked we cannot take it
+	 * returns current state of document: true if it is taken by some user, false otherwise
+	 *
+	 * @return
 	 */
 	public boolean isChecked(); //взяли книгу или нет
 
 	/**
-	 * sets status of this document - if it is already checked we cannot take it
+	 * sets current state of document: true if it is taken by some user, false otherwise
 	 *
 	 * @param checked
 	 */
 	public void setChecked(boolean checked);
 
 	/**
-	 * @return "function" of this document - if it is reference-book we cannot take it
+	 * returns value of current document: true if document is reference-book and false otherwise
+	 *
+	 * @return
 	 */
 	public boolean isReference(); //является ли документ справочным(влияет на возможность забрать его из библиотеки)
 
 	/**
-	 * sets "function" of this document - if it is reference-book we cannot take it
+	 * sets value of current document: true if document is reference-book and false otherwise
 	 *
 	 * @param reference
 	 */
 	public void setReference(boolean reference);
 
 	/**
-	 * @return whether students can use this document
+	 * returns parametr which shows possibility for students to take the document
+	 *
+	 * @return
 	 */
 	public boolean isAllowedForStudents();
 
 	/**
-	 * sets whether students can use this document
+	 * sets parametr which shows possibility for students to take the document
 	 *
 	 * @param allowedForStudents
 	 */
@@ -106,18 +122,25 @@ public interface DocumentInterface {
 //    public boolean isFaculty(Patron x);
 
 	/**
-	 * if librarian finds out that there are one more author of this document he can add him
+	 * adds Author to the list of authors, the document was created by
 	 *
-	 * @param newAuthor
+	 * @param newAuthor is author that need to be added
 	 */
 	public void addAuthor(String newAuthor);
 
 	/**
-	 * sometimes we need to check whether on person is author of some document
+	 * checks if author is among list of persons the document was created by
 	 *
 	 * @param author
-	 * @return whether the person is author of current document
+	 * @return true if author toook a part in document creation
 	 */
 	public boolean isWrittenBy(String author);
+
+    /**
+     * checks wether one document is copy of another
+     * @param other
+     * @return true if current document is copy of other
+     */
+    public boolean equals(Document other);
 
 }

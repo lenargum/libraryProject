@@ -1,18 +1,11 @@
 package users;
 
-import materials.Document;
-
-import java.util.LinkedList;
-import java.util.List;
-
-public class User implements IUser {
+public class User implements UserInterface {
 
 	private String name;
 	private String address;
 	private String phoneNumber;
 	private int id;
-
-	public List<Document> documents = new LinkedList<>();
 
 	User(String name, String address, String phoneNumber, int id) {
 		this.name = name;
@@ -21,30 +14,37 @@ public class User implements IUser {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
 	public String getAddress() {
 		return address;
 	}
 
+	@Override
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Override
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
+	@Override
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	@Override
 	public int getId() {
 		return id;
 	}
