@@ -47,4 +47,13 @@ public class User implements UserInterface {
     public int getId() {
         return id;
     }
+
+    /**
+     * checks whether one user is copy of another - it can be done with repeated registration
+     * @param user
+     * @return true if current user is copy of other
+     */
+    public boolean equals(User user){
+        return this.getId() != user.getId() && this.getAddress().equals(user.getAddress()) && this.getName().equals(user.getName()) && this.getPhoneNumber() == user.getPhoneNumber();
+    }
 }
