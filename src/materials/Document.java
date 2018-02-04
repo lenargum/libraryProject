@@ -133,4 +133,13 @@ public abstract class Document implements DocumentInterface {
         return Authors.contains(author);
     } //если мы хотuм проверить есть ли среди авторов документа данный автор
 
+    /**
+     * checks wether one document is copy of another
+     * @param document
+     * @return true if current document is copy of other
+     */
+    public boolean equals(Document document){
+        return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals( document.getTitle());
+    }
+
 }
