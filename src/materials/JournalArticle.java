@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * class implements "Journal Articles" type of materials.Document
  */
-public class JournalArticle extends Document implements JournalArticleInterface{
+public class JournalArticle extends Document implements JournalArticleInterface {
 
     private String journalTitle; //title of journal in which the article was published
     private Date publishingDate; //date of journal publishing
@@ -13,6 +13,7 @@ public class JournalArticle extends Document implements JournalArticleInterface{
 
     /**
      * constructor
+     *
      * @param title
      * @param authors
      * @param id
@@ -25,6 +26,7 @@ public class JournalArticle extends Document implements JournalArticleInterface{
 
     /**
      * sets title of journal in which the article was published
+     *
      * @param jourTitle
      */
     @Override
@@ -34,6 +36,7 @@ public class JournalArticle extends Document implements JournalArticleInterface{
 
     /**
      * sets date when was published the article
+     *
      * @param publDate
      */
     @Override
@@ -43,6 +46,7 @@ public class JournalArticle extends Document implements JournalArticleInterface{
 
     /**
      * sets name of person or company published the journal
+     *
      * @param publisher
      */
     @Override
@@ -60,28 +64,41 @@ public class JournalArticle extends Document implements JournalArticleInterface{
 
     /**
      * returns title of journal where the article was published
+     *
      * @return
      */
     @Override
-    public String getJournalTitle(){
+    public String getJournalTitle() {
         return journalTitle;
     }
 
     /**
      * returns name of person or company published the article
+     *
      * @return
      */
     @Override
-    public String getJournalPublisher(){
+    public String getJournalPublisher() {
         return journalPublisher;
     }
 
     /**
      * returns date when was published the article
+     *
      * @return
      */
     @Override
-    public String getPublishingDate(){
+    public String getPublishingDate() {
         return publishingDate.toString();
+    }
+
+    /**
+     * checks wether one document is copy of another
+     *
+     * @param document
+     * @return true if current document is copy of other
+     */
+    public boolean equals(JournalArticle document) {
+        return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals(document.getTitle()) && this.getJournalTitle().equals(document.getJournalTitle());
     }
 }

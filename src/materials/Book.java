@@ -55,4 +55,13 @@ public class Book extends Document implements BookInterface {
         return Publisher;
     }
 
+    /**
+     * checks wether one document is copy of another
+     * @param document
+     * @return true if current document is copy of other
+     */
+    public boolean equals(Book document){
+        return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals( document.getTitle()) && this.getEditionYear() == document.getEditionYear() && this.getPublisher().equals(document.getPublisher());
+    }
+
 }
