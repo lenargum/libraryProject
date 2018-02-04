@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="396.0" maxWidth="400.0" prefHeight="396.0"
+            prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121"
+            fx:controller="graphicalUI.MainPage">
+	<children>
+		<Text layoutX="145.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Log in" textAlignment="CENTER"
+		      textOrigin="TOP" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="145.0" AnchorPane.topAnchor="50.0">
+			<font>
+				<Font size="40.0"/>
+			</font>
+		</Text>
+		<TextField fx:id="loginField" layoutX="60.0" layoutY="145.0" prefHeight="31.0" prefWidth="280.0"
+		           promptText="Login" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0"
+		           AnchorPane.topAnchor="145.0"/>
+		<Button fx:id="loginButton" layoutX="80.0" layoutY="250.0" mnemonicParsing="false" prefHeight="39.0"
+		        prefWidth="240.0" style="-fx-background-radius: 20; -fx-background-color: #26B6F9;" text="Log in"
+		        textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0"
+		        AnchorPane.topAnchor="250.0"/>
+		<Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="136.0" layoutY="340.0" prefHeight="29.0"
+		           prefWidth="143.0" text="Forgot password?" AnchorPane.leftAnchor="136.0"
+		           AnchorPane.rightAnchor="136.0" AnchorPane.topAnchor="340.0"/>
+		<PasswordField fx:id="passField" layoutX="60.0" layoutY="183.0" prefHeight="31.0" prefWidth="280.0"
+		               promptText="Password" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0"
+		               AnchorPane.topAnchor="183.0"/>
+		<Button fx:id="goBackButton" layoutX="14.0" layoutY="19.0" mnemonicParsing="false" text="Go back"/>
+		<Text fx:id="loginFailedText" fill="#e60c0c" layoutX="161.0" layoutY="328.0" strokeType="OUTSIDE"
+		      strokeWidth="0.0" text="Login failed" textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="161.0"
+		      AnchorPane.rightAnchor="161.0" AnchorPane.topAnchor="311.8134765625"/>
+	</children>
+</AnchorPane>
