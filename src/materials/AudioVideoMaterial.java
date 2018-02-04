@@ -42,4 +42,17 @@ public class AudioVideoMaterial extends Document implements AudioVideoMaterialIn
 		this.publishingDate = publDate;
 	}
 
+	/**
+	 * checks wether one document is copy of another
+	 *
+	 * @param document
+	 * @return true if current document is copy of other
+	 */
+	public boolean equals(AudioVideoMaterial document) {
+		if(this.getDocID() == document.getDocID()) {
+			System.out.println("The comparing objects are the same material");
+			return  false;
+		}
+		return this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals(document.getTitle());
+	}
 }
