@@ -121,16 +121,19 @@ public class MainPage extends Application {
 		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AUDIOVIDEO, server));
 		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
 
-//		if (credentials != null) {
-//			yourDocs.getItems().addAll(extractTitles(server.getMyDocs(server.getPatron().getId())));
-//		}
-
 		Button refreshListButton = (Button) welcomeLayout.lookup("#refreshListButton");
 		refreshListButton.setOnAction(event -> refreshList(yourDocs, extractTitles(server.getMyDocs())));
 	}
 
+	/**
+	 * Refreshes the list data.
+	 *
+	 * @param listView ListView to refresh.
+	 * @param list     New data.
+	 */
 	private void refreshList(ListView listView, ObservableList list) {
 		if (credentials != null) {
+			listView.getItems().clear();
 			listView.getItems().addAll(list);
 		}
 	}

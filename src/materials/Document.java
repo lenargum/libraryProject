@@ -8,182 +8,183 @@ import java.util.TreeSet;
  */
 public abstract class Document implements DocumentInterface {
 
-    private TreeSet<String> Authors;    //list of author(s)
-    private String Title; //title of current document
-    private boolean reference; //represents "function" of this document - if it is reference-book we cannot take it
-    private float Price;// is price of current document
-    private boolean checked;    //represents status of this document - if it is already checked we cannot take it
-    private int userID; //ID of user who took the document
-    private int DocID; //ID of current document
-    private boolean isAllowedForStudents; //represents whether students can use this document
-    //  public ArrayList <materials.Document> listOfCopies; TODO: solve problem of storage -- databases
+	private TreeSet<String> Authors;    //list of author(s)
+	private String Title; //title of current document
+	private boolean reference; //represents "function" of this document - if it is reference-book we cannot take it
+	private float Price;// is price of current document
+	private boolean checked;    //represents status of this document - if it is already checked we cannot take it
+	private int userID; //ID of user who took the document
+	private int DocID; //ID of current document
+	private boolean isAllowedForStudents; //represents whether students can use this document
+	//  public ArrayList <materials.Document> listOfCopies; TODO: solve problem of storage -- databases
 
 
-    /**
-     * constructor
-     * @param authors
-     * @param Title
-     * @param DocId
-     * @param isAllowedForStudents
-     * @param price
-     */
-    public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price) {
-        this.Authors = new TreeSet<>();
-        setAuthors(authors);
-        this.Title = Title;
-        this.DocID = DocId;
-        this.checked = false;
-        setPrice(price);
-        this.reference = false;
-        this.userID = 0;
-        setAllowedForStudents(isAllowedForStudents);
-    }
+	/**
+	 * constructor
+	 *
+	 * @param authors
+	 * @param Title
+	 * @param DocId
+	 * @param isAllowedForStudents
+	 * @param price
+	 */
+	public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price) {
+		this.Authors = new TreeSet<>();
+		setAuthors(authors);
+		this.Title = Title;
+		this.DocID = DocId;
+		this.checked = false;
+		setPrice(price);
+		this.reference = false;
+		this.userID = 0;
+		setAllowedForStudents(isAllowedForStudents);
+	}
 
-    /**
-     * sets title of current document
-     * @param Title
-     */
-    @Override
-    public void setTitle(String title) {
-        this.Title = title;
-    }
+	/**
+	 * @return title of current document
+	 */
+	@Override
+	public String getTitle() {
+		return Title;
+	}
 
-    /**
-     * sets Id of user who takes the document
-     * @param userID
-     */
-    @Override
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+	/**
+	 * sets title of current document
+	 *
+	 * @param Title
+	 */
+	@Override
+	public void setTitle(String title) {
+		this.Title = title;
+	}
 
-    /**
-     * sets author(s) names
-     * @param authors
-     */
-    @Override
-    public void setAuthors(String authors) {
-        for (String newAuthor : authors.split(", ")) {
-            addAuthor(newAuthor.toLowerCase());
-        }
-    }
+	/**
+	 * @return list of author of document
+	 */
+	@Override
+	public String getAuthors() {
+		return Authors.toString();
+	}
 
-    /**
-     * sets ID of current document
-     * @param id
-     */
-    @Override
-    public void setDocID(int id) {
-        this.DocID = id;
-    }
+	/**
+	 * sets author(s) names
+	 *
+	 * @param authors
+	 */
+	@Override
+	public void setAuthors(String authors) {
+		for (String newAuthor : authors.split(", ")) {
+			addAuthor(newAuthor.toLowerCase());
+		}
+	}
 
-    /**
-     * sets price of current document
-     * @param price
-     */
-    @Override
-    public void setPrice(float price) {
-        this.Price = price;
-    }
+	/**
+	 * @return price of current document
+	 */
+	@Override
+	public float getPrice() {
+		return Price;
+	}
 
-    /**
-     * sets status of this document - if it is already checked we cannot take it
-     * @param checked
-     */
-    @Override
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    } //взяли книгу или нет
+	/**
+	 * sets price of current document
+	 *
+	 * @param price
+	 */
+	@Override
+	public void setPrice(float price) {
+		this.Price = price;
+	}
 
-    /**
-     * sets "function" of this document - if it is reference-book we cannot take it
-     * @param reference
-     */
-    @Override
-    public void setReference(boolean reference) {
-        this.reference = reference;
-    }
+	/**
+	 * @return ID of current document
+	 */
+	@Override
+	public int getDocID() {
+		return DocID;
+	}
 
-    /**
-     * sets whether students can use this document
-     * @param allowedForStudents
-     */
-    @Override
-    public void setAllowedForStudents(boolean allowedForStudents) {
-        this.isAllowedForStudents = allowedForStudents;
-    }
+	/**
+	 * sets ID of current document
+	 *
+	 * @param id
+	 */
+	@Override
+	public void setDocID(int id) {
+		this.DocID = id;
+	}
 
-    /**
-     *
-     * @return title of current document
-     */
-    @Override
-    public String getTitle() {
-        return Title;
-    }
+	/**
+	 * @return ID of user who took Document
+	 */
+	@Override
+	public int getUserID() {
+		return userID;
+	}
 
-    /**
-     *
-     * @return list of author of document
-     */
-    @Override
-    public String getAuthors() {
-        return Authors.toString();
-    }
+	/**
+	 * sets Id of user who takes the document
+	 *
+	 * @param userID
+	 */
+	@Override
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
 
-    /**
-     *
-     * @return price of current document
-     */
-    @Override
-    public float getPrice() {
-        return Price;
-    }
+	/**
+	 * @return status of this document - if it is already checked we cannot take it
+	 */
+	@Override
+	public boolean isChecked() {
+		return checked;
+	} //взяли книгу или нет
 
-    /**
-     *
-     * @return ID of current document
-     */
-    @Override
-    public int getDocID() {
-        return DocID;
-    }
+	/**
+	 * sets status of this document - if it is already checked we cannot take it
+	 *
+	 * @param checked
+	 */
+	@Override
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	} //взяли книгу или нет
 
-    /**
-     *
-     * @return ID of user who took Document
-     */
-    @Override
-    public int getUserID() {
-        return userID;
-    }
+	/**
+	 * @return "function" of this document - if it is reference-book we cannot take it
+	 */
+	@Override
+	public boolean isReference() {
+		return reference;
+	}
 
-    /**
-     *
-     * @return status of this document - if it is already checked we cannot take it
-     */
-    @Override
-    public boolean isChecked() {
-        return checked;
-    } //взяли книгу или нет
+	/**
+	 * sets "function" of this document - if it is reference-book we cannot take it
+	 *
+	 * @param reference
+	 */
+	@Override
+	public void setReference(boolean reference) {
+		this.reference = reference;
+	}
 
-    /**
-     *
-     * @return "function" of this document - if it is reference-book we cannot take it
-     */
-    @Override
-    public boolean isReference() {
-        return reference;
-    }
+	/**
+	 * @return whether students can use this document
+	 */
+	@Override
+	public boolean isAllowedForStudents() {
+		return isAllowedForStudents;
+	}
 
-    /**
-     *
-     * @return whether students can use this document
-     */
-    @Override
-    public boolean isAllowedForStudents() {
-        return isAllowedForStudents;
-    }
+	/**
+	 * sets whether students can use this document
+	 *
+	 * @param allowedForStudents
+	 */
+	@Override
+	public void setAllowedForStudents(boolean allowedForStudents) {
+		this.isAllowedForStudents = allowedForStudents;
+	}
 
 //    public boolean isFaculty(Patron x){
 //        Typetester t = new Typetester();
@@ -196,33 +197,36 @@ public abstract class Document implements DocumentInterface {
 //        return isAllowedForStudents() && !checked;
 //    }
 
-    /**
-     * if librarian finds out that there are one more author of this document he can add him
-     * @param newAuthor
-     */
-    @Override
-    public void addAuthor(String newAuthor) {
-        this.Authors.add(newAuthor);
-    }
+	/**
+	 * if librarian finds out that there are one more author of this document he can add him
+	 *
+	 * @param newAuthor
+	 */
+	@Override
+	public void addAuthor(String newAuthor) {
+		this.Authors.add(newAuthor);
+	}
 
-    /**
-     * sometimes we need to check whether on person is author of some document
-     * @param author
-     * @return whether the person is author of current document
-     */
-    @Override
-    public boolean isWrittenBy(String author) {
-        author = author.toLowerCase();
-        return Authors.contains(author);
-    } //если мы хотuм проверить есть ли среди авторов документа данный автор
+	/**
+	 * sometimes we need to check whether on person is author of some document
+	 *
+	 * @param author
+	 * @return whether the person is author of current document
+	 */
+	@Override
+	public boolean isWrittenBy(String author) {
+		author = author.toLowerCase();
+		return Authors.contains(author);
+	} //если мы хотuм проверить есть ли среди авторов документа данный автор
 
-    /**
-     * checks wether one document is copy of another
-     * @param document
-     * @return true if current document is copy of other
-     */
-    public boolean equals(Document document){
-        return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals( document.getTitle());
-    }
+	/**
+	 * checks wether one document is copy of another
+	 *
+	 * @param document
+	 * @return true if current document is copy of other
+	 */
+	public boolean equals(Document document) {
+		return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals(document.getTitle());
+	}
 
 }
