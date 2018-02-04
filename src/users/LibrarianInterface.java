@@ -4,21 +4,60 @@ import materials.Document;
 
 import java.util.LinkedList;
 
+/**
+ * interface describing properties and functions of librarian
+ */
 public interface LibrarianInterface {
 
-	public void deletePatron(int idPatron);
+    /**
+     * deletes patron from the library
+     * @param idPatron is id of patron that needs to be deleted
+     */
+    public void deletePatron(int idPatron);
 
-	public void addDocumentInLibrary(Document document);
+    /**
+     * adds document to the library
+     * @param document
+     */
+    public void addDocumentInLibrary(Document document);
 
-	public void deleteDocumentFromLibrary(int idDocument);
+    /**
+     * deletes document from the library
+     * @param idDocument is ID of document we need to delete
+     */
+    public void deleteDocumentFromLibrary(int idDocument);
 
-	public void setNamePatron(Patron patron, String namePatron);
+    /**
+     * sets name of patron
+     * @param patron
+     * @param namePatron
+     */
+    public void setNamePatron(Patron patron, String namePatron);
 
-	public void setAddressPatron(Patron patron, String address);
+    /**
+     * sets address of patron
+     * @param patron
+     * @param address
+     */
+    public void setAddressPatron(Patron patron, String address);
 
-	public void setPhoneNumberPatron(Patron patron, String phoneNumber);
+    /**
+     * sets phone number of patron
+     * @param patron
+     * @param phoneNumber
+     */
+    public void setPhoneNumberPatron(Patron patron, String phoneNumber);
 
-	public void setStatusPatron(Patron patron, String status);
+    /**
+     * sets status of patron
+     * @param patron
+     * @param status - student or faculty
+     */
+    public void setStatusPatron(Patron patron, String status);
 
-	public LinkedList<Patron> getListOfPatrons();
+    /**
+     *
+     * @return list of patrons
+     */
+    public LinkedList<Patron> getListOfPatrons();
 }
