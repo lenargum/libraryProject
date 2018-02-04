@@ -19,7 +19,6 @@ public class User implements UserInterface {
      */
     User(String name, String address, String phoneNumber, int id) {
         this.name = name;
-        this.id = id;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }

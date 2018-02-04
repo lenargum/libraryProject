@@ -15,9 +15,6 @@ public class SetManager implements SetManagerInterface {
     public LinkedList<Patron> listOfUsers = new LinkedList<>(); //list of the libraries users
     public LinkedList<Document> listOfDocuments = new LinkedList<>(); //list of documents that are kept in the library
 
-    public int vacantIdPatron = 0; //minimal vacant ID for a Patron
-    public int vacantIdDocument = 0; //minimal vacant ID for a document
-
     /**
      * adds patron to the library
      * @param patron is patron need to be added
