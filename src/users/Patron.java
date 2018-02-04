@@ -81,4 +81,8 @@ public class Patron extends User implements PatronInterface {
         librarian.manager.listOfDocuments.get(idDocument).setUserID(-1);
         //TODO: set/get who took document
     }
+
+    public boolean equals(Patron user){
+        return this.getId() != user.getId() && this.getAddress().equals(user.getAddress()) && this.getName().equals(user.getName()) && this.getPhoneNumber() == user.getPhoneNumber() && this.getStatus().equals(user.getStatus());
+    }
 }
