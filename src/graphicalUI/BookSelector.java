@@ -43,7 +43,7 @@ public class BookSelector {
 	private AnchorPane bookSelectorLayout;
 
 	/**
-	 * Currnt user is stored to access booking system.
+	 * Current user is stored to access booking system.
 	 */
 	private User user;
 
@@ -58,6 +58,13 @@ public class BookSelector {
 	public BookSelector() {
 	}
 
+	/**
+	 * Main constructor for creating selector.
+	 *
+	 * @param primaryStage  Main stage.
+	 * @param previousScene Previous scene.
+	 * @throws IOException When FXMLLoader fails to find or load a layout file.
+	 */
 	public BookSelector(Stage primaryStage, Scene previousScene) throws IOException {
 		this.primaryStage = primaryStage;
 		this.previousScene = previousScene;
@@ -65,28 +72,42 @@ public class BookSelector {
 		this.bookSelectorScene = new Scene(bookSelectorLayout);
 	}
 
+	/**
+	 * Shows selector and starts event handling.
+	 *
+	 * @param intent Kind of document to show.
+	 * @param server Currently connected server.
+	 */
 	public void show(SelectorIntent intent, ServerAPI server) {
-		//this.credentials = credentials;
+		// Switches the scene
 		switchScene(primaryStage, bookSelectorScene);
+
+		// Pick list from layout
 		ListView<String> bookList = (ListView<String>) bookSelectorLayout.lookup("#bookList");
 
+		// Pick "Go back" button and set up event handler
 		Button goBackButton = (Button) bookSelectorLayout.lookup("#goBackButton");
 		goBackButton.setOnAction(event -> {
+			// Go back to previous scene
 			switchScene(primaryStage, previousScene);
 			bookList.getItems().clear();
 		});
 
+		// Pick user
 		user = server.getPatron();
+
+		// Create list of available items
 		ObservableList<String> availableItems;
+		// Fill the list according to current intent
 		switch (intent) {
 			case BOOK:
 				availableItems = extractTitles(server.getDocuments());
 				break;
-			case DOCUMENT:
-				availableItems = FXCollections.observableArrayList("Document 1", "Document 2", "Document 3");
+			case VIDEO:
+				availableItems = FXCollections.observableArrayList("Video 1", "Video 2", "Video 3");
 				break;
-			case AV:
-				availableItems = FXCollections.observableArrayList("Audio 1", "Video 1", "Video 2", "Audio 2");
+			case AUDIO:
+				availableItems = FXCollections.observableArrayList("Audio 1", "Audio 2", "Audio 3", "Audio 4");
 				break;
 			case ARTICLE:
 				availableItems = FXCollections.observableArrayList("Article 1", "Article 2", "Article 3");
@@ -95,15 +116,25 @@ public class BookSelector {
 				availableItems = FXCollections.emptyObservableList();
 		}
 
+		// Fill the ListView
 		bookList.getItems().addAll(availableItems);
 
+		// Pick a "Book this" button and set up event handler
 		Button bookThisButton = (Button) bookSelectorLayout.lookup("#bookThisButton");
 		bookThisButton.setOnAction(event -> {
+			// If authorization completed, try book a document
 			if (user != null) {
+				// Pick currently selected item
 				pickedItem = bookList.getSelectionModel().getSelectedItem();
-				server.bookItem(pickedItem, server.getPatron());
-				System.out.println("Given " + pickedItem + " to " + user); //DEBUGGING OUTPUT
+
+				// Book item
+				if (server.bookItem(pickedItem, server.getPatron())) {
+					System.out.println("Given " + pickedItem + " to " + user.getName()); //DEBUGGING OUTPUT
+				} else {
+					System.out.println(user.getName() + " is not allowed to take " + pickedItem);
+				}
 			} else {
+				// If not authorized, show an alert
 				Alert notAuthorizedAlert = new Alert(Alert.AlertType.WARNING);
 				notAuthorizedAlert.setTitle("Authorization needed");
 				notAuthorizedAlert.setHeaderText("You are not authorized");
@@ -113,8 +144,15 @@ public class BookSelector {
 		});
 	}
 
+	/**
+	 * Extracts titles from document list.
+	 * Used to fill the ListView.
+	 *
+	 * @param documents Documents list.
+	 * @return Observable list of titles.
+	 */
 	private ObservableList<String> extractTitles(List<Document> documents) {
-		ObservableList<String> titles = FXCollections.emptyObservableList();
+		ObservableList<String> titles = FXCollections.observableArrayList();
 		for (Document doc : documents) {
 			titles.add(doc.getTitle());
 		}
@@ -122,6 +160,12 @@ public class BookSelector {
 		return titles;
 	}
 
+	/**
+	 * Switches the scene.
+	 *
+	 * @param targetStage Target stage.
+	 * @param newScene    New scene.
+	 */
 	private void switchScene(Stage targetStage, Scene newScene) {
 		targetStage.setScene(newScene);
 		targetStage.show();

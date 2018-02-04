@@ -24,24 +24,39 @@ public class MainPage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
+		// Initialize variables
 		loggedIn = false;
 		server = new ServerAPI();
+
+		/*
+		Load the main page layout,
+		set title and minimal window size.
+		*/
 		AnchorPane welcomeLayout = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
 		primaryStage.setTitle("InnoLibrary Manager");
 		primaryStage.setMinWidth(500);
 		primaryStage.setMinHeight(600);
+
+		// Create new scene, set up stage and show it.
 		Scene welcomeScene = new Scene(welcomeLayout, 1024, 768);
 		primaryStage.setScene(welcomeScene);
 		primaryStage.show();
 
+		/*
+		Pick login button, load login layout
+		and create login scene.
+		*/
 		Button loginButton = (Button) welcomeLayout.lookup("#loginButton");
-
 		AnchorPane loginLayout = FXMLLoader.load(getClass().getResource("LoginDialog.fxml"));
 		Scene loginScene = new Scene(loginLayout);
 		loginButton.setOnAction(event -> {
 			switchScene(primaryStage, loginScene);
 		});
 
+		/*
+		Pick navigation button on login layout
+		and set up event handler.
+		*/
 		Button goBackButton = (Button) loginLayout.lookup("#goBackButton");
 		goBackButton.setOnAction(event -> {
 			PasswordField passField = (PasswordField) loginLayout.lookup("#passField");
@@ -49,17 +64,21 @@ public class MainPage extends Application {
 			switchScene(primaryStage, welcomeScene);
 		});
 
+		// Pick login button and set up event handler
 		Button completeLoginButton = (Button) loginLayout.lookup("#loginButton");
 		completeLoginButton.setOnAction(event -> {
+			// Pick text fields and "login failed" label
 			TextField loginField = (TextField) loginLayout.lookup("#loginField");
 			PasswordField passField = (PasswordField) loginLayout.lookup("#passField");
 			Text loginFailed = (Text) loginLayout.lookup("#loginFailedText");
 
-			if (loginField.getLength() > 0 && passField.getLength() > 0) {
+			// If typed correct credentials
+			if (loginField.getLength() > 0 && passField.getLength() >= 8) {
 				credentials = new UserCredentials(loginField.getText(), passField.getText());
 				server = credentials.authorize();
 				loggedIn = credentials.isAuthorized();
 			} else {
+				// Else highlight the fields
 				if (loginField.getLength() < 1) {
 					loginField.setStyle("-fx-border-color: RED");
 				}
@@ -68,6 +87,7 @@ public class MainPage extends Application {
 				}
 			}
 
+			// Go back after successful authorization
 			if (loggedIn) {
 				passField.clear();
 				loginButton.setDisable(true);
@@ -78,19 +98,28 @@ public class MainPage extends Application {
 			}
 		});
 
+		// Pick document selector buttons
 		Button pickBookButton = (Button) welcomeLayout.lookup("#pickBookButton");
 		Button pickDocButton = (Button) welcomeLayout.lookup("#pickDocButton");
 		Button pickAVButton = (Button) welcomeLayout.lookup("#pickAVButton");
 		Button pickArticleButton = (Button) welcomeLayout.lookup("#pickArticleButton");
 
+		// Initialize book selector
 		BookSelector bookSelector = new BookSelector(primaryStage, welcomeScene);
 
+		// Set up event handlers
 		pickBookButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
 		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.DOCUMENT, server));
 		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AV, server));
 		pickArticleButton.setOnAction(event -> bookSelector.show(SelectorIntent.ARTICLE, server));
 	}
 
+	/**
+	 * Switches the scene.
+	 *
+	 * @param targetStage Target stage.
+	 * @param newScene    New scene.
+	 */
 	private void switchScene(Stage targetStage, Scene newScene) {
 		targetStage.setScene(newScene);
 		targetStage.show();

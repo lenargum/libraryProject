@@ -8,11 +8,24 @@ import users.Patron;
 
 import java.util.List;
 
+/**
+ * This class used to interact with server.
+ */
 public class ServerAPI {
+	/**
+	 * Current librarian used to manage users and documents.
+	 */
 	private Librarian librarian;
+	/**
+	 * Current patron used to identify user.
+	 */
 	private Patron patron;
 
+	/**
+	 * Main constructor.
+	 */
 	public ServerAPI() {
+		// TEMPORARY CODE - WILL BE REPLACED
 		librarian = new Librarian("MariaVanna", "1, Universitetskaya", "+79876543211", 1);
 		librarian.getListOfPatrons().add(new Patron("Name", "1, Universitetskaya", "+79871234567", "STUDENT", 2));
 
@@ -22,7 +35,15 @@ public class ServerAPI {
 		librarian.addDocumentInLibrary(new AudioVideoMaterial("Audio 1", "Author", 4, 39.99f, true));
 	}
 
+	/**
+	 * Authorize using credentials.
+	 *
+	 * @param login    User login.
+	 * @param password User password.
+	 * @return Is authorization successful.
+	 */
 	public boolean authorize(char[] login, char[] password) {
+		// TEMPORARY CODE - WILL BE REMOVED
 		boolean found = false;
 		String loginString = String.copyValueOf(login);
 		for (Patron pat : librarian.getListOfPatrons()) {
@@ -36,14 +57,31 @@ public class ServerAPI {
 		return found;
 	}
 
+	/**
+	 * Get current patron.
+	 *
+	 * @return Current patron.
+	 */
 	public Patron getPatron() {
 		return patron;
 	}
 
+	/**
+	 * Get list of all documents.
+	 *
+	 * @return List of all documents.
+	 */
 	public List<Document> getDocuments() {
 		return librarian.getListOfDocuments();
 	}
 
+	/**
+	 * Book an item.
+	 *
+	 * @param name Document name (TEMPORARY)
+	 * @param pat  Patron which wants to book a document.
+	 * @return Is booking successful.
+	 */
 	public boolean bookItem(String name, Patron pat) {
 		boolean booked = false;
 		Document doc = null;
