@@ -13,19 +13,14 @@ public class Librarian extends User implements LibrarianInterface {
         super(name, address, phoneNumber, id);
     }
 
-    @Override
-    public void registerPatron(String name, String address, String phoneNumber, String status) {
-        Patron patron = new Patron(name, address, phoneNumber, status, manager.listOfUsers.size());
-        manager.addPatron(patron);
-        //TODO: add new patron to database (if database exists)
+    public void registerPatron(Patron patron){
+        manager.listOfUsers.add(patron);
     }
 
-    @Override
-    public void registerMaterial(Document document) {
+    public void registerDocumentInLibrary(Document document){
         addDocumentInLibrary(document);
-        document.setUserID(-2);
-        document.setChecked(false);
     }
+
 
     @Override
     public void deletePatron(int patronId) {

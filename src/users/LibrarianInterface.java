@@ -6,23 +6,21 @@ import java.util.LinkedList;
 
 public interface LibrarianInterface {
 
-    void registerPatron(String name, String address, String phoneNumber, String status);
+    public void registerDocumentInLibrary(Document document);
 
-    void registerMaterial(Document document);
+    public void deletePatron(int idPatron);
 
-    void deletePatron(int idPatron);
+//    public void addDocumentInLibrary(Document document);
 
- //   public void addDocumentInLibrary(Document document);
+    public void deleteDocumentFromLibrary(int idDocument);
 
-    void deleteDocumentFromLibrary(int idDocument);
+    public void setNamePatron(Patron patron, String namePatron);
 
-    void setNamePatron(Patron patron, String namePatron);
+    public void setAddressPatron(Patron patron, String address);
 
-    void setAddressPatron(Patron patron, String address);
+    public void setPhoneNumberPatron(Patron patron, String phoneNumber);
 
-    void setPhoneNumberPatron(Patron patron, String phoneNumber);
+    public void setStatusPatron(Patron patron, String status);
 
-    void setStatusPatron(Patron patron, String status);
-
-    LinkedList<Patron> getListOfPatrons();
+    public LinkedList<Patron> getListOfPatrons();
 }
