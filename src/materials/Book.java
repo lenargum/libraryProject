@@ -67,7 +67,14 @@ public class Book extends Document implements BookInterface {
 	 * @return true if current document is copy of other
 	 */
 	public boolean equals(Book document) {
-		return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals(document.getTitle()) && this.getEditionYear() == document.getEditionYear() && this.getPublisher().equals(document.getPublisher());
+		if(this.getDocID() == document.getDocID()) {
+			System.out.println("The comparing objects are the same book");
+			return  false;
+		}
+		return this.getAuthors().equals(document.getAuthors())
+				&& this.getTitle().equals(document.getTitle())
+				&& this.getEditionYear() == document.getEditionYear()
+				&& this.getPublisher().equals(document.getPublisher());
 	}
 
 

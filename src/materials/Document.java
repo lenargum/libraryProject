@@ -51,7 +51,7 @@ public abstract class Document implements DocumentInterface {
 	/**
 	 * sets title of current document
 	 *
-	 * @param Title
+	 * @param title
 	 */
 	@Override
 	public void setTitle(String title) {
@@ -226,7 +226,12 @@ public abstract class Document implements DocumentInterface {
 	 * @return true if current document is copy of other
 	 */
 	public boolean equals(Document document) {
-		return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals(document.getTitle());
+		if(this.getDocID() == document.getDocID()) {
+			System.out.println("The comparing objects are the same document");
+			return  false;
+		}
+		return this.getAuthors().equals(document.getAuthors())
+				&& this.getTitle().equals(document.getTitle());
 	}
 
 }
