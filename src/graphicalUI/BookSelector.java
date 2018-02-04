@@ -82,6 +82,22 @@ public class BookSelector {
 		// Switches the scene
 		switchScene(primaryStage, bookSelectorScene);
 
+		String intentString;
+		switch (intent) {
+			case BOOK:
+				intentString = "book";
+				break;
+			case ARTICLE:
+				intentString = "article";
+				break;
+			case AUDIOVIDEO:
+				intentString = "AV";
+				break;
+			default:
+				intentString = "item";
+				break;
+		}
+
 		// Pick list from layout
 		ListView<String> bookList = (ListView<String>) bookSelectorLayout.lookup("#bookList");
 
@@ -101,16 +117,13 @@ public class BookSelector {
 		// Fill the list according to current intent
 		switch (intent) {
 			case BOOK:
-				availableItems = extractTitles(server.getDocuments());
+				availableItems = extractTitles(server.getBooks());
 				break;
-			case VIDEO:
-				availableItems = FXCollections.observableArrayList("Video 1", "Video 2", "Video 3");
-				break;
-			case AUDIO:
-				availableItems = FXCollections.observableArrayList("Audio 1", "Audio 2", "Audio 3", "Audio 4");
+			case AUDIOVIDEO:
+				availableItems = extractTitles(server.getAVs());
 				break;
 			case ARTICLE:
-				availableItems = FXCollections.observableArrayList("Article 1", "Article 2", "Article 3");
+				availableItems = extractTitles(server.getJournalArticles());
 				break;
 			default:
 				availableItems = FXCollections.emptyObservableList();
@@ -130,8 +143,18 @@ public class BookSelector {
 				// Book item
 				if (server.bookItem(pickedItem, server.getPatron())) {
 					System.out.println("Given " + pickedItem + " to " + user.getName()); //DEBUGGING OUTPUT
+					Alert successfulAlert = new Alert(Alert.AlertType.INFORMATION);
+					successfulAlert.setTitle("Success");
+					successfulAlert.setHeaderText("You have a new " + intentString);
+					successfulAlert.setContentText(pickedItem + " successfully added to your library.");
+					successfulAlert.showAndWait();
 				} else {
 					System.out.println(user.getName() + " is not allowed to take " + pickedItem);
+					Alert failAlert = new Alert(Alert.AlertType.ERROR);
+					failAlert.setTitle("Failed");
+					failAlert.setHeaderText("You are not allowed to take this " + intentString);
+					failAlert.setContentText(pickedItem + " is not for you.");
+					failAlert.showAndWait();
 				}
 			} else {
 				// If not authorized, show an alert
