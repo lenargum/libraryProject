@@ -64,4 +64,6 @@ public class Book extends Document implements BookInterface {
         return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals( document.getTitle()) && this.getEditionYear() == document.getEditionYear() && this.getPublisher().equals(document.getPublisher());
     }
 
+
+
 }
