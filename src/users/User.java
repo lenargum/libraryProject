@@ -3,7 +3,7 @@ package users;
 /**
  * class represents "User" type in the users.User
  */
-public class User implements UserInterface {
+public abstract class User implements UserInterface {
 
     private String name; //name of current user
     private String address;// address of current user
