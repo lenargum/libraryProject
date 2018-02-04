@@ -68,7 +68,7 @@ public class BookSelector {
 	public BookSelector(Stage primaryStage, Scene previousScene) throws IOException {
 		this.primaryStage = primaryStage;
 		this.previousScene = previousScene;
-		this.bookSelectorLayout = FXMLLoader.load(getClass().getResource("BookSelector.fxml"));
+		this.bookSelectorLayout = (AnchorPane) FXMLLoader.load(getClass().getResource("BookSelector.fxml"));
 		this.bookSelectorScene = new Scene(bookSelectorLayout);
 	}
 
