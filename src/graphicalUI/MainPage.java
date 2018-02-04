@@ -1,16 +1,21 @@
 package graphicalUI;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import materials.Document;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainPage extends Application {
 
@@ -41,6 +46,9 @@ public class MainPage extends Application {
 		Scene welcomeScene = new Scene(welcomeLayout, 1024, 768);
 		primaryStage.setScene(welcomeScene);
 		primaryStage.show();
+
+		// Pick a list of documents user currently have
+		ListView<String> yourDocs = (ListView<String>) welcomeLayout.lookup("#yourDocList");
 
 		/*
 		Pick login button, load login layout
@@ -109,9 +117,38 @@ public class MainPage extends Application {
 
 		// Set up event handlers
 		pickBookButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
-		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.DOCUMENT, server));
-		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AV, server));
 		pickArticleButton.setOnAction(event -> bookSelector.show(SelectorIntent.ARTICLE, server));
+		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AUDIOVIDEO, server));
+		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
+
+//		if (credentials != null) {
+//			yourDocs.getItems().addAll(extractTitles(server.getMyDocs(server.getPatron().getId())));
+//		}
+
+		Button refreshListButton = (Button) welcomeLayout.lookup("#refreshListButton");
+		refreshListButton.setOnAction(event -> refreshList(yourDocs, extractTitles(server.getMyDocs())));
+	}
+
+	private void refreshList(ListView listView, ObservableList list) {
+		if (credentials != null) {
+			listView.getItems().addAll(list);
+		}
+	}
+
+	/**
+	 * Extracts titles from document list.
+	 * Used to fill the ListView.
+	 *
+	 * @param documents Documents list.
+	 * @return Observable list of titles.
+	 */
+	private ObservableList<String> extractTitles(List<Document> documents) {
+		ObservableList<String> titles = FXCollections.observableArrayList();
+		for (Document doc : documents) {
+			titles.add(doc.getTitle());
+		}
+
+		return titles;
 	}
 
 	/**

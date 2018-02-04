@@ -5,45 +5,44 @@ package users;
  */
 public interface UserInterface {
 
-    /**
-     * sets name of  user
-     * @param name
-     */
-    public void setName(String name);
+	/**
+	 * @return name of current user
+	 */
+	public String getName();
 
-    /**
-     * sets address of user
-     * @param address
-     */
-    public void setAddress(String address);
+	/**
+	 * sets name of  user
+	 *
+	 * @param name
+	 */
+	public void setName(String name);
 
-    /**
-     * sets phone number of user
-     * @param phoneNumber
-     */
-    public void setPhoneNumber(String phoneNumber);
+	/**
+	 * @return address of current user
+	 */
+	public String getAddress();
 
-    /**
-     *
-     * @return name of current user
-     */
-    public String getName();
+	/**
+	 * sets address of user
+	 *
+	 * @param address
+	 */
+	public void setAddress(String address);
 
-    /**
-     *
-     * @return address of current user
-     */
-    public String getAddress();
+	/**
+	 * @return phone number of user
+	 */
+	public String getPhoneNumber();
 
-    /**
-     *
-     * @return phone number of user
-     */
-    public String getPhoneNumber();
+	/**
+	 * sets phone number of user
+	 *
+	 * @param phoneNumber
+	 */
+	public void setPhoneNumber(String phoneNumber);
 
-    /**
-     *
-     * @return ID of current user
-     */
-    public int getId();
+	/**
+	 * @return ID of current user
+	 */
+	public int getId();
 }
