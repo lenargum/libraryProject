@@ -118,6 +118,11 @@ public interface DocumentInterface {
      */
     public boolean isWrittenBy(String author);
 
-    //public boolean equals(Document document);
+    /**
+     * checks wether one document is copy of another
+     * @param other
+     * @return true if current document is copy of other
+     */
+    public boolean equals(Document other);
 
 }

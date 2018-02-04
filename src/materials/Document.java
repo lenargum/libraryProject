@@ -1,6 +1,6 @@
 package materials;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Objects;
 
 /**
@@ -8,7 +8,7 @@ import java.util.Objects;
  */
 public class Document implements DocumentInterface{
 
-    private HashSet<String> Authors; //storage of author(group of authors) the document was created by
+    private TreeSet<String> Authors; //storage of author(group of authors) the document was created by
     private String Title; //title of current document
     private boolean reference; //назначение of current document
     private float Price; //price of document
@@ -26,7 +26,7 @@ public class Document implements DocumentInterface{
      * @param price
      */
     public Document(String authors, String Title, int DocId, boolean isAllowedForStudents, float price) {
-        this.Authors = new HashSet<>();
+        this.Authors = new TreeSet<>();
         setAuthors(authors);
         this.Title = Title;
         this.DocID = DocId;
@@ -214,9 +214,13 @@ public class Document implements DocumentInterface{
         return Authors.contains(author);
     } //если мы хотuм проверить есть ли среди авторов документа данный автор
 
-    //@Override
+    /**
+     * checks wether one document is copy of another
+     * @param document
+     * @return true if current document is copy of other
+     */
     public boolean equals(Document document){
-        return this.DocID != document.getDocID() && this.Authors.toString() == document.getAuthors() && this.Title == document.getTitle();
+        return this.DocID != document.getDocID() && this.Authors.toString().equals(document.getAuthors()) && this.Title == document.getTitle();
     }
 
     /*@Override
