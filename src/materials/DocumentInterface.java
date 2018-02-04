@@ -1,44 +1,121 @@
 package materials;
 
+/**
+ * interface represents functions and properties of documents
+ */
 public interface DocumentInterface {
-    void setTitle(String Title);
 
-    void setAuthors(String Authors);
+    /**
+     * sets title of current document
+     * @param Title
+     */
+    public void setTitle(String Title);
 
-    void setUserID(int userID);
+    /**
+     * sets author(s) names
+     * @param Authors
+     */
+    public void setAuthors(String Authors);
 
-    void setDocID(int id);
+    /**
+     * sets Id of user who takes the document
+     * @param userID
+     */
+    public void setUserID(int userID);
 
-    void setPrice(float price);
+    /**
+     * sets ID of current document
+     * @param id
+     */
+    public void setDocID(int id);
 
-    void setChecked(boolean checked);
+    /**
+     * sets price of current document
+     * @param price
+     */
+    public void setPrice(float price);
 
-    void setReference(boolean reference);
+    /**
+     * sets status of this document - if it is already checked we cannot take it
+     * @param checked
+     */
+    public void setChecked(boolean checked);
 
-    void setAllowedForStudents(boolean allowedForStudents);
+    /**
+     * sets "function" of this document - if it is reference-book we cannot take it
+     * @param reference
+     */
+    public void setReference(boolean reference);
 
-    String getTitle();
+    /**
+     * sets whether students can use this document
+     * @param allowedForStudents
+     */
+    public void setAllowedForStudents(boolean allowedForStudents);
 
-    String getAuthors();
+    /**
+     *
+     * @return title of current document
+     */
+    public String getTitle();
 
-    float getPrice();
+    /**
+     *
+     * @return list of author of document
+     */
+    public String getAuthors();
 
-    int getDocID();
+    /**
+     *
+     * @return price of current document
+     */
+    public float getPrice();
 
-    int getUserID();
+    /**
+     *
+     * @return ID of current document
+     */
+    public int getDocID();
 
-    boolean isChecked(); //взяли книгу или нет
+    /**
+     *
+     * @return ID of user who took Document
+     */
+    public int getUserID();
 
-    boolean isReference(); //является ли документ справочным(влияет на возможность забрать его из библиотеки)
+    /**
+     *
+     * @return status of this document - if it is already checked we cannot take it
+     */
+    public boolean isChecked(); //взяли книгу или нет
 
-    boolean isAllowedForStudents();
+    /**
+     *
+     * @return "function" of this document - if it is reference-book we cannot take it
+     */
+    public boolean isReference(); //является ли документ справочным(влияет на возможность забрать его из библиотеки)
+
+    /**
+     *
+     * @return whether students can use this document
+     */
+    public boolean isAllowedForStudents();
 
 //    public boolean canTake(Patron user);
 
 //    public boolean isFaculty(Patron x);
 
-    void addAuthor(String newAuthor);
+    /**
+     * if librarian finds out that there are one more author of this document he can add him
+     * @param newAuthor
+     */
+    public void addAuthor(String newAuthor);
 
-    boolean isWrittenBy(String author);
+    /**
+     * sometimes we need to check whether on person is author of some document
+     * @param author
+     * @return whether the person is author of current document
+     */
+    public boolean isWrittenBy(String author);
 
 }
