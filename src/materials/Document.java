@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 
 //documentation
-public class Document implements DocumentInterface {
+public abstract class Document implements DocumentInterface {
 
     private HashSet<String> Authors;    //TODO: i hope DONE
     private String Title;
