@@ -91,15 +91,15 @@
 				</Group>
 				<Group>
 					<children>
-						<ListView fx:id="recentList" layoutX="0.78515625" layoutY="45.58203125" prefHeight="362.0"
+						<ListView fx:id="yourDocList" layoutX="0.78515625" layoutY="45.58203125" prefHeight="362.0"
 						          prefWidth="313.0"/>
-						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Recent">
+						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your documents">
 							<font>
 								<Font size="20.0"/>
 							</font>
 						</Text>
-						<Text fx:id="noRecentText" layoutX="41.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0"
-						      text="No recent documents available" textAlignment="CENTER" wrappingWidth="200.0"/>
+						<Button fx:id="refreshListButton" layoutX="157.0" layoutY="-10.0" mnemonicParsing="false"
+						        text="Refresh"/>
 					</children>
 				</Group>
 			</children>
