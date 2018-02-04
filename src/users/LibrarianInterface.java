@@ -6,11 +6,9 @@ import java.util.LinkedList;
 
 public interface LibrarianInterface {
 
-    public void registerDocumentInLibrary(Document document);
-
     public void deletePatron(int idPatron);
 
-//    public void addDocumentInLibrary(Document document);
+    public void addDocumentInLibrary(Document document);
 
     public void deleteDocumentFromLibrary(int idDocument);
 

@@ -17,11 +17,6 @@ public class Librarian extends User implements LibrarianInterface {
         manager.listOfUsers.add(patron);
     }
 
-    public void registerDocumentInLibrary(Document document){
-        addDocumentInLibrary(document);
-    }
-
-
     @Override
     public void deletePatron(int patronId) {
         manager.deletePatron(patronId);
