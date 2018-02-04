@@ -1,44 +1,44 @@
 package materials;
 
 public interface DocumentInterface {
-    void setTitle(String Title);
+    public void setTitle(String Title);
 
-    void setAuthors(String Authors);
+    public void setAuthors(String Authors);
 
-    void setUserID(int userID);
+    public void setUserID(int userID);
 
-    void setDocID(int id);
+    public void setDocID(int id);
 
-    void setPrice(float price);
+    public void setPrice(float price);
 
-    void setChecked(boolean checked);
+    public void setChecked(boolean checked);
 
-    void setReference(boolean reference);
+    public void setReference(boolean reference);
 
-    void setAllowedForStudents(boolean allowedForStudents);
+    public void setAllowedForStudents(boolean allowedForStudents);
 
-    String getTitle();
+    public String getTitle();
 
-    String getAuthors();
+    public String getAuthors();
 
-    float getPrice();
+    public float getPrice();
 
-    int getDocID();
+    public int getDocID();
 
-    int getUserID();
+    public int getUserID();
 
-    boolean isChecked(); //взяли книгу или нет
+    public boolean isChecked(); //взяли книгу или нет
 
-    boolean isReference(); //является ли документ справочным(влияет на возможность забрать его из библиотеки)
+    public boolean isReference(); //является ли документ справочным(влияет на возможность забрать его из библиотеки)
 
-    boolean isAllowedForStudents();
+    public boolean isAllowedForStudents();
 
 //    public boolean canTake(Patron user);
 
 //    public boolean isFaculty(Patron x);
 
-    void addAuthor(String newAuthor);
+    public void addAuthor(String newAuthor);
 
-    boolean isWrittenBy(String author);
+    public boolean isWrittenBy(String author);
 
 }

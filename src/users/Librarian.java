@@ -14,16 +14,18 @@ public class Librarian extends User implements LibrarianInterface {
     }
 
     @Override
-    public void registerPatron(String name, String address, String phoneNumber, String status) {
+    public void createPatron(String name, String address, String phoneNumber, String status) {
         Patron patron = new Patron(name, address, phoneNumber, status, manager.listOfUsers.size());
+        patron.setDebts(0);
         manager.addPatron(patron);
         //TODO: add new patron to database (if database exists)
     }
 
     @Override
-    public void registerMaterial(Document document) {
+    public void createDocumentInLibrary(String author, String tittle, boolean isAllowedForStudents, float price){
+        Document document = new Document(author, tittle, getListOfDocuments().size(), isAllowedForStudents, price );
         addDocumentInLibrary(document);
-        document.setUserID(-2);
+        document.setUserID(-1);
         document.setChecked(false);
     }
 
@@ -33,6 +35,7 @@ public class Librarian extends User implements LibrarianInterface {
         //TODO: remove from database (if database exists)
     }
 
+    @Override
     public void addDocumentInLibrary(Document document) {
         manager.addDocumentInLibrary(document);
     }

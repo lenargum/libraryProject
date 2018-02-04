@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Patron extends User implements PatronInterface {
     private String status;
     private LinkedList<Document> listOfDocumentsPatron = new LinkedList<>();
-    private int debts = 0;
+    private int debts;
 
 
     Patron(String name, String address, String phoneNumber, String status, int id) {
