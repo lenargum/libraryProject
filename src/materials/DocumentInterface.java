@@ -118,4 +118,6 @@ public interface DocumentInterface {
      */
     public boolean isWrittenBy(String author);
 
+    //public boolean equals(Document document);
+
 }

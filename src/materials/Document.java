@@ -1,11 +1,12 @@
 package materials;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * class implements "Document" type in materials.Document
  */
-public class Document implements DocumentInterface {
+public class Document implements DocumentInterface{
 
     private HashSet<String> Authors; //storage of author(group of authors) the document was created by
     private String Title; //title of current document
@@ -212,5 +213,15 @@ public class Document implements DocumentInterface {
         author = author.toLowerCase();
         return Authors.contains(author);
     } //если мы хотuм проверить есть ли среди авторов документа данный автор
+
+    //@Override
+    public boolean equals(Document document){
+        return this.DocID != document.getDocID() && this.Authors.toString() == document.getAuthors() && this.Title == document.getTitle();
+    }
+
+    /*@Override
+    public int hashCode(){
+        return (456*DocID + 15)%134;
+    }*/
 
 }
