@@ -3,9 +3,11 @@ package graphicalUI;
 import materials.AudioVideoMaterial;
 import materials.Book;
 import materials.Document;
+import materials.JournalArticle;
 import users.Librarian;
 import users.Patron;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -26,13 +28,13 @@ public class ServerAPI {
 	 */
 	public ServerAPI() {
 		// TEMPORARY CODE - WILL BE REPLACED
-		librarian = new Librarian("MariaVanna", "1, Universitetskaya", "+79876543211", 1);
-		librarian.getListOfPatrons().add(new Patron("Name", "1, Universitetskaya", "+79871234567", "STUDENT", 2));
+		librarian = new Librarian("MariaVanna", "1, Universitetskaya", "+79876543211", -1);
+		librarian.getListOfPatrons().add(new Patron("Name", "1, Universitetskaya", "+79871234567", "STUDENT", librarian.getListOfPatrons().size()));
 
-		librarian.addDocumentInLibrary(new Book("Object-oriented Programming", "Bertrand Meyer", 1, true, 500));
-		librarian.addDocumentInLibrary(new Book("Introduction to Algorithms", "Thomas Cormen", 2, true, 700));
-		librarian.addDocumentInLibrary(new Book("50 shades of Gray", "E. L. James", 3, false, 100));
-		librarian.addDocumentInLibrary(new AudioVideoMaterial("Audio 1", "Author", 4, 39.99f, true));
+		librarian.addDocumentInLibrary(new Book("Object-oriented Programming", "Bertrand Meyer", librarian.getListOfDocuments().size(), true, 500));
+		librarian.addDocumentInLibrary(new Book("Introduction to Algorithms", "Thomas Cormen", librarian.getListOfDocuments().size(), true, 700));
+		librarian.addDocumentInLibrary(new Book("50 shades of Gray", "E. L. James", librarian.getListOfDocuments().size(), false, 100));
+		librarian.addDocumentInLibrary(new AudioVideoMaterial("Audio 1", "Author", librarian.getListOfDocuments().size(), 39.99f, true));
 	}
 
 	/**
@@ -75,6 +77,39 @@ public class ServerAPI {
 		return librarian.getListOfDocuments();
 	}
 
+	public List<Document> getBooks() {
+		LinkedList<Document> books = new LinkedList<>();
+		for (Document doc : librarian.getListOfDocuments()) {
+			if (doc instanceof Book) {
+				books.add(doc);
+			}
+		}
+
+		return books;
+	}
+
+	public List<Document> getJournalArticles() {
+		LinkedList<Document> articles = new LinkedList<>();
+		for (Document doc : librarian.getListOfDocuments()) {
+			if (doc instanceof JournalArticle) {
+				articles.add(doc);
+			}
+		}
+
+		return articles;
+	}
+
+	public List<Document> getAVs() {
+		LinkedList<Document> AVs = new LinkedList<>();
+		for (Document doc : librarian.getListOfDocuments()) {
+			if (doc instanceof AudioVideoMaterial) {
+				AVs.add(doc);
+			}
+		}
+
+		return AVs;
+	}
+
 	/**
 	 * Book an item.
 	 *
@@ -99,5 +134,9 @@ public class ServerAPI {
 		}
 
 		return booked;
+	}
+
+	public List<Document> getMyDocs() {
+		return librarian.getListOfPatrons().get(patron.getId()).getListOfDocumentsPatron();
 	}
 }
