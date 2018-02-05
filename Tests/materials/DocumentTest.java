@@ -3,7 +3,7 @@ package materials;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * WE DON'T NEED TO TEST ABSTRACT CLASSES!!! WOOO-HOOO
+ * WE DON'T NEED TO TEST ABSTRACT CLASSES!!! WOOO-HOOO (on unit-testing study)
  */
 class DocumentTest {
     @org.junit.jupiter.api.Test
