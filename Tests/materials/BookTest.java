@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookTest {
+    /**
+     * these tests are standard tests on equals function
+     */
     @Test
     void equals() {
         Book a = new Book("gfdghsjkgh", "HJGH", 567, false, 1234);
@@ -41,6 +44,7 @@ class BookTest {
         assertFalse(a.equals(b));
         assertFalse(b.equals(a));
 
+        System.out.println("2 tests are passed\nFunction 'equals' in Book class tested successfully!");
 
     }
 
