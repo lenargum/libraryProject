@@ -204,7 +204,7 @@ public abstract class Document implements DocumentInterface {
 	 */
 	@Override
 	public void addAuthor(String newAuthor) {
-		this.Authors.add(newAuthor);
+		this.Authors.add(newAuthor.toLowerCase());
 	}
 
 	/**
