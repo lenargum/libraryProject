@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JournalArticleTest {
+    /**
+     * These tests should show that the result of equals function not depends on the price of documents,
+     * their publisher and date of publishing.
+     * But it depends on tile of document, journal, list of authors and id of  document
+     */
     @Test
     void equals() {
         JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300 ,true);
@@ -58,12 +63,7 @@ class JournalArticleTest {
 
         assertTrue(a.equals(b));
         assertTrue(b.equals(a));
+
+        System.out.println("4 tests are passed\nFunction 'equals' in the 'Journal Article' class tested successfully!");
     }
-
-
-    /**
-     * These tests should show that the result of equals function not depends on the price of documents, 
-     * their publisher and date of publishing.
-     * But it depends on tile of document, journal, list of authors and id of  document
-     */
 }

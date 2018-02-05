@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AudioVideoMaterialTest {
+    /**
+     * standard test on "equals"
+     */
     @Test
     void equals() {
         AudioVideoMaterial a = new AudioVideoMaterial("HJHLKJHK", "treuiyeryiuey, dufyhiuy", 123, 45, true);
@@ -17,6 +20,9 @@ class AudioVideoMaterialTest {
         assertFalse(a.equals(b));
         assertFalse(b.equals(a));
         assertFalse(a.equals(a));
+
+        System.out.println("1 test is passed\nFunction 'equals' in the Audio/Video material class tested successfully!");
     }
+
 
 }
