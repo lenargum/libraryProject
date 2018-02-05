@@ -93,6 +93,9 @@ public abstract class User implements UserInterface {
 	 * @return true if current user is copy of other
 	 */
 	public boolean equals(User user) {
-		return this.getId() != user.getId() && this.getAddress().equals(user.getAddress()) && this.getName().equals(user.getName()) && this.getPhoneNumber() == user.getPhoneNumber();
+		if(this.getId() == user.getId()) return false;
+		return this.getAddress().equals(user.getAddress()) &&
+				this.getName().equals(user.getName()) &&
+				this.getPhoneNumber().equals(user.getPhoneNumber());
 	}
 }
