@@ -119,4 +119,17 @@ public class Librarian extends User implements LibrarianInterface {
 	public LinkedList<Document> getListOfDocuments() {
 		return manager.listOfDocuments;
 	}
+
+	/**
+	 * checks whether one librarian is copy of another - it can be done with repeated registration
+	 *
+	 * @param user
+	 * @return true if current user is copy of other
+	 */
+	public boolean equals(Librarian user) {
+		if(this == user) return false;
+		return this.getAddress().equals(user.getAddress()) &&
+				this.getName().equals(user.getName()) &&
+				this.getPhoneNumber().equals(user.getPhoneNumber());
+	}
 }
