@@ -152,6 +152,10 @@ public class Patron extends User implements PatronInterface {
 	 * @return true if one user is copy of another, false otherwise
 	 */
 	public boolean equals(Patron user) {
-		return this.getId() != user.getId() && this.getAddress().equals(user.getAddress()) && this.getName().equals(user.getName()) && this.getPhoneNumber() == user.getPhoneNumber() && this.getStatus().equals(user.getStatus());
+		if(this == user) return false;
+		return this.getAddress().equals(user.getAddress()) &&
+				this.getName().equals(user.getName()) &&
+				this.getPhoneNumber().equals(user.getPhoneNumber()) &&
+				this.getStatus().equals(user.getStatus());
 	}
 }
