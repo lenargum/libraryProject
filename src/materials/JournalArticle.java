@@ -99,6 +99,9 @@ public class JournalArticle extends Document implements JournalArticleInterface 
 	 * @return true if current document is copy of other
 	 */
 	public boolean equals(JournalArticle document) {
-		return this.getDocID() != document.getDocID() && this.getAuthors().equals(document.getAuthors()) && this.getTitle().equals(document.getTitle()) && this.getJournalTitle().equals(document.getJournalTitle());
+		return this.getDocID() != document.getDocID()
+				&& this.getAuthors().equals(document.getAuthors())
+				&& this.getTitle().equals(document.getTitle())
+				&& this.getJournalTitle().equals(document.getJournalTitle());
 	}
 }
