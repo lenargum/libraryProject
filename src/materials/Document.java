@@ -513,12 +513,4 @@ public abstract class Document implements DocumentInterface {
 		this.copiesIDs.add(id);
 	}
 
-	/**
-	 * adds id of copy to list
-	 * @param id
-	 */
-	public void addCopy(int id){
-		this.copiesIDs.add(id);
-	}
-
 }
