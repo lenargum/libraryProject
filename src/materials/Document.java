@@ -199,6 +199,7 @@ public abstract class Document implements DocumentInterface {
 
     public void setCopy(boolean isCopy){
         this.isCopy = isCopy;
+        if(!isCopy) this.copiesIDs = new LinkedList<>();
     }
 
     /**
@@ -271,6 +272,10 @@ public abstract class Document implements DocumentInterface {
         }
         return this.getAuthors().equals(document.getAuthors())
                 && this.getTitle().equals(document.getTitle());
+    }
+
+    public void addCopy(int id){
+        this.copiesIDs.add(id);
     }
 
 }

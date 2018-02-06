@@ -109,4 +109,21 @@ public class SetManager implements SetManagerInterface {
 		return ind;
 	}
 
+    public int findFree(int id){
+        Document document = listOfDocuments.get(id);
+        int ind = id;
+        if(document.isCopy()){
+            ind = findFirst(document);
+        }
+        int i = 0;
+        //System.out.println("ind = " + ind);
+        //System.out.println("size = " + listOfDocuments.size());
+        while(i < document.getCopiesIDs().size() && listOfDocuments.get(ind).isChecked()){
+            ind = document.getCopiesIDs().get(i);
+            i++;
+            //System.out.println("ind = " + ind);
+        }
+        return ind;
+    }
+
 }
