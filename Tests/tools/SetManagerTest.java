@@ -1,13 +1,15 @@
 package tools;
 
-import materials.AudioVideoMaterial;
-import materials.Book;
-import materials.JournalArticle;
 import org.junit.jupiter.api.Test;
+
+import materials.AudioVideoMaterial;
+import materials.JournalArticle;
+import materials.Book;
+
+import users.Librarian;
 import users.Patron;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Here were detected troubles(not in the booking system)
@@ -54,9 +56,9 @@ class SetManagerTest {
     @Test
     void Test003_addDocumentInLibrary() {
 
-        Book a = new Book("ABC0", "a, b, c, d", 1, true, true, 45);
-        JournalArticle b = new JournalArticle("ABC1", "a, b, c, d", 2, 45, true, true);
-        AudioVideoMaterial c = new AudioVideoMaterial("ABC2", "a, b, c, d", 3, 45, true, true);
+        Book a = new Book("ABC0", "a, b, c, d", 1, true, 45);
+        JournalArticle b = new JournalArticle("ABC1", "a, b, c, d", 2, 45, true);
+        AudioVideoMaterial c = new AudioVideoMaterial("ABC2", "a, b, c, d", 3, 45, true);
 
         manager.addDocumentInLibrary(a);
         assertTrue(manager.listOfDocuments.contains(a));
@@ -77,9 +79,9 @@ class SetManagerTest {
      */
     @Test
     void Test_004deleteDocumentFromLibrary() {
-        Book a = new Book("ABC0", "a, b, c, d", 1, true, true, 45);
-        JournalArticle b = new JournalArticle("ABC1", "a, b, c, d", 2, 45, true, true);
-        AudioVideoMaterial c = new AudioVideoMaterial("ABC2", "a, b, c, d", 3, 45, true, true);
+        Book a = new Book("ABC0", "a, b, c, d", 1, true, 45);
+        JournalArticle b = new JournalArticle("ABC1", "a, b, c, d", 2, 45, true);
+        AudioVideoMaterial c = new AudioVideoMaterial("ABC2", "a, b, c, d", 3, 45, true);
 
         manager.addDocumentInLibrary(a);
         manager.addDocumentInLibrary(b);

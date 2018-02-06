@@ -5,31 +5,31 @@ package materials;
  */
 public interface BookInterface {
 
-    /**
-     * returns the year when book was edited
-     *
-     * @return
-     */
-    public int getEditionYear();
+	/**
+	 * returns the year when book was edited
+	 *
+	 * @return
+	 */
+	public int getEditionYear();
 
-    /**
-     * sets year when the book was edited
-     *
-     * @param editionYear
-     */
-    public void setEditionYear(int editionYear);
+	/**
+	 * sets year when the book was edited
+	 *
+	 * @param editionYear
+	 */
+	public void setEditionYear(int editionYear);
 
-    /**
-     * returns name of person or company the book was published by
-     *
-     * @return
-     */
-    public String getPublisher();
+	/**
+	 * returns name of person or company the book was published by
+	 *
+	 * @return
+	 */
+	public String getPublisher();
 
-    /**
-     * sets name of person or company published the book
-     *
-     * @param publisher
-     */
-    public void setPublisher(String publisher);
+	/**
+	 * sets name of person or company published the book
+	 *
+	 * @param publisher
+	 */
+	public void setPublisher(String publisher);
 }
