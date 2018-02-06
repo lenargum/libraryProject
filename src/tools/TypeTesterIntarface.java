@@ -11,45 +11,45 @@ import users.Patron;
  * (not bug, but feature)
  */
 public interface TypeTesterIntarface {
-	/**
-	 * checks type librarian
-	 *
-	 * @param librarian
-	 */
-	public void setType(Librarian librarian);
+    /**
+     * checks type librarian
+     *
+     * @param librarian
+     */
+    public void setType(Librarian librarian);
 
-	/**
-	 * checks type of patron
-	 *
-	 * @param patron
-	 */
-	public void setType(Patron patron);
+    /**
+     * checks type of patron
+     *
+     * @param patron
+     */
+    public void setType(Patron patron);
 
-	/**
-	 * checks type book
-	 *
-	 * @param book
-	 */
-	public void setType(Book book);
+    /**
+     * checks type book
+     *
+     * @param book
+     */
+    public void setType(Book book);
 
-	/**
-	 * check type journal article
-	 *
-	 * @param journalArticle
-	 */
-	public void setType(JournalArticle journalArticle);
+    /**
+     * check type journal article
+     *
+     * @param journalArticle
+     */
+    public void setType(JournalArticle journalArticle);
 
-	/**
-	 * retruns type of current object
-	 *
-	 * @return
-	 */
-	public String getType();
+    /**
+     * retruns type of current object
+     *
+     * @return
+     */
+    public String getType();
 
-	/**
-	 * checks type audio/video material
-	 *
-	 * @param audioVideoMaterial
-	 */
-	public void setType(AudioVideoMaterial audioVideoMaterial);
+    /**
+     * checks type audio/video material
+     *
+     * @param audioVideoMaterial
+     */
+    public void setType(AudioVideoMaterial audioVideoMaterial);
 }
