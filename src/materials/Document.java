@@ -1,5 +1,6 @@
 package materials;
 
+import java.util.LinkedList;
 import java.util.TreeSet;
 
 
@@ -16,8 +17,10 @@ public abstract class Document implements DocumentInterface {
 	private int userID; //ID of user who took the document
 	private int DocID; //ID of current document
 	private boolean isAllowedForStudents; //represents whether students can use this document
-	//  public ArrayList <materials.Document> listOfCopies; TODO: solve problem of storage -- databases
-
+	private boolean isCopy;
+	private int originID;
+	private LinkedList <Integer> copiesIDs;
+	
 
 	/**
 	 * constructor
@@ -76,6 +79,24 @@ public abstract class Document implements DocumentInterface {
 		for (String newAuthor : authors.split(", ")) {
 			addAuthor(newAuthor.toLowerCase());
 		}
+	}
+
+	/**
+	 * sets ID of original document
+	 * @param id
+	 */
+	public void setOriginID(int id){
+		this.originID = id;
+	}
+
+	/**
+	 * sets true if such document already exists in the library
+	 * @param is_copy
+	 */
+	public void setCopy(boolean is_copy){
+		this.isCopy = is_copy;
+		if(is_copy) this.copiesIDs.add(this.getDocID());
+		else this.copiesIDs = new LinkedList<>();
 	}
 
 	/**
@@ -174,6 +195,30 @@ public abstract class Document implements DocumentInterface {
 	@Override
 	public boolean isAllowedForStudents() {
 		return isAllowedForStudents;
+	}
+
+	/**
+	 * if document is copy
+	 * @return
+	 */
+	public boolean isCopy(){
+		return isCopy;
+	}
+
+	/**
+	 *
+	 * @return ID of origin document
+	 */
+	public int getOriginID(){
+		return originID;
+	}
+
+	/**
+	 *
+	 * @return list of document copies
+	 */
+	public LinkedList<Integer> getCopiesIDs() {
+		return copiesIDs;
 	}
 
 	/**
