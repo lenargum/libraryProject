@@ -103,4 +103,17 @@ public class SetManager implements SetManagerInterface {
 		return i;
 	}
 
+	public boolean isFirst(Document document){
+		int i =0;
+		while(i < listOfDocuments.size() && !listOfDocuments.get(i).equals(document)) i++;
+		if(i == listOfDocuments.size()) return true;
+		return false;
+	}
+
+	public int findFirst(Document document){
+		int i =0;
+		while(i < listOfDocuments.size() && !listOfDocuments.get(i).equals(document)) i++;
+		return i;
+	}
+
 }
