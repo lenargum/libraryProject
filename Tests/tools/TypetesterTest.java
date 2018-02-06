@@ -1,20 +1,20 @@
 package tools;
 
-import org.junit.jupiter.api.Test;
+import materials.AudioVideoMaterial;
 import materials.Book;
 import materials.JournalArticle;
-import materials.AudioVideoMaterial;
-
-import users.Patron;
+import org.junit.jupiter.api.Test;
 import users.Librarian;
+import users.Patron;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TypetesterTest {
     @Test
     void TestGetType000() {
         Typetester t = new Typetester();
-        Book a = new Book("gfdghsjkgh", "HJGH", 567, false, 1234);
+        Book a = new Book("gfdghsjkgh", "HJGH", 567, false, true, 1234);
         t.setType(a);
         assertEquals("book", t.getType());
         assertNotEquals("document", t.getType());
@@ -22,9 +22,9 @@ class TypetesterTest {
     }
 
     @Test
-    void TestGetType001(){
+    void TestGetType001() {
         Typetester t = new Typetester();
-        JournalArticle a = new JournalArticle("gfdghsjkgh", "HJGH", 567, 1234, false);
+        JournalArticle a = new JournalArticle("gfdghsjkgh", "HJGH", 567, 1234, false, true);
         t.setType(a);
         assertEquals("journal article", t.getType());
         assertNotEquals("document", t.getType());
@@ -32,9 +32,9 @@ class TypetesterTest {
     }
 
     @Test
-    void TestGetType002(){
+    void TestGetType002() {
         Typetester t = new Typetester();
-        AudioVideoMaterial a = new AudioVideoMaterial("gfdghsjkgh", "HJGH", 567, 123, false);
+        AudioVideoMaterial a = new AudioVideoMaterial("gfdghsjkgh", "HJGH", 567, 123, true, false);
         t.setType(a);
         assertEquals("audio-video material", t.getType());
         assertNotEquals("document", t.getType());
@@ -42,7 +42,7 @@ class TypetesterTest {
     }
 
     @Test
-    void TestGetType003(){
+    void TestGetType003() {
         Typetester t = new Typetester(), t2 = new Typetester();
 
         Patron a = new Patron("Madina", "Innopolis", "1234567879", "student", 67888);
@@ -60,7 +60,7 @@ class TypetesterTest {
     }
 
     @Test
-    void TestGetType004(){
+    void TestGetType004() {
         Typetester t = new Typetester(), t2 = new Typetester(), t3 = new Typetester();
 
         Librarian L = new Librarian("GreatLibrarian", "Innopolis", "89280666850", 66666);
@@ -75,8 +75,8 @@ class TypetesterTest {
         assertNotEquals("faculty", t3.getType());
         assertNotEquals("student", t3.getType());
 
-        assertNotEquals (t.getType(), t2.getType());
-        assertNotEquals (t.getType(), t3.getType());
+        assertNotEquals(t.getType(), t2.getType());
+        assertNotEquals(t.getType(), t3.getType());
         assertNotEquals(t2.getType(), t3.getType());
 
         System.out.println("Typtester for class 'Librarian' works!");

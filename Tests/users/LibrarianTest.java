@@ -2,9 +2,8 @@ package users;
 
 import org.junit.jupiter.api.Test;
 
-import users.Librarian;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LibrarianTest {
     @Test
@@ -28,7 +27,7 @@ class LibrarianTest {
     }
 
     @Test
-    void equals(){
+    void equals() {
         Librarian A = new Librarian("A A", "Innopolis", "89286878848", 789);
         Librarian B = new Librarian("A A", "Innopolis", "89286878848", 790);
 

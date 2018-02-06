@@ -2,7 +2,8 @@ package materials;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AudioVideoMaterialTest {
     /**
@@ -10,8 +11,8 @@ class AudioVideoMaterialTest {
      */
     @Test
     void equals() {
-        AudioVideoMaterial a = new AudioVideoMaterial("HJHLKJHK", "treuiyeryiuey, dufyhiuy", 123, 45, true);
-        AudioVideoMaterial b = new AudioVideoMaterial("HJHLKJHK", "treuiyeryiuey, dufyhiuy", 124, 45, true);
+        AudioVideoMaterial a = new AudioVideoMaterial("HJHLKJHK", "treuiyeryiuey, dufyhiuy", 123, 45, true, true);
+        AudioVideoMaterial b = new AudioVideoMaterial("HJHLKJHK", "treuiyeryiuey, dufyhiuy", 124, 45, true, true);
 
         assertTrue(a.equals(b));
         assertTrue(b.equals(a));
