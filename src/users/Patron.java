@@ -2,6 +2,7 @@ package users;
 
 import materials.Document;
 
+import javax.print.Doc;
 import java.util.LinkedList;
 
 /**
@@ -93,10 +94,11 @@ public class Patron extends User implements PatronInterface {
 	@Override
 	public boolean getRequest(int idDocument, Librarian librarian) {
 		//TODO: Request to take a book from the library
-		if ((this.getStatus() == "faculty") && !(librarian.getListOfDocuments().get(idDocument).isChecked())) {
+		if(librarian.getListOfDocuments().get(idDocument).isChecked()) return false;
+		if (this.getStatus() == "faculty") {
 			return true;
 		} else {
-			if ((librarian.manager.listOfDocuments.get(idDocument).isAllowedForStudents() && !(librarian.getListOfDocuments().get(idDocument).isChecked())))
+			if (librarian.manager.listOfDocuments.get(idDocument).isAllowedForStudents())
 				return true;
 			else
 				return false;
@@ -111,10 +113,11 @@ public class Patron extends User implements PatronInterface {
 	 */
 	@Override
 	public void takeDocument(int idDocument, Librarian librarian) {
-		if (getRequest(idDocument, librarian)) {
-			this.addDocumentInList(librarian.manager.listOfDocuments.get(idDocument));
-			librarian.manager.listOfDocuments.get(idDocument).setChecked(true);
-			librarian.manager.listOfDocuments.get(idDocument).setUserID(this.getId());
+		int ind = librarian.manager.findFree(idDocument);
+		if (getRequest(ind, librarian)) {
+			this.addDocumentInList(librarian.manager.listOfDocuments.get(ind));
+			librarian.manager.listOfDocuments.get(ind).setChecked(true);
+			librarian.manager.listOfDocuments.get(ind).setUserID(this.getId());
 		} else {
 			System.out.println("Access is not available");
 		}

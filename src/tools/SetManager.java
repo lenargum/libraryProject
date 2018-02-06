@@ -55,6 +55,7 @@ public class SetManager implements SetManagerInterface {
 		} else {
 			document.setCopy(true);
 			document.setOriginID(findFirst(document));
+			listOfDocuments.get(findFirst(document)).addCopy(document.getDocID());
 		}
 		listOfDocuments.add(document);
 	}
@@ -90,6 +91,23 @@ public class SetManager implements SetManagerInterface {
         int i =0;
         while(i < listOfDocuments.size() && !listOfDocuments.get(i).equals(document)) i++;
         return i;
+    }
+
+    public int findFree(int id){
+        Document document = listOfDocuments.get(id);
+        int ind = id;
+        if(document.isCopy()){
+            ind = findFirst(document);
+        }
+        int i = 0;
+        //System.out.println("ind = " + ind);
+        //System.out.println("size = " + listOfDocuments.size());
+        while(i < document.getCopiesIDs().size() && listOfDocuments.get(ind).isChecked()){
+            ind = document.getCopiesIDs().get(i);
+            i++;
+            //System.out.println("ind = " + ind);
+        }
+        return ind;
     }
 
 }
