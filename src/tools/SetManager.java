@@ -3,6 +3,7 @@ package tools;
 import materials.Document;
 import users.Patron;
 
+import javax.print.Doc;
 import java.util.LinkedList;
 
 /**
@@ -47,6 +48,13 @@ public class SetManager implements SetManagerInterface {
 	 */
 	@Override
 	public void addDocumentInLibrary(Document document) {
+		if(isFirst(document)){
+			document.setCopy(false);
+			document.setOriginID(document.getDocID());
+		} else {
+			document.setCopy(true);
+			document.setOriginID(findFirst(document));
+		}
 		listOfDocuments.add(document);
 	}
 
@@ -68,6 +76,19 @@ public class SetManager implements SetManagerInterface {
 				}
 			}
 		}
+	}
+
+	public boolean isFirst(Document document){
+		int i =0;
+		while(i < listOfDocuments.size() && !listOfDocuments.get(i).equals(document)) i++;
+		if(i == listOfDocuments.size()) return true;
+		return false;
+	}
+
+	public int findFirst(Document document){
+		int i =0;
+		while(i < listOfDocuments.size() && !listOfDocuments.get(i).equals(document)) i++;
+		return i;
 	}
 
 }

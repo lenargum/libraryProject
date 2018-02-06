@@ -20,7 +20,7 @@ public abstract class Document implements DocumentInterface {
 	private boolean isCopy;
 	private int originID;
 	private LinkedList <Integer> copiesIDs;
-	
+
 
 	/**
 	 * constructor
@@ -95,7 +95,7 @@ public abstract class Document implements DocumentInterface {
 	 */
 	public void setCopy(boolean is_copy){
 		this.isCopy = is_copy;
-		if(is_copy) this.copiesIDs.add(this.getDocID());
+		if(is_copy) addCopy(getDocID());
 		else this.copiesIDs = new LinkedList<>();
 	}
 
@@ -277,6 +277,14 @@ public abstract class Document implements DocumentInterface {
 		}
 		return this.getAuthors().equals(document.getAuthors())
 				&& this.getTitle().equals(document.getTitle());
+	}
+
+	/**
+	 * adds id of copy to list
+	 * @param id
+	 */
+	public void addCopy(int id){
+		this.copiesIDs.add(id);
 	}
 
 }
