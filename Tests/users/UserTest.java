@@ -2,6 +2,10 @@ package users;
 
 import org.junit.jupiter.api.Test;
 
+import users.Librarian;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 class UserTest {
 	@Test
 	void equals() {
