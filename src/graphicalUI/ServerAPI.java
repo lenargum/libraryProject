@@ -114,23 +114,23 @@ public class ServerAPI {
 	 * Book an item.
 	 *
 	 * @param name Document name (TEMPORARY)
-	 * @param pat  Patron which wants to book a document.
 	 * @return Is booking successful.
 	 */
-	public boolean bookItem(String name, Patron pat) {
+	public boolean bookItem(String name) {
 		boolean booked = false;
 		Document doc = null;
 		for (Document document : librarian.getListOfDocuments()) {
 			if (document.getTitle().equals(name)) {
 				doc = document;
+				break;
 			}
 		}
 
-		if (pat.getRequest(doc.getDocID(), librarian)) {
+		if (patron.getRequest(doc.getDocID(), librarian)) {
 			booked = true;
 		}
 		if (booked) {
-			pat.takeDocument(doc.getDocID(), librarian);
+			patron.takeDocument(doc.getDocID(), librarian);
 		}
 
 		return booked;

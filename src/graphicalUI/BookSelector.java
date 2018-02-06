@@ -141,7 +141,7 @@ public class BookSelector {
 				pickedItem = bookList.getSelectionModel().getSelectedItem();
 
 				// Book item
-				if (server.bookItem(pickedItem, server.getPatron())) {
+				if (server.bookItem(pickedItem)) {
 					System.out.println("Given " + pickedItem + " to " + user.getName()); //DEBUGGING OUTPUT
 					Alert successfulAlert = new Alert(Alert.AlertType.INFORMATION);
 					successfulAlert.setTitle("Success");

@@ -3,394 +3,387 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="271.0" y="652.0">materials.Book</node>
-    <node x="1394.4694855253674" y="849.0">materials.AudioVideoMaterialTest</node>
-    <node x="1037.7510695187166" y="849.0">graphicalUI.ServerAPI</node>
-    <node x="700.6510695187166" y="525.0">users.PatronInterface</node>
-    <node x="799.7976709292884" y="652.0">users.Patron</node>
-    <node x="1380.7135695187164" y="986.0">graphicalUI.BookSelector</node>
-    <node x="330.0" y="525.0">materials.BookInterface</node>
-    <node x="1386.9850053269165" y="652.0">materials.AudioVideoMaterial</node>
-    <node x="1061.1135695187165" y="331.0">users.User</node>
-    <node x="523.4010695187166" y="244.0">tools.SetManagerInterface</node>
-    <node x="770.127726467432" y="849.0">tools.TypeTesterIntarface</node>
-    <node x="664.6691067374885" y="87.0">materials.Document</node>
-    <node x="635.6691067374885" y="0.0">materials.DocumentInterface</node>
-    <node x="87.0" y="525.0">materials.JournalArticleInterface</node>
-    <node x="645.4010695187166" y="331.0">users.LibrarianInterface</node>
-    <node x="868.1135695187165" y="331.0">tools.SetManager</node>
-    <node x="1044.8091164554398" y="986.0">graphicalUI.UserCredentials</node>
-    <node x="777.3510695187165" y="986.0">tools.Typetester</node>
-    <node x="1032.1135695187165" y="244.0">users.UserInterface</node>
-    <node x="1329.8385695187164" y="1093.0">graphicalUI.MainPage</node>
-    <node x="951.0302361853832" y="428.0">users.Librarian</node>
-    <node x="1755.68411645544" y="849.0">graphicalUI.SelectorIntent</node>
-    <node x="0.0" y="652.0">materials.JournalArticle</node>
-    <node x="1256.1516719935832" y="525.0">materials.AudioVideoMaterialInterface</node>
+    <node x="348.21568627450984" y="672.0">materials.Book</node>
+    <node x="1461.9018693998814" y="839.0">graphicalUI.ServerAPI</node>
+    <node x="1004.0213899584077" y="254.0">users.PatronInterface</node>
+    <node x="1616.9933458110522" y="956.0">graphicalUI.BookSelector</node>
+    <node x="1136.5213899584078" y="341.0">users.Patron</node>
+    <node x="321.5855342245992" y="545.0">materials.BookInterface</node>
+    <node x="628.4188675579326" y="672.0">materials.AudioVideoMaterial</node>
+    <node x="1345.453208140226" y="254.0">users.User</node>
+    <node x="811.5213899584077" y="458.0">tools.SetManagerInterface</node>
+    <node x="288.09068627450984" y="839.0">tools.TypeTesterIntarface</node>
+    <node x="735.6322346999411" y="87.0">materials.Document</node>
+    <node x="706.6322346999411" y="0.0">materials.DocumentInterface</node>
+    <node x="38.54717540106992" y="545.0">materials.JournalArticleInterface</node>
+    <node x="1200.703208140226" y="458.0">users.LibrarianInterface</node>
+    <node x="850.3418599524665" y="545.0">tools.SetManager</node>
+    <node x="1429.9933458110522" y="956.0">graphicalUI.UserCredentials</node>
+    <node x="1363.7736781342849" y="87.0">users.UserInterface</node>
+    <node x="538.4919781937018" y="956.0">tools.Typetester</node>
+    <node x="1481.0532081402262" y="1073.0">graphicalUI.MainPage</node>
+    <node x="1708.4933458110522" y="839.0">graphicalUI.SelectorIntent</node>
+    <node x="1118.703208140226" y="672.0">users.Librarian</node>
+    <node x="149.75220089126594" y="672.0">materials.JournalArticle</node>
+    <node x="497.58553422459926" y="545.0">materials.AudioVideoMaterialInterface</node>
   </nodes>
   <notes />
   <edges>
     <edge source="users.Patron" target="users.User">
-      <point x="38.54545454545456" y="-18.5" />
-      <point x="891.343125474743" y="622.0" />
-      <point x="1115.1953877005346" y="622.0" />
-      <point x="1115.1953877005346" y="408.0" />
-      <point x="1107.1135695187165" y="408.0" />
-      <point x="0.0" y="18.5" />
+      <point x="42.39999999999998" y="-18.5" />
+      <point x="1231.9213899584076" y="321.0" />
+      <point x="1373.0532081402262" y="321.0" />
+      <point x="-18.399999999999977" y="18.5" />
     </edge>
     <edge source="materials.AudioVideoMaterial" target="materials.Document">
-      <point x="0.0" y="-18.5" />
-      <point x="1485.4850053269165" y="632.0" />
-      <point x="1521.6516719935832" y="632.0" />
-      <point x="1521.6516719935832" y="174.0" />
-      <point x="769.4926361492533" y="174.0" />
-      <point x="38.82352941176475" y="18.5" />
+      <point x="65.66666666666674" y="-18.5" />
+      <point x="792.5855342245993" y="652.0" />
+      <point x="774.0855342245992" y="652.0" />
+      <point x="774.0855342245992" y="204.0" />
+      <point x="786.1028229352353" y="204.0" />
+      <point x="-15.529411764705856" y="18.5" />
     </edge>
     <edge source="materials.JournalArticle" target="materials.JournalArticleInterface">
-      <point x="51.0" y="-18.5" />
-      <point x="127.5" y="632.0" />
-      <point x="192.5" y="632.0" />
+      <point x="-51.0" y="-18.5" />
+      <point x="175.25220089126594" y="652.0" />
+      <point x="144.04717540106992" y="652.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="tools.SetManager" target="materials.Document">
-      <point x="0.0" y="-18.5" />
-      <point x="939.6135695187165" y="214.0" />
-      <point x="738.4338126198414" y="214.0" />
+      <point x="-28.600000000000023" y="-18.5" />
+      <point x="893.2418599524665" y="515.0" />
+      <point x="801.0213899584077" y="515.0" />
+      <point x="801.0213899584077" y="234.0" />
+      <point x="809.3969405822941" y="234.0" />
       <point x="7.764705882352928" y="18.5" />
-    </edge>
-    <edge source="graphicalUI.MainPage" target="graphicalUI.SelectorIntent">
-      <point x="40.3125" y="-18.5" />
-      <point x="1434.6510695187164" y="1063.0" />
-      <point x="1871.93411645544" y="1063.0" />
-      <point x="38.75" y="18.5" />
     </edge>
     <edge source="graphicalUI.BookSelector" target="materials.Document">
       <point x="18.875" y="-18.5" />
-      <point x="1475.0885695187164" y="956.0" />
-      <point x="1745.18411645544" y="956.0" />
-      <point x="1745.18411645544" y="154.0" />
-      <point x="785.0220479139591" y="154.0" />
-      <point x="54.35294117647061" y="18.5" />
+      <point x="1711.3683458110522" y="936.0" />
+      <point x="1697.9933458110522" y="936.0" />
+      <point x="1697.9933458110522" y="174.0" />
+      <point x="863.7498817587646" y="174.0" />
+      <point x="62.117647058823536" y="18.5" />
+    </edge>
+    <edge source="graphicalUI.MainPage" target="graphicalUI.SelectorIntent">
+      <point x="56.4375" y="-18.5" />
+      <point x="1601.9907081402262" y="1053.0" />
+      <point x="1824.7433458110522" y="1053.0" />
+      <point x="38.75" y="18.5" />
     </edge>
     <edge source="tools.TypeTesterIntarface" target="materials.JournalArticle">
-      <point x="-77.19999999999993" y="-18.5" />
-      <point x="789.427726467432" y="819.0" />
-      <point x="76.5" y="819.0" />
+      <point x="-38.59999999999991" y="-18.5" />
+      <point x="345.9906862745099" y="799.0" />
+      <point x="226.25220089126594" y="799.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="graphicalUI.ServerAPI" target="materials.AudioVideoMaterial">
-      <point x="45.81818181818181" y="-18.5" />
-      <point x="1146.5692513368983" y="809.0" />
-      <point x="1436.2350053269165" y="809.0" />
-      <point x="-49.25" y="18.5" />
+      <point x="-22.909090909090878" y="-18.5" />
+      <point x="1501.9927784907907" y="759.0" />
+      <point x="751.5438675579326" y="759.0" />
+      <point x="24.625" y="18.5" />
     </edge>
     <edge source="materials.AudioVideoMaterial" target="materials.AudioVideoMaterialInterface">
       <point x="-65.66666666666674" y="-18.5" />
-      <point x="1419.81833866025" y="632.0" />
-      <point x="1383.6516719935832" y="632.0" />
+      <point x="661.2522008912658" y="652.0" />
+      <point x="625.0855342245993" y="652.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="tools.TypeTesterIntarface" target="users.Patron">
-      <point x="0.0" y="-18.5" />
-      <point x="866.627726467432" y="799.0" />
-      <point x="831.5976709292885" y="799.0" />
-      <point x="-21.19999999999999" y="18.5" />
+      <point x="-77.19999999999993" y="-18.5" />
+      <point x="307.3906862745099" y="809.0" />
+      <point x="28.04717540106992" y="809.0" />
+      <point x="28.04717540106992" y="398.0" />
+      <point x="1141.3395717765895" y="398.0" />
+      <point x="-48.18181818181819" y="18.5" />
     </edge>
     <edge source="materials.Book" target="materials.Document">
-      <point x="0.0" y="-18.5" />
-      <point x="319.5" y="184.0" />
-      <point x="691.8455773257238" y="184.0" />
-      <point x="-38.82352941176475" y="18.5" />
+      <point x="32.33333333333326" y="-18.5" />
+      <point x="429.0490196078431" y="652.0" />
+      <point x="487.08553422459926" y="652.0" />
+      <point x="487.08553422459926" y="184.0" />
+      <point x="770.5734111705294" y="184.0" />
+      <point x="-31.05882352941171" y="18.5" />
     </edge>
     <edge source="users.Patron" target="users.Librarian">
-      <point x="19.27272727272731" y="-18.5" />
-      <point x="872.0703982020158" y="602.0" />
-      <point x="967.6165839879075" y="602.0" />
-      <point x="967.6165839879075" y="485.0" />
-      <point x="976.9588076139546" y="485.0" />
-      <point x="-34.571428571428555" y="18.5" />
+      <point x="0.0" y="18.5" />
+      <point x="1190.203208140226" y="652.0" />
+      <point x="1192.6476525846704" y="652.0" />
+      <point x="13.444444444444457" y="-18.5" />
     </edge>
     <edge source="users.Librarian" target="users.User">
-      <point x="50.416666666666686" y="-18.5" />
-      <point x="1061.9469028520498" y="408.0" />
-      <point x="1088.7135695187164" y="408.0" />
-      <point x="-18.400000000000006" y="18.5" />
+      <point x="40.33333333333337" y="-18.5" />
+      <point x="1219.5365414735593" y="642.0" />
+      <point x="1395.153208140226" y="642.0" />
+      <point x="1395.153208140226" y="321.0" />
+      <point x="1391.453208140226" y="321.0" />
+      <point x="0.0" y="18.5" />
     </edge>
     <edge source="users.Patron" target="users.PatronInterface">
-      <point x="-9.636363636363626" y="-18.5" />
-      <point x="843.1613072929249" y="592.0" />
-      <point x="782.6510695187166" y="592.0" />
-      <point x="0.0" y="18.5" />
+      <point x="-42.400000000000034" y="-18.5" />
+      <point x="1147.1213899584077" y="321.0" />
+      <point x="1127.0213899584078" y="321.0" />
+      <point x="41.0" y="18.5" />
     </edge>
     <edge source="graphicalUI.MainPage" target="materials.Document">
-      <point x="56.4375" y="-18.5" />
-      <point x="1450.7760695187164" y="1073.0" />
-      <point x="1921.18411645544" y="1073.0" />
-      <point x="1921.18411645544" y="144.0" />
-      <point x="792.786753796312" y="144.0" />
-      <point x="62.117647058823536" y="18.5" />
+      <point x="-56.4375" y="-18.5" />
+      <point x="1489.1157081402262" y="1053.0" />
+      <point x="0.0" y="1053.0" />
+      <point x="0.0" y="144.0" />
+      <point x="739.5145876411175" y="144.0" />
+      <point x="-62.117647058823536" y="18.5" />
     </edge>
     <edge source="users.LibrarianInterface" target="materials.Document">
-      <point x="0.0" y="-18.5" />
-      <point x="734.9010695187166" y="224.0" />
-      <point x="730.6691067374885" y="224.0" />
-      <point x="0.0" y="18.5" />
+      <point x="44.75000000000006" y="-18.5" />
+      <point x="1334.953208140226" y="194.0" />
+      <point x="848.2204699940587" y="194.0" />
+      <point x="46.58823529411768" y="18.5" />
     </edge>
     <edge source="graphicalUI.BookSelector" target="graphicalUI.SelectorIntent">
       <point x="56.625" y="-18.5" />
-      <point x="1512.8385695187164" y="966.0" />
-      <point x="1794.43411645544" y="966.0" />
+      <point x="1749.1183458110522" y="936.0" />
+      <point x="1747.2433458110522" y="936.0" />
       <point x="-38.75" y="18.5" />
     </edge>
     <edge source="tools.Typetester" target="materials.Book">
       <point x="-33.0" y="-18.5" />
-      <point x="810.3510695187165" y="956.0" />
-      <point x="283.125" y="956.0" />
+      <point x="571.4919781937018" y="926.0" />
+      <point x="277.59068627450984" y="926.0" />
+      <point x="277.59068627450984" y="819.0" />
+      <point x="360.34068627450984" y="819.0" />
       <point x="-36.375" y="18.5" />
     </edge>
     <edge source="tools.TypeTesterIntarface" target="users.Librarian">
-      <point x="38.59999999999991" y="-18.5" />
-      <point x="905.2277264674319" y="789.0" />
-      <point x="991.7543703845174" y="789.0" />
-      <point x="991.7543703845174" y="505.0" />
-      <point x="1011.5302361853832" y="505.0" />
-      <point x="0.0" y="18.5" />
+      <point x="77.20000000000005" y="-18.5" />
+      <point x="461.7906862745099" y="819.0" />
+      <point x="1133.828208140226" y="819.0" />
+      <point x="-45.375" y="18.5" />
     </edge>
     <edge source="graphicalUI.BookSelector" target="graphicalUI.ServerAPI">
       <point x="-56.625" y="-18.5" />
-      <point x="1399.5885695187164" y="916.0" />
-      <point x="1151.1510695187167" y="916.0" />
-      <point x="50.400000000000034" y="18.5" />
+      <point x="1635.8683458110522" y="916.0" />
+      <point x="1575.3018693998815" y="916.0" />
+      <point x="50.39999999999998" y="18.5" />
     </edge>
     <edge source="graphicalUI.ServerAPI" target="users.Patron">
-      <point x="0.0" y="-18.5" />
-      <point x="1100.7510695187166" y="729.0" />
-      <point x="895.1976709292885" y="729.0" />
-      <point x="42.400000000000034" y="18.5" />
+      <point x="45.81818181818187" y="-18.5" />
+      <point x="1570.7200512180634" y="809.0" />
+      <point x="1582.546739453357" y="809.0" />
+      <point x="1582.546739453357" y="398.0" />
+      <point x="1237.703208140226" y="398.0" />
+      <point x="48.181818181818244" y="18.5" />
     </edge>
     <edge source="users.PatronInterface" target="users.Librarian">
-      <point x="41.0" y="-18.5" />
-      <point x="823.6510695187166" y="505.0" />
-      <point x="959.6730933282404" y="505.0" />
-      <point x="-51.85714285714283" y="18.5" />
+      <point x="-41.0" y="18.5" />
+      <point x="1045.0213899584078" y="612.0" />
+      <point x="1165.7587636957815" y="612.0" />
+      <point x="-13.444444444444457" y="-18.5" />
     </edge>
     <edge source="tools.SetManager" target="users.Patron">
-      <point x="-53.625" y="18.5" />
-      <point x="885.9885695187165" y="408.0" />
-      <point x="875.1510695187166" y="408.0" />
-      <point x="875.1510695187166" y="582.0" />
-      <point x="852.7976709292884" y="582.0" />
-      <point x="0.0" y="-18.5" />
+      <point x="28.600000000000023" y="-18.5" />
+      <point x="950.4418599524665" y="515.0" />
+      <point x="1023.0213899584077" y="515.0" />
+      <point x="1023.0213899584077" y="418.0" />
+      <point x="1160.6122990493168" y="418.0" />
+      <point x="-28.909090909090935" y="18.5" />
     </edge>
     <edge source="tools.SetManagerInterface" target="users.Patron">
-      <point x="-50.25" y="18.5" />
-      <point x="573.6510695187166" y="612.0" />
-      <point x="823.8885800201975" y="612.0" />
-      <point x="-28.909090909090935" y="-18.5" />
+      <point x="50.25" y="-18.5" />
+      <point x="962.2713899584077" y="408.0" />
+      <point x="1150.9759354129533" y="408.0" />
+      <point x="-38.54545454545456" y="18.5" />
     </edge>
     <edge source="users.PatronInterface" target="materials.Document">
-      <point x="-41.0" y="-18.5" />
-      <point x="741.6510695187166" y="505.0" />
-      <point x="512.9010695187166" y="505.0" />
-      <point x="512.9010695187166" y="214.0" />
-      <point x="715.1396949727826" y="214.0" />
-      <point x="-15.529411764705856" y="18.5" />
+      <point x="0.0" y="-18.5" />
+      <point x="1086.0213899584078" y="224.0" />
+      <point x="824.9263523469999" y="224.0" />
+      <point x="23.294117647058783" y="18.5" />
     </edge>
     <edge source="graphicalUI.ServerAPI" target="users.Librarian">
-      <point x="22.909090909090935" y="-18.5" />
-      <point x="1123.6601604278076" y="709.0" />
-      <point x="1078.469176683882" y="709.0" />
-      <point x="1078.469176683882" y="495.0" />
-      <point x="1063.387379042526" y="495.0" />
-      <point x="51.85714285714289" y="18.5" />
+      <point x="11.454545454545496" y="-18.5" />
+      <point x="1536.356414854427" y="729.0" />
+      <point x="1224.578208140226" y="729.0" />
+      <point x="45.375" y="18.5" />
     </edge>
     <edge source="materials.Document" target="materials.DocumentInterface">
       <point x="0.0" y="-18.5" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="graphicalUI.MainPage" target="graphicalUI.ServerAPI">
-      <point x="-56.4375" y="-18.5" />
-      <point x="1337.9010695187164" y="1073.0" />
-      <point x="994.6510695187166" y="1073.0" />
-      <point x="994.6510695187166" y="936.0" />
-      <point x="1050.3510695187165" y="936.0" />
-      <point x="-50.39999999999998" y="18.5" />
+      <point x="8.0625" y="-18.5" />
+      <point x="1553.6157081402262" y="1023.0" />
+      <point x="1606.4933458110522" y="1023.0" />
+      <point x="1606.4933458110522" y="926.0" />
+      <point x="1550.1018693998817" y="926.0" />
+      <point x="25.200000000000045" y="18.5" />
     </edge>
     <edge source="tools.Typetester" target="tools.TypeTesterIntarface">
-      <point x="11.0" y="-18.5" />
-      <point x="854.3510695187165" y="966.0" />
-      <point x="866.627726467432" y="966.0" />
+      <point x="-11.0" y="-18.5" />
+      <point x="593.4919781937018" y="916.0" />
+      <point x="384.59068627450984" y="916.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="graphicalUI.ServerAPI" target="materials.Document">
-      <point x="34.363636363636374" y="-18.5" />
-      <point x="1135.1147058823528" y="789.0" />
-      <point x="1245.6516719935832" y="789.0" />
-      <point x="1245.6516719935832" y="184.0" />
-      <point x="761.7279302669003" y="184.0" />
-      <point x="31.058823529411825" y="18.5" />
+      <point x="57.27272727272725" y="-18.5" />
+      <point x="1582.174596672609" y="819.0" />
+      <point x="1593.546739453357" y="819.0" />
+      <point x="1593.546739453357" y="184.0" />
+      <point x="855.9851758764116" y="184.0" />
+      <point x="54.35294117647061" y="18.5" />
     </edge>
     <edge source="graphicalUI.ServerAPI" target="materials.JournalArticle">
       <point x="-57.27272727272725" y="-18.5" />
-      <point x="1043.4783422459893" y="779.0" />
-      <point x="127.5" y="779.0" />
+      <point x="1467.6291421271544" y="789.0" />
+      <point x="277.25220089126594" y="789.0" />
       <point x="51.0" y="18.5" />
     </edge>
     <edge source="tools.Typetester" target="materials.AudioVideoMaterial">
-      <point x="55.0" y="-18.5" />
-      <point x="898.3510695187165" y="946.0" />
-      <point x="1628.9694855253674" y="946.0" />
-      <point x="1628.9694855253674" y="829.0" />
-      <point x="1567.56833866025" y="829.0" />
-      <point x="82.08333333333326" y="18.5" />
+      <point x="11.0" y="-18.5" />
+      <point x="615.4919781937018" y="896.0" />
+      <point x="702.2938675579326" y="896.0" />
+      <point x="-24.625" y="18.5" />
     </edge>
     <edge source="users.User" target="users.UserInterface">
       <point x="0.0" y="-18.5" />
+      <point x="1391.453208140226" y="234.0" />
+      <point x="1438.7736781342849" y="234.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="tools.SetManager" target="tools.SetManagerInterface">
-      <point x="-47.66666666666663" y="-18.5" />
-      <point x="891.9469028520498" y="306.0" />
-      <point x="674.1510695187166" y="306.0" />
-      <point x="50.25" y="18.5" />
+      <point x="0.0" y="-18.5" />
+      <point x="921.8418599524665" y="525.0" />
+      <point x="912.0213899584077" y="525.0" />
+      <point x="0.0" y="18.5" />
     </edge>
     <edge source="users.Librarian" target="users.Patron">
-      <point x="-17.285714285714278" y="18.5" />
-      <point x="994.2445218996688" y="495.0" />
-      <point x="977.252947624271" y="495.0" />
-      <point x="977.252947624271" y="612.0" />
-      <point x="881.7067618383794" y="612.0" />
-      <point x="28.909090909090935" y="-18.5" />
+      <point x="0.0" y="-18.5" />
+      <point x="1179.203208140226" y="602.0" />
+      <point x="1154.8117647058823" y="602.0" />
+      <point x="1154.8117647058823" y="438.0" />
+      <point x="1179.885026322044" y="438.0" />
+      <point x="-9.636363636363626" y="18.5" />
     </edge>
     <edge source="graphicalUI.UserCredentials" target="graphicalUI.ServerAPI">
       <point x="41.49999999999994" y="-18.5" />
-      <point x="1169.3091164554398" y="936.0" />
-      <point x="1100.7510695187166" y="936.0" />
+      <point x="1554.4933458110522" y="936.0" />
+      <point x="1524.9018693998814" y="936.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="graphicalUI.BookSelector" target="users.User">
       <point x="-18.875" y="-18.5" />
-      <point x="1437.3385695187164" y="906.0" />
-      <point x="1215.8016719935833" y="906.0" />
-      <point x="1215.8016719935833" y="398.0" />
-      <point x="1143.9135695187165" y="398.0" />
+      <point x="1673.6183458110522" y="936.0" />
+      <point x="1686.9933458110522" y="936.0" />
+      <point x="1686.9933458110522" y="321.0" />
+      <point x="1428.253208140226" y="321.0" />
       <point x="36.80000000000001" y="18.5" />
     </edge>
-    <edge source="users.Librarian" target="tools.SetManager">
-      <point x="-30.25" y="-18.5" />
-      <point x="981.2802361853832" y="388.0" />
-      <point x="957.4885695187165" y="388.0" />
-      <point x="17.875" y="18.5" />
-    </edge>
     <edge source="graphicalUI.MainPage" target="graphicalUI.BookSelector">
-      <point x="24.1875" y="-18.5" />
-      <point x="1418.5260695187164" y="1053.0" />
-      <point x="1493.9635695187164" y="1053.0" />
+      <point x="40.3125" y="-18.5" />
+      <point x="1585.8657081402262" y="1043.0" />
+      <point x="1730.2433458110522" y="1043.0" />
       <point x="37.75" y="18.5" />
     </edge>
+    <edge source="users.Librarian" target="tools.SetManager">
+      <point x="-40.333333333333314" y="-18.5" />
+      <point x="1138.8698748068928" y="632.0" />
+      <point x="886.0918599524665" y="632.0" />
+      <point x="-35.75" y="18.5" />
+    </edge>
     <edge source="users.Librarian" target="users.LibrarianInterface">
-      <point x="-50.416666666666686" y="-18.5" />
-      <point x="961.1135695187165" y="398.0" />
-      <point x="779.6510695187166" y="398.0" />
-      <point x="44.75" y="18.5" />
+      <point x="26.888888888888914" y="-18.5" />
+      <point x="1206.092097029115" y="632.0" />
+      <point x="1290.203208140226" y="632.0" />
+      <point x="0.0" y="18.5" />
     </edge>
     <edge source="tools.TypeTesterIntarface" target="materials.AudioVideoMaterial">
-      <point x="77.20000000000005" y="-18.5" />
-      <point x="943.8277264674321" y="799.0" />
-      <point x="1403.4016719935835" y="799.0" />
-      <point x="-82.08333333333326" y="18.5" />
+      <point x="38.59999999999991" y="-18.5" />
+      <point x="423.19068627450974" y="809.0" />
+      <point x="653.0438675579326" y="809.0" />
+      <point x="-73.875" y="18.5" />
     </edge>
     <edge source="materials.Book" target="materials.BookInterface">
-      <point x="32.33333333333337" y="-18.5" />
-      <point x="351.83333333333337" y="632.0" />
-      <point x="407.5" y="632.0" />
+      <point x="0.0" y="-18.5" />
+      <point x="396.71568627450984" y="652.0" />
+      <point x="399.0855342245992" y="652.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="tools.Typetester" target="users.Patron">
-      <point x="-11.0" y="-18.5" />
-      <point x="832.3510695187165" y="946.0" />
-      <point x="759.627726467432" y="946.0" />
-      <point x="759.627726467432" y="829.0" />
-      <point x="810.3976709292886" y="829.0" />
-      <point x="-42.39999999999998" y="18.5" />
+      <point x="55.0" y="-18.5" />
+      <point x="659.4919781937018" y="916.0" />
+      <point x="1417.153208140226" y="916.0" />
+      <point x="1417.153208140226" y="428.0" />
+      <point x="1208.794117231135" y="428.0" />
+      <point x="19.272727272727252" y="18.5" />
     </edge>
     <edge source="materials.JournalArticle" target="materials.Document">
-      <point x="0.0" y="-18.5" />
-      <point x="76.5" y="164.0" />
-      <point x="676.3161655610179" y="164.0" />
-      <point x="-54.35294117647061" y="18.5" />
+      <point x="51.0" y="-18.5" />
+      <point x="277.25220089126594" y="652.0" />
+      <point x="284.60962525252546" y="652.0" />
+      <point x="284.60962525252546" y="164.0" />
+      <point x="755.0439994058233" y="164.0" />
+      <point x="-46.58823529411768" y="18.5" />
     </edge>
     <edge source="tools.Typetester" target="materials.JournalArticle">
       <point x="-55.0" y="-18.5" />
-      <point x="788.3510695187165" y="966.0" />
-      <point x="87.80476914153337" y="966.0" />
-      <point x="87.80476914153337" y="829.0" />
-      <point x="25.5" y="829.0" />
+      <point x="549.4919781937018" y="936.0" />
+      <point x="203.4919781937018" y="936.0" />
+      <point x="203.4919781937018" y="819.0" />
+      <point x="175.25220089126594" y="819.0" />
       <point x="-51.0" y="18.5" />
     </edge>
     <edge source="users.Librarian" target="materials.Document">
-      <point x="10.083333333333314" y="-18.5" />
-      <point x="1021.6135695187165" y="194.0" />
-      <point x="753.9632243845473" y="194.0" />
-      <point x="23.294117647058783" y="18.5" />
-    </edge>
-    <edge source="graphicalUI.ServerAPI" target="materials.Book">
-      <point x="-45.81818181818181" y="-18.5" />
-      <point x="1054.9328877005346" y="769.0" />
-      <point x="331.625" y="769.0" />
-      <point x="12.125" y="18.5" />
-    </edge>
-    <edge source="tools.SetManagerInterface" target="materials.Document">
-      <point x="0.0" y="-18.5" />
-      <point x="623.9010695187166" y="224.0" />
-      <point x="722.9044008551356" y="224.0" />
+      <point x="-53.77777777777777" y="-18.5" />
+      <point x="1125.4254303624482" y="642.0" />
+      <point x="782.2566840760547" y="642.0" />
+      <point x="782.2566840760547" y="214.0" />
+      <point x="793.8675288175882" y="214.0" />
       <point x="-7.764705882352928" y="18.5" />
     </edge>
+    <edge source="graphicalUI.ServerAPI" target="materials.Book">
+      <point x="-34.363636363636374" y="-18.5" />
+      <point x="1490.5382330362452" y="769.0" />
+      <point x="433.09068627450984" y="769.0" />
+      <point x="36.375" y="18.5" />
+    </edge>
+    <edge source="tools.SetManagerInterface" target="materials.Document">
+      <point x="-50.25" y="-18.5" />
+      <point x="861.7713899584077" y="234.0" />
+      <point x="817.161646464647" y="234.0" />
+      <point x="15.529411764705856" y="18.5" />
+    </edge>
     <edge source="graphicalUI.MainPage" target="graphicalUI.UserCredentials">
-      <point x="-40.3125" y="-18.5" />
-      <point x="1354.0260695187164" y="1063.0" />
-      <point x="1086.3091164554398" y="1063.0" />
-      <point x="-41.5" y="18.5" />
+      <point x="-8.0625" y="-18.5" />
+      <point x="1537.4907081402262" y="1013.0" />
+      <point x="1554.4933458110522" y="1013.0" />
+      <point x="41.49999999999994" y="18.5" />
     </edge>
     <edge source="tools.TypeTesterIntarface" target="materials.Book">
-      <point x="-38.59999999999991" y="-18.5" />
-      <point x="828.0277264674321" y="809.0" />
-      <point x="307.375" y="809.0" />
+      <point x="0.0" y="-18.5" />
       <point x="-12.125" y="18.5" />
+    </edge>
+    <edge source="users.LibrarianInterface" target="users.Patron">
+      <point x="-44.74999999999994" y="-18.5" />
+      <point x="1245.453208140226" y="438.0" />
+      <point x="1199.1577535947713" y="438.0" />
+      <point x="9.636363636363626" y="18.5" />
+    </edge>
+    <edge source="users.Patron" target="materials.Document">
+      <point x="-21.200000000000045" y="-18.5" />
+      <point x="1168.3213899584077" y="321.0" />
+      <point x="1178.5213899584078" y="321.0" />
+      <point x="1178.5213899584078" y="214.0" />
+      <point x="832.6910582293528" y="214.0" />
+      <point x="31.05882352941171" y="18.5" />
     </edge>
     <edge source="tools.Typetester" target="users.Librarian">
       <point x="33.0" y="-18.5" />
-      <point x="876.3510695187165" y="926.0" />
-      <point x="1027.2510695187166" y="926.0" />
-      <point x="1027.2510695187166" y="505.0" />
-      <point x="1028.8159504710975" y="505.0" />
-      <point x="17.285714285714278" y="18.5" />
-    </edge>
-    <edge source="users.Patron" target="materials.Document">
-      <point x="-38.54545454545456" y="-18.5" />
-      <point x="814.2522163838339" y="622.0" />
-      <point x="505.1363636363636" y="622.0" />
-      <point x="505.1363636363636" y="204.0" />
-      <point x="707.3749890904297" y="204.0" />
-      <point x="-23.294117647058783" y="18.5" />
-    </edge>
-    <edge source="users.LibrarianInterface" target="users.Patron">
-      <point x="-44.75" y="18.5" />
-      <point x="690.1510695187166" y="602.0" />
-      <point x="833.5249436565612" y="602.0" />
-      <point x="-19.27272727272731" y="-18.5" />
-    </edge>
-    <edge source="materials.AudioVideoMaterialTest" target="materials.AudioVideoMaterial">
-      <point x="-56.0" y="-18.5" />
-      <point x="1450.4694855253674" y="829.0" />
-      <point x="1501.9016719935835" y="829.0" />
-      <point x="16.416666666666742" y="18.5" />
+      <point x="637.4919781937018" y="906.0" />
+      <point x="1164.078208140226" y="906.0" />
+      <point x="-15.125" y="18.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7585585585585586" x="829.5" y="545.0" />
-  <SelectedNodes>
-    <node>materials.Book</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic Group" zoom="0.7585585585585586" x="830.0" y="545.0" />
+  <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
