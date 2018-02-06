@@ -2,7 +2,8 @@ package materials;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BookTest {
     /**
@@ -10,8 +11,8 @@ class BookTest {
      */
     @Test
     void equals() {
-        Book a = new Book("gfdghsjkgh", "HJGH", 567, false, 1234);
-        Book b = new Book("gfdghsjkgh", "HJGH", 867, false, 1234);
+        Book a = new Book("gfdghsjkgh", "HJGH", 567, false, true, 1234);
+        Book b = new Book("gfdghsjkgh", "HJGH", 867, false, true, 1234);
         a.setEditionYear(2003);
         b.setEditionYear(2003);
 
@@ -24,9 +25,9 @@ class BookTest {
     }
 
     @Test
-    void equals001(){
-        Book a = new Book("gfdghsjkgh", "HJGH", 567, false, 1234);
-        Book b = new Book("gfdghsjkgh", "HJGH", 867, false, 1234);
+    void equals001() {
+        Book a = new Book("gfdghsjkgh", "HJGH", 567, false, true, 1234);
+        Book b = new Book("gfdghsjkgh", "HJGH", 867, false, true, 1234);
         a.setEditionYear(2003);
         b.setEditionYear(2003);
 

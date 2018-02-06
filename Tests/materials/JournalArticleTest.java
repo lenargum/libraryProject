@@ -2,7 +2,8 @@ package materials;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JournalArticleTest {
     /**
@@ -12,8 +13,8 @@ class JournalArticleTest {
      */
     @Test
     void equals() {
-        JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300 ,true);
-        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 122456, 300, true);
+        JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300, true, true);
+        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 122456, 300, true, true);
 
         a.setJournalTitle("DerLazerDrucer");
         b.setJournalTitle("DerLazerDrucer");
@@ -26,8 +27,8 @@ class JournalArticleTest {
 
     @Test
     void equals001() {
-        JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300 ,true);
-        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300, true);
+        JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300, true, true);
+        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300, true, true);
 
         a.setJournalTitle("DerLazerDrucer");
         b.setJournalTitle("Drukarka");
@@ -38,9 +39,9 @@ class JournalArticleTest {
     }
 
     @Test
-    void equals002(){
-        JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300 ,true);
-        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 122456, 300, true);
+    void equals002() {
+        JournalArticle a = new JournalArticle("SomeTittle", "author1, author2, author 3", 123456, 300, true, true);
+        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 122456, 300, true, true);
 
         a.setJournalTitle("DerLazerDrucer");
         b.setJournalTitle("DerLazerDrucer");
@@ -52,9 +53,9 @@ class JournalArticleTest {
     }
 
     @Test
-    void equals003(){
-        JournalArticle a = new JournalArticle("SomeTittle", "author 3, author1, author2", 123456, 300 ,true);
-        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 122456, 300, true);
+    void equals003() {
+        JournalArticle a = new JournalArticle("SomeTittle", "author 3, author1, author2", 123456, 300, true, true);
+        JournalArticle b = new JournalArticle("SomeTittle", "author1, author2, author 3", 122456, 300, true, true);
 
         a.setJournalTitle("DerLazerDrucer");
         b.setJournalTitle("DerLazerDrucer");
