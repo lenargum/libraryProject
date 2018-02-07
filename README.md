@@ -1,6 +1,6 @@
-# Library Managing System
+# InLibrary Manager
 
-A course project.
+A course project - Library managing system.
 
 Checkout the [Projects](https://github.com/lenargum/libraryProject/projects) tab for more info about current tasks.
 
