@@ -109,25 +109,69 @@ class MainTests {
     @Test
     void TestCase06(){
         Librarian librarian = new Librarian("Tatyana", "Innopolis", "89185678909", 1);
+        Patron p = new Patron("Giancarlo", "Innopolis", "123456789000", "faculty", librarian.getListOfPatrons().size());
 
+        librarian.registerPatron(p);
+
+        Book A = new Book("Computer Architecture", "Tanenbaum", librarian.getListOfDocuments().size(), true, 2000);
+        librarian.addDocumentInLibrary(A);
+
+        Book B = new Book("Computer Architecture", "Tanenbaum", librarian.getListOfDocuments().size(), true, 2000);
+        librarian.addDocumentInLibrary(B);
+
+        p.takeDocument(A.getDocID(), librarian);
+        assertTrue(p.getListOfDocumentsPatron().size() == 1);
+        System.out.println("Giancarlo successfully took first copy of CA textbook");
+        p.takeDocument(A.getDocID(), librarian);
+        assertFalse(p.getListOfDocumentsPatron().size() == 2);
+        System.out.println("Even dean cannot take two copies of the same book! :ь");
     }
 
     @Test
     void TestCase07(){
         Librarian librarian = new Librarian("Tatyana", "Innopolis", "89185678909", 1);
 
+        Patron p = new Patron("Giancarlo", "Innopolis", "123456789000", "faculty", librarian.getListOfPatrons().size());
+        librarian.registerPatron(p);
+        Patron s = new Patron("Madina", "Innopolis", "123456789000", "student", librarian.getListOfPatrons().size());
+        librarian.registerPatron(s);
+
+        Book A = new Book("Computer Architecture", "Tanenbaum", librarian.getListOfDocuments().size(), true, 2000);
+        librarian.addDocumentInLibrary(A);
+
+        Book B = new Book("Computer Architecture", "Tanenbaum", librarian.getListOfDocuments().size(), true, 2000);
+        librarian.addDocumentInLibrary(B);
+
+        s.takeDocument(A.getDocID(), librarian);
+        assertTrue(s.getListOfDocumentsPatron().size() == 1);
+        System.out.println("Madina successfully took the document!");
+
+        p.takeDocument(A.getDocID(), librarian);
+        assertTrue(p.getListOfDocumentsPatron().size() == 1);
+        System.out.println("Giancarlo successfully took the document!");
+
     }
 
     @Test
     void TestCase08(){
         Librarian librarian = new Librarian("Tatyana", "Innopolis", "89185678909", 1);
+        Patron p = new Patron("Giancarlo", "Innopolis", "123456789000", "faculty", librarian.getListOfPatrons().size());
+        librarian.registerPatron(p);
+        Patron s = new Patron("Madina", "Innopolis", "123456789000", "student", librarian.getListOfPatrons().size());
+        librarian.registerPatron(s);
 
+        Book A = new Book("Computer Architecture", "Tanenbaum", librarian.getListOfDocuments().size(), true, 2000);
+        librarian.addDocumentInLibrary(A);
+
+        s.takeDocument(A.getDocID(), librarian);
+        assertTrue(s.getListOfDocumentsPatron().size() == 1);
+        System.out.println("Madina successfully took the document!");
     }
 
     @Test
     void TestCase09(){
         Librarian librarian = new Librarian("Tatyana", "Innopolis", "89185678909", 1);
-
+        System.out.println("This test is same as case 8, but it also needs returning, that is part of delivery 2, not 1");
     }
 
     @Test
@@ -136,6 +180,15 @@ class MainTests {
         Patron p = new Patron("Giancarlo", "Innopolis", "123456789000", "faculty", librarian.getListOfPatrons().size());
 
         librarian.registerPatron(p);
+
+        Book A = new Book("Helpful Formulas", "Vygodsky", librarian.getListOfDocuments().size(), true, 2000);
+        librarian.addDocumentInLibrary(A);
+        librarian.getListOfDocuments().get(A.getDocID()).setReference(true);
+
+        p.takeDocument(A.getDocID(), librarian);
+        assertFalse(p.getRequest(A.getDocID(), librarian));
+        assertTrue(p.getListOfDocumentsPatron().size() == 0);
+        System.out.println("Even dean cannot take reference books! :ь");
 
     }
 
