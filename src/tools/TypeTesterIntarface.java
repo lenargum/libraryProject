@@ -10,6 +10,7 @@ import users.Patron;
  * interface describing class that checks type of current object
  * (not bug, but feature)
  */
+@Deprecated
 public interface TypeTesterIntarface {
 	/**
 	 * checks type librarian
