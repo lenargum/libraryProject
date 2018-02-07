@@ -9,6 +9,7 @@ import users.Patron;
 /**
  * class implements "Typetester" in tools.Typetester
  */
+@Deprecated
 public class Typetester implements TypeTesterIntarface {
 	private String Type;
 
