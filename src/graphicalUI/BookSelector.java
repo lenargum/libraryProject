@@ -125,6 +125,9 @@ public class BookSelector {
 			case ARTICLE:
 				availableItems = extractTitles(server.getJournalArticles());
 				break;
+			case ALL:
+				availableItems = extractTitles(server.getDocuments());
+				break;
 			default:
 				availableItems = FXCollections.emptyObservableList();
 		}

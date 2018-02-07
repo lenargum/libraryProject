@@ -38,7 +38,7 @@ public class MainPage extends Application {
 		set title and minimal window size.
 		*/
 		AnchorPane welcomeLayout = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
-		primaryStage.setTitle("InnoLibrary Manager");
+		primaryStage.setTitle("InLibrary Manager");
 		primaryStage.setMinWidth(500);
 		primaryStage.setMinHeight(600);
 
@@ -119,7 +119,7 @@ public class MainPage extends Application {
 		pickBookButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
 		pickArticleButton.setOnAction(event -> bookSelector.show(SelectorIntent.ARTICLE, server));
 		pickAVButton.setOnAction(event -> bookSelector.show(SelectorIntent.AUDIOVIDEO, server));
-		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.BOOK, server));
+		pickDocButton.setOnAction(event -> bookSelector.show(SelectorIntent.ALL, server));
 
 		Button refreshListButton = (Button) welcomeLayout.lookup("#refreshListButton");
 		refreshListButton.setOnAction(event -> refreshList(yourDocs, extractTitles(server.getMyDocs())));

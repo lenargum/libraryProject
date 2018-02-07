@@ -6,5 +6,6 @@ package graphicalUI;
 public enum SelectorIntent {
 	BOOK,
 	ARTICLE,
-	AUDIOVIDEO
+	AUDIOVIDEO,
+	ALL
 }

@@ -2,7 +2,6 @@ package users;
 
 import materials.Document;
 
-import javax.print.Doc;
 import java.util.LinkedList;
 
 /**
@@ -94,9 +93,9 @@ public class Patron extends User implements PatronInterface {
 	@Override
 	public boolean getRequest(int idDocument, Librarian librarian) {
 		//TODO: Request to take a book from the library
-		if(librarian.getListOfDocuments().get(idDocument).isReference()) return false;
-		if(librarian.getListOfDocuments().get(idDocument).isChecked()) return false;
-		if(hasCopy(librarian.getListOfDocuments().get(idDocument))) return false;
+		if (librarian.getListOfDocuments().get(idDocument).isReference()) return false;
+		if (librarian.getListOfDocuments().get(idDocument).isChecked()) return false;
+		if (hasCopy(librarian.getListOfDocuments().get(idDocument))) return false;
 		if (this.getStatus() == "faculty") {
 			return true;
 		} else {
@@ -157,17 +156,17 @@ public class Patron extends User implements PatronInterface {
 	 * @return true if one user is copy of another, false otherwise
 	 */
 	public boolean equals(Patron user) {
-		if(this == user) return false;
+		if (this == user) return false;
 		return this.getAddress().equals(user.getAddress()) &&
 				this.getName().equals(user.getName()) &&
 				this.getPhoneNumber().equals(user.getPhoneNumber()) &&
 				this.getStatus().equals(user.getStatus());
 	}
 
-	public boolean hasCopy(Document document){
+	public boolean hasCopy(Document document) {
 		boolean result = false;
 		int i = 0;
-		while(i < listOfDocumentsPatron.size() && !result){
+		while (i < listOfDocumentsPatron.size() && !result) {
 			result = listOfDocumentsPatron.get(i).equals(document);
 			i++;
 		}

@@ -127,7 +127,7 @@ public class Librarian extends User implements LibrarianInterface {
 	 * @return true if current user is copy of other
 	 */
 	public boolean equals(Librarian user) {
-		if(this == user) return false;
+		if (this == user) return false;
 		return this.getAddress().equals(user.getAddress()) &&
 				this.getName().equals(user.getName()) &&
 				this.getPhoneNumber().equals(user.getPhoneNumber());
