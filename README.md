@@ -18,3 +18,5 @@ Contains desktop app source code.
 
 ## Building
 This project was made using IntelliJ IDEA. Compile `MainPage` class. You may use `javac`, but it was not tested. Java 8 or newer is required. GUI may not compile on OpenJDK. Please, install FX module or use Oracle JDK instead.
+
+To log in use login **Name** and any password with length > 8.
