@@ -17,6 +17,16 @@ Contains desktop app source code.
 [Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
 
 ## Building
-This project was made using IntelliJ IDEA. Compile `MainPage` class. You may use `javac`, but it was not tested. Java 8 or newer is required. GUI may not compile on OpenJDK. Please, install FX module or use Oracle JDK instead.
+### Requirements
+- Java 8
+- FX module (for OpenJDK)
+- JUnit 5.0 (for tests)
 
+This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `MainPage` class. You may use `javac`, but it was not tested.
+
+GUI may not compile on OpenJDK. Please, install FX module or use Oracle JDK instead.
+
+**JUnit 5.0** is required for building and running tests.
+
+## Using
 To log in use login **Name** and any password with length > 8.
