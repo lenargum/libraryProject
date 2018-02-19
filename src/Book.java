@@ -23,9 +23,13 @@ public class Book extends Document{
      * @param Price
      * @param KeyWords
      */
-    public Book(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords){
+    public Book(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords, String Publisher, int Edition, boolean IsBestseller){
         super(ID, Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
+        setPublisher(Publisher);
+        setEdition(Edition);
+        setBestseller(IsBestseller);
     }
+
     /**
      * sets publisher of book
      * @param publisher

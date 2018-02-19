@@ -32,8 +32,13 @@ public class JournalArticle extends Document{
      * @param Price
      * @param KeyWords
      */
-    public JournalArticle(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords){
+    public JournalArticle(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords, String JournalName, String Publisher, String Issue, String Editor, Date PublicationDate){
         super(ID, Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
+        setJournalName(JournalName);
+        setPublisher(Publisher);
+        setIssue(Issue);
+        setEditor(Editor);
+        setPublicationDate(PublicationDate);
     }
 
     /**
