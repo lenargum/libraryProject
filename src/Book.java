@@ -13,6 +13,20 @@ public class Book extends Document{
     private boolean IsBestseller;
 
     /**
+     * constructor
+     * @param ID
+     * @param Title
+     * @param Authors
+     * @param IsAllowedForStudents
+     * @param NumberOfCopies
+     * @param IsReference
+     * @param Price
+     * @param KeyWords
+     */
+    public Book(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords){
+        super(ID, Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
+    }
+    /**
      * sets publisher of book
      * @param publisher
      */

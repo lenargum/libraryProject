@@ -1,3 +1,5 @@
+import java.security.Key;
+
 public abstract class Document {
     /**
      * ID of  document
@@ -32,6 +34,27 @@ public abstract class Document {
      */
     private String KeyWords;
 
+    /**
+     * constructor
+     * @param ID
+     * @param Title
+     * @param Authors
+     * @param IsAllowedForStudents
+     * @param NumberOfCopies
+     * @param IsReference
+     * @param Price
+     * @param KeyWords
+     */
+    public Document(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords){
+        setID(ID);
+        setTitle(Title);
+        setAuthors(Authors);
+        setAllowedForStudents(IsAllowedForStudents);
+        setNumberOfCopies(NumberOfCopies);
+        setReference(IsReference);
+        setPrice(Price);
+        setKeyWords(KeyWords);
+    }
 
     /**
      * sets ID of document
