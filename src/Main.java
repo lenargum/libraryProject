@@ -3,7 +3,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Database db = new Database();
         db.connect();
-
+        if (db.isConnected()) {
+            db.insertAV("how to be the best in your team", "Lenar Gumerov", true, 0, false, 0, "bestbookintheworld");
+            db.close();
+        }
     }
 }
 /*
