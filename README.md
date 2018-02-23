@@ -21,6 +21,7 @@ Contains desktop app source code.
 - Java 8
 - FX module (for OpenJDK)
 - JUnit 5.0 (for tests)
+- [JFoenix](https://github.com/jfoenixadmin/JFoenix) v. 8.0.1 (Material Design UI)
 
 This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `MainPage` class. You may use `javac`, but it was not tested.
 
