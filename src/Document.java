@@ -103,8 +103,15 @@ public abstract class Document {
      * @param author
      * @return true if author was among the authors created the document
      */
-    public boolean includesAuthor(String author){//TODO: write it!
-        return true;
+    public boolean includesAuthor(String author){
+        String[] authors;
+        authors = Authors.split(", ");
+        for (String a:authors
+             ) {
+            if(a.equals(author))
+                return true;
+        }
+        return false;
     }
     /**
      * @return list of authors created the document
@@ -186,8 +193,13 @@ public abstract class Document {
      * @param keyWord
      * @return
      */
-    public boolean includeKeyWord(String keyWord){//TODO: write it!
-        return true;
+    public boolean includeKeyWord(String keyWord){
+        String[] keywords = KeyWords.split(", ");
+        for (String k:keywords
+             ) {
+            if(k.equals(keyWord)) return true;
+        }
+        return false;
     }
     /**
      * @return keywords of document
