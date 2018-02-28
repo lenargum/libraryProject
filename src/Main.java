@@ -1,10 +1,24 @@
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
         Database db = new Database();
         db.connect();
         if (db.isConnected()) {
-            db.insertAV("how to be the best in your team", "Lenar Gumerov", true, 0, false, 0, "bestbookintheworld");
+            /*db.insertArticle("testing data", "Lenar Gumerov", true, 0,
+                    false, 0.5, "hate date","databases","somebody",
+                    "dafsafs","asdfasdf","2017-01-01");
+            */
+            //////////testing/////////////
+            /*
+            ArrayList<String> shit = db.getDocumentList();
+            for(String temp : shit) {
+                System.out.println(temp);
+            }
+            */
+            ArrayList<AudioVideoMaterial> ya = db.getAVList();
+            ArrayList<JournalArticle> zaebalsya = db.getArticleList();
             db.close();
         }
     }
