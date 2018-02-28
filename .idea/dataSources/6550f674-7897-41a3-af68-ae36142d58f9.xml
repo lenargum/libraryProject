@@ -918,50 +918,194 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="232" parent="3" name="users">
+    <table id="232" parent="3" name="documents">
+      <Comment>table for documents</Comment>
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="233" parent="3" name="users">
       <Comment>user data</Comment>
       <Engine>InnoDB</Engine>
     </table>
-    <column id="233" parent="232" name="user_id">
+    <column id="234" parent="232" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="234" parent="232" name="Name">
+    <column id="235" parent="232" name="name">
       <Position>2</Position>
-      <DataType>varchar(45)|0</DataType>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="235" parent="232" name="Phone">
+    <column id="236" parent="232" name="authors">
       <Position>3</Position>
-      <DataType>varchar(45)|0</DataType>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="236" parent="232" name="Address">
+    <column id="237" parent="232" name="is_allowed_for_students">
       <Position>4</Position>
+      <DataType>enum(&apos;true&apos;, &apos;false&apos;)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="238" parent="232" name="num_of_copies">
+      <Position>5</Position>
+      <DataType>int(10) unsigned zerofill|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="239" parent="232" name="is_reference">
+      <Position>6</Position>
+      <DataType>enum(&apos;true&apos;, &apos;false&apos;)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="240" parent="232" name="price">
+      <Position>7</Position>
+      <DataType>float|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="241" parent="232" name="keywords">
+      <Position>8</Position>
       <DataType>varchar(45)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="232" name="Status">
-      <Position>5</Position>
+    <column id="242" parent="232" name="type">
+      <Position>9</Position>
+      <DataType>enum(&apos;BOOK&apos;, &apos;AV&apos;, &apos;ARTICLE&apos;, &apos;FACULTY&apos;)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="243" parent="232" name="publisher">
+      <Position>10</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="244" parent="232" name="edition">
+      <Position>11</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="245" parent="232" name="bestseller">
+      <Position>12</Position>
+      <DataType>enum(&apos;true&apos;, &apos;false&apos;)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="246" parent="232" name="journal_name">
+      <Position>13</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="247" parent="232" name="issue">
+      <Position>14</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="248" parent="232" name="editor">
+      <Position>15</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="249" parent="232" name="publication_date">
+      <Position>16</Position>
+      <DataType>date|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="250" parent="232" name="doc_id_UNIQUE">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="251" parent="232" name="name_UNIQUE">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="252" parent="232" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="253" parent="232" name="doc_id_UNIQUE">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>doc_id_UNIQUE</UnderlyingIndexName>
+    </key>
+    <key id="254" parent="232" name="name_UNIQUE">
+      <ColNames>name</ColNames>
+      <UnderlyingIndexName>name_UNIQUE</UnderlyingIndexName>
+    </key>
+    <column id="255" parent="233" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="256" parent="233" name="login">
+      <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="238" parent="232" name="user_id_UNIQUE">
-      <ColNames>user_id</ColNames>
+    <column id="257" parent="233" name="password">
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="258" parent="233" name="status">
+      <Position>4</Position>
+      <DataType>enum(&apos;ADMIN&apos;, &apos;LIBRARIAN&apos;, &apos;STUDENT&apos;, &apos;FACULTY&apos;)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="259" parent="233" name="firstname">
+      <Position>5</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="260" parent="233" name="lastname">
+      <Position>6</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="261" parent="233" name="phone">
+      <Position>7</Position>
+      <DataType>char(15)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="262" parent="233" name="address">
+      <Position>8</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="263" parent="233" name="user_id_UNIQUE">
+      <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="239" parent="232" name="PRIMARY">
+    <index id="264" parent="233" name="login_UNIQUE">
+      <ColNames>login</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="265" parent="233" name="password_UNIQUE">
+      <ColNames>password</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="266" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>user_id</ColNames>
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="240" parent="232" name="user_id_UNIQUE">
-      <ColNames>user_id</ColNames>
+    <key id="267" parent="233" name="user_id_UNIQUE">
+      <ColNames>id</ColNames>
       <UnderlyingIndexName>user_id_UNIQUE</UnderlyingIndexName>
+    </key>
+    <key id="268" parent="233" name="login_UNIQUE">
+      <ColNames>login</ColNames>
+      <UnderlyingIndexName>login_UNIQUE</UnderlyingIndexName>
+    </key>
+    <key id="269" parent="233" name="password_UNIQUE">
+      <ColNames>password</ColNames>
+      <UnderlyingIndexName>password_UNIQUE</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

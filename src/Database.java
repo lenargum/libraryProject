@@ -1,7 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -109,8 +107,23 @@ public class Database {
     }
 
     //select
+
     private void execute(String MySQLStatement) throws SQLException {
         Statement statement = con.createStatement();
         statement.execute(MySQLStatement);
+    }
+
+    private ResultSet executeQuery(String MySQLStatement) throws SQLException {
+        Statement statement = con.createStatement();
+        return statement.executeQuery(MySQLStatement);
+    }
+
+    public ArrayList<String> getDocumentList() throws SQLException {
+        ResultSet documentSet = executeQuery("SELECT * FROM mydb.documents;");
+        ArrayList<String> documentsTitleList = new ArrayList<>();
+        while (documentSet.next()) {
+            documentsTitleList.add("\"" + documentSet.getString(2) + "\" " + documentSet.getString(3));
+        }
+        return documentsTitleList;
     }
 }
