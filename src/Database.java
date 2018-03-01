@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Database {
@@ -13,14 +15,14 @@ public class Database {
             }
 
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("org.sqlite.JDBC");
             } catch (ClassNotFoundException e) {
                 throw new Exception("Database driver not found");
             }
 
-            String connectionURL = "jdbc:mysql://localhost:1337/mydb?autoReconnect=true&useSSL=false";
+            String connectionURL = "jdbc:sqlite:library.db";
 
-            con = DriverManager.getConnection(connectionURL, "root", "qwerty");
+            con = DriverManager.getConnection(connectionURL);
             System.out.println("Connection successful");
         } catch (Exception e) {
 
@@ -99,6 +101,7 @@ public class Database {
     private void executeUpdate(String MySQLStatement) throws SQLException {
         Statement statement = con.createStatement();
         statement.executeUpdate(MySQLStatement);
+        statement.close();
     }
 
     //select
@@ -106,6 +109,7 @@ public class Database {
     private void execute(String MySQLStatement) throws SQLException {
         Statement statement = con.createStatement();
         statement.execute(MySQLStatement);
+        statement.close();
     }
 
     private ResultSet executeQuery(String MySQLStatement) throws SQLException {
@@ -114,7 +118,7 @@ public class Database {
     }
 
     public ArrayList<String> getDocumentList() throws SQLException {
-        ResultSet documentSet = executeQuery("SELECT * FROM mydb.documents");
+        ResultSet documentSet = executeQuery("SELECT * FROM documents");
         ArrayList<String> documentsTitleList = new ArrayList<>();
         while (documentSet.next()) {
             documentsTitleList.add("\"" + documentSet.getString(2) + "\" " + documentSet.getString(3));
@@ -123,7 +127,7 @@ public class Database {
     }
 
     public ArrayList<Book> getBookList() throws SQLException {
-        ResultSet bookSet = executeQuery("SELECT * FROM mydb.documents where type = \'BOOK\'");
+        ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\'");
         ArrayList<Book> bookList = new ArrayList<>();
         while(bookSet.next()) {
             bookList.add(new Book(bookSet.getInt(1),bookSet.getString(2),
@@ -135,7 +139,7 @@ public class Database {
     }
 
     public ArrayList<AudioVideoMaterial> getAVList() throws SQLException {
-        ResultSet AVSet = executeQuery("SELECT * FROM mydb.documents where type = \'AV\'");
+        ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
         ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
         while(AVSet.next()) {
             AVList.add(new AudioVideoMaterial(AVSet.getInt(1),AVSet.getString(2),
@@ -145,13 +149,13 @@ public class Database {
         return AVList;
     }
 
-    public ArrayList<JournalArticle> getArticleList() throws SQLException {
-        ResultSet articleSet = executeQuery("SELECT * FROM mydb.documents where type = \'ARTICLE\'");
+    public ArrayList<JournalArticle> getArticleList() throws SQLException, ParseException {
+        ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\'");
         ArrayList<JournalArticle> articleList = new ArrayList<>();
         while(articleSet.next()) {
             articleList.add(new JournalArticle(articleSet.getInt(1),articleSet.getString(2),
                     articleSet.getString(3),articleSet.getBoolean(4),articleSet.getInt(5),
-                    articleSet.getBoolean(6),articleSet.getDouble(7),articleSet.getString(8),articleSet.getString(13),articleSet.getString(10),articleSet.getString(14),articleSet.getString(15),articleSet.getDate(16)));
+                    articleSet.getBoolean(6),articleSet.getDouble(7),articleSet.getString(8),articleSet.getString(13),articleSet.getString(10),articleSet.getString(14),articleSet.getString(15),new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16))));
         }
         return articleList;
     }

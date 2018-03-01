@@ -11,12 +11,10 @@ public class Main {
                     "dafsafs","asdfasdf","2017-01-01");
             */
             //////////testing/////////////
-            /*
             ArrayList<String> shit = db.getDocumentList();
             for(String temp : shit) {
                 System.out.println(temp);
             }
-            */
             ArrayList<AudioVideoMaterial> ya = db.getAVList();
             ArrayList<JournalArticle> zaebalsya = db.getArticleList();
             db.close();
