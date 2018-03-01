@@ -7,42 +7,75 @@ public class Database {
 
     private Connection con;
 
+    /**
+     * connection process
+     */
     public void connect() {
         try {
             if (isConnected()) {
-                System.out.println("Already connected");
+                System.out.println("Database: Already connected");
                 return;
             }
 
             try {
                 Class.forName("org.sqlite.JDBC");
             } catch (ClassNotFoundException e) {
-                throw new Exception("Database driver not found");
+                throw new Exception("Database: Database driver not found");
             }
 
             String connectionURL = "jdbc:sqlite:library.db";
 
             con = DriverManager.getConnection(connectionURL);
-            System.out.println("Connection successful");
+            System.out.println("Database: Connection successful");
         } catch (Exception e) {
 
-            System.out.println("Connection failed");
+            System.out.println("Database: Connection failed");
         }
     }
 
+    /**
+     * @return is connected to database
+     */
     public boolean isConnected() {
         return this.con != null;
     }
 
+    /**
+     * closing connection
+     * (you should better do it after usage)
+     */
     public void close() {
         if (con != null) {
             try {
                 con.close();
+                System.out.println("Database: Connection closed");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
+
+
+    //basic methods
+    private void executeUpdate(String MySQLStatement) throws SQLException {
+        Statement statement = con.createStatement();
+        statement.executeUpdate(MySQLStatement);
+        statement.close();
+    }
+
+    private void execute(String MySQLStatement) throws SQLException {
+        Statement statement = con.createStatement();
+        statement.execute(MySQLStatement);
+        statement.close();
+    }
+
+    private ResultSet executeQuery(String MySQLStatement) throws SQLException {
+        Statement statement = con.createStatement();
+        return statement.executeQuery(MySQLStatement);
+    }
+
+
+    //main features: insertion
 
     public void insertUser(String login, String password, String status,
                            String firstname, String lastname, String phone, String address) throws SQLException {
@@ -50,6 +83,7 @@ public class Database {
                 " VALUES('" + login + "','" + password + "','" + status + "','" + firstname + "','" + lastname + "','" + phone + "','" + address + "')");
     }
 
+    //main insertion(other methods just implement it for custom types)
     public void insertDocument(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
                                boolean is_reference, double price, String keywords, String type, String publisher,
                                int edition, boolean bestseller, String journal_name, String issue, String editor,
@@ -60,7 +94,6 @@ public class Database {
                 " VALUES('" + name + "','" + authors + "','" + is_allowed_for_students + "'," + num_of_copies + ",'" + is_reference + "'," + price + ",'" + keywords + "','" + type + "','"
                 + publisher + "'," + edition + ",'" + bestseller + "','" + journal_name + "','" + issue + "','" + editor + "','" + publication_date + "')");
     }
-
 
     public void insertBook(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
                            boolean is_reference, double price, String keywords, String publisher,
@@ -87,6 +120,24 @@ public class Database {
                 , publisher, edition, false, journal_name, issue, editor, publication_date);
     }
 
+
+    /**
+     * insertion journal article in database
+     *
+     * @param name
+     * @param authors
+     * @param is_allowed_for_students
+     * @param num_of_copies
+     * @param is_reference
+     * @param price
+     * @param keywords
+     * @param journal_name
+     * @param publisher
+     * @param issue
+     * @param editor
+     * @param publication_date        date must be in format "yyyy-mm-dd"
+     * @throws SQLException
+     */
     public void insertArticle(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
                               boolean is_reference, double price, String keywords, String journal_name, String publisher,
                               String issue, String editor, String publication_date) throws SQLException {
@@ -97,25 +148,7 @@ public class Database {
     }
 
 
-    //insert,update,delete
-    private void executeUpdate(String MySQLStatement) throws SQLException {
-        Statement statement = con.createStatement();
-        statement.executeUpdate(MySQLStatement);
-        statement.close();
-    }
-
-    //select
-
-    private void execute(String MySQLStatement) throws SQLException {
-        Statement statement = con.createStatement();
-        statement.execute(MySQLStatement);
-        statement.close();
-    }
-
-    private ResultSet executeQuery(String MySQLStatement) throws SQLException {
-        Statement statement = con.createStatement();
-        return statement.executeQuery(MySQLStatement);
-    }
+    //main features: receiving lists
 
     public ArrayList<String> getDocumentList() throws SQLException {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
@@ -126,14 +159,23 @@ public class Database {
         return documentsTitleList;
     }
 
+    public ArrayList<String> getDocumentListWithId() throws SQLException {
+        ResultSet documentSet = executeQuery("SELECT * FROM documents");
+        ArrayList<String> documentsTitleList = new ArrayList<>();
+        while (documentSet.next()) {
+            documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" " + documentSet.getString(3));
+        }
+        return documentsTitleList;
+    }
+
     public ArrayList<Book> getBookList() throws SQLException {
         ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\'");
         ArrayList<Book> bookList = new ArrayList<>();
-        while(bookSet.next()) {
-            bookList.add(new Book(bookSet.getInt(1),bookSet.getString(2),
-                    bookSet.getString(3),bookSet.getBoolean(4),bookSet.getInt(5),
-                    bookSet.getBoolean(6),bookSet.getDouble(7),bookSet.getString(8),
-                    bookSet.getString(10),bookSet.getInt(11),bookSet.getBoolean(12)));
+        while (bookSet.next()) {
+            bookList.add(new Book(bookSet.getInt(1), bookSet.getString(2),
+                    bookSet.getString(3), bookSet.getBoolean(4), bookSet.getInt(5),
+                    bookSet.getBoolean(6), bookSet.getDouble(7), bookSet.getString(8),
+                    bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12)));
         }
         return bookList;
     }
@@ -141,10 +183,10 @@ public class Database {
     public ArrayList<AudioVideoMaterial> getAVList() throws SQLException {
         ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
         ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
-        while(AVSet.next()) {
-            AVList.add(new AudioVideoMaterial(AVSet.getInt(1),AVSet.getString(2),
-                    AVSet.getString(3),AVSet.getBoolean(4),AVSet.getInt(5),
-                    AVSet.getBoolean(6),AVSet.getDouble(7),AVSet.getString(8)));
+        while (AVSet.next()) {
+            AVList.add(new AudioVideoMaterial(AVSet.getInt(1), AVSet.getString(2),
+                    AVSet.getString(3), AVSet.getBoolean(4), AVSet.getInt(5),
+                    AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8)));
         }
         return AVList;
     }
@@ -152,11 +194,59 @@ public class Database {
     public ArrayList<JournalArticle> getArticleList() throws SQLException, ParseException {
         ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\'");
         ArrayList<JournalArticle> articleList = new ArrayList<>();
-        while(articleSet.next()) {
-            articleList.add(new JournalArticle(articleSet.getInt(1),articleSet.getString(2),
-                    articleSet.getString(3),articleSet.getBoolean(4),articleSet.getInt(5),
-                    articleSet.getBoolean(6),articleSet.getDouble(7),articleSet.getString(8),articleSet.getString(13),articleSet.getString(10),articleSet.getString(14),articleSet.getString(15),new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16))));
+        while (articleSet.next()) {
+            articleList.add(new JournalArticle(articleSet.getInt(1), articleSet.getString(2),
+                    articleSet.getString(3), articleSet.getBoolean(4), articleSet.getInt(5),
+                    articleSet.getBoolean(6), articleSet.getDouble(7), articleSet.getString(8), articleSet.getString(13), articleSet.getString(10), articleSet.getString(14), articleSet.getString(15), new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16))));
         }
         return articleList;
+    }
+
+    public void soutDocs() throws SQLException {
+        System.out.println("\nAll documents in database: ");
+        for (String temp : getDocumentListWithId()) {
+            System.out.println(temp);
+        }
+        System.out.println();
+    }
+
+
+    //main features: deletion
+
+    public void deleteUser(int id) throws SQLException {
+        this.executeUpdate("DELETE FROM users WHERE id=" + id);
+    }
+
+    public void deleteDocument(int id) throws SQLException {
+        this.executeUpdate("DELETE FROM documents WHERE id=" + id);
+    }
+
+
+    //main features: edit
+
+    public void editUserColumn(int id, String column, String value) throws SQLException {
+        String quotes1 = "";
+        String quotes2 = "";
+        try {
+            int temp = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            quotes1 = "\'";
+            quotes2 = "\'";
+        }
+        this.executeUpdate("UPDATE users " +
+                "SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
+    }
+
+    public void editDocumentColumn(int id, String column, String value) throws SQLException {
+        String quotes1 = "";
+        String quotes2 = "";
+        try {
+            int temp = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            quotes1 = "\'";
+            quotes2 = "\'";
+        }
+        this.executeUpdate("UPDATE documents " +
+                "SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
     }
 }
