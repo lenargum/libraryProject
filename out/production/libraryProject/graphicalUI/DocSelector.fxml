@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:controller="graphicalUI.DocSelector" prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<JFXTabPane layoutX="97.0" layoutY="117.0" minHeight="200.0" prefHeight="100.0" tabClosingPolicy="UNAVAILABLE"
+		            tabMaxHeight="60.0" tabMaxWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+		            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<tabs>
+				<Tab disable="true" text="      ">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+					</content>
+				</Tab>
+				<Tab closable="false" text="BOOKS">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+					</content>
+				</Tab>
+				<Tab closable="false" text="ARTICLES">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+					</content>
+				</Tab>
+				<Tab closable="false" text="AUDIO / VIDEO">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+					</content>
+				</Tab>
+			</tabs>
+		</JFXTabPane>
+		<JFXButton fx:id="goBackBtn" mnemonicParsing="false" prefHeight="0.0" prefWidth="45.0"
+		           style="-fx-background-color: #00000000;" text="&lt;" textFill="#fafafa" AnchorPane.topAnchor="-7.0">
+			<font>
+				<Font size="21.0"/>
+			</font>
+		</JFXButton>
+	</children>
+</AnchorPane>
