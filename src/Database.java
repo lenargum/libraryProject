@@ -120,23 +120,22 @@ public class Database {
                 , publisher, edition, false, journal_name, issue, editor, publication_date);
     }
 
-
     /**
      * insertion journal article in database
      *
-     * @param name
-     * @param authors
-     * @param is_allowed_for_students
-     * @param num_of_copies
-     * @param is_reference
-     * @param price
-     * @param keywords
-     * @param journal_name
-     * @param publisher
-     * @param issue
-     * @param editor
-     * @param publication_date        date must be in format "yyyy-mm-dd"
-     * @throws SQLException
+     * @param name article's title
+     * @param authors article's authors
+     * @param is_allowed_for_students is article allowed for students
+     * @param num_of_copies number of copies of article in library
+     * @param is_reference is this article reference or not
+     * @param price article's price
+     * @param keywords article's keywords for searching
+     * @param journal_name article's journal name
+     * @param publisher journal's author
+     * @param issue article's issue
+     * @param editor article's editor
+     * @param publication_date when article published (date must be in format "yyyy-mm-dd")
+     * @throws SQLException SQL Exception
      */
     public void insertArticle(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
                               boolean is_reference, double price, String keywords, String journal_name, String publisher,
@@ -145,6 +144,12 @@ public class Database {
         int edition = 0;
         insertDocument(name, authors, is_allowed_for_students, num_of_copies, is_reference, price, keywords, type
                 , publisher, edition, false, journal_name, issue, editor, publication_date);
+    }
+
+    public void insertDebt(int patronId, int documentId, String bookingDate, String expireDate, int fee,
+                           boolean canRenew, boolean isRenewed) throws SQLException {
+        execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew, is_renewed)" +
+                " VALUES(" + patronId + ", " + documentId + ", \'" + bookingDate + "\', \'" + expireDate + "\', " + fee + ", \'" + canRenew + "\', \'" + isRenewed + "\')");
     }
 
 
@@ -196,10 +201,26 @@ public class Database {
         ArrayList<JournalArticle> articleList = new ArrayList<>();
         while (articleSet.next()) {
             articleList.add(new JournalArticle(articleSet.getInt(1), articleSet.getString(2),
-                    articleSet.getString(3), articleSet.getBoolean(4), articleSet.getInt(5),
-                    articleSet.getBoolean(6), articleSet.getDouble(7), articleSet.getString(8), articleSet.getString(13), articleSet.getString(10), articleSet.getString(14), articleSet.getString(15), new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16))));
+                    articleSet.getString(3), articleSet.getBoolean(4),
+                    articleSet.getInt(5), articleSet.getBoolean(6),
+                    articleSet.getDouble(7), articleSet.getString(8),
+                    articleSet.getString(13), articleSet.getString(10),
+                    articleSet.getString(14), articleSet.getString(15),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16))));
         }
         return articleList;
+    }
+
+    public ArrayList<Debt> getDebtsList() throws SQLException, ParseException {
+        ResultSet debtsSet = executeQuery("SELECT * FROM debts");
+        ArrayList<Debt> debtsList = new ArrayList<>();
+        while (debtsSet.next()) {
+            debtsList.add(new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+                    debtsSet.getInt(6),debtsSet.getBoolean(7),debtsSet.getBoolean(8)));
+        }
+        return debtsList;
     }
 
     public void soutDocs() throws SQLException {
@@ -219,6 +240,10 @@ public class Database {
 
     public void deleteDocument(int id) throws SQLException {
         this.executeUpdate("DELETE FROM documents WHERE id=" + id);
+    }
+
+    public void deleteDebt(int debtId) throws SQLException {
+        this.executeUpdate("DELETE FROM debts WHERE debt_id=" + debtId);
     }
 
 
@@ -249,4 +274,18 @@ public class Database {
         this.executeUpdate("UPDATE documents " +
                 "SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
     }
+
+    public void editDebtColumn(int debtId, String column, String value) throws SQLException {
+        String quotes1 = "";
+        String quotes2 = "";
+        try {
+            int temp = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            quotes1 = "\'";
+            quotes2 = "\'";
+        }
+        this.executeUpdate("UPDATE debts " +
+                "SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtId);
+    }
+
 }
