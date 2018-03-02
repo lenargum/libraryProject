@@ -1,33 +1,10 @@
-# InLibrary Manager
+# Database branch
 
-A course project - Library managing system.
+How to begin interacting with database:
+1. Download this jar file:
+https://bitbucket.org/xerial/sqlite-jdbc/downloads/sqlite-jdbc-3.21.0.jar
+2. Open project in Intellij IDEA
+3. Open **"Project Structure..."** by pressing **"Ctrl + Alt + Shift + S"** buttons or just by opening **"File"** in upper left corner of the window.
+4. Press **"+"** button near big file list and add our downloaded file.
 
-Checkout the [Projects](https://github.com/lenargum/libraryProject/projects) tab for more info about current tasks.
-
-Different parts are being developed in different branches.
-
-## Entities
-Contains all documents and users classes and booking logic.
-
-[Go to Entities branch](https://github.com/lenargum/libraryProject/tree/User-Documents-Connection)
-
-## Graphical User Interface
-Contains desktop app source code.
-
-[Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
-
-## Building
-### Requirements
-- Java 8
-- FX module (for OpenJDK)
-- JUnit 5.0 (for tests)
-- [JFoenix](https://github.com/jfoenixadmin/JFoenix) v. 8.0.1 (Material Design UI)
-
-This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `MainPage` class. You may use `javac`, but it was not tested.
-
-GUI may not compile on OpenJDK. Please, install FX module or use Oracle JDK instead.
-
-**JUnit 5.0** is required for building and running tests.
-
-## Using
-To log in use login **Name** and any password with length > 8.
+Server and database. Backend in being developed here.

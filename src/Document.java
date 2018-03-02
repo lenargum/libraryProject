@@ -28,7 +28,7 @@ public abstract class Document {
     /**
      * Price of document
      */
-    private float Price;
+    private double Price;
     /**
      * keywords we use to search document
      */
@@ -45,7 +45,7 @@ public abstract class Document {
      * @param Price
      * @param KeyWords
      */
-    public Document(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, float Price, String KeyWords){
+    public Document(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords){
         setID(ID);
         setTitle(Title);
         setAuthors(Authors);
@@ -103,15 +103,8 @@ public abstract class Document {
      * @param author
      * @return true if author was among the authors created the document
      */
-    public boolean includesAuthor(String author){
-        String[] authors;
-        authors = Authors.split(", ");
-        for (String a:authors
-             ) {
-            if(a.equals(author))
-                return true;
-        }
-        return false;
+    public boolean includesAuthor(String author){//TODO: write it!
+        return true;
     }
     /**
      * @return list of authors created the document
@@ -193,13 +186,8 @@ public abstract class Document {
      * @param keyWord
      * @return
      */
-    public boolean includeKeyWord(String keyWord){
-        String[] keywords = KeyWords.split(", ");
-        for (String k:keywords
-             ) {
-            if(k.equals(keyWord)) return true;
-        }
-        return false;
+    public boolean includeKeyWord(String keyWord){//TODO: write it!
+        return true;
     }
     /**
      * @return keywords of document
@@ -212,13 +200,13 @@ public abstract class Document {
      * sets price of document
      * @param price
      */
-    public void setPrice(float price){
+    public void setPrice(double price){
         this.Price = price;
     }
     /**
      * @return price of document
      */
-    public float getPrice(){
+    public double getPrice(){
         return Price;
     }
 }
