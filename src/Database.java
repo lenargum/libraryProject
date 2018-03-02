@@ -2,6 +2,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class Database {
 
@@ -221,6 +222,52 @@ public class Database {
                     debtsSet.getInt(6),debtsSet.getBoolean(7),debtsSet.getBoolean(8)));
         }
         return debtsList;
+    }
+
+    public Book getBook(int id) throws SQLException {
+        ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id ="+id);
+        if (bookSet.next()) {
+            return new Book(bookSet.getInt(1), bookSet.getString(2),
+                    bookSet.getString(3), bookSet.getBoolean(4), bookSet.getInt(5),
+                    bookSet.getBoolean(6), bookSet.getDouble(7), bookSet.getString(8),
+                    bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12));
+        }
+        throw new NoSuchElementException();
+    }
+
+    public AudioVideoMaterial getAV(int id) throws SQLException {
+        ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = "+id);
+        if (AVSet.next()) {
+            return new AudioVideoMaterial(AVSet.getInt(1), AVSet.getString(2),
+                    AVSet.getString(3), AVSet.getBoolean(4), AVSet.getInt(5),
+                    AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8));
+        }
+        throw new NoSuchElementException();
+    }
+
+    public JournalArticle getArticle(int id) throws SQLException, ParseException {
+        ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + id);
+        if (articleSet.next()) {
+            return new JournalArticle(articleSet.getInt(1), articleSet.getString(2),
+                    articleSet.getString(3), articleSet.getBoolean(4),
+                    articleSet.getInt(5), articleSet.getBoolean(6),
+                    articleSet.getDouble(7), articleSet.getString(8),
+                    articleSet.getString(13), articleSet.getString(10),
+                    articleSet.getString(14), articleSet.getString(15),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
+        }
+        throw new NoSuchElementException();
+    }
+
+    public Debt getDebt(int id) throws SQLException, ParseException {
+        ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = "+id);
+        if (debtsSet.next()) {
+            return new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+                    debtsSet.getInt(6),debtsSet.getBoolean(7),debtsSet.getBoolean(8));
+        }
+        throw new NoSuchElementException();
     }
 
     public void soutDocs() throws SQLException {

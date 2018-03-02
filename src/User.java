@@ -1,3 +1,7 @@
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+
 public abstract class User {
 
     private int id;
@@ -74,9 +78,19 @@ public abstract class User {
         return password;
     }
 
-    public void getLib(){
-        /**
-         *
-         */
+    public ArrayList<String> getLibrary(Database database) throws SQLException {
+        return database.getDocumentList();
+    }
+
+    public ArrayList<Book> getListOfBooks(Database database) throws SQLException {
+        return database.getBookList();
+    }
+
+    public ArrayList<AudioVideoMaterial> getListOfAVs(Database database) throws SQLException {
+        return database.getAVList();
+    }
+
+    public ArrayList<JournalArticle> getListOfArticles(Database database) throws SQLException, ParseException {
+        return database.getArticleList();
     }
 }

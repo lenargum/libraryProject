@@ -1,3 +1,6 @@
+import javax.xml.crypto.Data;
+import java.sql.SQLException;
+
 public class Patron extends User {
     private String status;
 
@@ -10,8 +13,8 @@ public class Patron extends User {
      *
      * @return true: if Patron can get the document, otherwise false
      */
-    public boolean requestDocument(){
-        return true;
+    public boolean canRequestBook(int idDocument, Database database) throws SQLException {
+        return database.getBook(idDocument).isAllowedForStudents();
     }
 
     /**
