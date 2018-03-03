@@ -11,7 +11,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import materials.Document;
-import users.User;
 
 import java.io.IOException;
 import java.util.List;

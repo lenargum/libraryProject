@@ -28,6 +28,7 @@ public class Book extends Document{
         setPublisher(Publisher);
         setEdition(Edition);
         setBestseller(IsBestseller);
+        setType("book");
     }
 
     /**

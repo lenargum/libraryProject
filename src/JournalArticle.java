@@ -39,6 +39,7 @@ public class JournalArticle extends Document{
         setIssue(Issue);
         setEditor(Editor);
         setPublicationDate(PublicationDate);
+        setType("journal article");
     }
 
     /**

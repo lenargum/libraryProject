@@ -7,14 +7,14 @@ public class Librarian extends User {
     /**
      * @param : Document
      */
-    public void addDocument(){
+    public void addBook(Book book, Database database){
 
     }
 
     /**
      * @param : Patron
      */
-    public void RegisterPatron(Patron patron){
+    public void RegisterPatron(Patron patron, Database database){
 
     }
 

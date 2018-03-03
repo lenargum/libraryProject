@@ -12,5 +12,6 @@ public class AudioVideoMaterial extends Document{
      */
     public AudioVideoMaterial(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords){
         super(ID, Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
+        setType("audio/video material");
     }
 }
