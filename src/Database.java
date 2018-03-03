@@ -137,7 +137,7 @@ public class Database {
         execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew," +
                 " is_renewed)" +" VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
                 + debt.getBookingDate() + "\', \'" + debt.getExpireDate() + "\', " + debt.getFee() + ", \'"
-                + debt.canRenew() + "\', \'" + debt.isRenewed() + "\')");
+                + debt.canRenew() + "\')");
     }
 
 
@@ -209,7 +209,7 @@ public class Database {
             debtsList.add(new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),debtsSet.getBoolean(7),debtsSet.getBoolean(8)));
+                    debtsSet.getInt(6),debtsSet.getBoolean(7)));
         }
         return debtsList;
     }
@@ -255,7 +255,7 @@ public class Database {
             return new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),debtsSet.getBoolean(7),debtsSet.getBoolean(8));
+                    debtsSet.getInt(6),debtsSet.getBoolean(7));
         }
         throw new NoSuchElementException();
     }
