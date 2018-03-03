@@ -13,13 +13,14 @@ public abstract class User {
     private String login;
     private String password;
 
-    User(String name, String surname, String address, int id, String login, String password){
+    User(String name, String surname, String address, int id, String login, String password, String phoneNumber){
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.id = id;
         this.login = login;
         this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
     public void setId(int id) {
