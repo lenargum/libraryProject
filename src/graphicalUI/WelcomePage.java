@@ -65,6 +65,12 @@ public class WelcomePage {
 
 		JFXButton browseLibBtn = (JFXButton) welcomeLayout.lookup("#browseLibBtn");
 		DocSelector selector = new DocSelector(primaryStage, mainScene);
-		browseLibBtn.setOnAction(event -> selector.show());
+		browseLibBtn.setOnAction(event -> {
+			try {
+				selector.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }
