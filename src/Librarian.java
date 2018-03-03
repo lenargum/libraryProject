@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class Librarian extends User {
 
     Librarian(String name, String surname, String address, int id, String login, String pasword){
@@ -7,15 +9,15 @@ public class Librarian extends User {
     /**
      * @param : Document
      */
-    public void addBook(Book book, Database database){
-
+    public void addBook(Book book, Database database) throws SQLException {
+        database.insertBook(book);
     }
 
     /**
      * @param : Patron
      */
-    public void RegisterPatron(Patron patron, Database database){
-
+    public void RegisterPatron(Patron patron, Database database) throws SQLException {
+        database.insertPatron(patron);
     }
 
     /**
