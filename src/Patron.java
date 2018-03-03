@@ -7,8 +7,8 @@ public class Patron extends User {
     private String status;
     public ArrayList listOfDocumentsPatron;
 
-    Patron(String name, String surname, String address, String status, int id, String login, String password){
-        super(name, surname, address, id,login, password);
+    Patron(int id, String login, String password, String status, String name, String surname,String phone, String address) {
+        super(name, surname, address, id, login, password);
         this.status = status;
     }
 
@@ -25,15 +25,14 @@ public class Patron extends User {
     }
 
     /**
-     *
      * @return true: if Patron can get the document, otherwise false
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
-        if ((this.status == "faculty")& (database.getBook(idBook).getNumberOfCopies() != 0) &
+        if ((this.status == "faculty") & (database.getBook(idBook).getNumberOfCopies() != 0) &
                 (!database.getBook(idBook).isBestseller())) {
             return true;
-        } else{
-            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies()!= 0 &
+        } else {
+            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies() != 0 &
                     !(database.getBook(idBook).isBestseller());
         }
     }
@@ -43,9 +42,9 @@ public class Patron extends User {
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
-        if ((this.status == "faculty")& (database.getAV(idAV).getNumberOfCopies() != 0)) {
+        if ((this.status == "faculty") & (database.getAV(idAV).getNumberOfCopies() != 0)) {
             return true;
-        } else{
+        } else {
             return database.getAV(idAV).isAllowedForStudents() & database.getAV(idAV).getNumberOfCopies() != 0;
         }
     }
@@ -54,7 +53,7 @@ public class Patron extends User {
      * @param : id of Document, Database
      */
     public void takeBook(int idBook, Database database) throws SQLException {
-        if (canRequestBook(idBook, database)){
+        if (canRequestBook(idBook, database)) {
             this.getListOfDocumentsPatron().add(idBook);
             database.getBook(idBook).deleteCopy();
             //TODO: set date of reservation
@@ -62,7 +61,7 @@ public class Patron extends User {
     }
 
     public void takeAV(int idAV, Database database) throws SQLException {
-        if(canRequestAV(idAV, database)){
+        if (canRequestAV(idAV, database)) {
             this.getListOfDocumentsPatron().add(idAV);
             database.getAV(idAV).deleteCopy();
             //TODO: set date of reservation
@@ -78,9 +77,9 @@ public class Patron extends User {
     }
 
     /**
-     * @param  : id of document
+     * @param : id of document
      */
-    public void renewDocument(){
+    public void renewDocument() {
         //TODO: Connect with date of reservation
     }
 }
