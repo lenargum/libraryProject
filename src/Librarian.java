@@ -25,16 +25,19 @@ public class Librarian extends User {
      * @param : id of document
      */
     public void deleteDocument(int idDocument, Database database) throws SQLException {
+        for (int i = 0; i < database.getPatronList().size(); i++){
+            if (database.getPatron(i).getListOfDocumentsPatron().contains(idDocument)){
+                database.getPatron(i).getListOfDocumentsPatron().remove(i);
+            }
+        }
         database.deleteDocument(idDocument);
-
-        
     }
 
     /**
      *
      * @param idPatron
      */
-    public void deletePatron(int idPatron, Database database){
-
+    public void deletePatron(int idPatron, Database database) throws SQLException {
+        database.deleteUser(idPatron);
     }
 }
