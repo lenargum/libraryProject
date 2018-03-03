@@ -33,9 +33,7 @@ public class Document {
      * keywords we use to search document
      */
     private String KeyWords;
-
-    private boolean isRenewable;
-
+    private String Type;
     /**
      * constructor
      * @param ID
@@ -56,7 +54,13 @@ public class Document {
         setReference(IsReference);
         setPrice(Price);
         setKeyWords(KeyWords);
-        setRenewable(true);
+    }
+
+    public void setType(String type){
+        this.Type = type;
+    }
+    public String getType(){
+        return Type;
     }
 
     /**
@@ -140,7 +144,7 @@ public class Document {
     /**
      *adds copy of document
      */
-    public void AddCopy(){
+    public void addCopy(){
         this.NumberOfCopies++;
     }
     /**
@@ -211,13 +215,5 @@ public class Document {
      */
     public double getPrice(){
         return Price;
-    }
-
-    public void setRenewable(boolean renewable) {
-        isRenewable = renewable;
-    }
-
-    public boolean getRenewable(){
-        return isRenewable;
     }
 }
