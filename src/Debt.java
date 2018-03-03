@@ -7,7 +7,6 @@ public class Debt {
     private Date expireDate;
     private int fee;
     private boolean canRenew;
-    private boolean isRenewed;
 
     public Debt(int patronId, int documentId, Date bookingDate,
                 Date expireDate, int fee, boolean canRenew, boolean isRenewed) {
@@ -17,11 +16,10 @@ public class Debt {
         this.expireDate = expireDate;
         this.fee = fee;
         this.canRenew = canRenew;
-        this.isRenewed = isRenewed;
     }
 
     public String toString() {
-        return patronId+" "+documentId+" ("+bookingDate+") ("+expireDate+") "+fee+" "+canRenew+" "+isRenewed;
+        return patronId+" "+documentId+" ("+bookingDate+") ("+expireDate+") "+fee+" "+canRenew+" ";
     }
 
     public int getPatronId() {
@@ -64,19 +62,11 @@ public class Debt {
         this.fee = fee;
     }
 
-    public boolean isCanRenew() {
-        return canRenew;
-    }
-
     public void setCanRenew(boolean canRenew) {
         this.canRenew = canRenew;
     }
 
-    public boolean isRenewed() {
-        return isRenewed;
-    }
-
     public void setRenewed(boolean renewed) {
-        isRenewed = renewed;
+        canRenew = renewed;
     }
 }
