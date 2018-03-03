@@ -3,8 +3,6 @@ package tools;
 import materials.AudioVideoMaterial;
 import materials.Book;
 import materials.JournalArticle;
-import users.Librarian;
-import users.Patron;
 
 /**
  * interface describing class that checks type of current object

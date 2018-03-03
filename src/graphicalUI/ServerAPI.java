@@ -4,8 +4,6 @@ import materials.AudioVideoMaterial;
 import materials.Book;
 import materials.Document;
 import materials.JournalArticle;
-import users.Librarian;
-import users.Patron;
 
 import java.util.LinkedList;
 import java.util.List;

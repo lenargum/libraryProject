@@ -49,7 +49,6 @@ public class Patron extends User {
         if (canRequestBook(idBook, database)){
             this.getListOfDocumentsPatron().add(idBook);
             database.getBook(idBook).deleteCopy();
-            database.getBook(idBook).setRenewable(true);
             //TODO: set date of reservation
         }
     }
@@ -67,7 +66,7 @@ public class Patron extends User {
      */
     public void returnBook(int idBook, Database database) throws SQLException {
         listOfDocumentsPatron.remove(idBook);
-        database.getBook(idBook).AddCopy();
+        database.getBook(idBook).addCopy();
     }
 
     /**

@@ -79,7 +79,7 @@ public abstract class User {
     }
 
     public ArrayList<String> getLibrary(Database database) throws SQLException {
-        return database.getDocumentList();
+        return database.getDocumentStringList();
     }
 
     public ArrayList<Book> getListOfBooks(Database database) throws SQLException {

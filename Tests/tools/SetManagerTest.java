@@ -4,7 +4,6 @@ import materials.AudioVideoMaterial;
 import materials.Book;
 import materials.JournalArticle;
 import org.junit.jupiter.api.Test;
-import users.Patron;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

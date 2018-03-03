@@ -1,8 +1,6 @@
 import materials.Book;
 import materials.Document;
 import org.junit.jupiter.api.Test;
-import users.Librarian;
-import users.Patron;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
