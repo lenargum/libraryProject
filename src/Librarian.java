@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 
 public class Librarian extends User {
@@ -23,15 +24,17 @@ public class Librarian extends User {
     /**
      * @param : id of document
      */
-    public void deleteDocument(){
+    public void deleteDocument(int idDocument, Database database) throws SQLException {
+        database.deleteDocument(idDocument);
 
+        
     }
 
     /**
      *
      * @param idPatron
      */
-    public void deletePatron(int idPatron){
+    public void deletePatron(int idPatron, Database database){
 
     }
 }
