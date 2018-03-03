@@ -1,6 +1,6 @@
 import java.security.Key;
 
-public abstract class Document {
+public class Document {
     /**
      * ID of  document
      */
@@ -34,6 +34,8 @@ public abstract class Document {
      */
     private String KeyWords;
 
+    private boolean isRenewable;
+
     /**
      * constructor
      * @param ID
@@ -54,6 +56,7 @@ public abstract class Document {
         setReference(IsReference);
         setPrice(Price);
         setKeyWords(KeyWords);
+        setRenewable(true);
     }
 
     /**
@@ -208,5 +211,13 @@ public abstract class Document {
      */
     public double getPrice(){
         return Price;
+    }
+
+    public void setRenewable(boolean renewable) {
+        isRenewable = renewable;
+    }
+
+    public boolean getRenewable(){
+        return isRenewable;
     }
 }
