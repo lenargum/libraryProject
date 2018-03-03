@@ -31,11 +31,7 @@ public class Patron extends User {
     }
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
-        if ((this.status == "faculty")& (database.getArticle(idArticle).getNumberOfCopies() != 0)) {
-            return true;
-        } else{
-            return database.getArticle(idArticle).isAllowedForStudents() & database.getArticle(idArticle).getNumberOfCopies() != 0;
-        }
+        return false;
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
@@ -54,15 +50,6 @@ public class Patron extends User {
             this.getListOfDocumentsPatron().add(idBook);
             database.getBook(idBook).deleteCopy();
             database.getBook(idBook).setRenewable(true);
-
-            //TODO: set date of reservation
-        }
-    }
-
-    public void takeArticle(int idArticle, Database database) throws SQLException, ParseException {
-        if (canRequestArticle(idArticle, database)){
-            this.getListOfDocumentsPatron().add(idArticle);
-            database.getArticle(idArticle).deleteCopy();
             //TODO: set date of reservation
         }
     }
@@ -78,9 +65,9 @@ public class Patron extends User {
     /**
      * @param : id of Document, Database
      */
-    public void returnDocument(int idDocument, Database database) throws SQLException {
-        listOfDocumentsPatron.remove(idDocument);
-        database.getBook(idDocument).AddCopy();
+    public void returnBook(int idBook, Database database) throws SQLException {
+        listOfDocumentsPatron.remove(idBook);
+        database.getBook(idBook).AddCopy();
     }
 
     /**
