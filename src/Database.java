@@ -143,6 +143,28 @@ public class Database {
 
     //main features: receiving lists
 
+    public ArrayList<Patron> getPatronList() throws SQLException {
+        ResultSet patronSet = executeQuery("SELECT * FROM users where status = 'FACULTY' or status = 'STUDENT'");
+        ArrayList<Patron> patronList = new ArrayList<>();
+        while(patronSet.next()) {
+            patronList.add(new Patron(patronSet.getInt(1),patronSet.getString(2),
+                    patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
+                    patronSet.getString(6),patronSet.getString(7),patronSet.getString(8)));
+        }
+        return patronList;
+    }
+
+    public ArrayList<Librarian> getLibrarianList() throws SQLException {
+        ResultSet librarianSet = executeQuery("SELECT * FROM users where status = 'LIBRARIAN'");
+        ArrayList<Librarian> librarianList = new ArrayList<>();
+        while(librarianSet.next()) {
+            librarianList.add(new Librarian(librarianSet.getInt(1),librarianSet.getString(2),
+                    librarianSet.getString(3),librarianSet.getString(5),
+                    librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8)));
+        }
+        return librarianList;
+    }
+
     public ArrayList<Document> getDocumentList() throws SQLException {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
         ArrayList<Document> documentList = new ArrayList<>();
@@ -212,6 +234,37 @@ public class Database {
                     debtsSet.getInt(6),debtsSet.getBoolean(7)));
         }
         return debtsList;
+    }
+
+    public Patron getPatron(int id) throws SQLException {
+        ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = "+id);
+        if(patronSet.next()) {
+            return new Patron(patronSet.getInt(1),patronSet.getString(2),
+                    patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
+                    patronSet.getString(6),patronSet.getString(7),patronSet.getString(8));
+        }
+        throw new NoSuchElementException();
+    }
+
+    public Librarian getLibrarian(int id) throws SQLException {
+        ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + id);
+        if(librarianSet.next()) {
+            return new Librarian(librarianSet.getInt(1),librarianSet.getString(2),
+                    librarianSet.getString(3),librarianSet.getString(5),
+                    librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8));
+        }
+        throw new NoSuchElementException();
+    }
+
+    public Document getDocument(int id) throws SQLException {
+        ResultSet documentSet = executeQuery("SELECT * FROM documents where id = "+ id);
+        if (documentSet.next()) {
+            return new Document(documentSet.getInt(1),documentSet.getString(2),
+                    documentSet.getString(3),documentSet.getBoolean(4),
+                    documentSet.getInt(5),documentSet.getBoolean(6),
+                    documentSet.getDouble(7),documentSet.getString(8));
+        }
+        throw new NoSuchElementException();
     }
 
     public Book getBook(int id) throws SQLException {
