@@ -84,6 +84,18 @@ public class Database {
                 " VALUES('" + login + "','" + password + "','" + status + "','" + firstname + "','" + lastname + "','" + phone + "','" + address + "')");
     }
 
+    public void insertPatron(Patron patron) throws SQLException {
+        String status = "STUDENT";
+        if(patron.getStatus().toLowerCase().equals("faculty")) {
+            status = "FACULTY";
+        }
+        insertUser(patron.getLogin(),patron.getPassword(),status,patron.getName(),patron.getSurname(),patron.getPhoneNumber(),patron.getAddress());
+    }
+
+    public void insertLibrarian(Librarian librarian) throws SQLException {
+        insertUser(librarian.getLogin(),librarian.getPassword(),"LIBRARIAN",librarian.getName(),librarian.getSurname(),librarian.getPhoneNumber(),librarian.getAddress());
+    }
+
     //main insertion(other methods just implement it for custom types)
     public void insertDocument(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
                                boolean is_reference, double price, String keywords, String type, String publisher,
@@ -96,61 +108,36 @@ public class Database {
                 + publisher + "'," + edition + ",'" + bestseller + "','" + journal_name + "','" + issue + "','" + editor + "','" + publication_date + "')");
     }
 
-    public void insertBook(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
-                           boolean is_reference, double price, String keywords, String publisher,
-                           int edition, boolean bestseller) throws SQLException {
+    public void insertBook(Book book) throws SQLException {
         String type = "BOOK";
         String journal_name = "-";
         String issue = "-";
         String editor = "-";
         String publication_date = "NULL";
-        insertDocument(name, authors, is_allowed_for_students, num_of_copies, is_reference, price, keywords, type
-                , publisher, edition, bestseller, journal_name, issue, editor, publication_date);
+        insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
+                book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
+                book.isBestseller(), "-", "-", "-", "NULL");
     }
 
-    public void insertAV(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
-                         boolean is_reference, double price, String keywords) throws SQLException {
-        String type = "AV";
-        String publisher = "-";
-        int edition = 0;
-        String journal_name = "-";
-        String issue = "-";
-        String editor = "-";
-        String publication_date = "0000-00-00";
-        insertDocument(name, authors, is_allowed_for_students, num_of_copies, is_reference, price, keywords, type
-                , publisher, edition, false, journal_name, issue, editor, publication_date);
+    public void insertAV(AudioVideoMaterial av) throws SQLException {
+        insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
+                av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
+                "-", "-", "-", "NULL");
     }
 
-    /**
-     * insertion journal article in database
-     *
-     * @param name article's title
-     * @param authors article's authors
-     * @param is_allowed_for_students is article allowed for students
-     * @param num_of_copies number of copies of article in library
-     * @param is_reference is this article reference or not
-     * @param price article's price
-     * @param keywords article's keywords for searching
-     * @param journal_name article's journal name
-     * @param publisher journal's author
-     * @param issue article's issue
-     * @param editor article's editor
-     * @param publication_date when article published (date must be in format "yyyy-mm-dd")
-     * @throws SQLException SQL Exception
-     */
-    public void insertArticle(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
-                              boolean is_reference, double price, String keywords, String journal_name, String publisher,
-                              String issue, String editor, String publication_date) throws SQLException {
-        String type = "ARTICLE";
-        int edition = 0;
-        insertDocument(name, authors, is_allowed_for_students, num_of_copies, is_reference, price, keywords, type
-                , publisher, edition, false, journal_name, issue, editor, publication_date);
+    public void insertArticle(JournalArticle article) throws SQLException {
+        insertDocument(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
+                article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
+                "ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
+                article.getIssue(), article.getEditor(),
+                (new SimpleDateFormat("dd-MMM-yyyy")).format(article.getPublicationDate()));
     }
 
-    public void insertDebt(int patronId, int documentId, String bookingDate, String expireDate, int fee,
-                           boolean canRenew, boolean isRenewed) throws SQLException {
-        execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew, is_renewed)" +
-                " VALUES(" + patronId + ", " + documentId + ", \'" + bookingDate + "\', \'" + expireDate + "\', " + fee + ", \'" + canRenew + "\', \'" + isRenewed + "\')");
+    public void insertDebt(Debt debt) throws SQLException {
+        execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew," +
+                " is_renewed)" +" VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
+                + debt.getBookingDate() + "\', \'" + debt.getExpireDate() + "\', " + debt.getFee() + ", \'"
+                + debt.canRenew() + "\', \'" + debt.isRenewed() + "\')");
     }
 
 
@@ -172,7 +159,7 @@ public class Database {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
         ArrayList<String> documentsTitleList = new ArrayList<>();
         while (documentSet.next()) {
-            documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" " + documentSet.getString(3));
+            documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" " + documentSet.getString(3) + " (" + documentSet.getString("type")+")");
         }
         return documentsTitleList;
     }

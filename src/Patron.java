@@ -16,6 +16,14 @@ public class Patron extends User {
         return listOfDocumentsPatron;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     /**
      *
      * @return true: if Patron can get the document, otherwise false

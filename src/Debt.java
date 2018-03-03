@@ -64,7 +64,7 @@ public class Debt {
         this.fee = fee;
     }
 
-    public boolean isCanRenew() {
+    public boolean canRenew() {
         return canRenew;
     }
 
@@ -76,7 +76,7 @@ public class Debt {
         return isRenewed;
     }
 
-    public void setRenewed(boolean renewed) {
+    public void setIsRenewed(boolean renewed) {
         isRenewed = renewed;
     }
 }
