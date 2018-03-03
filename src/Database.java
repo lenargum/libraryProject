@@ -156,16 +156,19 @@ public class Database {
 
     //main features: receiving lists
 
-    public ArrayList<String> getDocumentList() throws SQLException {
+    public ArrayList<Document> getDocumentList() throws SQLException {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
-        ArrayList<String> documentsTitleList = new ArrayList<>();
+        ArrayList<Document> documentList = new ArrayList<>();
         while (documentSet.next()) {
-            documentsTitleList.add("\"" + documentSet.getString(2) + "\" " + documentSet.getString(3));
+            documentList.add(new Document(documentSet.getInt(1),documentSet.getString(2),
+                    documentSet.getString(3),documentSet.getBoolean(4),
+                    documentSet.getInt(5),documentSet.getBoolean(6),
+                    documentSet.getDouble(7),documentSet.getString(8)));
         }
-        return documentsTitleList;
+        return documentList;
     }
 
-    public ArrayList<String> getDocumentListWithId() throws SQLException {
+    public ArrayList<String> getDocumentStringList() throws SQLException {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
         ArrayList<String> documentsTitleList = new ArrayList<>();
         while (documentSet.next()) {
@@ -272,7 +275,7 @@ public class Database {
 
     public void soutDocs() throws SQLException {
         System.out.println("\nAll documents in database: ");
-        for (String temp : getDocumentListWithId()) {
+        for (String temp : getDocumentStringList()) {
             System.out.println(temp);
         }
         System.out.println();
