@@ -28,24 +28,46 @@ public class Patron extends User {
      * @return true: if Patron can get the document, otherwise false
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
-        if ((this.status == "faculty") & (database.getBook(idBook).getNumberOfCopies() != 0) &
+        if ((this.status == "faculty") && (database.getBook(idBook).getNumberOfCopies() != 0) &&
                 (!database.getBook(idBook).isBestseller())) {
             return true;
         } else {
-            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies() != 0 &
-                    !(database.getBook(idBook).isBestseller());
+            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies() != 0 &&
+                    !(database.getBook(idBook).isBestseller()) &&
+                    !database.getBook(idBook).isReference();
         }
     }
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
-        return false;
+        if ((this.status == "faculty")&& (database.getArticle(idArticle).getNumberOfCopies() != 0)){
+            return true;
+        } else {
+            return database.getArticle(idArticle).isAllowedForStudents() &&
+                    database.getArticle(idArticle).getNumberOfCopies() != 0 &&
+                    !database.getArticle(idArticle).isReference();
+        }
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
-        if ((this.status == "faculty") & (database.getAV(idAV).getNumberOfCopies() != 0)) {
+        if ((this.status == "faculty") && (database.getAV(idAV).getNumberOfCopies() != 0)) {
             return true;
         } else {
-            return database.getAV(idAV).isAllowedForStudents() & database.getAV(idAV).getNumberOfCopies() != 0;
+            return database.getAV(idAV).isAllowedForStudents() &&
+                    database.getAV(idAV).getNumberOfCopies() != 0 &&
+                    !database.getAV(idAV).isReference();
+        }
+    }
+
+    /**
+     * MAIN FUNCTION OF REQUESTING DOCUMENTS
+     */
+    public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
+        if((this.status == "faculty") && (database.getDocument(idDocument).getNumberOfCopies() != 0)){
+            return true;
+        } else{
+          return database.getDocument(idDocument).isAllowedForStudents() &&
+                  database.getDocument(idDocument).getNumberOfCopies() != 0 &&
+                  !database.getDocument(idDocument).isReference();
         }
     }
 
@@ -68,12 +90,50 @@ public class Patron extends User {
         }
     }
 
+    public void takeArticle(int idArticle, Database database) throws SQLException, ParseException {
+        if(canRequestArticle(idArticle, database)){
+            this.getListOfDocumentsPatron().add(idArticle);
+            database.getArticle(idArticle).deleteCopy();
+        }
+    }
+
+    /**
+     * MAIN FUNCTIOM OF BOOKING SYSTEM
+     */
+
+    public void takeDocument(int idDocument, Database database) throws SQLException {
+        if(canRequestDocument(idDocument, database)){
+            listOfDocumentsPatron.add(idDocument);
+            database.getDocument(idDocument).deleteCopy();
+        }
+
+    }
+
     /**
      * @param : id of Document, Database
      */
     public void returnBook(int idBook, Database database) throws SQLException {
         listOfDocumentsPatron.remove(idBook);
         database.getBook(idBook).addCopy();
+    }
+
+    public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
+        listOfDocumentsPatron.remove(idArticle);
+        database.getArticle(idArticle).addCopy();
+    }
+
+    public void returnAV(int idAV, Database database) throws SQLException {
+        listOfDocumentsPatron.remove(idAV);
+        database.getAV(idAV).addCopy();
+    }
+
+    /**
+     * MAIN FUNCTION OF RETURNING SYSTEM
+     */
+
+    public void returnDocument(int idDocument, Database database) throws SQLException {
+        listOfDocumentsPatron.remove(idDocument);
+        database.getDocument(idDocument).addCopy();
     }
 
     /**
