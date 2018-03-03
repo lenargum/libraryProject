@@ -21,10 +21,12 @@ public class Patron extends User {
      * @return true: if Patron can get the document, otherwise false
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
-        if ((this.status == "faculty")& (database.getBook(idBook).getNumberOfCopies() != 0)) {
+        if ((this.status == "faculty")& (database.getBook(idBook).getNumberOfCopies() != 0) &
+                (!database.getBook(idBook).isBestseller())) {
             return true;
         } else{
-            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies()!= 0;
+            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies()!= 0 &
+                    !(database.getBook(idBook).isBestseller());
         }
     }
 
@@ -59,8 +61,16 @@ public class Patron extends User {
 
     public void takeArticle(int idArticle, Database database) throws SQLException, ParseException {
         if (canRequestArticle(idArticle, database)){
-            this.getListOfDocumentsPatron().add(database.getArticle(idArticle));
+            this.getListOfDocumentsPatron().add(idArticle, database.getArticle(idArticle));
             database.getArticle(idArticle).setNumberOfCopies(database.getArticle(idArticle).getNumberOfCopies() - 1);
+            //TODO: set date of reservation
+        }
+    }
+
+    public void takeAV(int idAV, Database database) throws SQLException {
+        if(canRequestAV(idAV, database)){
+            this.getListOfDocumentsPatron().add(idAV, database.getAV(idAV));
+            database.getAV(idAV).setNumberOfCopies(database.getAV(idAV).getNumberOfCopies() - 1);
             //TODO: set date of reservation
         }
     }
