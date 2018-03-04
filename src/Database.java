@@ -441,4 +441,12 @@ public class Database {
         }
         throw new NoSuchElementException();
     }
+
+    public int findDebtID(int patronID, int docId) throws  SQLException{
+        ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = "+patronID+" AND document_id = "+docId);
+        if(debt.next()){
+            return debt.getInt(1);
+        }
+        throw  new NoSuchElementException();
+    }
 }
