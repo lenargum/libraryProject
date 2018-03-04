@@ -9,8 +9,6 @@ Different parts are being developed in different branches.
 ## Entities
 Contains all documents and users classes and booking logic.
 
-[Go to Entities branch](https://github.com/lenargum/libraryProject/tree/User-Documents-Connection)
-
 ## Console application in IntelliJ IDEA
 
 ### Requirements
