@@ -113,6 +113,9 @@ public class Patron extends User {
         if(canRequestDocument(idDocument, database)){
             listOfDocumentsPatron.add(idDocument);
             database.getDocument(idDocument).deleteCopy();
+            Date date = new Date();
+            Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
+            database.insertDebt(debt);
         }
 
     }
