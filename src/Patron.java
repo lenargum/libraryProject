@@ -227,6 +227,8 @@ public class Patron extends User {
             System.out.println("Incorrect id");
         } catch(SQLException e){
             System.out.println("Incorrect id");
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("Incorrect input");
         }
     }
 
@@ -246,6 +248,8 @@ public class Patron extends User {
             System.out.println("Incorrect id");
         } catch(SQLException e){
             System.out.println("Incorrect id");
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Incorrect input");
         }
     }
 
@@ -265,6 +269,8 @@ public class Patron extends User {
             System.out.println("Incorrect id");
         } catch(SQLException e){
             System.out.println("Incorrect id");
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("Incorrect input");
         }
     }
 
@@ -287,6 +293,8 @@ public class Patron extends User {
             System.out.println("Incorrect id");
         } catch(SQLException e){
             System.out.println("Incorrect id");
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("Incorrect input");
         }
     }
 
