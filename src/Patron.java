@@ -33,37 +33,55 @@ public class Patron extends User {
      * @return true: if Patron can get the document, otherwise false
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
-        Book book = database.getBook(idBook);
-        if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
-                !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
-            return true;
-        } else {
-            return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
-                    !book.isReference()  && !getListOfDocumentsPatron().contains(idBook);
+        try {
+            Book book = database.getBook(idBook);
+            if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
+                    !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
+                return true;
+            } else {
+                return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
+                        !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
+            }
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
+            return false;
         }
     }
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
-        JournalArticle article = database.getArticle(idArticle);
-        if ((this.status.toLowerCase().equals("faculty"))&& (article.getNumberOfCopies() != 0)&&
-                !article.isReference() && !getListOfDocumentsPatron().contains(idArticle)){
-            return true;
-        } else {
-            return article.isAllowedForStudents() &&
-                    article.getNumberOfCopies() != 0 &&
-                    !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
+        try {
+            JournalArticle article = database.getArticle(idArticle);
+            if ((this.status.toLowerCase().equals("faculty")) && (article.getNumberOfCopies() != 0) &&
+                    !article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
+                return true;
+            } else {
+                return article.isAllowedForStudents() &&
+                        article.getNumberOfCopies() != 0 &&
+                        !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
+            }
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
+            return false;
+        } catch (ParseException e ){
+            System.out.println("Incorrect id");
+            return false;
         }
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
-        AudioVideoMaterial av = database.getAV(idAV);
-        if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
-                !av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
-            return true;
-        } else {
-            return av.isAllowedForStudents() &&
-                    av.getNumberOfCopies() != 0 &&
-                    !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
+        try {
+            AudioVideoMaterial av = database.getAV(idAV);
+            if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
+                    !av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
+                return true;
+            } else {
+                return av.isAllowedForStudents() &&
+                        av.getNumberOfCopies() != 0 &&
+                        !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
+            }
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
+            return false;
         }
     }
 
