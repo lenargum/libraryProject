@@ -34,35 +34,35 @@ public class Patron extends User {
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
         Book book = database.getBook(idBook);
         if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
-                !book.isReference()) {
+                !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
             return true;
         } else {
             return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
-                    !book.isReference();
+                    !book.isReference()  && !getListOfDocumentsPatron().contains(idBook);
         }
     }
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
         JournalArticle article = database.getArticle(idArticle);
         if ((this.status.toLowerCase().equals("faculty"))&& (article.getNumberOfCopies() != 0)&&
-                !article.isReference()){
+                !article.isReference() && !getListOfDocumentsPatron().contains(idArticle)){
             return true;
         } else {
             return article.isAllowedForStudents() &&
                     article.getNumberOfCopies() != 0 &&
-                    !article.isReference();
+                    !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
         }
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
         AudioVideoMaterial av = database.getAV(idAV);
         if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
-                !av.isReference()) {
+                !av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
             return true;
         } else {
             return av.isAllowedForStudents() &&
                     av.getNumberOfCopies() != 0 &&
-                    !av.isReference();
+                    !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
         }
     }
 
@@ -72,16 +72,18 @@ public class Patron extends User {
     public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
         Document doc = database.getDocument(idDocument);
         if((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
-                !(doc.isReference())){
+                !(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)){
             return true;
         }
         else if (doc.isAllowedForStudents() &&
                   doc.getNumberOfCopies() != 0 &&
-                  !(doc.isReference())){
+                  !(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)){
             return true;
         } else{
-            if(database.getDocument(idDocument).isReference() & database.getDocument(idDocument).getNumberOfCopies() == 0)
+            if(doc.isReference() && doc.getNumberOfCopies() == 0)
                 System.out.println("Not copies");
+            if(getListOfDocumentsPatron().contains(idDocument))
+                System.out.println("You already have copy of this document");
             System.out.println("This Document is not for you");
             return false;
         }
