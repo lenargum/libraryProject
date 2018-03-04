@@ -175,8 +175,8 @@ public class Database {
         ArrayList<Document> documentList = new ArrayList<>();
         while (documentSet.next()) {
             Document temp = new Document(documentSet.getString(2),
-                    documentSet.getString(3),documentSet.getBoolean(4),
-                    documentSet.getInt(5),documentSet.getBoolean(6),
+                    documentSet.getString(3),Boolean.parseBoolean(documentSet.getString(4)),
+                    documentSet.getInt(5),Boolean.parseBoolean(documentSet.getString(6)),
                     documentSet.getDouble(7),documentSet.getString(8));
             temp.setID(documentSet.getInt(1));
             documentList.add(temp);
@@ -198,9 +198,9 @@ public class Database {
         ArrayList<Book> bookList = new ArrayList<>();
         while (bookSet.next()) {
             Book temp = new Book(bookSet.getString(2),
-                    bookSet.getString(3), bookSet.getBoolean(4), bookSet.getInt(5),
-                    bookSet.getBoolean(6), bookSet.getDouble(7), bookSet.getString(8),
-                    bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12));
+                    bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
+                    Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
+                    bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
             temp.setID(bookSet.getInt(1));
             bookList.add(temp);
         }
@@ -212,8 +212,8 @@ public class Database {
         ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
         while (AVSet.next()) {
             AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
-                    AVSet.getString(3), AVSet.getBoolean(4), AVSet.getInt(5),
-                    AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8));
+                    AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
+                    Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
             temp.setID(AVSet.getInt(1));
             AVList.add(temp);
         }
@@ -225,8 +225,8 @@ public class Database {
         ArrayList<JournalArticle> articleList = new ArrayList<>();
         while (articleSet.next()) {
             JournalArticle temp = new JournalArticle(articleSet.getString(2),
-                    articleSet.getString(3), articleSet.getBoolean(4),
-                    articleSet.getInt(5), articleSet.getBoolean(6),
+                    articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
+                    articleSet.getInt(5), Boolean.parseBoolean(articleSet.getString(6)),
                     articleSet.getDouble(7), articleSet.getString(8),
                     articleSet.getString(13), articleSet.getString(10),
                     articleSet.getString(14), articleSet.getString(15),
@@ -244,7 +244,7 @@ public class Database {
             Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),debtsSet.getBoolean(7));
+                    debtsSet.getInt(6),Boolean.parseBoolean(debtsSet.getString(7)));
             temp.setDebtId(debtsSet.getInt(1));
             debtsList.add(temp);
         }
@@ -280,8 +280,8 @@ public class Database {
         ResultSet documentSet = executeQuery("SELECT * FROM documents where id = "+ id);
         if (documentSet.next()) {
             Document temp = new Document(documentSet.getString(2),
-                    documentSet.getString(3),documentSet.getBoolean(4),
-                    documentSet.getInt(5),documentSet.getBoolean(6),
+                    documentSet.getString(3),Boolean.parseBoolean(documentSet.getString(4)),
+                    documentSet.getInt(5),Boolean.parseBoolean(documentSet.getString(6)),
                     documentSet.getDouble(7),documentSet.getString(8));
             temp.setID(documentSet.getInt(1));
             return temp;
@@ -293,9 +293,9 @@ public class Database {
         ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id ="+id);
         if (bookSet.next()) {
             Book temp = new Book(bookSet.getString(2),
-                    bookSet.getString(3), bookSet.getBoolean(4), bookSet.getInt(5),
-                    bookSet.getBoolean(6), bookSet.getDouble(7), bookSet.getString(8),
-                    bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12));
+                    bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
+                    Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
+                    bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
             temp.setID(bookSet.getInt(1));
             return temp;
         }
@@ -306,8 +306,8 @@ public class Database {
         ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = "+id);
         if (AVSet.next()) {
             AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
-                    AVSet.getString(3), AVSet.getBoolean(4), AVSet.getInt(5),
-                    AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8));
+                    AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
+                    Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
             temp.setID(AVSet.getInt(1));
             return temp;
         }
@@ -318,8 +318,8 @@ public class Database {
         ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + id);
         if (articleSet.next()) {
             JournalArticle temp = new JournalArticle(articleSet.getString(2),
-                    articleSet.getString(3), articleSet.getBoolean(4),
-                    articleSet.getInt(5), articleSet.getBoolean(6),
+                    articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
+                    articleSet.getInt(5), Boolean.parseBoolean(articleSet.getString(6)),
                     articleSet.getDouble(7), articleSet.getString(8),
                     articleSet.getString(13), articleSet.getString(10),
                     articleSet.getString(14), articleSet.getString(15),
@@ -336,7 +336,7 @@ public class Database {
             Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),debtsSet.getBoolean(7));
+                    debtsSet.getInt(6),Boolean.parseBoolean(debtsSet.getString(7)));
             temp.setDebtId(debtsSet.getInt(1));
             return temp;
         }
