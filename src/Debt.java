@@ -9,11 +9,11 @@ public class Debt {
     private int fee;
     private boolean canRenew;
 
-    public Debt(int patronId, int documentId, Date bookingDate, int fee, boolean canRenew) {
+    public Debt(int patronId, int documentId, Date bookingDate, Date expireDate, int fee, boolean canRenew) {
         this.patronId = patronId;
         this.documentId = documentId;
         this.bookingDate = bookingDate;
-        this.expireDate = bookingDate;
+        this.expireDate = expireDate;
         this.fee = fee;
         this.canRenew = canRenew;
     }
