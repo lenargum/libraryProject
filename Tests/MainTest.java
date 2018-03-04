@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +21,8 @@ class MainTest{
             assertTrue(num == database.getBook(7).getNumberOfCopies());
             int id = pat.getId();
             lib.deletePatron(id, database);
-            database.close();
+
+            ///database.close();
         }
     }
 
@@ -31,7 +33,7 @@ class MainTest{
             Librarian librarian = database.getLibrarian(2);
             Patron patron = database.getPatron(5);
 
-            database.close();
+            //database.close();
         }
     }
 
@@ -41,67 +43,80 @@ class MainTest{
         if(database.isConnected()) {
             Patron p1 = database.getPatron(0);
             Patron p2 = database.getPatron(5);
-            
+
             database.close();
+    void TestCase3()throws SQLException, ParseException{
+        //database.connect();
+        if(database.isConnected()) {
+            Patron p1 = new Patron("gjdkg", "ghajdafgjk", "faculty", "Eugenii", "Zuev", "8932058391850398", "Inno");
+            Patron p2 = database.getPatron(5);
+            Librarian librarian = database.getLibrarian(2);
+            librarian.RegisterPatron(p1, database);
+            p1.takeBook(7, database);
+            int a = database.getDebt(database.findDebtID(0, 7)).daysLeft();
+            assertTrue(a == 28);
+            p1.returnBook(7, database);
+            librarian.deletePatron(p1.getId(), database);
+           // database.close();
         }
     }
 
     @Test
     void TestCase4(){
-        database.connect();
+        //database.connect();
         if(database.isConnected()) {
 
-            database.close();
+            //database.close();
         }
     }
 
     @Test
     void TestCase5(){
-        database.connect();
+       // database.connect();
         if(database.isConnected()) {
 
-            database.close();
+            //database.close();
         }
     }
 
     @Test
     void TestCase6(){
-        database.connect();
+       // database.connect();
         if(database.isConnected()) {
 
-            database.close();
+           // database.close();
         }
     }
 
     @Test
     void TestCase7(){
-        database.connect();
+       // database.connect();
         if(database.isConnected()) {
 
-            database.close();
+            //database.close();
         }
     }
     @Test
     void TestCase8(){
-        database.connect();
+        //database.connect();
         if(database.isConnected()) {
 
-            database.close();
+           // database.close();
         }
     }
 
     @Test
     void TestCase9(){
-        database.connect();
+      //  database.connect();
         if(database.isConnected()) {
 
-            database.close();
+           // database.close();
         }
     }
 
     @Test
     void TestCase10(){
-        database.connect();
+       // database.connect();
         if(database.isConnected()) {
 
             database.close();
