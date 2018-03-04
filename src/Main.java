@@ -35,10 +35,11 @@ public class Main {
                 int input = enterNum(in, 3,"Enter option number: ");
                 switch(input) {
                     case 0: exit(db); break;
-                    case 1: System.out.println("\nYou can contact @gafmn,@stalem, @lenargum at anytime!\n"); break;
+                    case 1: System.out.println("Use README or\nyou can contact @gafmn,@stalem, @lenargum at anytime!"); break;
                     case 2: bookManagerMenu(in, user,db); break;
                     case 3: libraryMenu(in,user,db); break;
                 }
+
             }
         }
     }
@@ -111,7 +112,7 @@ public class Main {
                 System.out.println(temp.toString());
             }
         } catch (NoSuchElementException e) {
-            System.out.println("Sorry! There is no books in library");
+            System.out.println("Sorry! There is no books in library now");
         }
         System.out.println("0 » Back\n" +
                 "1 » Take book");
@@ -132,7 +133,7 @@ public class Main {
                 System.out.println(temp.toString());
             }
         } catch (NoSuchElementException e) {
-            System.out.println("Sorry! There is no audio/video materials in library");
+            System.out.println("Sorry! There is no audio/video materials in library now");
         }
         System.out.println("0 » Back\n" +
                 "1 » Take audio/video");
@@ -153,7 +154,7 @@ public class Main {
                 System.out.println(temp.toString());
             }
         } catch (NoSuchElementException e) {
-            System.out.println("Sorry! There is no journal articles in library");
+            System.out.println("Sorry! There is no journal articles in library now");
         }
         System.out.println("0 » Back\n" +
                 "1 » Take article");
