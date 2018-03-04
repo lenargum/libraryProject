@@ -1,4 +1,5 @@
 //import javax.xml.crypto.Data;
+import com.sun.deploy.config.AutoUpdater;
 import jdk.nashorn.internal.scripts.JO;
 
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 public class Patron extends User {
     private String status;
-    public ArrayList listOfDocumentsPatron;
+    private ArrayList listOfDocumentsPatron;
 
     Patron(String login, String password, String status, String name, String surname,String phone, String address) {
         super(login,password,name,surname,phone,address);
@@ -54,12 +55,14 @@ public class Patron extends User {
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
-        if ((this.status == "faculty") & (database.getAV(idAV).getNumberOfCopies() != 0)) {
+        AudioVideoMaterial av = database.getAV(idAV);
+        if ((this.status == "faculty") && (av.getNumberOfCopies() != 0) &&
+                !av.isReference()) {
             return true;
         } else {
-            return database.getAV(idAV).isAllowedForStudents() &
-                    database.getAV(idAV).getNumberOfCopies() != 0 &
-                    !database.getAV(idAV).isReference();
+            return av.isAllowedForStudents() &&
+                    av.getNumberOfCopies() != 0 &&
+                    !av.isReference();
         }
     }
 
@@ -67,12 +70,14 @@ public class Patron extends User {
      * MAIN FUNCTION OF REQUESTING DOCUMENTS
      */
     public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
-        if((this.status == "faculty") & (database.getDocument(idDocument).getNumberOfCopies() != 0)){
+        Document doc = database.getDocument(idDocument);
+        if((this.status == "faculty") && (doc.getNumberOfCopies() != 0) &&
+                !(doc.isReference())){
             return true;
         }
-        else if (database.getDocument(idDocument).isAllowedForStudents() &
-                  database.getDocument(idDocument).getNumberOfCopies() != 0 &
-                  !(database.getDocument(idDocument).isReference())){
+        else if (doc.isAllowedForStudents() &&
+                  doc.getNumberOfCopies() != 0 &&
+                  !(doc.isReference())){
             return true;
         } else{
             if(database.getDocument(idDocument).isReference() & database.getDocument(idDocument).getNumberOfCopies() == 0)
