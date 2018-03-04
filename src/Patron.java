@@ -213,7 +213,7 @@ public class Patron extends User {
      */
     public void returnBook(int idBook, Database database) throws SQLException {
         try {
-            for (int i = 1; i < listOfDocumentsPatron.size() + 1; i++) {
+            for (int i = 1; i <= listOfDocumentsPatron.size(); i++) {
                 if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idBook))) {
                     getListOfDocumentsPatron().remove(i);
                     break;

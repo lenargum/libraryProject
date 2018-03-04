@@ -56,7 +56,6 @@ public class Main {
         while (!inputIsCorrect) {
             System.out.print(message);
             String inputLine = in.nextLine();
-            System.out.println("\n");
             try {
                 input = Integer.parseInt(inputLine);
                 if(upperBound != 0) {
@@ -171,5 +170,6 @@ public class Main {
         {
             System.out.println("\b") ;
         }*/
+        System.out.println("\n");
     }
 }
