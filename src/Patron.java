@@ -29,32 +29,32 @@ public class Patron extends User {
      * @return true: if Patron can get the document, otherwise false
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
-        if ((this.status == "faculty") && (database.getBook(idBook).getNumberOfCopies() != 0) &&
-                (!database.getBook(idBook).isBestseller())) {
+        if ((this.status == "faculty") & (database.getBook(idBook).getNumberOfCopies() != 0) &
+                !(database.getBook(idBook).isBestseller())) {
             return true;
         } else {
-            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies() != 0 &&
-                    !(database.getBook(idBook).isBestseller()) &&
-                    !database.getBook(idBook).isReference();
+            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies() != 0 &
+                    !(database.getBook(idBook).isBestseller()) &
+                    !(database.getBook(idBook).isReference());
         }
     }
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
-        if ((this.status == "faculty")&& (database.getArticle(idArticle).getNumberOfCopies() != 0)){
+        if ((this.status == "faculty")& (database.getArticle(idArticle).getNumberOfCopies() != 0)){
             return true;
         } else {
-            return database.getArticle(idArticle).isAllowedForStudents() &&
-                    database.getArticle(idArticle).getNumberOfCopies() != 0 &&
+            return database.getArticle(idArticle).isAllowedForStudents() &
+                    database.getArticle(idArticle).getNumberOfCopies() != 0 &
                     !database.getArticle(idArticle).isReference();
         }
     }
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
-        if ((this.status == "faculty") && (database.getAV(idAV).getNumberOfCopies() != 0)) {
+        if ((this.status == "faculty") & (database.getAV(idAV).getNumberOfCopies() != 0)) {
             return true;
         } else {
-            return database.getAV(idAV).isAllowedForStudents() &&
-                    database.getAV(idAV).getNumberOfCopies() != 0 &&
+            return database.getAV(idAV).isAllowedForStudents() &
+                    database.getAV(idAV).getNumberOfCopies() != 0 &
                     !database.getAV(idAV).isReference();
         }
     }
@@ -63,12 +63,18 @@ public class Patron extends User {
      * MAIN FUNCTION OF REQUESTING DOCUMENTS
      */
     public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
-        if((this.status == "faculty") && (database.getDocument(idDocument).getNumberOfCopies() != 0)){
+        if((this.status == "faculty") & (database.getDocument(idDocument).getNumberOfCopies() != 0)){
+            return true;
+        }
+        else if (database.getDocument(idDocument).isAllowedForStudents() &
+                  database.getDocument(idDocument).getNumberOfCopies() != 0 &
+                  !(database.getDocument(idDocument).isReference())){
             return true;
         } else{
-          return database.getDocument(idDocument).isAllowedForStudents() &&
-                  database.getDocument(idDocument).getNumberOfCopies() != 0 &&
-                  !database.getDocument(idDocument).isReference();
+            if(database.getDocument(idDocument).isReference() & database.getDocument(idDocument).getNumberOfCopies() == 0)
+                System.out.println("Not copies");
+            System.out.println("This Document is not for you");
+            return false;
         }
     }
 
@@ -111,7 +117,7 @@ public class Patron extends User {
 
     public void takeDocument(int idDocument, Database database) throws SQLException {
         if(canRequestDocument(idDocument, database)){
-            listOfDocumentsPatron.add(idDocument);
+            getListOfDocumentsPatron().add(idDocument);
             database.getDocument(idDocument).deleteCopy();
             Date date = new Date();
             Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
@@ -124,17 +130,17 @@ public class Patron extends User {
      * @param : id of Document, Database
      */
     public void returnBook(int idBook, Database database) throws SQLException {
-        listOfDocumentsPatron.remove(idBook);
+        getListOfDocumentsPatron().remove(idBook);
         database.getBook(idBook).addCopy();
     }
 
     public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
-        listOfDocumentsPatron.remove(idArticle);
+        getListOfDocumentsPatron().remove(idArticle);
         database.getArticle(idArticle).addCopy();
     }
 
     public void returnAV(int idAV, Database database) throws SQLException {
-        listOfDocumentsPatron.remove(idAV);
+        getListOfDocumentsPatron().remove(idAV);
         database.getAV(idAV).addCopy();
     }
 
@@ -143,7 +149,7 @@ public class Patron extends User {
      */
 
     public void returnDocument(int idDocument, Database database) throws SQLException {
-        listOfDocumentsPatron.remove(idDocument);
+        getListOfDocumentsPatron().remove(idDocument);
         database.getDocument(idDocument).addCopy();
     }
 

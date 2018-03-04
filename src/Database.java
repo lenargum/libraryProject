@@ -254,7 +254,6 @@ public class Database {
     public Patron getPatron(int id) throws SQLException {
         ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = "+id);
         if(patronSet.next()) {
-
             Patron temp = new Patron(patronSet.getString(2),
                     patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
                     patronSet.getString(6),patronSet.getString(7),patronSet.getString(8));

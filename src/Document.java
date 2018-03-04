@@ -214,4 +214,6 @@ public class Document {
     public double getPrice(){
         return Price;
     }
+
 }
+
