@@ -141,16 +141,22 @@ public class Patron extends User {
     public void returnBook(int idBook, Database database) throws SQLException {
         getListOfDocumentsPatron().remove(idBook);
         database.getBook(idBook).addCopy();
+        int debtID = database.findDebtID(this.getId(), idBook);
+        database.deleteDebt(debtID);
     }
 
     public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
         getListOfDocumentsPatron().remove(idArticle);
         database.getArticle(idArticle).addCopy();
+        int debtID = database.findDebtID(this.getId(), idArticle);
+        database.deleteDebt(debtID);
     }
 
     public void returnAV(int idAV, Database database) throws SQLException {
         getListOfDocumentsPatron().remove(idAV);
         database.getAV(idAV).addCopy();
+        int debtID = database.findDebtID(this.getId(), idAV);
+        database.deleteDebt(debtID);
     }
 
     /**
@@ -160,6 +166,8 @@ public class Patron extends User {
     public void returnDocument(int idDocument, Database database) throws SQLException {
         getListOfDocumentsPatron().remove(idDocument);
         database.getDocument(idDocument).addCopy();
+        int debtID = database.findDebtID(this.getId(), idDocument);
+        database.deleteDebt(debtID);
     }
 
     /**
