@@ -1,4 +1,6 @@
 //import javax.xml.crypto.Data;
+import jdk.nashorn.internal.scripts.JO;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -29,23 +31,25 @@ public class Patron extends User {
      * @return true: if Patron can get the document, otherwise false
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
-        if ((this.status == "faculty") & (database.getBook(idBook).getNumberOfCopies() != 0) &
-                !(database.getBook(idBook).isBestseller())) {
+        Book book = database.getBook(idBook);
+        if ((this.status == "faculty") && (book.getNumberOfCopies() != 0) &&
+                !book.isReference()) {
             return true;
         } else {
-            return database.getBook(idBook).isAllowedForStudents() & database.getBook(idBook).getNumberOfCopies() != 0 &
-                    !(database.getBook(idBook).isBestseller()) &
-                    !(database.getBook(idBook).isReference());
+            return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
+                    !book.isReference();
         }
     }
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
-        if ((this.status == "faculty")& (database.getArticle(idArticle).getNumberOfCopies() != 0)){
+        JournalArticle article = database.getArticle(idArticle);
+        if ((this.status == "faculty")&& (article.getNumberOfCopies() != 0)&&
+                !article.isReference()){
             return true;
         } else {
-            return database.getArticle(idArticle).isAllowedForStudents() &
-                    database.getArticle(idArticle).getNumberOfCopies() != 0 &
-                    !database.getArticle(idArticle).isReference();
+            return article.isAllowedForStudents() &&
+                    article.getNumberOfCopies() != 0 &&
+                    !article.isReference();
         }
     }
 
