@@ -213,7 +213,7 @@ public class Patron extends User {
      */
     public void returnBook(int idBook, Database database) throws SQLException {
         try {
-            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+            for (int i = 1; i < listOfDocumentsPatron.size() + 1; i++) {
                 if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idBook))) {
                     getListOfDocumentsPatron().remove(i);
                     break;
@@ -234,7 +234,7 @@ public class Patron extends User {
 
     public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
         try {
-            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+            for (int i = 1; i < listOfDocumentsPatron.size() + 1; i++) {
                 if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idArticle))) {
                     getListOfDocumentsPatron().remove(i);
                     break;
@@ -255,7 +255,7 @@ public class Patron extends User {
 
     public void returnAV(int idAV, Database database) throws SQLException {
         try {
-            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+            for (int i = 1; i < listOfDocumentsPatron.size() + 1; i++) {
                 if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idAV))) {
                     getListOfDocumentsPatron().remove(i);
                     break;
@@ -279,7 +279,7 @@ public class Patron extends User {
 
     public void returnDocument(int idDocument, Database database) throws SQLException {
         try {
-            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+            for (int i = 1; i < listOfDocumentsPatron.size() + 1; i++) {
                 if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idDocument))) {
                     getListOfDocumentsPatron().remove(i);
                     break;
