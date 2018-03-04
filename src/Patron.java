@@ -38,9 +38,6 @@ public class Patron extends User {
                     !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
                 return true;
             } else {
-                if(getListOfDocumentsPatron().contains(idBook)){
-                    System.out.println("You already have this book!");
-                }
                 return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
                         !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
             }
@@ -60,9 +57,6 @@ public class Patron extends User {
                     !article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
                 return true;
             } else {
-                if (getListOfDocumentsPatron().contains(idArticle)){
-                    System.out.println("You already have this article");
-                }
                 return article.isAllowedForStudents() &&
                         article.getNumberOfCopies() != 0 &&
                         !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
@@ -86,9 +80,6 @@ public class Patron extends User {
                     !av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
                 return true;
             } else {
-                if(getListOfDocumentsPatron().contains(idAV)){
-                    System.out.println("You already have this AV");
-                }
                 return av.isAllowedForStudents() &&
                         av.getNumberOfCopies() != 0 &&
                         !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
