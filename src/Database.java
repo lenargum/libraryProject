@@ -135,8 +135,8 @@ public class Database {
     }
 
     public void insertDebt(Debt debt) throws SQLException {
-        execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew," +
-                " is_renewed)" +" VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
+        execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
+                +" VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
                 + debt.getBookingDate() + "\', \'" + debt.getExpireDate() + "\', " + debt.getFee() + ", \'"
                 + debt.canRenew() + "\')");
     }
