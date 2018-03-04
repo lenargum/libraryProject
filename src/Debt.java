@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.sql.SQLException;
 
 public class Debt {
     private int patronId;
@@ -8,12 +9,11 @@ public class Debt {
     private int fee;
     private boolean canRenew;
 
-    public Debt(int patronId, int documentId, Date bookingDate,
-                Date expireDate, int fee, boolean canRenew) {
+    public Debt(int patronId, int documentId, Date bookingDate, int fee, boolean canRenew) {
         this.patronId = patronId;
         this.documentId = documentId;
         this.bookingDate = bookingDate;
-        this.expireDate = expireDate;
+        this.expireDate = bookingDate;
         this.fee = fee;
         this.canRenew = canRenew;
     }
@@ -50,8 +50,26 @@ public class Debt {
         return expireDate;
     }
 
-    public void setExpireDate(Date expireDate) {
-        this.expireDate = expireDate;
+    public void setExpireDate(Database database) throws SQLException{
+        String docType = database.getDocument(documentId).getType();
+        String patStatus = database.getPatron(patronId).getStatus();
+        if(docType.equals("book")) {
+            switch (patStatus) {
+                case "student": {
+                    if(database.getBook(documentId).isBestseller())
+                        expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
+                    else
+                        expireDate.setTime(bookingDate.getTime() + 21*60*60*24*1000);
+                    break;
+                }
+                case "faculty": {
+                    expireDate.setTime(bookingDate.getTime() + 28*60*60*24*1000);
+                    break;
+                }
+            }
+        } else {
+            expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
+        }
     }
 
     public int getFee() {
@@ -68,5 +86,10 @@ public class Debt {
 
     public void setCanRenew(boolean canRenew) {
         this.canRenew = canRenew;
+    }
+
+    public int daysLeft(){
+        Date date = new Date();
+        return (int)(expireDate.getTime() - date.getTime())/(60*60*24*1000);
     }
 }
