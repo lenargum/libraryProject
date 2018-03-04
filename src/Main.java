@@ -8,11 +8,17 @@ public class Main {
         db.connect();
         if (db.isConnected()) {
             //body of database interaction
+            db.soutDocs();
+            System.out.println(db.getPatronList());
+            System.out.println(db.getLibrarianList());
+            //db.insertLibrarian(librarian);
 
-
-
-
+            Librarian librarian = db.getLibrarianList().get(0);
+            Patron patron = db.getPatronList().get(0);
+            //
+            // patron.takeBook(0, db);
             //not necessarily, but desirable
+            System.out.println(librarian.getName() + librarian.getSurname());
             db.close();
         }
     }
