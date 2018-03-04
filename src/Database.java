@@ -351,6 +351,18 @@ public class Database {
         System.out.println();
     }
 
+    public void soutUsers() throws SQLException {
+        ResultSet usersSet = executeQuery("SELECT * FROM users");
+        System.out.println("\nAll users in database:");
+        while(usersSet.next()) {
+            System.out.println(usersSet.getInt(1)+" "+usersSet.getString(2)+" "
+                    +usersSet.getString(3)+" "+usersSet.getString(4)+" "
+                    +usersSet.getString(5)+" "+usersSet.getString(6)+" "
+                    +usersSet.getString(7)+" "+usersSet.getString(8));
+        }
+        System.out.println();
+    }
+
 
     //main features: deletion
 
@@ -408,4 +420,25 @@ public class Database {
                 "SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtId);
     }
 
+
+    public boolean login(String login, String password) throws SQLException {
+        ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'"+login+"\' and password = \'"+password+"\'");
+        return answer.next();
+    }
+
+    public int loginId(String login, String password) throws SQLException {
+        ResultSet answer = executeQuery("SELECT id FROM users WHERE login = \'"+login+"\' and password = \'"+password+"\'");
+        if(answer.next()) {
+            return answer.getInt(1);
+        }
+        throw new NoSuchElementException();
+    }
+
+    public String loginStatus(int id) throws SQLException {
+        ResultSet answer = executeQuery("SELECT status FROM users WHERE id = "+id);
+        if(answer.next()) {
+            return answer.getString(1);
+        }
+        throw new NoSuchElementException();
+    }
 }
