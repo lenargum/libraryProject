@@ -13,6 +13,7 @@ Contains all documents and users classes and booking logic.
 
 ## Console application in IntelliJ IDEA
 For installing database use this [link](http://telegra.ph/Kak-sdelat-tak-chtoby-vsyo-zarabotalo-03-01)
+Use system console(Just run program!)
 
 [Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
 
