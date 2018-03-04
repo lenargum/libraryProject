@@ -33,7 +33,7 @@ public class Patron extends User {
      */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
         Book book = database.getBook(idBook);
-        if ((this.status == "faculty") && (book.getNumberOfCopies() != 0) &&
+        if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
                 !book.isReference()) {
             return true;
         } else {
@@ -44,7 +44,7 @@ public class Patron extends User {
 
     public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
         JournalArticle article = database.getArticle(idArticle);
-        if ((this.status == "faculty")&& (article.getNumberOfCopies() != 0)&&
+        if ((this.status.toLowerCase().equals("faculty"))&& (article.getNumberOfCopies() != 0)&&
                 !article.isReference()){
             return true;
         } else {
@@ -56,7 +56,7 @@ public class Patron extends User {
 
     public boolean canRequestAV(int idAV, Database database) throws SQLException {
         AudioVideoMaterial av = database.getAV(idAV);
-        if ((this.status == "faculty") && (av.getNumberOfCopies() != 0) &&
+        if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
                 !av.isReference()) {
             return true;
         } else {
@@ -71,7 +71,7 @@ public class Patron extends User {
      */
     public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
         Document doc = database.getDocument(idDocument);
-        if((this.status == "faculty") && (doc.getNumberOfCopies() != 0) &&
+        if((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
                 !(doc.isReference())){
             return true;
         }
