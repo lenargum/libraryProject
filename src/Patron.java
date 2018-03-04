@@ -42,6 +42,8 @@ public class Patron extends User {
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idBook))
                     System.out.println("You already have copy of this document");
+                if(book.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return false;
             }else {
                 if (book.isReference() && book.getNumberOfCopies() == 0)
@@ -50,6 +52,8 @@ public class Patron extends User {
                     System.out.println("You already have copy of this document");
                 if(!book.isAllowedForStudents())
                     System.out.println("This Document is not for you");
+                if(book.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
                         !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
             }
@@ -73,6 +77,8 @@ public class Patron extends User {
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idArticle))
                     System.out.println("You already have copy of this document");
+                if(article.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return false;
             }else {
                 if (article.isReference() && article.getNumberOfCopies() == 0)
@@ -81,6 +87,8 @@ public class Patron extends User {
                     System.out.println("You already have copy of this document");
                 if(!article.isAllowedForStudents())
                     System.out.println("This Document is not for you");
+                if(article.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return article.isAllowedForStudents() &&
                         article.getNumberOfCopies() != 0 &&
                         !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
@@ -108,6 +116,9 @@ public class Patron extends User {
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idAV))
                     System.out.println("You already have copy of this document");
+
+                if(av.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return false;
             } else {
                 if (av.isReference() && av.getNumberOfCopies() == 0)
@@ -116,6 +127,9 @@ public class Patron extends User {
                     System.out.println("You already have copy of this document");
                 if(!av.isAllowedForStudents())
                     System.out.println("This Document is not for you");
+
+                if(av.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return av.isAllowedForStudents() &&
                         av.getNumberOfCopies() != 0 &&
                         !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
@@ -148,6 +162,8 @@ public class Patron extends User {
                     System.out.println("You already have copy of this document");
                 if(!doc.isAllowedForStudents())
                 System.out.println("This Document is not for you");
+                if(doc.isReference())
+                    System.out.println("You can not borrow reference materials");
                 return false;
             }
         } catch(SQLException e){
