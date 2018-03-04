@@ -16,6 +16,7 @@ public class Main {
             Patron mainPidor  = new Patron("a.naumchev", "12345678", "faculty", "Alexandr", "Naumchev", "12345678", "Innopolis, Universitetskaya");
             Librarian librarian = db.getLibrarian(2);
             //librarian.RegisterPatron(mainPidor, db);
+            System.out.println(mainPidor.getId());
             Patron pidor = db.getPatron(5);
             System.out.println(mainPidor.canRequestBook(7, db));
             mainPidor.takeBook(7, db);
