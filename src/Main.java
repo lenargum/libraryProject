@@ -29,13 +29,13 @@ public class Main {
             while (true) {
                 clearScreen();
                 System.out.println("1 » Help \n" +
-                        "2 » Borrowed book manager \n" +
+                        "2 » Borrowed documents manager \n" +
                         "3 » Library\n" +
                         "0 » Exit\n");
                 int input = enterNum(in, 3,"Enter option number: ");
                 switch(input) {
                     case 0: exit(db); break;
-                    case 1: System.out.println("\nHelp yourself\n"); break;
+                    case 1: System.out.println("\nYou can contact @gafmn,@stalem, @lenargum at anytime!\n"); break;
                     case 2: bookManagerMenu(in, user,db); break;
                     case 3: libraryMenu(in,user,db); break;
                 }

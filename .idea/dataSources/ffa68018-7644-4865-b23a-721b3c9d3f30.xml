@@ -46,7 +46,7 @@
     </column>
     <column id="16" parent="6" name="fee">
       <Position>6</Position>
-      <DataType>INTEGER|0</DataType>
+      <DataType>REAL|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>
