@@ -16,7 +16,7 @@ class MainTest{
             Librarian lib = database.getLibrarian(2);
             int num = database.getBook(7).getNumberOfCopies();
             pat.takeBook(7, database);
-            assertTrue(num == database.getBook(7).getNumberOfCopies());
+            assertTrue(num - 1 == database.getBook(7).getNumberOfCopies());
             pat.returnBook(7, database);
             assertTrue(num == database.getBook(7).getNumberOfCopies());
             int id = pat.getId();
@@ -28,7 +28,6 @@ class MainTest{
 
     @Test
     void TestCase2()throws SQLException{
-        database.connect();
         if(database.isConnected()) {
             Librarian librarian = database.getLibrarian(2);
             Patron patron = database.getPatron(5);
@@ -55,10 +54,20 @@ class MainTest{
     }
 
     @Test
-    void TestCase4(){
+    void TestCase4() throws SQLException, ParseException{
         //database.connect();
         if(database.isConnected()) {
-
+            Patron p1 = new Patron("gjdkg", "ghajdafgjk", "faculty", "Eugenii", "Zuev", "8932058391850398", "Inno");
+            Librarian lib = database.getLibrarian(2);
+            Book book = new Book("B", "A", true, 3, false, 1200, "fdhjkshkh", "fdahfd", 9, true);
+            lib.RegisterPatron(p1, database);
+            lib.addBook(book, database);
+            p1.takeBook(book.getID(), database);
+            int a = database.getDebt(database.findDebtID(0, 7)).daysLeft();
+            assertTrue(a == 14);
+            p1.returnBook(book.getID(), database);
+            lib.deletePatron(p1.getId(), database);
+            lib.deleteDocument(book.getID(), database);
             //database.close();
         }
     }
