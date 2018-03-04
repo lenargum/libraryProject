@@ -13,8 +13,6 @@ Contains all documents and users classes and booking logic.
 
 ## Console application in IntelliJ IDEA
 
-[Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
-
 ### Requirements
 - Java 8
 - JUnit 5.0 (for tests)
