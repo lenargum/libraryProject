@@ -1,25 +1,39 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         //example of database usage
+        Scanner in = new Scanner(System.in);
         Database db = new Database();
         db.connect();
         if (db.isConnected()) {
             //body of database interaction
-            db.soutDocs();
-            System.out.println(db.getPatronList());
-            System.out.println(db.getLibrarianList());
-            //db.insertLibrarian(librarian);
 
-            Librarian librarian = db.getLibrarian(0);
-            Patron patron = db.getPatron(1);
+            System.out.println("Hello! Enter your login:");
+            String login = in.nextLine();
+            System.out.println("Enter your password:");
+            String password = in.nextLine();
+            while(!db.login(login,password)) {
+                System.out.println("Error!\nLogin or password are not correct.\nType \"quit\" to exit program or\n enter your login again:");
+                login = in.nextLine();
+                if(login.equals("quit")) System.exit(0);
+                System.out.println("Enter your password:");
+                password = in.nextLine();
+            }
+            int userId = db.loginId(login,password);
 
-            //
-            // patron.takeBook(0, db);
+            if(db.loginStatus(userId).equals("LIBRARIAN")) {
+                Librarian user = db.getLibrarian(userId);
+            } else {
+                Patron user = db.getPatron(userId);
+            }
+            //System.out.println("Hello, "+user.getName()+"!");
+
+
+
             //not necessarily, but desirable
-            System.out.println(librarian.getName() + librarian.getSurname());
             db.close();
         }
     }
