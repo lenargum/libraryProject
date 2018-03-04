@@ -201,6 +201,7 @@ public class Patron extends User {
         int count = database.getDocument(idDocument).getNumberOfCopies();
         database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
     }
+
     public void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
         int count = database.getDocument(idDocument).getNumberOfCopies();
         database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count + 1));
