@@ -160,21 +160,36 @@ public class Patron extends User {
      * @param : id of Document, Database
      */
     public void returnBook(int idBook, Database database) throws SQLException {
-        getListOfDocumentsPatron().remove(idBook);
+        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
+            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idBook))){
+                getListOfDocumentsPatron().remove(i);
+                break;
+            }
+        }
         database.getBook(idBook).addCopy();
         int debtID = database.findDebtID(this.getId(), idBook);
         database.deleteDebt(debtID);
     }
 
     public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
-        getListOfDocumentsPatron().remove(idArticle);
+        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
+            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idArticle))){
+                getListOfDocumentsPatron().remove(i);
+                break;
+            }
+        }
         database.getArticle(idArticle).addCopy();
         int debtID = database.findDebtID(this.getId(), idArticle);
         database.deleteDebt(debtID);
     }
 
     public void returnAV(int idAV, Database database) throws SQLException {
-        getListOfDocumentsPatron().remove(idAV);
+        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
+            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idAV))){
+                getListOfDocumentsPatron().remove(i);
+                break;
+            }
+        }
         database.getAV(idAV).addCopy();
         int debtID = database.findDebtID(this.getId(), idAV);
         database.deleteDebt(debtID);
@@ -185,7 +200,12 @@ public class Patron extends User {
      */
 
     public void returnDocument(int idDocument, Database database) throws SQLException {
-        getListOfDocumentsPatron().remove(idDocument);
+        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
+            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idDocument))){
+                getListOfDocumentsPatron().remove(i);
+                break;
+            }
+        }
         database.getDocument(idDocument).addCopy();
         int debtID = database.findDebtID(this.getId(), idDocument);
         database.deleteDebt(debtID);
