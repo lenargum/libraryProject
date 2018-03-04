@@ -86,14 +86,14 @@ public class Database {
 
     public void insertPatron(Patron patron) throws SQLException {
         String status = "STUDENT";
-        if(patron.getStatus().toLowerCase().equals("faculty")) {
+        if (patron.getStatus().toLowerCase().equals("faculty")) {
             status = "FACULTY";
         }
-        insertUser(patron.getLogin(),patron.getPassword(),status,patron.getName(),patron.getSurname(),patron.getPhoneNumber(),patron.getAddress());
+        insertUser(patron.getLogin(), patron.getPassword(), status, patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
     }
 
     public void insertLibrarian(Librarian librarian) throws SQLException {
-        insertUser(librarian.getLogin(),librarian.getPassword(),"LIBRARIAN",librarian.getName(),librarian.getSurname(),librarian.getPhoneNumber(),librarian.getAddress());
+        insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress());
     }
 
     //main insertion(other methods just implement it for custom types)
@@ -136,8 +136,8 @@ public class Database {
 
     public void insertDebt(Debt debt) throws SQLException {
         execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
-                +" VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
-                + debt.getBookingDate() + "\', \'" + debt.getExpireDate() + "\', " + debt.getFee() + ", \'"
+                + " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
+                + (new SimpleDateFormat("dd-MMM-yyyy")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("dd-MMM-yyyy")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
                 + debt.canRenew() + "\')");
     }
 
@@ -147,27 +147,33 @@ public class Database {
     public ArrayList<Patron> getPatronList() throws SQLException {
         ResultSet patronSet = executeQuery("SELECT * FROM users where status = 'FACULTY' or status = 'STUDENT'");
         ArrayList<Patron> patronList = new ArrayList<>();
-        while(patronSet.next()) {
+        while (patronSet.next()) {
             Patron temp = new Patron(patronSet.getString(2),
-                    patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
-                    patronSet.getString(6),patronSet.getString(7),patronSet.getString(8));
+                    patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
+                    patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
             temp.setId(patronSet.getInt(1));
             patronList.add(temp);
         }
-        return patronList;
+        if (patronList.size() != 0) {
+            return patronList;
+        }
+        throw new NoSuchElementException();
     }
 
     public ArrayList<Librarian> getLibrarianList() throws SQLException {
         ResultSet librarianSet = executeQuery("SELECT * FROM users where status = 'LIBRARIAN'");
         ArrayList<Librarian> librarianList = new ArrayList<>();
-        while(librarianSet.next()) {
+        while (librarianSet.next()) {
             Librarian temp = new Librarian(librarianSet.getString(2),
-                    librarianSet.getString(3),librarianSet.getString(5),
-                    librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8));
+                    librarianSet.getString(3), librarianSet.getString(5),
+                    librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
             temp.setId(librarianSet.getInt(1));
             librarianList.add(temp);
         }
-        return librarianList;
+        if (librarianList.size() != 0) {
+            return librarianList;
+        }
+        throw new NoSuchElementException();
     }
 
     public ArrayList<Document> getDocumentList() throws SQLException {
@@ -175,26 +181,33 @@ public class Database {
         ArrayList<Document> documentList = new ArrayList<>();
         while (documentSet.next()) {
             Document temp = new Document(documentSet.getString(2),
-                    documentSet.getString(3),Boolean.parseBoolean(documentSet.getString(4)),
-                    documentSet.getInt(5),Boolean.parseBoolean(documentSet.getString(6)),
-                    documentSet.getDouble(7),documentSet.getString(8));
+                    documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
+                    documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
+                    documentSet.getDouble(7), documentSet.getString(8));
             temp.setID(documentSet.getInt(1));
             documentList.add(temp);
         }
-        return documentList;
+        if (documentList.size() != 0) {
+            return documentList;
+        }
+        throw new NoSuchElementException();
     }
 
     public ArrayList<String> getDocumentStringList() throws SQLException {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
         ArrayList<String> documentsTitleList = new ArrayList<>();
         while (documentSet.next()) {
-            documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" " + documentSet.getString(3) + " (" + documentSet.getString("type")+")");
+            documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" "
+                    + documentSet.getString(3) + " (" + documentSet.getString(4) + ") ");
         }
-        return documentsTitleList;
+        if (documentsTitleList.size() != 0) {
+            return documentsTitleList;
+        }
+        throw new NoSuchElementException();
     }
 
     public ArrayList<Book> getBookList() throws SQLException {
-        ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\'");
+        ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\';");
         ArrayList<Book> bookList = new ArrayList<>();
         while (bookSet.next()) {
             Book temp = new Book(bookSet.getString(2),
@@ -204,12 +217,16 @@ public class Database {
             temp.setID(bookSet.getInt(1));
             bookList.add(temp);
         }
-        return bookList;
+        if (bookList.size() != 0) {
+            return bookList;
+        }
+        throw new NoSuchElementException();
     }
 
     public ArrayList<AudioVideoMaterial> getAVList() throws SQLException {
         ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
         ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
+
         while (AVSet.next()) {
             AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
                     AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
@@ -217,7 +234,10 @@ public class Database {
             temp.setID(AVSet.getInt(1));
             AVList.add(temp);
         }
-        return AVList;
+        if (AVList.size() != 0) {
+            return AVList;
+        }
+        throw new NoSuchElementException();
     }
 
     public ArrayList<JournalArticle> getArticleList() throws SQLException, ParseException {
@@ -234,7 +254,12 @@ public class Database {
             temp.setID(articleSet.getInt(1));
             articleList.add(temp);
         }
-        return articleList;
+        if (articleList.size() != 0) {
+            return articleList;
+        }
+        throw new NoSuchElementException();
+
+
     }
 
     public ArrayList<Debt> getDebtsList() throws SQLException, ParseException {
@@ -244,19 +269,24 @@ public class Database {
             Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),Boolean.parseBoolean(debtsSet.getString(7)));
+                    debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
             temp.setDebtId(debtsSet.getInt(1));
             debtsList.add(temp);
         }
-        return debtsList;
+
+        if (debtsList.size() != 0) {
+            return debtsList;
+        }
+        throw new NoSuchElementException();
+
     }
 
     public Patron getPatron(int id) throws SQLException {
-        ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = "+id);
-        if(patronSet.next()) {
+        ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + id);
+        if (patronSet.next()) {
             Patron temp = new Patron(patronSet.getString(2),
-                    patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
-                    patronSet.getString(6),patronSet.getString(7),patronSet.getString(8));
+                    patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
+                    patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
             temp.setId(patronSet.getInt(1));
             return temp;
         }
@@ -265,10 +295,10 @@ public class Database {
 
     public Librarian getLibrarian(int id) throws SQLException {
         ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + id);
-        if(librarianSet.next()) {
+        if (librarianSet.next()) {
             Librarian temp = new Librarian(librarianSet.getString(2),
-                    librarianSet.getString(3),librarianSet.getString(5),
-                    librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8));
+                    librarianSet.getString(3), librarianSet.getString(5),
+                    librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
             temp.setId(librarianSet.getInt(1));
             return temp;
         }
@@ -277,12 +307,12 @@ public class Database {
     }
 
     public Document getDocument(int id) throws SQLException {
-        ResultSet documentSet = executeQuery("SELECT * FROM documents where id = "+ id);
+        ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + id);
         if (documentSet.next()) {
             Document temp = new Document(documentSet.getString(2),
-                    documentSet.getString(3),Boolean.parseBoolean(documentSet.getString(4)),
-                    documentSet.getInt(5),Boolean.parseBoolean(documentSet.getString(6)),
-                    documentSet.getDouble(7),documentSet.getString(8));
+                    documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
+                    documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
+                    documentSet.getDouble(7), documentSet.getString(8));
             temp.setID(documentSet.getInt(1));
             return temp;
         }
@@ -290,7 +320,7 @@ public class Database {
     }
 
     public Book getBook(int id) throws SQLException {
-        ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id ="+id);
+        ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id =" + id);
         if (bookSet.next()) {
             Book temp = new Book(bookSet.getString(2),
                     bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
@@ -303,7 +333,7 @@ public class Database {
     }
 
     public AudioVideoMaterial getAV(int id) throws SQLException {
-        ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = "+id);
+        ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = " + id);
         if (AVSet.next()) {
             AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
                     AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
@@ -331,16 +361,41 @@ public class Database {
     }
 
     public Debt getDebt(int id) throws SQLException, ParseException {
-        ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = "+id);
+        ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = " + id);
         if (debtsSet.next()) {
             Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),Boolean.parseBoolean(debtsSet.getString(7)));
+                    debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
             temp.setDebtId(debtsSet.getInt(1));
             return temp;
         }
         throw new NoSuchElementException();
+    }
+
+    public void getDebtsForUser(int userId) throws SQLException, ParseException {
+        ResultSet debtsSet = executeQuery("SELECT * FROM debts where patron_id =" + userId);
+
+        ArrayList<String> output = new ArrayList<>();
+        while (debtsSet.next()) {
+            output.add("Document id: " + debtsSet.getInt(3));
+            output.add("Booking date: " + debtsSet.getString(4));
+            output.add("Expire date: " + debtsSet.getString(5));
+            output.add("Fee: " + debtsSet.getDouble(6));
+            output.add("Can renew: " + debtsSet.getString(7));
+            output.add("");
+        }
+        ArrayList<String> finalOutput = new ArrayList<>();
+        if(output.size()!=0) {
+            finalOutput.add("All borrowed documents:\n");
+            finalOutput.addAll(output);
+        } else {
+            finalOutput.add("There is no any borrowed documents! Go grab one!");
+        }
+        for(String temp:finalOutput) {
+            System.out.println(temp);
+        }
+
     }
 
     public void soutDocs() throws SQLException {
@@ -354,11 +409,11 @@ public class Database {
     public void soutUsers() throws SQLException {
         ResultSet usersSet = executeQuery("SELECT * FROM users");
         System.out.println("\nAll users in database:");
-        while(usersSet.next()) {
-            System.out.println(usersSet.getInt(1)+" "+usersSet.getString(2)+" "
-                    +usersSet.getString(3)+" "+usersSet.getString(4)+" "
-                    +usersSet.getString(5)+" "+usersSet.getString(6)+" "
-                    +usersSet.getString(7)+" "+usersSet.getString(8));
+        while (usersSet.next()) {
+            System.out.println(usersSet.getInt(1) + " " + usersSet.getString(2) + " "
+                    + usersSet.getString(3) + " " + usersSet.getString(4) + " "
+                    + usersSet.getString(5) + " " + usersSet.getString(6) + " "
+                    + usersSet.getString(7) + " " + usersSet.getString(8));
         }
         System.out.println();
     }
@@ -422,31 +477,31 @@ public class Database {
 
 
     public boolean login(String login, String password) throws SQLException {
-        ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'"+login+"\' and password = \'"+password+"\'");
+        ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
         return answer.next();
     }
 
     public int loginId(String login, String password) throws SQLException {
-        ResultSet answer = executeQuery("SELECT id FROM users WHERE login = \'"+login+"\' and password = \'"+password+"\'");
-        if(answer.next()) {
+        ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\';");
+        if (answer.next()) {
             return answer.getInt(1);
         }
         throw new NoSuchElementException();
     }
 
     public String loginStatus(int id) throws SQLException {
-        ResultSet answer = executeQuery("SELECT status FROM users WHERE id = "+id);
-        if(answer.next()) {
+        ResultSet answer = executeQuery("SELECT status FROM users WHERE id = " + id);
+        if (answer.next()) {
             return answer.getString(1);
         }
         throw new NoSuchElementException();
     }
 
-    public int findDebtID(int patronID, int docId) throws  SQLException{
-        ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = "+patronID+" AND document_id = "+docId);
-        if(debt.next()){
+    public int findDebtID(int patronID, int docId) throws SQLException {
+        ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = " + patronID + " AND document_id = " + docId);
+        if (debt.next()) {
             return debt.getInt(1);
         }
-        throw  new NoSuchElementException();
+        throw new NoSuchElementException();
     }
 }

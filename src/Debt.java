@@ -7,10 +7,10 @@ public class Debt {
     private int documentId;
     private Date bookingDate;
     private Date expireDate;
-    private int fee;
+    private double fee;
     private boolean canRenew;
 
-    public Debt(int patronId, int documentId, Date bookingDate, Date expireDate, int fee, boolean canRenew) {
+    public Debt(int patronId, int documentId, Date bookingDate, Date expireDate, double fee, boolean canRenew) {
         this.patronId = patronId;
         this.documentId = documentId;
         this.bookingDate = bookingDate;
@@ -66,7 +66,7 @@ public class Debt {
 
     }
 
-    public int getFee() {
+    public double getFee() {
         return fee;
     }
 

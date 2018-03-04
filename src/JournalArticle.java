@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.Date;
 public class JournalArticle extends Document{
     /**
@@ -114,5 +115,22 @@ public class JournalArticle extends Document{
      */
     public Date getPublicationDate(){
         return PublicationDate;
+    }
+
+    public String toString() {
+        return ("Id: " + this.getID()+"\n"+
+                "Title: " + this.getTitle()+"\n"+
+                "Authors: " + this.getAuthors()+"\n"+
+                "Allowed for students: " + this.isAllowedForStudents()+"\n"+
+                "Number of copies: " + this.getNumberOfCopies()+"\n"+
+                "This is reference book: " + this.isReference()+"\n"+
+                "Price: " + this.getPrice()+"\n"+
+                "KeyWords: " + this.getKeyWords()+"\n"+
+                "Journal name: " + this.getJournalName()+"\n"+
+                "Publisher: " + this.getPublisher()+"\n"+
+                "Issue: " + this.getIssue()+"\n"+
+                "Editor: " + this.getEditor()+"\n"+
+                "Publication date: " +
+                (new SimpleDateFormat("dd-MMM-yyyy")).format(this.getPublicationDate())+"\n");
     }
 }

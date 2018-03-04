@@ -71,4 +71,18 @@ public class Book extends Document{
     public boolean isBestseller(){
         return IsBestseller;
     }
+
+    public String toString() {
+        return ("Id: " + this.getID()+"\n"+
+                "Title: " + this.getTitle()+"\n"+
+                "Authors: " + this.getAuthors()+"\n"+
+                "Allowed for students: " + this.isAllowedForStudents()+"\n"+
+                "Number of copies: " + this.getNumberOfCopies()+"\n"+
+                "This is reference book: " + this.isReference()+"\n"+
+                "Price: " + this.getPrice()+"\n"+
+                "KeyWords: " + this.getKeyWords()+"\n"+
+                "Publisher: " + this.getPublisher()+"\n"+
+                "Edition: " + this.getEdition()+"\n"+
+                "This book is bestseller: " + this.getTitle()+"\n");
+    }
 }
