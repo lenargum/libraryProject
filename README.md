@@ -11,8 +11,8 @@ Contains all documents and users classes and booking logic.
 
 [Go to Entities branch](https://github.com/lenargum/libraryProject/tree/User-Documents-Connection)
 
-## Graphical User Interface
-Contains desktop app source code.
+## Console application in IntelliJ IDEA
+For installing database use this [link](http://telegra.ph/Kak-sdelat-tak-chtoby-vsyo-zarabotalo-03-01)
 
 [Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
 
@@ -21,13 +21,12 @@ Contains desktop app source code.
 - Java 8
 - FX module (for OpenJDK)
 - JUnit 5.0 (for tests)
-- [JFoenix](https://github.com/jfoenixadmin/JFoenix) v. 8.0.1 (Material Design UI)
 
-This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `MainPage` class. You may use `javac`, but it was not tested.
 
-GUI may not compile on OpenJDK. Please, install FX module or use Oracle JDK instead.
+This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `Main` class. You may use `javac`, but it was not tested.
+
 
 **JUnit 5.0** is required for building and running tests.
 
 ## Using
-To log in use login **Name** and any password with length > 8.
+To log in use login **login** and password **password** .
