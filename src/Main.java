@@ -13,7 +13,9 @@ public class Main {
             //System.out.println(db.getPatron(4).getListOfDocumentsPatron());
            // db.getLibrarian(2).RegisterPatron(new Patron("login", "password", "student", "Name", "Surname", "224511", "Unuiversitetskaya"), db);
             db.soutDocs();
-            db.getLibrarian(2).modifyDocumentPrice(1, db, 256);
+            Patron pidor = db.getPatron(5);
+            pidor.takeBook(7, db);
+            System.out.println(db.getDocument(7).isAllowedForStudents());
             db.soutDocs();
             db.close();
         }
