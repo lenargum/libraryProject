@@ -15,7 +15,6 @@ Contains all documents and users classes and booking logic.
 
 [Go to GUI branch](https://github.com/lenargum/libraryProject/tree/Graphical-User-Interface)
 
-## Building
 ### Requirements
 - Java 8
 - JUnit 5.0 (for tests)
