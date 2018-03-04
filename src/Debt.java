@@ -97,4 +97,5 @@ public class Debt {
     public void setDebtId(int debtId) {
         this.debtId = debtId;
     }
+
 }
