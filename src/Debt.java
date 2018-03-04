@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 public class Debt {
     private int debtId;
@@ -20,7 +21,7 @@ public class Debt {
     }
 
     public String toString() {
-        return patronId+" "+documentId+" ("+bookingDate+") ("+expireDate+") "+fee+" "+canRenew+" ";
+        return patronId+" "+documentId+" ("+(new SimpleDateFormat("dd-MMM-yyyy")).format(bookingDate)+") ("+(new SimpleDateFormat("dd-MMM-yyyy")).format(expireDate)+") "+fee+" "+canRenew+" ";
     }
 
     public int getPatronId() {
