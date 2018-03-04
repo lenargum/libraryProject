@@ -10,12 +10,11 @@ import java.util.NoSuchElementException;
 
 public class Patron extends User {
     private String status;
-    private ArrayList<Integer> listOfDocumentsPatron;
+    private ArrayList<Integer> listOfDocumentsPatron = new ArrayList<>();
 
     Patron(String login, String password, String status, String name, String surname,String phone, String address) {
         super(login,password,name,surname,phone,address);
         this.status = status;
-        listOfDocumentsPatron = new ArrayList();
     }
 
     public ArrayList getListOfDocumentsPatron() {
@@ -218,7 +217,7 @@ public class Patron extends User {
     public void returnBook(int idBook, Database database) throws SQLException {
         try {
             for (int i = 1; i <= listOfDocumentsPatron.size(); i++) {
-                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idBook))) {
+                if (getListOfDocumentsPatron().get(i).equals(idBook)) {
                     getListOfDocumentsPatron().remove(i);
                     break;
                 }
