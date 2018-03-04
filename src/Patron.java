@@ -2,6 +2,7 @@ import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Patron extends User {
     private String status;
@@ -78,7 +79,9 @@ public class Patron extends User {
         if (canRequestBook(idBook, database)) {
             this.getListOfDocumentsPatron().add(idBook);
             database.getBook(idBook).deleteCopy();
-            //TODO: set date of reservation
+            Date date = new Date();
+            Debt debt = new Debt(getId(), idBook, date, date, 0, true);
+            database.insertDebt(debt);
         }
     }
 
@@ -86,7 +89,9 @@ public class Patron extends User {
         if (canRequestAV(idAV, database)) {
             this.getListOfDocumentsPatron().add(idAV);
             database.getAV(idAV).deleteCopy();
-            //TODO: set date of reservation
+            Date date = new Date();
+            Debt debt = new Debt(getId(), idAV, date, date, 0, true);
+            database.insertDebt(debt);
         }
     }
 
@@ -94,6 +99,9 @@ public class Patron extends User {
         if(canRequestArticle(idArticle, database)){
             this.getListOfDocumentsPatron().add(idArticle);
             database.getArticle(idArticle).deleteCopy();
+            Date date = new Date();
+            Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
+            database.insertDebt(debt);
         }
     }
 

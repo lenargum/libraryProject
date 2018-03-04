@@ -55,22 +55,15 @@ public class Debt {
         String docType = database.getDocument(documentId).getType();
         String patStatus = database.getPatron(patronId).getStatus();
         if(docType.equals("book")) {
-            switch (patStatus) {
-                case "student": {
-                    if(database.getBook(documentId).isBestseller())
-                        expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
-                    else
-                        expireDate.setTime(bookingDate.getTime() + 21*60*60*24*1000);
-                    break;
-                }
-                case "faculty": {
-                    expireDate.setTime(bookingDate.getTime() + 28*60*60*24*1000);
-                    break;
-                }
+            if(patStatus.toLowerCase().equals("student")) {
+                if (database.getBook(documentId).isBestseller())
+                    expireDate.setTime(bookingDate.getTime() + 14 * 60 * 60 * 24 * 1000);
+                else expireDate.setTime(bookingDate.getTime() + 21*60*60*24*1000);
             }
-        } else {
-            expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
-        }
+            else if(patStatus.toLowerCase().equals("faculty"))
+                expireDate.setTime(bookingDate.getTime() + 28*60*60*24*1000);
+        } else expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
+
     }
 
     public int getFee() {

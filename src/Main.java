@@ -13,8 +13,9 @@ public class Main {
             System.out.println(db.getLibrarianList());
             //db.insertLibrarian(librarian);
 
-            Librarian librarian = db.getLibrarianList().get(0);
-            Patron patron = db.getPatronList().get(0);
+            Librarian librarian = db.getLibrarian(0);
+            Patron patron = db.getPatron(1);
+
             //
             // patron.takeBook(0, db);
             //not necessarily, but desirable

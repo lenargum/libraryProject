@@ -106,6 +106,7 @@ public class Database {
                 " journal_name, issue, editor, publication_date)" +
                 " VALUES('" + name + "','" + authors + "','" + is_allowed_for_students + "'," + num_of_copies + ",'" + is_reference + "'," + price + ",'" + keywords + "','" + type + "','"
                 + publisher + "'," + edition + ",'" + bestseller + "','" + journal_name + "','" + issue + "','" + editor + "','" + publication_date + "')");
+
     }
 
     public void insertBook(Book book) throws SQLException {
