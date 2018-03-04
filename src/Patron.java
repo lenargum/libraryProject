@@ -35,11 +35,11 @@ public class Patron extends User {
         try {
             Book book = database.getBook(idBook);
             if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
-                    !book.isReference() && !getListOfDocumentsPatron().contains(Integer.toString(idBook))) {
+                    !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
                 return true;
             } else {
                 return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
-                        !book.isReference() && !getListOfDocumentsPatron().contains(Integer.toString(idBook));
+                        !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
             }
         } catch(SQLException e){
             System.out.println("Incorrect id");
@@ -247,7 +247,7 @@ public class Patron extends User {
     public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
         try {
             for (int i = 0; i <= listOfDocumentsPatron.size(); i++) {
-                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idArticle))) {
+                if (getListOfDocumentsPatron().get(i).equals(idArticle)) {
                     getListOfDocumentsPatron().remove(i);
                     break;
                 }
@@ -268,7 +268,7 @@ public class Patron extends User {
     public void returnAV(int idAV, Database database) throws SQLException {
         try {
             for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
-                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idAV))) {
+                if (getListOfDocumentsPatron().get(i).equals(idAV)) {
                     getListOfDocumentsPatron().remove(i);
                     break;
                 }
@@ -292,7 +292,7 @@ public class Patron extends User {
     public void returnDocument(int idDocument, Database database) throws SQLException {
         try {
             for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
-                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idDocument))) {
+                if (getListOfDocumentsPatron().get(i).equals(idDocument)) {
                     getListOfDocumentsPatron().remove(i);
                     break;
                 }
