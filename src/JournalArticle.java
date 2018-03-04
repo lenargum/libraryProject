@@ -23,7 +23,6 @@ public class JournalArticle extends Document{
 
     /**
      * constructor
-     * @param ID
      * @param Title
      * @param Authors
      * @param IsAllowedForStudents
@@ -32,8 +31,8 @@ public class JournalArticle extends Document{
      * @param Price
      * @param KeyWords
      */
-    public JournalArticle(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords, String JournalName, String Publisher, String Issue, String Editor, Date PublicationDate){
-        super(ID, Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
+    public JournalArticle(String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords, String JournalName, String Publisher, String Issue, String Editor, Date PublicationDate){
+        super(Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
         setJournalName(JournalName);
         setPublisher(Publisher);
         setIssue(Issue);

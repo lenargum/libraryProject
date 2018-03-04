@@ -147,9 +147,11 @@ public class Database {
         ResultSet patronSet = executeQuery("SELECT * FROM users where status = 'FACULTY' or status = 'STUDENT'");
         ArrayList<Patron> patronList = new ArrayList<>();
         while(patronSet.next()) {
-            patronList.add(new Patron(patronSet.getInt(1),patronSet.getString(2),
+            Patron temp = new Patron(patronSet.getString(2),
                     patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
-                    patronSet.getString(6),patronSet.getString(7),patronSet.getString(8)));
+                    patronSet.getString(6),patronSet.getString(7),patronSet.getString(8));
+            temp.setId(patronSet.getInt(1));
+            patronList.add(temp);
         }
         return patronList;
     }
@@ -158,9 +160,11 @@ public class Database {
         ResultSet librarianSet = executeQuery("SELECT * FROM users where status = 'LIBRARIAN'");
         ArrayList<Librarian> librarianList = new ArrayList<>();
         while(librarianSet.next()) {
-            librarianList.add(new Librarian(librarianSet.getInt(1),librarianSet.getString(2),
+            Librarian temp = new Librarian(librarianSet.getString(2),
                     librarianSet.getString(3),librarianSet.getString(5),
-                    librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8)));
+                    librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8));
+            temp.setId(librarianSet.getInt(1));
+            librarianList.add(temp);
         }
         return librarianList;
     }
@@ -169,10 +173,12 @@ public class Database {
         ResultSet documentSet = executeQuery("SELECT * FROM documents");
         ArrayList<Document> documentList = new ArrayList<>();
         while (documentSet.next()) {
-            documentList.add(new Document(documentSet.getInt(1),documentSet.getString(2),
+            Document temp = new Document(documentSet.getString(2),
                     documentSet.getString(3),documentSet.getBoolean(4),
                     documentSet.getInt(5),documentSet.getBoolean(6),
-                    documentSet.getDouble(7),documentSet.getString(8)));
+                    documentSet.getDouble(7),documentSet.getString(8));
+            temp.setID(documentSet.getInt(1));
+            documentList.add(temp);
         }
         return documentList;
     }
@@ -190,10 +196,12 @@ public class Database {
         ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\'");
         ArrayList<Book> bookList = new ArrayList<>();
         while (bookSet.next()) {
-            bookList.add(new Book(bookSet.getInt(1), bookSet.getString(2),
+            Book temp = new Book(bookSet.getString(2),
                     bookSet.getString(3), bookSet.getBoolean(4), bookSet.getInt(5),
                     bookSet.getBoolean(6), bookSet.getDouble(7), bookSet.getString(8),
-                    bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12)));
+                    bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12));
+            temp.setID(bookSet.getInt(1));
+            bookList.add(temp);
         }
         return bookList;
     }
@@ -202,9 +210,11 @@ public class Database {
         ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
         ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
         while (AVSet.next()) {
-            AVList.add(new AudioVideoMaterial(AVSet.getInt(1), AVSet.getString(2),
+            AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
                     AVSet.getString(3), AVSet.getBoolean(4), AVSet.getInt(5),
-                    AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8)));
+                    AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8));
+            temp.setID(AVSet.getInt(1));
+            AVList.add(temp);
         }
         return AVList;
     }
@@ -213,13 +223,15 @@ public class Database {
         ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\'");
         ArrayList<JournalArticle> articleList = new ArrayList<>();
         while (articleSet.next()) {
-            articleList.add(new JournalArticle(articleSet.getInt(1), articleSet.getString(2),
+            JournalArticle temp = new JournalArticle(articleSet.getString(2),
                     articleSet.getString(3), articleSet.getBoolean(4),
                     articleSet.getInt(5), articleSet.getBoolean(6),
                     articleSet.getDouble(7), articleSet.getString(8),
                     articleSet.getString(13), articleSet.getString(10),
                     articleSet.getString(14), articleSet.getString(15),
-                    new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16))));
+                    new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
+            temp.setID(articleSet.getInt(1));
+            articleList.add(temp);
         }
         return articleList;
     }
@@ -228,10 +240,12 @@ public class Database {
         ResultSet debtsSet = executeQuery("SELECT * FROM debts");
         ArrayList<Debt> debtsList = new ArrayList<>();
         while (debtsSet.next()) {
-            debtsList.add(new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+            Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-                    debtsSet.getInt(6),debtsSet.getBoolean(7)));
+                    debtsSet.getInt(6),debtsSet.getBoolean(7));
+            temp.setDebtId(debtsSet.getInt(1));
+            debtsList.add(temp);
         }
         return debtsList;
     }
@@ -239,9 +253,12 @@ public class Database {
     public Patron getPatron(int id) throws SQLException {
         ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = "+id);
         if(patronSet.next()) {
-            return new Patron(patronSet.getInt(1),patronSet.getString(2),
+
+            Patron temp = new Patron(patronSet.getString(2),
                     patronSet.getString(3),patronSet.getString(4),patronSet.getString(5),
                     patronSet.getString(6),patronSet.getString(7),patronSet.getString(8));
+            temp.setId(patronSet.getInt(1));
+            return temp;
         }
         throw new NoSuchElementException();
     }
@@ -249,9 +266,11 @@ public class Database {
     public Librarian getLibrarian(int id) throws SQLException {
         ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + id);
         if(librarianSet.next()) {
-            return new Librarian(librarianSet.getInt(1),librarianSet.getString(2),
+            Librarian temp = new Librarian(librarianSet.getString(2),
                     librarianSet.getString(3),librarianSet.getString(5),
                     librarianSet.getString(6),librarianSet.getString(7),librarianSet.getString(8));
+            temp.setId(librarianSet.getInt(1));
+            return temp;
         }
 
         throw new NoSuchElementException();
@@ -260,10 +279,12 @@ public class Database {
     public Document getDocument(int id) throws SQLException {
         ResultSet documentSet = executeQuery("SELECT * FROM documents where id = "+ id);
         if (documentSet.next()) {
-            return new Document(documentSet.getInt(1),documentSet.getString(2),
+            Document temp = new Document(documentSet.getString(2),
                     documentSet.getString(3),documentSet.getBoolean(4),
                     documentSet.getInt(5),documentSet.getBoolean(6),
                     documentSet.getDouble(7),documentSet.getString(8));
+            temp.setID(documentSet.getInt(1));
+            return temp;
         }
         throw new NoSuchElementException();
     }
@@ -271,10 +292,12 @@ public class Database {
     public Book getBook(int id) throws SQLException {
         ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id ="+id);
         if (bookSet.next()) {
-            return new Book(bookSet.getInt(1), bookSet.getString(2),
+            Book temp = new Book(bookSet.getString(2),
                     bookSet.getString(3), bookSet.getBoolean(4), bookSet.getInt(5),
                     bookSet.getBoolean(6), bookSet.getDouble(7), bookSet.getString(8),
                     bookSet.getString(10), bookSet.getInt(11), bookSet.getBoolean(12));
+            temp.setID(bookSet.getInt(1));
+            return temp;
         }
         throw new NoSuchElementException();
     }
@@ -282,9 +305,11 @@ public class Database {
     public AudioVideoMaterial getAV(int id) throws SQLException {
         ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = "+id);
         if (AVSet.next()) {
-            return new AudioVideoMaterial(AVSet.getInt(1), AVSet.getString(2),
+            AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
                     AVSet.getString(3), AVSet.getBoolean(4), AVSet.getInt(5),
                     AVSet.getBoolean(6), AVSet.getDouble(7), AVSet.getString(8));
+            temp.setID(AVSet.getInt(1));
+            return temp;
         }
         throw new NoSuchElementException();
     }
@@ -292,13 +317,15 @@ public class Database {
     public JournalArticle getArticle(int id) throws SQLException, ParseException {
         ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + id);
         if (articleSet.next()) {
-            return new JournalArticle(articleSet.getInt(1), articleSet.getString(2),
+            JournalArticle temp = new JournalArticle(articleSet.getString(2),
                     articleSet.getString(3), articleSet.getBoolean(4),
                     articleSet.getInt(5), articleSet.getBoolean(6),
                     articleSet.getDouble(7), articleSet.getString(8),
                     articleSet.getString(13), articleSet.getString(10),
                     articleSet.getString(14), articleSet.getString(15),
                     new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
+            temp.setID(articleSet.getInt(1));
+            return temp;
         }
         throw new NoSuchElementException();
     }
@@ -306,10 +333,12 @@ public class Database {
     public Debt getDebt(int id) throws SQLException, ParseException {
         ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = "+id);
         if (debtsSet.next()) {
-            return new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+            Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
                     new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
                     debtsSet.getInt(6),debtsSet.getBoolean(7));
+            temp.setDebtId(debtsSet.getInt(1));
+            return temp;
         }
         throw new NoSuchElementException();
     }

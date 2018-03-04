@@ -13,11 +13,10 @@ public abstract class User {
     private String login;
     private String password;
 
-    User(String name, String surname, String address, int id, String login, String password, String phoneNumber){
+    User(String login, String password, String name, String surname, String phoneNumber, String address){
         this.name = name;
         this.surname = surname;
         this.address = address;
-        this.id = id;
         this.login = login;
         this.password = password;
         this.phoneNumber = phoneNumber;

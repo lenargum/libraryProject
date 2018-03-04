@@ -2,6 +2,7 @@ import java.util.Date;
 import java.sql.SQLException;
 
 public class Debt {
+    private int debtId;
     private int patronId;
     private int documentId;
     private Date bookingDate;
@@ -91,5 +92,13 @@ public class Debt {
     public int daysLeft(){
         Date date = new Date();
         return (int)(expireDate.getTime() - date.getTime())/(60*60*24*1000);
+    }
+
+    public int getDebtId() {
+        return debtId;
+    }
+
+    public void setDebtId(int debtId) {
+        this.debtId = debtId;
     }
 }

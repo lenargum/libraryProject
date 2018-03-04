@@ -14,7 +14,6 @@ public class Book extends Document{
 
     /**
      * constructor
-     * @param ID
      * @param Title
      * @param Authors
      * @param IsAllowedForStudents
@@ -23,8 +22,8 @@ public class Book extends Document{
      * @param Price
      * @param KeyWords
      */
-    public Book(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords, String Publisher, int Edition, boolean IsBestseller){
-        super(ID, Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
+    public Book(String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords, String Publisher, int Edition, boolean IsBestseller){
+        super(Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
         setPublisher(Publisher);
         setEdition(Edition);
         setBestseller(IsBestseller);

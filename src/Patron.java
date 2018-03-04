@@ -7,8 +7,8 @@ public class Patron extends User {
     private String status;
     public ArrayList listOfDocumentsPatron;
 
-    Patron(int id, String login, String password, String status, String name, String surname,String phone, String address) {
-        super(name, surname, address, id, login, password, phone);
+    Patron(String login, String password, String status, String name, String surname,String phone, String address) {
+        super(login,password,name,surname,phone,address);
         this.status = status;
     }
 

@@ -36,7 +36,6 @@ public class Document {
     private String Type;
     /**
      * constructor
-     * @param ID
      * @param Title
      * @param Authors
      * @param IsAllowedForStudents
@@ -45,8 +44,7 @@ public class Document {
      * @param Price
      * @param KeyWords
      */
-    public Document(int ID, String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords){
-        setID(ID);
+    public Document(String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords){
         setTitle(Title);
         setAuthors(Authors);
         setAllowedForStudents(IsAllowedForStudents);
