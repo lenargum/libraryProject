@@ -30,9 +30,8 @@ public class Patron extends User {
         return status;
     }
 
-    /**
-     * @return true: if Patron can get the document, otherwise false
-     */
+    /* @return true: if Patron can get the document, otherwise false
+            */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
         try {
             Book book = database.getBook(idBook);
@@ -95,8 +94,7 @@ public class Patron extends User {
         }
     }
 
-    /**
-     * MAIN FUNCTION OF REQUESTING DOCUMENTS
+    /* MAIN FUNCTION OF REQUESTING DOCUMENTS
      */
     public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
         try {
@@ -125,8 +123,7 @@ public class Patron extends User {
         }
     }
 
-    /**
-     * @param : id of Document, Database
+    /* @param : id of Document, Database
      */
     public void takeBook(int idBook, Database database) throws SQLException {
         try {
@@ -179,8 +176,7 @@ public class Patron extends User {
         }
     }
 
-    /**
-     * MAIN FUNCTIOM OF BOOKING SYSTEM
+    /* MAIN FUNCTIOM OF BOOKING SYSTEM
      */
 
     public void takeDocument(int idDocument, Database database) throws SQLException {
@@ -198,7 +194,15 @@ public class Patron extends User {
         } catch(NoSuchElementException e){
             System.out.println("Incorrect id");
         }
+    }
+    public void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
+        int count = database.getDocument(idDocument).getNumberOfCopies();
+        database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count + 1));
+    }
 
+    public void decreaseCountOdCopies(int idDocument, Database database) throws SQLException {
+        int count = database.getDocument(idDocument).getNumberOfCopies();
+        database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
     }
     public void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
         int count = database.getDocument(idDocument).getNumberOfCopies();
@@ -210,8 +214,7 @@ public class Patron extends User {
         database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
     }
 
-    /**
-     * @param : id of Document, Database
+    /* @param : id of Document, Database
      */
     public void returnBook(int idBook, Database database) throws SQLException {
         try {
@@ -270,8 +273,7 @@ public class Patron extends User {
         }
     }
 
-    /**
-     * MAIN FUNCTION OF RETURNING SYSTEM
+    /* MAIN FUNCTION OF RETURNING SYSTEM
      */
 
     public void returnDocument(int idDocument, Database database) throws SQLException {
@@ -293,10 +295,5 @@ public class Patron extends User {
         }
     }
 
-    /**
-     * @param : id of document
-     */
-    public void renewDocument() {
-        //TODO: Connect with date of reservation
-    }
+
 }
