@@ -28,10 +28,10 @@ public class Main {
 
             while (true) {
                 clearScreen();
-                System.out.println("1 » Help \n" +
-                        "2 » Borrowed documents manager \n" +
-                        "3 » Library\n" +
-                        "0 » Exit\n");
+                System.out.println("0 » Exit\n"+
+                        "1 » Help\n" +
+                        "2 » Borrowed documents manager\n" +
+                        "3 » Library\n");
                 int input = enterNum(in, 3,"Enter option number: ");
                 switch(input) {
                     case 0: exit(db); break;
