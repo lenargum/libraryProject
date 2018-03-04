@@ -1,7 +1,3 @@
-//import javax.xml.crypto.Data;
-import com.sun.deploy.config.AutoUpdater;
-import jdk.nashorn.internal.scripts.JO;
-
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,7 +27,7 @@ public class Patron extends User {
 
     /* @return true: if Patron can get the document, otherwise false
             */
-    public boolean canRequestBook(int idBook, Database database) throws SQLException {
+    public boolean canRequestBook(int idBook, Database database) {
         try {
             Book book = database.getBook(idBook);
             if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
@@ -41,7 +37,7 @@ public class Patron extends User {
                 if (book.getNumberOfCopies() == 0)
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idBook))
-                    System.out.println("You already have copy of this document");
+                    System.out.println("You already have copy of this book");
                 if(book.isReference())
                     System.out.println("You can not borrow reference materials");
                 return false;
@@ -49,24 +45,21 @@ public class Patron extends User {
                 if (book.isReference() && book.getNumberOfCopies() == 0)
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idBook))
-                    System.out.println("You already have copy of this document");
+                    System.out.println("You already have copy of this book");
                 if(!book.isAllowedForStudents())
-                    System.out.println("This Document is not for you");
+                    System.out.println("This document is not for students");
                 if(book.isReference())
                     System.out.println("You can not borrow reference materials");
                 return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
                         !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
             }
-        } catch(SQLException e){
-            System.out.println("Incorrect id");
-            return false;
-        } catch(NoSuchElementException e){
+        } catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
             return false;
         }
     }
 
-    public boolean canRequestArticle(int idArticle, Database database) throws SQLException, ParseException {
+    public boolean canRequestArticle(int idArticle, Database database) {
         try {
             JournalArticle article = database.getArticle(idArticle);
             if ((this.status.toLowerCase().equals("faculty")) && (article.getNumberOfCopies() != 0) &&
@@ -76,7 +69,7 @@ public class Patron extends User {
                 if (article.getNumberOfCopies() == 0)
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idArticle))
-                    System.out.println("You already have copy of this document");
+                    System.out.println("You already have copy of this journal article");
                 if(article.isReference())
                     System.out.println("You can not borrow reference materials");
                 return false;
@@ -84,28 +77,22 @@ public class Patron extends User {
                 if (article.isReference() && article.getNumberOfCopies() == 0)
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idArticle))
-                    System.out.println("You already have copy of this document");
+                    System.out.println("You already have copy of this journal article");
                 if(!article.isAllowedForStudents())
-                    System.out.println("This Document is not for you");
+                    System.out.println("This document is not for students");
                 if(article.isReference())
                     System.out.println("You can not borrow reference materials");
                 return article.isAllowedForStudents() &&
                         article.getNumberOfCopies() != 0 &&
                         !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
             }
-        } catch(SQLException e){
-            System.out.println("Incorrect id");
-            return false;
-        } catch (ParseException e ){
-            System.out.println("Incorrect id");
-            return false;
-        } catch(NoSuchElementException e){
+        } catch(SQLException | ParseException | NoSuchElementException e){
             System.out.println("Incorrect id");
             return false;
         }
     }
 
-    public boolean canRequestAV(int idAV, Database database) throws SQLException {
+    public boolean canRequestAV(int idAV, Database database) {
         try {
             AudioVideoMaterial av = database.getAV(idAV);
             if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
@@ -115,7 +102,7 @@ public class Patron extends User {
                 if (av.getNumberOfCopies() == 0)
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idAV))
-                    System.out.println("You already have copy of this document");
+                    System.out.println("You already have copy of this audio/video");
 
                 if(av.isReference())
                     System.out.println("You can not borrow reference materials");
@@ -124,9 +111,9 @@ public class Patron extends User {
                 if (av.isReference() && av.getNumberOfCopies() == 0)
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idAV))
-                    System.out.println("You already have copy of this document");
+                    System.out.println("You already have copy of this audio/video");
                 if(!av.isAllowedForStudents())
-                    System.out.println("This Document is not for you");
+                    System.out.println("This document is not for students");
 
                 if(av.isReference())
                     System.out.println("You can not borrow reference materials");
@@ -134,10 +121,7 @@ public class Patron extends User {
                         av.getNumberOfCopies() != 0 &&
                         !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
             }
-        } catch(SQLException e){
-            System.out.println("Incorrect id");
-            return false;
-        } catch(NoSuchElementException e){
+        } catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
             return false;
         }
@@ -145,7 +129,7 @@ public class Patron extends User {
 
     /* MAIN FUNCTION OF REQUESTING DOCUMENTS
      */
-    public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
+    public boolean canRequestDocument(int idDocument, Database database) {
         try {
             Document doc = database.getDocument(idDocument);
             if ((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
@@ -161,15 +145,12 @@ public class Patron extends User {
                 if (getListOfDocumentsPatron().contains(idDocument))
                     System.out.println("You already have copy of this document");
                 if(!doc.isAllowedForStudents())
-                System.out.println("This Document is not for you");
+                System.out.println("This document is not for students");
                 if(doc.isReference())
                     System.out.println("You can not borrow reference materials");
                 return false;
             }
-        } catch(SQLException e){
-            System.out.println("Incorrect id");
-            return false;
-        } catch (NoSuchElementException e){
+        } catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
             return false;
         }
@@ -177,7 +158,7 @@ public class Patron extends User {
 
     /* @param : id of Document, Database
      */
-    public void takeBook(int idBook, Database database) throws SQLException {
+    public void takeBook(int idBook, Database database) {
         try {
             if (canRequestBook(idBook, database)) {
                 this.getListOfDocumentsPatron().add(idBook);
@@ -195,14 +176,12 @@ public class Patron extends User {
                 Debt debt = new Debt(getId(), idBook, date, date2, 0, true);
                 database.insertDebt(debt);
             }
-        }catch(SQLException e){
-            System.out.println("Incorrect id");
-        } catch(NoSuchElementException e){
+        }catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
         }
     }
 
-    public void takeAV(int idAV, Database database) throws SQLException {
+    public void takeAV(int idAV, Database database) {
         try {
             if (canRequestAV(idAV, database)) {
                 this.getListOfDocumentsPatron().add(idAV);
@@ -214,14 +193,12 @@ public class Patron extends User {
                 Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
                 database.insertDebt(debt);
             }
-        }catch(SQLException e){
-            System.out.println("Incorrect id");
-        } catch(NoSuchElementException e){
+        }catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
         }
     }
 
-    public void takeArticle(int idArticle, Database database) throws SQLException, ParseException {
+    public void takeArticle(int idArticle, Database database) throws ParseException {
         try {
             if (canRequestArticle(idArticle, database)) {
                 this.getListOfDocumentsPatron().add(idArticle);
@@ -234,9 +211,7 @@ public class Patron extends User {
 
                 database.insertDebt(debt);
             }
-        }catch(SQLException e){
-            System.out.println("Incorrect id");
-        } catch(NoSuchElementException e){
+        }catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
         }
     }
@@ -244,7 +219,7 @@ public class Patron extends User {
     /* MAIN FUNCTIOM OF BOOKING SYSTEM
      */
 
-    public void takeDocument(int idDocument, Database database) throws SQLException {
+    public void takeDocument(int idDocument, Database database) {
         try {
             if (canRequestDocument(idDocument, database)) {
                 getListOfDocumentsPatron().add(idDocument);
@@ -254,9 +229,7 @@ public class Patron extends User {
                 Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
                 database.insertDebt(debt);
             }
-        }catch(SQLException e){
-            System.out.println("Incorrect id");
-        } catch(NoSuchElementException e){
+        }catch(SQLException | NoSuchElementException e){
             System.out.println("Incorrect id");
         }
     }
@@ -276,7 +249,7 @@ public class Patron extends User {
 
     /* @param : id of Document, Database
      */
-    public void returnBook(int idBook, Database database) throws SQLException {
+    public void returnBook(int idBook, Database database) {
         try {
             for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
                 if (getListOfDocumentsPatron().get(i).equals(idBook)) {
@@ -288,16 +261,14 @@ public class Patron extends User {
             increaseCountOfCopies(idBook, database);
             int debtID = database.findDebtID(this.getId(), idBook);
             database.deleteDebt(debtID);
-        } catch(NoSuchElementException e){
-            System.out.println("Incorrect id");
-        } catch(SQLException e){
+        } catch(NoSuchElementException | SQLException e){
             System.out.println("Incorrect id");
         } catch (IndexOutOfBoundsException e){
             System.out.println("Incorrect input");
         }
     }
 
-    public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
+    public void returnArticle(int idArticle, Database database) throws ParseException {
         try {
             for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
                 if (getListOfDocumentsPatron().get(i).equals(idArticle)) {
@@ -309,16 +280,14 @@ public class Patron extends User {
             increaseCountOfCopies(idArticle, database);
             int debtID = database.findDebtID(this.getId(), idArticle);
             database.deleteDebt(debtID);
-        }catch(NoSuchElementException e){
+        }catch(NoSuchElementException | SQLException e){
             System.out.println("Incorrect id");
-        } catch(SQLException e){
-            System.out.println("Incorrect id");
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e){
             System.out.println("Incorrect input");
         }
     }
 
-    public void returnAV(int idAV, Database database) throws SQLException {
+    public void returnAV(int idAV, Database database) {
         try {
             for (int i = 0; i < listOfDocumentsPatron.size() ; i++) {
                 if (getListOfDocumentsPatron().get(i).equals(idAV)) {
@@ -330,9 +299,7 @@ public class Patron extends User {
             increaseCountOfCopies(idAV, database);
             int debtID = database.findDebtID(this.getId(), idAV);
             database.deleteDebt(debtID);
-        } catch(NoSuchElementException e){
-            System.out.println("Incorrect id");
-        } catch(SQLException e){
+        } catch(NoSuchElementException | SQLException e){
             System.out.println("Incorrect id");
         } catch (IndexOutOfBoundsException e){
             System.out.println("Incorrect input");
@@ -342,7 +309,7 @@ public class Patron extends User {
     /* MAIN FUNCTION OF RETURNING SYSTEM
      */
 
-    public void returnDocument(int idDocument, Database database) throws SQLException {
+    public void returnDocument(int idDocument, Database database) {
         try {
             for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
                 if (getListOfDocumentsPatron().get(i).equals(idDocument)) {
@@ -354,11 +321,9 @@ public class Patron extends User {
             increaseCountOfCopies(idDocument, database);
             int debtID = database.findDebtID(this.getId(), idDocument);
             database.deleteDebt(debtID);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException | SQLException e){
             System.out.println("Incorrect id");
-        } catch(SQLException e){
-            System.out.println("Incorrect id");
-        }catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e){
             System.out.println("Incorrect input");
         }
     }

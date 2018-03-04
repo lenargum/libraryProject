@@ -111,10 +111,6 @@ public class Database {
 
     public void insertBook(Book book) throws SQLException {
         String type = "BOOK";
-        String journal_name = "-";
-        String issue = "-";
-        String editor = "-";
-        String publication_date = "NULL";
         insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
                 book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
                 book.isBestseller(), "-", "-", "-", "NULL");
@@ -373,7 +369,7 @@ public class Database {
         throw new NoSuchElementException();
     }
 
-    public void getDebtsForUser(int userId) throws SQLException, ParseException {
+    public void getDebtsForUser(int userId) throws SQLException {
         ResultSet debtsSet = executeQuery("SELECT * FROM debts where patron_id =" + userId);
 
         ArrayList<String> output = new ArrayList<>();

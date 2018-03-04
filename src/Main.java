@@ -75,7 +75,7 @@ public class Main {
         return input;
     }
 
-    private static void bookManagerMenu(Scanner in, Patron user, Database db) throws SQLException, ParseException {
+    private static void bookManagerMenu(Scanner in, Patron user, Database db) throws SQLException {
         clearScreen();
         db.getDebtsForUser(user.getId());
         System.out.println("0 » Back\n" +
