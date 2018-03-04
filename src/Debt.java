@@ -61,6 +61,9 @@ public class Debt {
                 else expireDate.setTime(bookingDate.getTime() + 21*60*60*24*1000);
             }
             else if(patStatus.toLowerCase().equals("faculty"))
+                if(database.getBook(documentId).isBestseller())
+                    expireDate.setTime(bookingDate.getTime() + 14 * 60 * 60 * 24 * 1000);
+                else
                 expireDate.setTime(bookingDate.getTime() + 28*60*60*24*1000);
         } else expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
 
