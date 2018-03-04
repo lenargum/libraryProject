@@ -54,7 +54,7 @@ public class Debt {
     public void setExpireDate(Database database) throws SQLException{
         String docType = database.getDocument(documentId).getType();
         String patStatus = database.getPatron(patronId).getStatus();
-        if(docType.equals("book")) {
+        if(docType.toLowerCase().equals("book")) {
             if(patStatus.toLowerCase().equals("student")) {
                 if (database.getBook(documentId).isBestseller())
                     expireDate.setTime(bookingDate.getTime() + 14 * 60 * 60 * 24 * 1000);
