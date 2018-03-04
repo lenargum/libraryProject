@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="library.db">
+  <database-model serializer="dbm" rdbms="SQLITE" format-version="4.7">
+    <root id="1"/>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <collation id="3" parent="1" name="BINARY"/>
+    <collation id="4" parent="1" name="NOCASE"/>
+    <collation id="5" parent="1" name="RTRIM"/>
+    <table id="6" parent="2" name="debts"/>
+    <table id="7" parent="2" name="documents"/>
+    <table id="8" parent="2" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <table id="9" parent="2" name="sqlite_sequence">
+      <System>1</System>
+    </table>
+    <table id="10" parent="2" name="users"/>
+    <column id="11" parent="6" name="debt_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="12" parent="6" name="patron_id">
+      <Position>2</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="13" parent="6" name="document_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="14" parent="6" name="booking_date">
+      <Position>4</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="15" parent="6" name="expire_date">
+      <Position>5</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="16" parent="6" name="fee">
+      <Position>6</Position>
+      <DataType>REAL|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="17" parent="6" name="can_renew">
+      <Position>7</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;true&apos;</DefaultExpression>
+    </column>
+    <index id="18" parent="6" name="sqlite_autoindex_debts_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>debt_id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="19" parent="6">
+      <ColNames>debt_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_debts_1</UnderlyingIndexName>
+    </key>
+    <key id="20" parent="6">
+      <ColNames>debt_id</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_debts_1</UnderlyingIndexName>
+    </key>
+    <check id="21" parent="6">
+      <Predicate>`can_renew` IN ( &apos;true&apos; , &apos;false&apos; )</Predicate>
+    </check>
+    <check id="22" parent="6">
+      <Predicate>date ( expire_date ) &gt; date ( booking_date )</Predicate>
+    </check>
+    <column id="23" parent="7" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="24" parent="7" name="name">
+      <Position>2</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="25" parent="7" name="authors">
+      <Position>3</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="26" parent="7" name="is_allowed_for_students">
+      <Position>4</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>&apos;true&apos;</DefaultExpression>
+    </column>
+    <column id="27" parent="7" name="num_of_copies">
+      <Position>5</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="28" parent="7" name="is_reference">
+      <Position>6</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>&apos;true&apos;</DefaultExpression>
+    </column>
+    <column id="29" parent="7" name="price">
+      <Position>7</Position>
+      <DataType>float|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="30" parent="7" name="keywords">
+      <Position>8</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="31" parent="7" name="type">
+      <Position>9</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="32" parent="7" name="publisher">
+      <Position>10</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="33" parent="7" name="edition">
+      <Position>11</Position>
+      <DataType>INTEGER|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="34" parent="7" name="bestseller">
+      <Position>12</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>&apos;true&apos;</DefaultExpression>
+    </column>
+    <column id="35" parent="7" name="journal_name">
+      <Position>13</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="36" parent="7" name="issue">
+      <Position>14</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="37" parent="7" name="editor">
+      <Position>15</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="38" parent="7" name="publication_date">
+      <Position>16</Position>
+      <DataType>date|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <index id="39" parent="7" name="sqlite_autoindex_documents_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="40" parent="7">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_documents_1</UnderlyingIndexName>
+    </key>
+    <key id="41" parent="7">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_documents_1</UnderlyingIndexName>
+    </key>
+    <check id="42" parent="7">
+      <Predicate>`bestseller` IN (&apos;true&apos;,&apos;false&apos;)</Predicate>
+    </check>
+    <check id="43" parent="7">
+      <Predicate>`is_allowed_for_students` IN (&apos;true&apos;,&apos;false&apos;)</Predicate>
+    </check>
+    <check id="44" parent="7">
+      <Predicate>`is_reference` IN (&apos;true&apos;,&apos;false&apos;)</Predicate>
+    </check>
+    <check id="45" parent="7">
+      <Predicate>`type` IN (&apos;BOOK&apos;,&apos;AV&apos;,&apos;ARTICLE&apos;,&apos;FACULTY&apos;)</Predicate>
+    </check>
+    <column id="46" parent="8" name="type">
+      <Position>1</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="47" parent="8" name="name">
+      <Position>2</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="48" parent="8" name="tbl_name">
+      <Position>3</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="49" parent="8" name="rootpage">
+      <Position>4</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="50" parent="8" name="sql">
+      <Position>5</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="51" parent="9" name="name">
+      <Position>1</Position>
+    </column>
+    <column id="52" parent="9" name="seq">
+      <Position>2</Position>
+    </column>
+    <column id="53" parent="10" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="54" parent="10" name="login">
+      <Position>2</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="55" parent="10" name="password">
+      <Position>3</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="56" parent="10" name="status">
+      <Position>4</Position>
+      <DataType>TEXT|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="57" parent="10" name="firstname">
+      <Position>5</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="58" parent="10" name="lastname">
+      <Position>6</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="59" parent="10" name="phone">
+      <Position>7</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="60" parent="10" name="address">
+      <Position>8</Position>
+      <DataType>TEXT|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <index id="61" parent="10" name="sqlite_autoindex_users_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <index id="62" parent="10" name="sqlite_autoindex_users_2">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>login</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="63" parent="10">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_users_1</UnderlyingIndexName>
+    </key>
+    <key id="64" parent="10">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_users_1</UnderlyingIndexName>
+    </key>
+    <key id="65" parent="10">
+      <ColNames>login</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_users_2</UnderlyingIndexName>
+    </key>
+    <check id="66" parent="10">
+      <Predicate>`status` in ( &apos;ADMIN&apos; , &apos;LIBRARIAN&apos; , &apos;STUDENT&apos; , &apos;FACULTY&apos; )</Predicate>
+    </check>
+  </database-model>
+</dataSource>
