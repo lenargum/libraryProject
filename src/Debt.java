@@ -51,22 +51,8 @@ public class Debt {
         return expireDate;
     }
 
-    public void setExpireDate(Database database) throws SQLException{
-        String docType = database.getDocument(documentId).getType();
-        String patStatus = database.getPatron(patronId).getStatus();
-        if(docType.toLowerCase().equals("book")) {
-            if(patStatus.toLowerCase().equals("student")) {
-                if (database.getBook(documentId).isBestseller())
-                    expireDate.setTime(bookingDate.getTime() + 14 * 60 * 60 * 24 * 1000);
-                else expireDate.setTime(bookingDate.getTime() + 21*60*60*24*1000);
-            }
-            else if(patStatus.toLowerCase().equals("faculty"))
-                if(database.getBook(documentId).isBestseller())
-                    expireDate.setTime(bookingDate.getTime() + 14 * 60 * 60 * 24 * 1000);
-                else
-                expireDate.setTime(bookingDate.getTime() + 28*60*60*24*1000);
-        } else expireDate.setTime(bookingDate.getTime() + 14*60*60*24*1000);
-
+    public void setExpireDate(Date date) throws SQLException{
+        this.expireDate = date;
     }
 
     public double getFee() {

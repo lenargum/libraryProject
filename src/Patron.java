@@ -130,9 +130,16 @@ public class Patron extends User {
                 this.getListOfDocumentsPatron().add(idBook);
                 database.getBook(idBook).deleteCopy();
                 decreaseCountOdCopies(idBook, database);
-                Date date = new Date();
-                Debt debt = new Debt(getId(), idBook, date, date, 0, true);
-                debt.setExpireDate(database);
+                Date date= new Date();
+                Date date2 = new Date();
+                if(database.getBook(idBook).isBestseller())
+                    date2.setTime(date2.getTime() + 14*24*60*60*1000);
+                else{
+                    if(status.toLowerCase().equals("student"))
+                        date2.setTime(date2.getTime() + 21*24*60*60*1000);
+                    else date2.setTime(date2.getTime() + 28*24*60*60*1000);
+                }
+                Debt debt = new Debt(getId(), idBook, date, date2, 0, true);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
@@ -149,8 +156,9 @@ public class Patron extends User {
                 database.getAV(idAV).deleteCopy();
                 decreaseCountOdCopies(idAV, database);
                 Date date = new Date();
-                Debt debt = new Debt(getId(), idAV, date, date, 0, true);
-                debt.setExpireDate(database);
+                Date date2 = new Date();
+                date2.setTime(date2.getTime() + 14*24*60*60*1000);
+                Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
@@ -167,8 +175,10 @@ public class Patron extends User {
                 database.getArticle(idArticle).deleteCopy();
                 decreaseCountOdCopies(idArticle, database);
                 Date date = new Date();
+                Date date2 = new Date();
+                date2.setTime(date2.getTime() + 14*60*60*1000*24);
                 Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
-                debt.setExpireDate(database);
+
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
@@ -189,7 +199,6 @@ public class Patron extends User {
                 decreaseCountOdCopies(idDocument, database);
                 Date date = new Date();
                 Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
-                debt.setExpireDate(database);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
