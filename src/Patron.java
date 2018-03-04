@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 public class Patron extends User {
     private String status;
@@ -29,9 +30,8 @@ public class Patron extends User {
         return status;
     }
 
-    /**
-     * @return true: if Patron can get the document, otherwise false
-     */
+    /* @return true: if Patron can get the document, otherwise false
+            */
     public boolean canRequestBook(int idBook, Database database) throws SQLException {
         try {
             Book book = database.getBook(idBook);
@@ -43,6 +43,9 @@ public class Patron extends User {
                         !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
             }
         } catch(SQLException e){
+            System.out.println("Incorrect id");
+            return false;
+        } catch(NoSuchElementException e){
             System.out.println("Incorrect id");
             return false;
         }
@@ -65,6 +68,9 @@ public class Patron extends User {
         } catch (ParseException e ){
             System.out.println("Incorrect id");
             return false;
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
+            return false;
         }
     }
 
@@ -82,139 +88,203 @@ public class Patron extends User {
         } catch(SQLException e){
             System.out.println("Incorrect id");
             return false;
-        }
-    }
-
-    /**
-     * MAIN FUNCTION OF REQUESTING DOCUMENTS
-     */
-    public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
-        Document doc = database.getDocument(idDocument);
-        if((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
-                !(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)){
-            return true;
-        }
-        else if (doc.isAllowedForStudents() &&
-                  doc.getNumberOfCopies() != 0 &&
-                  !(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)){
-            return true;
-        } else{
-            if(doc.isReference() && doc.getNumberOfCopies() == 0)
-                System.out.println("Not copies");
-            if(getListOfDocumentsPatron().contains(idDocument))
-                System.out.println("You already have copy of this document");
-            System.out.println("This Document is not for you");
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
             return false;
         }
     }
 
-    /**
-     * @param : id of Document, Database
+    /* MAIN FUNCTION OF REQUESTING DOCUMENTS
+     */
+    public boolean canRequestDocument(int idDocument, Database database) throws SQLException {
+        try {
+            Document doc = database.getDocument(idDocument);
+            if ((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
+                    !(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
+                return true;
+            } else if (doc.isAllowedForStudents() &&
+                    doc.getNumberOfCopies() != 0 &&
+                    !(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
+                return true;
+            } else {
+                if (doc.isReference() && doc.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idDocument))
+                    System.out.println("You already have copy of this document");
+                System.out.println("This Document is not for you");
+                return false;
+            }
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
+            return false;
+        } catch (NoSuchElementException e){
+            System.out.println("Incorrect id");
+            return false;
+        }
+    }
+
+    /* @param : id of Document, Database
      */
     public void takeBook(int idBook, Database database) throws SQLException {
-        if (canRequestBook(idBook, database)) {
-            this.getListOfDocumentsPatron().add(idBook);
-            database.getBook(idBook).deleteCopy();
-            Date date = new Date();
-            Debt debt = new Debt(getId(), idBook, date, date, 0, true);
-            database.insertDebt(debt);
+        try {
+            if (canRequestBook(idBook, database)) {
+                this.getListOfDocumentsPatron().add(idBook);
+                database.getBook(idBook).deleteCopy();
+                decreaseCountOdCopies(idBook, database);
+                Date date = new Date();
+                Debt debt = new Debt(getId(), idBook, date, date, 0, true);
+                database.insertDebt(debt);
+            }
+        }catch(SQLException e){
+            System.out.println("Incorrect id");
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
         }
     }
 
     public void takeAV(int idAV, Database database) throws SQLException {
-        if (canRequestAV(idAV, database)) {
-            this.getListOfDocumentsPatron().add(idAV);
-            database.getAV(idAV).deleteCopy();
-            Date date = new Date();
-            Debt debt = new Debt(getId(), idAV, date, date, 0, true);
-            database.insertDebt(debt);
+        try {
+            if (canRequestAV(idAV, database)) {
+                this.getListOfDocumentsPatron().add(idAV);
+                database.getAV(idAV).deleteCopy();
+                decreaseCountOdCopies(idAV, database);
+                Date date = new Date();
+                Debt debt = new Debt(getId(), idAV, date, date, 0, true);
+                database.insertDebt(debt);
+            }
+        }catch(SQLException e){
+            System.out.println("Incorrect id");
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
         }
     }
 
     public void takeArticle(int idArticle, Database database) throws SQLException, ParseException {
-        if(canRequestArticle(idArticle, database)){
-            this.getListOfDocumentsPatron().add(idArticle);
-            database.getArticle(idArticle).deleteCopy();
-            Date date = new Date();
-            Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
-            database.insertDebt(debt);
+        try {
+            if (canRequestArticle(idArticle, database)) {
+                this.getListOfDocumentsPatron().add(idArticle);
+                database.getArticle(idArticle).deleteCopy();
+                decreaseCountOdCopies(idArticle, database);
+                Date date = new Date();
+                Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
+                database.insertDebt(debt);
+            }
+        }catch(SQLException e){
+            System.out.println("Incorrect id");
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
         }
     }
 
-    /**
-     * MAIN FUNCTIOM OF BOOKING SYSTEM
+    /* MAIN FUNCTIOM OF BOOKING SYSTEM
      */
 
     public void takeDocument(int idDocument, Database database) throws SQLException {
-        if(canRequestDocument(idDocument, database)){
-            getListOfDocumentsPatron().add(idDocument);
-            database.getDocument(idDocument).deleteCopy();
-            Date date = new Date();
-            Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
-            database.insertDebt(debt);
+        try {
+            if (canRequestDocument(idDocument, database)) {
+                getListOfDocumentsPatron().add(idDocument);
+                database.getDocument(idDocument).deleteCopy();
+                decreaseCountOdCopies(idDocument, database);
+                Date date = new Date();
+                Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
+                database.insertDebt(debt);
+            }
+        }catch(SQLException e){
+            System.out.println("Incorrect id");
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
         }
-
+    }
+    public void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
+        int count = database.getDocument(idDocument).getNumberOfCopies();
+        database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count + 1));
     }
 
-    /**
-     * @param : id of Document, Database
+    public void decreaseCountOdCopies(int idDocument, Database database) throws SQLException {
+        int count = database.getDocument(idDocument).getNumberOfCopies();
+        database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
+    }
+
+    /* @param : id of Document, Database
      */
     public void returnBook(int idBook, Database database) throws SQLException {
-        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
-            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idBook))){
-                getListOfDocumentsPatron().remove(i);
-                break;
+        try {
+            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idBook))) {
+                    getListOfDocumentsPatron().remove(i);
+                    break;
+                }
             }
+            database.getBook(idBook).addCopy();
+            increaseCountOfCopies(idBook, database);
+            int debtID = database.findDebtID(this.getId(), idBook);
+            database.deleteDebt(debtID);
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
         }
-        database.getBook(idBook).addCopy();
-        int debtID = database.findDebtID(this.getId(), idBook);
-        database.deleteDebt(debtID);
     }
 
     public void returnArticle(int idArticle, Database database) throws SQLException, ParseException {
-        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
-            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idArticle))){
-                getListOfDocumentsPatron().remove(i);
-                break;
+        try {
+            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idArticle))) {
+                    getListOfDocumentsPatron().remove(i);
+                    break;
+                }
             }
+            database.getArticle(idArticle).addCopy();
+            increaseCountOfCopies(idArticle, database);
+            int debtID = database.findDebtID(this.getId(), idArticle);
+            database.deleteDebt(debtID);
+        }catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
         }
-        database.getArticle(idArticle).addCopy();
-        int debtID = database.findDebtID(this.getId(), idArticle);
-        database.deleteDebt(debtID);
     }
 
     public void returnAV(int idAV, Database database) throws SQLException {
-        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
-            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idAV))){
-                getListOfDocumentsPatron().remove(i);
-                break;
+        try {
+            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idAV))) {
+                    getListOfDocumentsPatron().remove(i);
+                    break;
+                }
             }
+            database.getAV(idAV).addCopy();
+            increaseCountOfCopies(idAV, database);
+            int debtID = database.findDebtID(this.getId(), idAV);
+            database.deleteDebt(debtID);
+        } catch(NoSuchElementException e){
+            System.out.println("Incorrect id");
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
         }
-        database.getAV(idAV).addCopy();
-        int debtID = database.findDebtID(this.getId(), idAV);
-        database.deleteDebt(debtID);
     }
 
-    /**
-     * MAIN FUNCTION OF RETURNING SYSTEM
+    /* MAIN FUNCTION OF RETURNING SYSTEM
      */
 
     public void returnDocument(int idDocument, Database database) throws SQLException {
-        for(int i = 0; i < listOfDocumentsPatron.size(); i++){
-            if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idDocument))){
-                getListOfDocumentsPatron().remove(i);
-                break;
+        try {
+            for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
+                if (getListOfDocumentsPatron().get(i).equals(Integer.toString(idDocument))) {
+                    getListOfDocumentsPatron().remove(i);
+                    break;
+                }
             }
+            database.getDocument(idDocument).addCopy();
+            increaseCountOfCopies(idDocument, database);
+            int debtID = database.findDebtID(this.getId(), idDocument);
+            database.deleteDebt(debtID);
+        } catch (NoSuchElementException e){
+            System.out.println("Incorrect id");
+        } catch(SQLException e){
+            System.out.println("Incorrect id");
         }
-        database.getDocument(idDocument).addCopy();
-        int debtID = database.findDebtID(this.getId(), idDocument);
-        database.deleteDebt(debtID);
     }
 
-    /**
-     * @param : id of document
-     */
-    public void renewDocument() {
-        //TODO: Connect with date of reservation
-    }
+
 }
