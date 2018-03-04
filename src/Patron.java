@@ -9,11 +9,12 @@ import java.util.Date;
 
 public class Patron extends User {
     private String status;
-    private ArrayList listOfDocumentsPatron;
+    private ArrayList<Integer> listOfDocumentsPatron;
 
     Patron(String login, String password, String status, String name, String surname,String phone, String address) {
         super(login,password,name,surname,phone,address);
         this.status = status;
+        listOfDocumentsPatron = new ArrayList();
     }
 
     public ArrayList getListOfDocumentsPatron() {
