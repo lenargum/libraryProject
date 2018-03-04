@@ -22,40 +22,41 @@ class MainTest{
             int id = pat.getId();
             lib.deletePatron(id, database);
 
-            ///database.close();
+            database.close();
         }
     }
 
     @Test
     void TestCase2()throws SQLException{
+        database.connect();
         if(database.isConnected()) {
             Librarian librarian = database.getLibrarian(2);
             Patron patron = database.getPatron(5);
 
-            //database.close();
+            database.close();
         }
     }
 
     @Test
     void TestCase3() throws SQLException, ParseException{
-        //database.connect();
-        if(database.isConnected()) {
+        if(!database.isConnected()) database.connect();
+        if(database.isConnected()){
             Patron p1 = new Patron("gjdkg", "ghajdafgjk", "faculty", "Eugenii", "Zuev", "8932058391850398", "Inno");
             Patron p2 = database.getPatron(5);
             Librarian librarian = database.getLibrarian(2);
             librarian.RegisterPatron(p1, database);
             p1.takeBook(7, database);
-            int a = database.getDebt(database.findDebtID(0, 7)).daysLeft();
+            int a = database.getDebt(database.findDebtID(p1.getId(), 7)).daysLeft();
             assertTrue(a == 28);
             p1.returnBook(7, database);
             librarian.deletePatron(p1.getId(), database);
-           // database.close();
+           database.close();
         }
     }
 
     @Test
     void TestCase4() throws SQLException, ParseException{
-        //database.connect();
+        database.connect();
         if(database.isConnected()) {
             Patron p1 = new Patron("gjdkg", "ghajdafgjk", "faculty", "Eugenii", "Zuev", "8932058391850398", "Inno");
             Librarian lib = database.getLibrarian(2);
@@ -63,62 +64,66 @@ class MainTest{
             lib.RegisterPatron(p1, database);
             lib.addBook(book, database);
             p1.takeBook(book.getID(), database);
-            int a = database.getDebt(database.findDebtID(0, 7)).daysLeft();
+            int a = database.getDebt(database.findDebtID(p1.getId(), 7)).daysLeft();
             assertTrue(a == 14);
             p1.returnBook(book.getID(), database);
             lib.deletePatron(p1.getId(), database);
             lib.deleteDocument(book.getID(), database);
-            //database.close();
+            database.close();
         }
     }
 
     @Test
     void TestCase5(){
-       // database.connect();
+       database.connect();
         if(database.isConnected()) {
-
-            //database.close();
+            database.close();
         }
     }
 
     @Test
-    void TestCase6(){
-       // database.connect();
+    void TestCase6() throws SQLException{
+        database.connect();
         if(database.isConnected()) {
-
-           // database.close();
+            Librarian lib = database.getLibrarian(2);
+            Patron p1 = new Patron("gjdkg", "ghajdafgjk", "faculty", "Eugenii", "Zuev", "8932058391850398", "Inno");
+            lib.RegisterPatron(p1, database);
+            p1.takeBook(7, database);
+            System.out.println(p1.canRequestBook(7, database));
+            p1.takeBook(7, database);
+             database.close();
         }
     }
 
     @Test
     void TestCase7(){
-       // database.connect();
+       database.connect();
         if(database.isConnected()) {
 
-            //database.close();
+            database.close();
         }
     }
     @Test
     void TestCase8(){
-        //database.connect();
+        database.connect();
         if(database.isConnected()) {
 
-           // database.close();
+           database.close();
         }
     }
 
     @Test
     void TestCase9(){
-      //  database.connect();
+      database.connect();
         if(database.isConnected()) {
 
-           // database.close();
+            database.close();
         }
     }
 
     @Test
     void TestCase10(){
-       // database.connect();
+        database.connect();
         if(database.isConnected()) {
 
             database.close();

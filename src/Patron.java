@@ -36,11 +36,11 @@ public class Patron extends User {
         try {
             Book book = database.getBook(idBook);
             if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
-                    !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
+                    !book.isReference() && !getListOfDocumentsPatron().contains(Integer.toString(idBook))) {
                 return true;
             } else {
                 return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
-                        !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
+                        !book.isReference() && !getListOfDocumentsPatron().contains(Integer.toString(idBook));
             }
         } catch(SQLException e){
             System.out.println("Incorrect id");
@@ -133,6 +133,7 @@ public class Patron extends User {
                 decreaseCountOdCopies(idBook, database);
                 Date date = new Date();
                 Debt debt = new Debt(getId(), idBook, date, date, 0, true);
+                debt.setExpireDate(database);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
@@ -150,6 +151,7 @@ public class Patron extends User {
                 decreaseCountOdCopies(idAV, database);
                 Date date = new Date();
                 Debt debt = new Debt(getId(), idAV, date, date, 0, true);
+                debt.setExpireDate(database);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
@@ -167,6 +169,7 @@ public class Patron extends User {
                 decreaseCountOdCopies(idArticle, database);
                 Date date = new Date();
                 Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
+                debt.setExpireDate(database);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
@@ -187,6 +190,7 @@ public class Patron extends User {
                 decreaseCountOdCopies(idDocument, database);
                 Date date = new Date();
                 Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
+                debt.setExpireDate(database);
                 database.insertDebt(debt);
             }
         }catch(SQLException e){
