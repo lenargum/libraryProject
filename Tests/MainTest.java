@@ -38,14 +38,7 @@ class MainTest{
     }
 
     @Test
-    void TestCase3()throws SQLException{
-        database.connect();
-        if(database.isConnected()) {
-            Patron p1 = database.getPatron(0);
-            Patron p2 = database.getPatron(5);
-
-            database.close();
-    void TestCase3()throws SQLException, ParseException{
+    void TestCase3() throws SQLException, ParseException{
         //database.connect();
         if(database.isConnected()) {
             Patron p1 = new Patron("gjdkg", "ghajdafgjk", "faculty", "Eugenii", "Zuev", "8932058391850398", "Inno");
