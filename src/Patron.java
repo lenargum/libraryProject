@@ -37,7 +37,19 @@ public class Patron extends User {
             if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
                     !book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
                 return true;
-            } else {
+            } else if((this.status.toLowerCase().equals("faculty"))) {
+                if (book.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idBook))
+                    System.out.println("You already have copy of this document");
+                return false;
+            }else {
+                if (book.isReference() && book.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idBook))
+                    System.out.println("You already have copy of this document");
+                if(!book.isAllowedForStudents())
+                    System.out.println("This Document is not for you");
                 return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
                         !book.isReference() && !getListOfDocumentsPatron().contains(idBook);
             }
@@ -56,7 +68,19 @@ public class Patron extends User {
             if ((this.status.toLowerCase().equals("faculty")) && (article.getNumberOfCopies() != 0) &&
                     !article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
                 return true;
-            } else {
+            } else if((this.status.toLowerCase().equals("faculty"))) {
+                if (article.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idArticle))
+                    System.out.println("You already have copy of this document");
+                return false;
+            }else {
+                if (article.isReference() && article.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idArticle))
+                    System.out.println("You already have copy of this document");
+                if(!article.isAllowedForStudents())
+                    System.out.println("This Document is not for you");
                 return article.isAllowedForStudents() &&
                         article.getNumberOfCopies() != 0 &&
                         !article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
@@ -79,7 +103,19 @@ public class Patron extends User {
             if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
                     !av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
                 return true;
+            } else if((this.status.toLowerCase().equals("faculty"))) {
+                if (av.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idAV))
+                    System.out.println("You already have copy of this document");
+                return false;
             } else {
+                if (av.isReference() && av.getNumberOfCopies() == 0)
+                    System.out.println("Not copies");
+                if (getListOfDocumentsPatron().contains(idAV))
+                    System.out.println("You already have copy of this document");
+                if(!av.isAllowedForStudents())
+                    System.out.println("This Document is not for you");
                 return av.isAllowedForStudents() &&
                         av.getNumberOfCopies() != 0 &&
                         !av.isReference() && !getListOfDocumentsPatron().contains(idAV);
@@ -110,6 +146,7 @@ public class Patron extends User {
                     System.out.println("Not copies");
                 if (getListOfDocumentsPatron().contains(idDocument))
                     System.out.println("You already have copy of this document");
+                if(!doc.isAllowedForStudents())
                 System.out.println("This Document is not for you");
                 return false;
             }
