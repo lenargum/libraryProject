@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -14,13 +15,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class WelcomePage {
-	@FXML
-	private JFXButton browseLibBtn;
 	private Stage primaryStage;
 	@FXML
 	private StackPane welcomeLayout;
-	@FXML
-	private JFXButton showLoginBtn;
 
 	private String username;
 	private String password;
@@ -37,7 +34,7 @@ public class WelcomePage {
 		primaryStage.setMinWidth(800);
 		primaryStage.setMinHeight(600);
 		welcomeLayout = FXMLLoader.load(getClass().getResource("WelcomePage.fxml"));
-		Scene mainScene = new Scene(welcomeLayout);
+		final Scene mainScene = new Scene(welcomeLayout);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 
@@ -53,6 +50,8 @@ public class WelcomePage {
 		showLoginBtn.setOnAction(event -> {
 			loginDialog.show(welcomeLayout);
 		});
+
+		// TODO remove duplicated code
 		proceedLoginButton.setOnAction(event -> {
 			username = usernameField.getText();
 			password = passwordField.getText();
@@ -61,6 +60,17 @@ public class WelcomePage {
 			// TODO Sign in
 			System.out.println(username);
 			System.out.println(password);
+		});
+
+		passwordField.setOnKeyPressed(event -> {
+			if (event.getCode().equals(KeyCode.ENTER)) {
+				username = usernameField.getText();
+				password = passwordField.getText();
+				passwordField.clear();
+				loginDialog.close();
+				System.out.println(username);
+				System.out.println(password);
+			}
 		});
 
 		JFXButton browseLibBtn = (JFXButton) welcomeLayout.lookup("#browseLibBtn");

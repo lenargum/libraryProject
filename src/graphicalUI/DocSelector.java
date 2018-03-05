@@ -59,7 +59,7 @@ public class DocSelector {
 		booksFlow.setOnMouseClicked(event -> {
 			try {
 				DocItem picked = getSelectedDocItemFromEvent(event);
-				System.out.println(picked.getTitle());
+				System.out.println("Selected " + picked.getTitle());
 			} catch (NullPointerException exception) {
 			}
 		});
@@ -98,7 +98,7 @@ public class DocSelector {
 
 		if (!booksAdded) {
 			for (int i = 0; i < 20; i++) {
-				booksFlow.getChildren().add(new DocItem("Introduction to something  " + (i + 1), "Author Authorovich"));
+				booksFlow.getChildren().add(new DocItem("Introduction to something  " + (i + 1), "Author Authorovich", i));
 			}
 			tabs.getTabs().get(1).setContent(bookScroll);
 			booksFlow.setPadding(new Insets(30));

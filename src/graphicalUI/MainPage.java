@@ -13,6 +13,7 @@ public class MainPage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
+		primaryStage.setTitle("InLibrary Manager");
 		WelcomePage welcomePage = new WelcomePage(primaryStage);
 		welcomePage.show();
 	}

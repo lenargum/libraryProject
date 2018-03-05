@@ -1,7 +1,6 @@
 package graphicalUI;
 
 import com.jfoenix.controls.JFXRippler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -13,13 +12,15 @@ import java.util.Random;
 
 public class DocItem extends Pane {
 	private Label title, author;
+	private int id;
 	private Pane cover;
 	private JFXRippler rippler;
 
 	public DocItem() {
 	}
 
-	public DocItem(String title, String author) {
+	public DocItem(String title, String author, int id) {
+		this.id = id;
 		this.title = new Label(title);
 		this.author = new Label("by " + author);
 
@@ -78,5 +79,9 @@ public class DocItem extends Pane {
 
 	public String getAuthor() {
 		return author.getText();
+	}
+
+	public int getDocId() {
+		return id;
 	}
 }
