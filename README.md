@@ -14,9 +14,9 @@ Contains all documents and users classes and booking logic.
 ### Requirements
 - Java 8
 - JUnit 5.0 (for tests)
-- SQLite JDBC([Installation guide](http://telegra.ph/Kak-sdelat-tak-chtoby-vsyo-zarabotalo-03-01) )
+- SQLite JDBC ([Installation guide](http://telegra.ph/Kak-sdelat-tak-chtoby-vsyo-zarabotalo-03-01))
 
-Use system console(Just run program!)
+Use system console (Just run program!)
 
 
 This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `Main` class. You may use `javac`, but it was not tested.
