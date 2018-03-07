@@ -190,20 +190,5 @@ public class Librarian extends User {
 		return n;
 	}
 
-	public int getDocumentID (Document document, Database database) throws SQLException{
-		for (Document i:database.getDocumentList()
-			 ) {
-			if(i.equals(document)) return i.getID();
-		}
-		return -1;
-	}
-
-    public int getPatronID (Patron patron, Database database) throws SQLException{
-        for (Document i:database.getDocumentList()
-                ) {
-            if(i.equals(patron)) return i.getID();
-        }
-        return -1;
-    }
 
 }
