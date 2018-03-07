@@ -9,6 +9,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MainTest {
 	Database database = new Database();
 
+	Book lookupInBooks(String author, String title, String keywords, Database db) throws SQLException {
+		List<Book> bookList = db.getBookList();
+		Book searchBook = new Book(title, author, false, 0,
+				false, 0, keywords, "", 0, false);
+		for (Book book : bookList) {
+			if (book.compare(searchBook)){
+				return book;
+			}
+		}
+
+		return null;
+	}
+
 	@Test
 	void TestCase1() throws SQLException {
 		database.connect();
@@ -59,6 +72,8 @@ class MainTest {
 		database.connect();
 		if (database.isConnected()) {
 			Librarian librarian = database.getLibrarian(1);
+
+
 
 			librarian.modifyDocumentCopies(16, database,
 					database.getBook(16).getNumberOfCopies() - 2);
