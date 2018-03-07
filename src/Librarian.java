@@ -183,7 +183,8 @@ public class Librarian extends User {
 
 	public int getNumberOfDocument(Database database) throws SQLException {
 		int n = 0;
-		for (Document i : database.getDocumentList()) {
+		for (Document i : database.getDocumentList()
+				) {
 			n += i.getNumberOfCopies();
 		}
 		return n;
@@ -194,7 +195,15 @@ public class Librarian extends User {
 			 ) {
 			if(i.equals(document)) return i.getID();
 		}
-		return 0;
+		return -1;
 	}
+
+    public int getPatronID (Patron patron, Database database) throws SQLException{
+        for (Document i:database.getDocumentList()
+                ) {
+            if(i.equals(patron)) return i.getID();
+        }
+        return -1;
+    }
 
 }
