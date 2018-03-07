@@ -190,5 +190,9 @@ public class Librarian extends User {
 		return n;
 	}
 
+	boolean compare(Librarian librarian){
+		return this.getLogin().equals(librarian.getLogin());
+	}
+
 
 }

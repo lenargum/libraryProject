@@ -513,9 +513,16 @@ public class Database {
 	}
 
 	public int getPatronID (Patron patron) throws SQLException{
-		for (Document i:getDocumentList()
+		for (Patron i:getPatronList()
 				) {
-			if(i.equals(patron)) return i.getID();
+			if(i.equals(patron)) return i.getId();
+		}
+		return -1;
+	}
+	public int getLibrarianID (Librarian librarian) throws SQLException{
+		for (Librarian i:getLibrarianList()
+				) {
+			if(i.equals(librarian)) return i.getId();
 		}
 		return -1;
 	}
