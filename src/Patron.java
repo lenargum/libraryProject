@@ -327,5 +327,8 @@ public class Patron extends User {
 		}
 	}
 
-
+	boolean compare(Patron patron){
+		return this.getLogin().equals(patron.getLogin())&&
+				this.getStatus().equals(patron.getStatus());
+	}
 }
