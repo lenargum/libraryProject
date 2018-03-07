@@ -503,4 +503,20 @@ public class Database {
 		}
 		throw new NoSuchElementException();
 	}
+
+	public int getDocumentID (Document document) throws SQLException{
+		for (Document i:getDocumentList()
+				) {
+			if(i.equals(document)) return i.getID();
+		}
+		return -1;
+	}
+
+	public int getPatronID (Patron patron) throws SQLException{
+		for (Document i:getDocumentList()
+				) {
+			if(i.equals(patron)) return i.getID();
+		}
+		return -1;
+	}
 }
