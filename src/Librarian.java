@@ -1,3 +1,4 @@
+import javax.print.Doc;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -187,6 +188,14 @@ public class Librarian extends User {
 			n += i.getNumberOfCopies();
 		}
 		return n;
+	}
+
+	public int getDocumentID (Document document, Database database) throws SQLException{
+		for (Document i:database.getDocumentList()
+			 ) {
+			if(i.equals(document)) return i.getID();
+		}
+		return 0;
 	}
 
 }
