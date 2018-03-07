@@ -240,5 +240,10 @@ public class Document {
 		this.Price = price;
 	}
 
+	boolean compare(Document document){
+		return this.getAuthors().equals(document.getAuthors())
+				&& this.getTitle().equals(document.getTitle())
+				&& this.KeyWords.equals(document.getKeyWords());
+	}
 }
 
