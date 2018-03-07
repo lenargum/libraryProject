@@ -2,17 +2,27 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MainTest {
 	Database database = new Database();
 
+	int countCopies(List<Document> list) {
+		int num = 0;
+		for (Document doc : list) {
+			num += doc.getNumberOfCopies();
+		}
+
+		return num;
+	}
+
 	@Test
 	void TestCase1() throws SQLException {
 		database.connect();
 		if (database.isConnected()) {
-			Librarian librarian = database.getLibrarian(2);
+			Librarian librarian = database.getLibrarian(1);
 //			database.insertLibrarian(librarian);
 
 			Book b1 = new Book("Book1", "Author1", true, 3, false,
@@ -21,14 +31,22 @@ class MainTest {
 					400, "Book2", "Publ", 2012, false);
 			Book b3 = new Book("Book3", "Author3", true, 1, false,
 					600, "Book3", "Publ", 2007, false);
+
 			librarian.addBook(b1, database);
 			librarian.addBook(b2, database);
 			librarian.addBook(b3, database);
 
 			AudioVideoMaterial av1 = new AudioVideoMaterial("Video1", "fessi", true,
-					0, false, 100, "video1");
+					1, false, 100, "video1");
 			AudioVideoMaterial av2 = new AudioVideoMaterial("Audio2", "fesso", true,
-					0, false, 50, "audio2");
+					1, false, 50, "audio2");
+
+			librarian.addAV(av1, database);
+			librarian.addAV(av2, database);
+
+			int numCopies = countCopies(database.getDocumentList());
+
+			assertTrue(numCopies == 8);
 
 			Patron p1 = new Patron("pat1", "patpass", "student",
 					"Ruslani", "Shakirov", "55555", "Univ11");
@@ -41,6 +59,8 @@ class MainTest {
 			database.insertPatron(p2);
 			database.insertPatron(p3);
 
+			assertTrue(database.getLibrarianList().size() + database.getPatronList().size() == 4);
+
 			database.close();
 		}
 	}
@@ -49,7 +69,14 @@ class MainTest {
 	void TestCase2() throws SQLException {
 		database.connect();
 		if (database.isConnected()) {
-			Librarian librarian = database.getLibrarian(2);
+			Librarian librarian = database.getLibrarian(1);
+
+			librarian.modifyDocumentCopies(16, database,
+					database.getBook(16).getNumberOfCopies() - 2);
+			librarian.modifyDocumentCopies(18, database,
+					database.getBook(18).getNumberOfCopies() - 1);
+
+			librarian.deletePatron(7, database);
 
 			database.close();
 		}

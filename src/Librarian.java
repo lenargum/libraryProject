@@ -1,4 +1,3 @@
-import javax.print.Doc;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -20,6 +19,27 @@ public class Librarian extends User {
 			System.out.println("Incorrect input");
 		}
 	}
+
+	public void addAV(AudioVideoMaterial AV, Database database) throws SQLException {
+		try {
+			database.insertAV(AV);
+		} catch (SQLException e) {
+			System.out.println("Incorrect document");
+		} catch (NoSuchElementException e) {
+			System.out.println("Incorrect document");
+		}
+	}
+
+	public void addArticle(JournalArticle journalArticle, Database database) throws SQLException {
+		try {
+			database.insertArticle(journalArticle);
+		} catch (SQLException e) {
+			System.out.println("Incorrect document");
+		} catch (NoSuchElementException e) {
+			System.out.println("Incorrect document");
+		}
+	}
+
 
 	/**
 	 * @param : Patron
@@ -116,7 +136,7 @@ public class Librarian extends User {
 		}
 	}
 
-	public void modifePatronSurname(int idPatron, Database database, String surname) throws SQLException {
+	public void modifyPatronSurname(int idPatron, Database database, String surname) throws SQLException {
 		try {
 			database.getPatron(idPatron).setSurname(surname);
 			database.editUserColumn(idPatron, "lastname", surname);
@@ -127,7 +147,7 @@ public class Librarian extends User {
 		}
 	}
 
-	public void modifePatronAddress(int idPatron, Database database, String address) throws SQLException {
+	public void modifyPatronAddress(int idPatron, Database database, String address) throws SQLException {
 		try {
 			database.getPatron(idPatron).setAddress(address);
 			database.editUserColumn(idPatron, "address", address);
@@ -138,7 +158,7 @@ public class Librarian extends User {
 		}
 	}
 
-	public void modifePatronPhoneNumber(int idPatron, Database database, String phoneNumber) throws SQLException {
+	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) throws SQLException {
 		try {
 			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
 			database.editUserColumn(idPatron, "phone", phoneNumber);
@@ -149,10 +169,21 @@ public class Librarian extends User {
 		}
 	}
 
-	public int getNumberOfDocument(Database database)throws SQLException{
+	public void modifyPatronStatus(int idPatron, Database database, String status) throws SQLException {
+		try {
+			database.getPatron(idPatron).setStatus(status);
+			database.editDocumentColumn(idPatron, "status", status);
+		} catch (SQLException e) {
+			System.out.println("Incorrect id");
+		} catch (NoSuchElementException e) {
+			System.out.println("Incorrect id");
+		}
+	}
+
+	public int getNumberOfDocument(Database database) throws SQLException {
 		int n = 0;
-		for (Document i:database.getDocumentList()
-			 ) {
+		for (Document i : database.getDocumentList()
+				) {
 			n += i.getNumberOfCopies();
 		}
 		return n;
