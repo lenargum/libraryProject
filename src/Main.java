@@ -83,7 +83,7 @@ public class Main {
 
 	private static void bookManagerMenu(Scanner in, Patron user, Database db) throws SQLException {
 		clearScreen();
-		db.getDebtsForUser(user.getId());
+		db.printDebtsForUser(user.getId());
 		System.out.println("0 » Back\n" +
 				"1 » Return book");
 		int input = enterNum(in, 1, "Enter option number: ");

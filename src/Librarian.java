@@ -1,4 +1,3 @@
-import javax.print.Doc;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -190,7 +189,7 @@ public class Librarian extends User {
 		return n;
 	}
 
-	boolean compare(Librarian librarian){
+	boolean compare(Librarian librarian) {
 		return this.getLogin().equals(librarian.getLogin());
 	}
 

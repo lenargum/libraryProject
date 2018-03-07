@@ -2,6 +2,8 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Database {
@@ -316,6 +318,7 @@ public class Database {
 	}
 
 	public Book getBook(int id) throws SQLException {
+		//language=SQLite
 		ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id =" + id);
 		if (bookSet.next()) {
 			Book temp = new Book(bookSet.getString(2),
@@ -369,7 +372,25 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public void getDebtsForUser(int userId) throws SQLException {
+	public List<Debt> getDebtsForUser(int userID) throws SQLException {
+		//language=SQLite
+		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
+		LinkedList<Debt> debts = new LinkedList<>();
+
+		while (debtsSet.next()) {
+			debts.add(new Debt(debtsSet.getInt(2),
+					debtsSet.getInt(3),
+					debtsSet.getDate(4),
+					debtsSet.getDate(5),
+					debtsSet.getDouble(6),
+					debtsSet.getString(7).equals("true")));
+		}
+
+		return debts;
+	}
+
+	public void printDebtsForUser(int userId) throws SQLException {
+		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts where patron_id =" + userId);
 
 		ArrayList<String> output = new ArrayList<>();
@@ -391,7 +412,6 @@ public class Database {
 		for (String temp : finalOutput) {
 			System.out.println(temp);
 		}
-
 	}
 
 	public void soutDocs() throws SQLException {
@@ -422,10 +442,12 @@ public class Database {
 	}
 
 	public void deleteDocument(int id) throws SQLException {
+		//language=SQLite
 		this.executeUpdate("DELETE FROM documents WHERE id=" + id);
 	}
 
 	public void deleteDebt(int debtId) throws SQLException {
+		//language=SQLite
 		this.executeUpdate("DELETE FROM debts WHERE debt_id=" + debtId);
 	}
 
@@ -441,6 +463,7 @@ public class Database {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
+		//language=SQLite
 		this.executeUpdate("UPDATE users " +
 				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
 	}
@@ -454,6 +477,7 @@ public class Database {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
+		//language=SQLite
 		this.executeUpdate("UPDATE documents " +
 				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
 	}
@@ -474,6 +498,7 @@ public class Database {
 
 
 	public boolean login(String login, String password) throws SQLException {
+		//language=SQLite
 		ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
 		return answer.next();
 	}
@@ -504,25 +529,23 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public int getDocumentID (Document document) throws SQLException{
-		for (Document i:getDocumentList()
-				) {
-			if(i.equals(document)) return i.getID();
+	public int getDocumentID(Document document) throws SQLException {
+		for (Document i : getDocumentList()) {
+			if (i.compare(document)) return i.getID();
 		}
 		return -1;
 	}
 
-	public int getPatronID (Patron patron) throws SQLException{
-		for (Patron i:getPatronList()
-				) {
-			if(i.equals(patron)) return i.getId();
+	public int getPatronID(Patron patron) throws SQLException {
+		for (Patron i : getPatronList()) {
+			if (i.compare(patron)) return i.getId();
 		}
 		return -1;
 	}
-	public int getLibrarianID (Librarian librarian) throws SQLException{
-		for (Librarian i:getLibrarianList()
-				) {
-			if(i.equals(librarian)) return i.getId();
+
+	public int getLibrarianID(Librarian librarian) throws SQLException {
+		for (Librarian i : getLibrarianList()) {
+			if (i.compare(librarian)) return i.getId();
 		}
 		return -1;
 	}
