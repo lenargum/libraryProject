@@ -182,8 +182,7 @@ public class Librarian extends User {
 
 	public int getNumberOfDocument(Database database) throws SQLException {
 		int n = 0;
-		for (Document i : database.getDocumentList()
-				) {
+		for (Document i : database.getDocumentList()) {
 			n += i.getNumberOfCopies();
 		}
 		return n;

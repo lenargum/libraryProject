@@ -9,15 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MainTest {
 	Database database = new Database();
 
-	int countCopies(List<Document> list) {
-		int num = 0;
-		for (Document doc : list) {
-			num += doc.getNumberOfCopies();
-		}
-
-		return num;
-	}
-
 	@Test
 	void TestCase1() throws SQLException {
 		database.connect();
@@ -44,16 +35,14 @@ class MainTest {
 			librarian.addAV(av1, database);
 			librarian.addAV(av2, database);
 
-			int numCopies = countCopies(database.getDocumentList());
+			assertTrue(librarian.getNumberOfDocument(database) == 8);
 
-			assertTrue(numCopies == 8);
-
-			Patron p1 = new Patron("pat1", "patpass", "student",
-					"Ruslani", "Shakirov", "55555", "Univ11");
+			Patron p1 = new Patron("pat1", "patpass", "faculty",
+					" Sergey", " Afonso", "30001", "ViaMargutta, 3");
 			Patron p2 = new Patron("pat2", "patpass", "faculty",
 					"Victor", "Rivera", "6454251", "Centr1");
 			Patron p3 = new Patron("pat3", "patpass", "student",
-					"Madina", "Gafarova", "646464", "Univ12");
+					"Elvira", "Espindola", "30003 ", "ViadelCorso, 22");
 
 			database.insertPatron(p1);
 			database.insertPatron(p2);
