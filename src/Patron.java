@@ -29,6 +29,10 @@ public class Patron extends User {
 	 */
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
+			if(!database.getDocumentList().contains(idBook)) {
+				System.out.println("There is no such Book in the Library");
+				return false;
+			}
 			Book book = database.getBook(idBook);
 			if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
 					!book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
@@ -61,6 +65,10 @@ public class Patron extends User {
 
 	public boolean canRequestArticle(int idArticle, Database database) {
 		try {
+			if(!database.getDocumentList().contains(idArticle)) {
+				System.out.println("There is no such Article in the Library");
+				return false;
+			}
 			JournalArticle article = database.getArticle(idArticle);
 			if ((this.status.toLowerCase().equals("faculty")) && (article.getNumberOfCopies() != 0) &&
 					!article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
@@ -94,6 +102,10 @@ public class Patron extends User {
 
 	public boolean canRequestAV(int idAV, Database database) {
 		try {
+			if(!database.getDocumentList().contains(idAV)) {
+				System.out.println("There is no such auio or video material in the Library");
+				return false;
+			}
 			AudioVideoMaterial av = database.getAV(idAV);
 			if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
 					!av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
@@ -131,6 +143,10 @@ public class Patron extends User {
 	 */
 	public boolean canRequestDocument(int idDocument, Database database) {
 		try {
+			if(!database.getDocumentList().contains(idDocument)) {
+				System.out.println("There is no such Document in the Library");
+				return false;
+			}
 			Document doc = database.getDocument(idDocument);
 			if ((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
 					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
