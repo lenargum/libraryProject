@@ -245,5 +245,9 @@ public class Document {
 				&& this.getTitle().equals(document.getTitle())
 				&& this.KeyWords.equals(document.getKeyWords());
 	}
+
+	boolean equals(Document document) {
+		return compare(document);
+	}
 }
 

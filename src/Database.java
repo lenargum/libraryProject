@@ -58,7 +58,6 @@ public class Database {
 		}
 	}
 
-
 	//basic methods
 	private void executeUpdate(String MySQLStatement) throws SQLException {
 		Statement statement = con.createStatement();
@@ -360,6 +359,7 @@ public class Database {
 	}
 
 	public Debt getDebt(int id) throws SQLException, ParseException {
+		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = " + id);
 		if (debtsSet.next()) {
 			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
@@ -372,18 +372,19 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public List<Debt> getDebtsForUser(int userID) throws SQLException {
+	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
 		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 		LinkedList<Debt> debts = new LinkedList<>();
 
 		while (debtsSet.next()) {
-			debts.add(new Debt(debtsSet.getInt(2),
-					debtsSet.getInt(3),
-					debtsSet.getDate(4),
-					debtsSet.getDate(5),
-					debtsSet.getDouble(6),
-					debtsSet.getString(7).equals("true")));
+			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+					debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
+			temp.setDebtId(debtsSet.getInt(1));
+
+			debts.add(temp);
 		}
 
 		return debts;
@@ -496,6 +497,21 @@ public class Database {
 				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtId);
 	}
 
+	/**
+	 * Erases all records in database and resets the indices.
+	 */
+	public void clear() {
+		try {
+			this.execute("DELETE FROM users");
+			this.execute("DELETE FROM documents");
+			this.execute("DELETE FROM debts");
+			System.out.println("Database: Records cleared.");
+			this.execute("UPDATE sqlite_sequence SET seq=0");
+			System.out.println("Database: Indices reset.");
+		} catch (SQLException e) {
+			System.out.println("Database: Clearing failed.");
+		}
+	}
 
 	public boolean login(String login, String password) throws SQLException {
 		//language=SQLite

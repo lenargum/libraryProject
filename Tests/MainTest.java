@@ -28,7 +28,17 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase1() throws SQLException {
+	void cleanBeforeTest() {
+		if (!database.isConnected()) database.connect();
+		if (database.isConnected()) {
+			database.clear();
+			database.close();
+		}
+	}
+
+	@Test
+		// Test case 1
+	void test1_TC1() throws SQLException {
 		database.connect();
 		if (database.isConnected()) {
 			librarian = new Librarian("librarian", "pass", "Name", "Surname", "123545687", "Innopolis");
@@ -63,8 +73,8 @@ class MainTest {
 
 			p1 = new Patron("pat1", "patpass", "faculty",
 					"Sergey", "Afonso", "30001", "Via Margutta, 3");
-			p2 = new Patron("pat2", "patpass", "faculty",
-					"Victor", "Rivera", "6454251", "Centr1");
+			p2 = new Patron("pat2", "patpass", "student",
+					"Nadia", "Teixeira", "30002", "Via Sacra, 13");
 			p3 = new Patron("pat3", "patpass", "student",
 					"Elvira", "Espindola", "30003 ", "Viadel Corso, 22");
 
@@ -82,7 +92,8 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase2() throws SQLException {
+		// Test case 2
+	void test2_TC2() throws SQLException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			Librarian librarian = database.getLibrarian(1);
@@ -103,7 +114,8 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase3() throws SQLException, ParseException {
+		// Test case 3
+	void test3_TC3() throws SQLException, ParseException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			assertEquals(p1.getName(), "Sergey");
@@ -123,7 +135,8 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase7() {
+		// Test case 7
+	void test4_TC7() throws SQLException, ParseException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			p1.takeBook(b1.getID(), database);
@@ -131,20 +144,54 @@ class MainTest {
 			p1.takeBook(b3.getID(), database);
 			p1.takeAV(av1.getID(), database);
 
-			// TODO WTF again
+			p2.takeBook(b1.getID(), database);
+			p2.takeBook(b2.getID(), database);
+			p2.takeAV(av2.getID(), database);
+
+			assertEquals(p1.getName(), "Sergey");
+			assertEquals(p1.getSurname(), "Afonso");
+			assertEquals(p1.getAddress(), "Via Margutta, 3");
+			assertEquals(p1.getPhoneNumber(), "30001");
+			assertEquals(p1.getStatus(), "faculty");
+
+			assertEquals(p2.getName(), "Nadia");
+			assertEquals(p2.getSurname(), "Teixeira");
+			assertEquals(p2.getAddress(), "Via Sacra, 13");
+			assertEquals(p2.getPhoneNumber(), "30002");
+			assertEquals(p2.getStatus(), "student");
+
+			List<Debt> p1Debts = database.getDebtsForUser(p1.getId());
+			List<Debt> p2Debts = database.getDebtsForUser(p2.getId());
+
+			assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
+			assertEquals(p1Debts.get(0).daysLeft(), 28);
+			assertEquals(p1Debts.get(1).getDocumentId(), b2.getID());
+			assertEquals(p1Debts.get(1).daysLeft(), 28);
+			assertEquals(p1Debts.get(2).getDocumentId(), b3.getID());
+			assertEquals(p1Debts.get(2).daysLeft(), 28);
+			assertEquals(p1Debts.get(3).getDocumentId(), av1.getID());
+			assertEquals(p1Debts.get(3).daysLeft(), 14);
+
+			assertEquals(p2Debts.get(0).getDocumentId(), b1.getID());
+			assertEquals(p2Debts.get(0).daysLeft(), 21);
+			assertEquals(p2Debts.get(1).getDocumentId(), b2.getID());
+			assertEquals(p2Debts.get(1).daysLeft(), 21);
+			assertEquals(p2Debts.get(2).getDocumentId(), av2.getID());
+			assertEquals(p2Debts.get(2).daysLeft(), 14);
 
 			database.close();
 		}
 	}
 
 	@Test
-	void TestCase4() throws SQLException, ParseException {
+		// Test case 4
+	void test5_TC4() throws SQLException, ParseException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			try {
 				database.getPatron(p2.getId());
 			} catch (NoSuchElementException e) {
-				assertTrue(true);
+				System.out.println("No information for p2.");
 			}
 
 			assertEquals(p3.getName(), "Elvira");
@@ -158,18 +205,18 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase5() {
+		// Test case 5
+	void test6_TC5() {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
-			// TODO Ne rabotaet
 			assertFalse(p2.canRequestBook(b1.getID(), database));
-
 			database.close();
 		}
 	}
 
 	@Test
-	void TestCase6() throws SQLException {
+		// Test case 6
+	void test7_TC6() throws SQLException, ParseException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			p1.takeBook(b1.getID(), database);
@@ -188,29 +235,26 @@ class MainTest {
 			assertEquals(p3.getPhoneNumber(), "30003 ");
 			assertEquals(p3.getStatus(), "student");
 
-			// WTF? Why void? TODO
-			database.printDebtsForUser(p1.getId());
+			List<Debt> p1Debts = database.getDebtsForUser(p1.getId());
+			List<Debt> p3Debts = database.getDebtsForUser(p3.getId());
+
+			assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
+			assertEquals(p1Debts.get(0).daysLeft(), 28);
+
+			assertEquals(p3Debts.get(0).getDocumentId(), b2.getID());
+			assertEquals(p1Debts.get(0).daysLeft(), 21);
 
 			database.close();
 		}
 	}
 
 	@Test
-	void TestCase8() {
+		// Test case 8
+	void test8_TC8() {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 
 			database.close();
 		}
 	}
-
-	@Test
-	void TestCase9() {
-		if (!database.isConnected()) database.connect();
-		if (database.isConnected()) {
-
-			database.close();
-		}
-	}
-
 }
