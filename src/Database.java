@@ -58,7 +58,6 @@ public class Database {
 		}
 	}
 
-
 	//basic methods
 	private void executeUpdate(String MySQLStatement) throws SQLException {
 		Statement statement = con.createStatement();
@@ -116,12 +115,16 @@ public class Database {
 		insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
 				book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
 				book.isBestseller(), "-", "-", "-", "NULL");
+		book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
+                book.isReference(), book.getPrice(), book.getKeyWords())));
 	}
 
 	public void insertAV(AudioVideoMaterial av) throws SQLException {
 		insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
 				av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
 				"-", "-", "-", "NULL");
+		av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
+                av.isReference(), av.getPrice(), av.getKeyWords())));
 	}
 
 	public void insertArticle(JournalArticle article) throws SQLException {
@@ -129,14 +132,17 @@ public class Database {
 				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
 				"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 				article.getIssue(), article.getEditor(),
-				(new SimpleDateFormat("dd-MMM-yyyy")).format(article.getPublicationDate()));
+				(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
+		article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
+                article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
 	}
 
 	public void insertDebt(Debt debt) throws SQLException {
 		execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
 				+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
-				+ (new SimpleDateFormat("dd-MMM-yyyy")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("dd-MMM-yyyy")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
+				+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
 				+ debt.canRenew() + "\')");
+		debt.setDebtId(this.findDebtID(debt.getPatronId(),debt.getDocumentId()));
 	}
 
 
@@ -360,6 +366,7 @@ public class Database {
 	}
 
 	public Debt getDebt(int id) throws SQLException, ParseException {
+		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = " + id);
 		if (debtsSet.next()) {
 			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
@@ -372,18 +379,19 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public List<Debt> getDebtsForUser(int userID) throws SQLException {
+	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
 		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 		LinkedList<Debt> debts = new LinkedList<>();
 
 		while (debtsSet.next()) {
-			debts.add(new Debt(debtsSet.getInt(2),
-					debtsSet.getInt(3),
-					debtsSet.getDate(4),
-					debtsSet.getDate(5),
-					debtsSet.getDouble(6),
-					debtsSet.getString(7).equals("true")));
+			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+					debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
+			temp.setDebtId(debtsSet.getInt(1));
+
+			debts.add(temp);
 		}
 
 		return debts;
@@ -496,6 +504,21 @@ public class Database {
 				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtId);
 	}
 
+	/**
+	 * Erases all records in database and resets the indices.
+	 */
+	public void clear() {
+		try {
+			this.execute("DELETE FROM users");
+			this.execute("DELETE FROM documents");
+			this.execute("DELETE FROM debts");
+			System.out.println("Database: Records cleared.");
+			this.execute("UPDATE sqlite_sequence SET seq=0");
+			System.out.println("Database: Indices reset.");
+		} catch (SQLException e) {
+			System.out.println("Database: Clearing failed.");
+		}
+	}
 
 	public boolean login(String login, String password) throws SQLException {
 		//language=SQLite

@@ -13,7 +13,7 @@ public abstract class User {
 	private String login;
 	private String password;
 
-	User(String login, String password, String name, String surname, String phoneNumber, String address) {
+	public User(String login, String password, String name, String surname, String phoneNumber, String address) {
 		this.name = name;
 		this.surname = surname;
 		this.address = address;

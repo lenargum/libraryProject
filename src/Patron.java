@@ -25,14 +25,16 @@ public class Patron extends User {
 		this.status = status;
 	}
 
-	/* @return true: if Patron can get the document, otherwise false
+	/* @return true if Patron can get the document, otherwise false
 	 */
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
-			if(!database.getDocumentList().contains(idBook)) {
-				System.out.println("There is no such Book in the Library");
-				return false;
-			}
+			database.getPatron(getId());
+		} catch (SQLException | NoSuchElementException e) {
+			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			return false;
+		}
+		try {
 			Book book = database.getBook(idBook);
 			if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
 					!book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
@@ -58,17 +60,20 @@ public class Patron extends User {
 						!book.isReference() && !getListOfDocumentsPatron().contains(idBook);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Database <- Patron: Incorrect ID. Book with ID="
+					+ idBook + " may not be registered id database.");
 			return false;
 		}
 	}
 
 	public boolean canRequestArticle(int idArticle, Database database) {
 		try {
-			if(!database.getDocumentList().contains(idArticle)) {
-				System.out.println("There is no such Article in the Library");
-				return false;
-			}
+			database.getPatron(getId());
+		} catch (SQLException | NoSuchElementException e) {
+			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			return false;
+		}
+		try {
 			JournalArticle article = database.getArticle(idArticle);
 			if ((this.status.toLowerCase().equals("faculty")) && (article.getNumberOfCopies() != 0) &&
 					!article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
@@ -95,17 +100,20 @@ public class Patron extends User {
 						!article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
 			}
 		} catch (SQLException | ParseException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Database <- Patron: Incorrect ID. Article with ID="
+					+ idArticle + " may not be registered id database.");
 			return false;
 		}
 	}
 
 	public boolean canRequestAV(int idAV, Database database) {
 		try {
-			if(!database.getDocumentList().contains(idAV)) {
-				System.out.println("There is no such auio or video material in the Library");
-				return false;
-			}
+			database.getPatron(getId());
+		} catch (SQLException | NoSuchElementException e) {
+			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			return false;
+		}
+		try {
 			AudioVideoMaterial av = database.getAV(idAV);
 			if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
 					!av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
@@ -134,7 +142,8 @@ public class Patron extends User {
 						!av.isReference() && !getListOfDocumentsPatron().contains(idAV);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Database <- Patron: Incorrect ID. AV with ID="
+					+ idAV + " may not be registered id database.");
 			return false;
 		}
 	}
@@ -143,10 +152,12 @@ public class Patron extends User {
 	 */
 	public boolean canRequestDocument(int idDocument, Database database) {
 		try {
-			if(!database.getDocumentList().contains(idDocument)) {
-				System.out.println("There is no such Document in the Library");
-				return false;
-			}
+			database.getPatron(getId());
+		} catch (SQLException | NoSuchElementException e) {
+			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			return false;
+		}
+		try {
 			Document doc = database.getDocument(idDocument);
 			if ((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
 					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
@@ -167,7 +178,8 @@ public class Patron extends User {
 				return false;
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Database <- Patron: Incorrect ID. Document with ID="
+					+ idDocument + " may not be registered id database.");
 			return false;
 		}
 	}
