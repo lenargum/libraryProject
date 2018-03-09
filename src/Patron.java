@@ -205,7 +205,7 @@ public class Patron extends User {
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Incorrect id=" + idBook);
 		}
 	}
 
@@ -222,7 +222,7 @@ public class Patron extends User {
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Incorrect id" + idAV);
 		}
 	}
 
@@ -240,7 +240,7 @@ public class Patron extends User {
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Incorrect id" + idArticle);
 		}
 	}
 
@@ -258,7 +258,7 @@ public class Patron extends User {
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
+			System.out.println("Incorrect id" + idDocument);
 		}
 	}
 

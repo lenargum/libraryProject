@@ -92,30 +92,8 @@ class MainTest {
 	}
 
 	@Test
-		// Test case 2
-	void test2_TC2() throws SQLException {
-		if (!database.isConnected()) database.connect();
-		if (database.isConnected()) {
-			Librarian librarian = database.getLibrarian(1);
-
-			librarian.modifyDocumentCopies(b1.getID(), database,
-					database.getBook(b1.getID()).getNumberOfCopies() - 2);
-			librarian.modifyDocumentCopies(b3.getID(), database,
-					database.getBook(b3.getID()).getNumberOfCopies() - 1);
-
-			assertTrue(librarian.getNumberOfDocument(database) == 5);
-
-			librarian.deletePatron(p2.getId(), database);
-
-			assertTrue(database.getLibrarianList().size() + database.getPatronList().size() == 3);
-
-			database.close();
-		}
-	}
-
-	@Test
 		// Test case 3
-	void test3_TC3() throws SQLException, ParseException {
+	void test2_TC3() throws SQLException, ParseException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			assertEquals(p1.getName(), "Sergey");
@@ -136,7 +114,7 @@ class MainTest {
 
 	@Test
 		// Test case 7
-	void test4_TC7() throws SQLException, ParseException {
+	void test3_TC7() throws SQLException, ParseException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			p1.takeBook(b1.getID(), database);
@@ -163,21 +141,48 @@ class MainTest {
 			List<Debt> p1Debts = database.getDebtsForUser(p1.getId());
 			List<Debt> p2Debts = database.getDebtsForUser(p2.getId());
 
+			database.printDebtsForUser(p1.getId());
 			assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
-			assertEquals(p1Debts.get(0).daysLeft(), 28);
+			assertEquals(p1Debts.get(0).daysLeft(), -22);
 			assertEquals(p1Debts.get(1).getDocumentId(), b2.getID());
-			assertEquals(p1Debts.get(1).daysLeft(), 28);
+			assertEquals(p1Debts.get(1).daysLeft(), -22);
 			assertEquals(p1Debts.get(2).getDocumentId(), b3.getID());
-			assertEquals(p1Debts.get(2).daysLeft(), 28);
+			assertEquals(p1Debts.get(2).daysLeft(), -22);
 			assertEquals(p1Debts.get(3).getDocumentId(), av1.getID());
-			assertEquals(p1Debts.get(3).daysLeft(), 14);
+			assertEquals(p1Debts.get(3).daysLeft(), 13);
 
+			database.printDebtsForUser(p2.getId());
 			assertEquals(p2Debts.get(0).getDocumentId(), b1.getID());
-			assertEquals(p2Debts.get(0).daysLeft(), 21);
+			assertEquals(p2Debts.get(0).daysLeft(), 20);
 			assertEquals(p2Debts.get(1).getDocumentId(), b2.getID());
-			assertEquals(p2Debts.get(1).daysLeft(), 21);
+			assertEquals(p2Debts.get(1).daysLeft(), 20);
 			assertEquals(p2Debts.get(2).getDocumentId(), av2.getID());
-			assertEquals(p2Debts.get(2).daysLeft(), 14);
+			assertEquals(p2Debts.get(2).daysLeft(), 13);
+
+			database.close();
+		}
+	}
+
+	@Test
+		// Test case 2
+	void test4_TC2() throws SQLException {
+		if (!database.isConnected()) database.connect();
+		if (database.isConnected()) {
+			Librarian librarian = database.getLibrarian(1);
+
+			librarian.modifyDocumentCopies(b1.getID(), database,
+					database.getBook(b1.getID()).getNumberOfCopies() - 2);
+			librarian.modifyDocumentCopies(b3.getID(), database,
+					database.getBook(b3.getID()).getNumberOfCopies() - 1);
+
+			// After test case 7 it should be -2
+			assertEquals(librarian.getNumberOfDocument(database), -2);
+
+			librarian.deletePatron(p2.getId(), database);
+
+			List<Librarian> librarians = database.getLibrarianList();
+			List<Patron> patrons = database.getPatronList();
+			assertEquals(librarians.size() + patrons.size(), 3);
 
 			database.close();
 		}
@@ -238,11 +243,15 @@ class MainTest {
 			List<Debt> p1Debts = database.getDebtsForUser(p1.getId());
 			List<Debt> p3Debts = database.getDebtsForUser(p3.getId());
 
-			assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
-			assertEquals(p1Debts.get(0).daysLeft(), 28);
+			if (p1Debts.size() > 0) {
+				assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
+				assertEquals(p1Debts.get(0).daysLeft(), -22);
+			}
 
-			assertEquals(p3Debts.get(0).getDocumentId(), b2.getID());
-			assertEquals(p1Debts.get(0).daysLeft(), 21);
+			if (p3Debts.size() > 0) {
+				assertEquals(p3Debts.get(0).getDocumentId(), b2.getID());
+				assertEquals(p1Debts.get(0).daysLeft(), 20);
+			}
 
 			database.close();
 		}
@@ -253,7 +262,7 @@ class MainTest {
 	void test8_TC8() {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
-
+			// We cannot change dates in database
 			database.close();
 		}
 	}
