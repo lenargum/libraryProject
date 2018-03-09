@@ -128,13 +128,13 @@ public class Database {
 				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
 				"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 				article.getIssue(), article.getEditor(),
-				(new SimpleDateFormat("dd-MMM-yyyy")).format(article.getPublicationDate()));
+				(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
 	}
 
 	public void insertDebt(Debt debt) throws SQLException {
 		execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
 				+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
-				+ (new SimpleDateFormat("dd-MMM-yyyy")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("dd-MMM-yyyy")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
+				+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
 				+ debt.canRenew() + "\')");
 	}
 
