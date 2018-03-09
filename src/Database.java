@@ -115,12 +115,16 @@ public class Database {
 		insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
 				book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
 				book.isBestseller(), "-", "-", "-", "NULL");
+		book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
+                book.isReference(), book.getPrice(), book.getKeyWords())));
 	}
 
 	public void insertAV(AudioVideoMaterial av) throws SQLException {
 		insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
 				av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
 				"-", "-", "-", "NULL");
+		av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
+                av.isReference(), av.getPrice(), av.getKeyWords())));
 	}
 
 	public void insertArticle(JournalArticle article) throws SQLException {
@@ -129,6 +133,8 @@ public class Database {
 				"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 				article.getIssue(), article.getEditor(),
 				(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
+		article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
+                article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
 	}
 
 	public void insertDebt(Debt debt) throws SQLException {
@@ -136,6 +142,7 @@ public class Database {
 				+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
 				+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
 				+ debt.canRenew() + "\')");
+		debt.setDebtId(this.findDebtID(debt.getPatronId(),debt.getDocumentId()));
 	}
 
 
