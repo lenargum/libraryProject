@@ -170,13 +170,57 @@ class MainTest {
 		if (database.isConnected()) {
 			Librarian librarian = database.getLibrarian(1);
 
+			database.clear();
+
+			librarian = new Librarian("librarian", "pass", "Name", "Surname", "123545687", "Innopolis");
+			database.insertLibrarian(librarian);
+			librarian.setId(database.getLibrarianID(librarian));
+
+			b1 = new Book("Book1", "Author1", true, 3, false,
+					400, "Book1", "Publ", 2006, false);
+			b2 = new Book("Book2", "Author2", true, 2, false,
+					400, "Book2", "Publ", 2012, false);
+			b3 = new Book("Book3", "Author3", true, 1, false,
+					600, "Book3", "Publ", 2007, false);
+
+			librarian.addBook(b1, database);
+			b1.setID(database.getDocumentID(b1));
+			librarian.addBook(b2, database);
+			b2.setID(database.getDocumentID(b2));
+			librarian.addBook(b3, database);
+			b3.setID(database.getDocumentID(b3));
+
+			av1 = new AudioVideoMaterial("Video1", "fessi", true,
+					1, false, 100, "video1");
+			av2 = new AudioVideoMaterial("Audio2", "fesso", true,
+					1, false, 50, "audio2");
+
+			librarian.addAV(av1, database);
+			av1.setID(database.getDocumentID(av1));
+			librarian.addAV(av2, database);
+			av2.setID(database.getDocumentID(av2));
+
+			p1 = new Patron("pat1", "patpass", "faculty",
+					"Sergey", "Afonso", "30001", "Via Margutta, 3");
+			p2 = new Patron("pat2", "patpass", "student",
+					"Nadia", "Teixeira", "30002", "Via Sacra, 13");
+			p3 = new Patron("pat3", "patpass", "student",
+					"Elvira", "Espindola", "30003 ", "Viadel Corso, 22");
+
+			database.insertPatron(p1);
+			p1.setId(database.getPatronID(p1));
+			database.insertPatron(p2);
+			p2.setId(database.getPatronID(p2));
+			database.insertPatron(p3);
+			p3.setId(database.getPatronID(p3));
+
 			librarian.modifyDocumentCopies(b1.getID(), database,
 					database.getBook(b1.getID()).getNumberOfCopies() - 2);
 			librarian.modifyDocumentCopies(b3.getID(), database,
 					database.getBook(b3.getID()).getNumberOfCopies() - 1);
 
 			// After test case 7 it should be -2
-			assertEquals(librarian.getNumberOfDocument(database), -2);
+			assertEquals(librarian.getNumberOfDocument(database), 5);
 
 			librarian.deletePatron(p2.getId(), database);
 
