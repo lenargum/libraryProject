@@ -73,7 +73,7 @@ public class Debt {
 	}
 
 	public int daysLeft() {
-		return (int) (expireDate.getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000);
+		return (int) ((expireDate.getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000));
 	}
 
 	public int getDebtId() {

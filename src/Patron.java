@@ -192,16 +192,19 @@ public class Patron extends User {
 				this.getListOfDocumentsPatron().add(idBook);
 				database.getBook(idBook).deleteCopy();
 				decreaseCountOdCopies(idBook, database);
-				Date date = new Date();
-				Date date2 = new Date();
+				Date dateBook = new Date();
+				Date dateExpire = new Date();
 				if (database.getBook(idBook).isBestseller())
-					date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
+					dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
 				else {
 					if (status.toLowerCase().equals("student"))
-						date2.setTime(date2.getTime() + 21 * 24 * 60 * 60 * 1000);
-					else date2.setTime(date2.getTime() + 28 * 24 * 60 * 60 * 1000);
+						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
+					else {
+						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
+					}
 				}
-				Debt debt = new Debt(getId(), idBook, date, date2, 0, true);
+
+				Debt debt = new Debt(getId(), idBook, dateBook, dateExpire, 0, true);
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
