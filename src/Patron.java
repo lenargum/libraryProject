@@ -13,7 +13,7 @@ public class Patron extends User {
 		this.status = status;
 	}
 
-	public ArrayList getListOfDocumentsPatron() {
+	public ArrayList<Integer> getListOfDocumentsPatron() {
 		return listOfDocumentsPatron;
 	}
 

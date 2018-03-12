@@ -186,7 +186,7 @@ class MainTest {
 
 			if (p1Debts.size() > 0) {
 				assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
-				assertEquals(p1Debts.get(0).daysLeft(), -20);
+				assertEquals(p1Debts.get(0).daysLeft(), -21);
 			}
 
 			if (p3Debts.size() > 0) {
@@ -232,21 +232,21 @@ class MainTest {
 
 			database.printDebtsForUser(p1.getId());
 			assertEquals(p1Debts.get(0).getDocumentId(), b1.getID());
-			assertEquals(p1Debts.get(0).daysLeft(), -20);
+			assertEquals(p1Debts.get(0).daysLeft(), -21);
 			assertEquals(p1Debts.get(1).getDocumentId(), b2.getID());
-			assertEquals(p1Debts.get(1).daysLeft(), -20);
+			assertEquals(p1Debts.get(1).daysLeft(), -21);
 			assertEquals(p1Debts.get(2).getDocumentId(), b3.getID());
-			assertEquals(p1Debts.get(2).daysLeft(), -20);
+			assertEquals(p1Debts.get(2).daysLeft(), -21);
 			assertEquals(p1Debts.get(3).getDocumentId(), av1.getID());
-			assertEquals(p1Debts.get(3).daysLeft(), 14);
+			assertEquals(p1Debts.get(3).daysLeft(), 13);
 
 			database.printDebtsForUser(p2.getId());
 			assertEquals(p2Debts.get(0).getDocumentId(), b1.getID());
-			assertEquals(p2Debts.get(0).daysLeft(), 21);
+			assertEquals(p2Debts.get(0).daysLeft(), 20);
 			assertEquals(p2Debts.get(1).getDocumentId(), b2.getID());
-			assertEquals(p2Debts.get(1).daysLeft(), 21);
+			assertEquals(p2Debts.get(1).daysLeft(), 20);
 			assertEquals(p2Debts.get(2).getDocumentId(), av2.getID());
-			assertEquals(p2Debts.get(2).daysLeft(), 14);
+			assertEquals(p2Debts.get(2).daysLeft(), 13);
 
 			database.close();
 		}
