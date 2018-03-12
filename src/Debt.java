@@ -85,12 +85,12 @@ public class Debt {
 		this.debtId = debtId;
 	}
 
-	public void countFee(Database database)throws SQLException{
-		if(daysLeft() > 0) setFee(min(daysLeft()*100, database.getDocument(documentId).getPrice()));
+	public void countFee(Database database) throws SQLException {
+		if (daysLeft() > 0) setFee(min(daysLeft() * 100, database.getDocument(documentId).getPrice()));
 	}
 
-	public double min(double a, double b){
-		if(a > b) return a;
+	public double min(double a, double b) {
+		if (a > b) return a;
 		return b;
 	}
 }

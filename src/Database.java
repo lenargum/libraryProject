@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 public class Database {
 
 	private Connection con;
+	private boolean connected;
 
 	/**
 	 * connection process
@@ -29,6 +30,7 @@ public class Database {
 			String connectionURL = "jdbc:sqlite:library.db";
 
 			con = DriverManager.getConnection(connectionURL);
+			connected = true;
 			System.out.println("Database: Connection successful");
 		} catch (Exception e) {
 
@@ -40,7 +42,7 @@ public class Database {
 	 * @return is connected to database
 	 */
 	public boolean isConnected() {
-		return this.con != null;
+		return this.connected;
 	}
 
 	/**
@@ -50,11 +52,14 @@ public class Database {
 	public void close() {
 		if (con != null) {
 			try {
-				con.close();
+				this.con.close();
 				System.out.println("Database: Connection closed");
+				this.connected = false;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("Database: Connection was not opened, already closed.");
 		}
 	}
 
@@ -116,7 +121,7 @@ public class Database {
 				book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
 				book.isBestseller(), "-", "-", "-", "NULL");
 		book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
-                book.isReference(), book.getPrice(), book.getKeyWords())));
+				book.isReference(), book.getPrice(), book.getKeyWords())));
 	}
 
 	public void insertAV(AudioVideoMaterial av) throws SQLException {
@@ -124,7 +129,7 @@ public class Database {
 				av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
 				"-", "-", "-", "NULL");
 		av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
-                av.isReference(), av.getPrice(), av.getKeyWords())));
+				av.isReference(), av.getPrice(), av.getKeyWords())));
 	}
 
 	public void insertArticle(JournalArticle article) throws SQLException {
@@ -134,7 +139,7 @@ public class Database {
 				article.getIssue(), article.getEditor(),
 				(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
 		article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
-                article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
+				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
 	}
 
 	public void insertDebt(Debt debt) throws SQLException {
@@ -142,7 +147,7 @@ public class Database {
 				+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
 				+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
 				+ debt.canRenew() + "\')");
-		debt.setDebtId(this.findDebtID(debt.getPatronId(),debt.getDocumentId()));
+		debt.setDebtId(this.findDebtID(debt.getPatronId(), debt.getDocumentId()));
 	}
 
 
@@ -517,6 +522,7 @@ public class Database {
 			System.out.println("Database: Indices reset.");
 		} catch (SQLException e) {
 			System.out.println("Database: Clearing failed.");
+			e.printStackTrace();
 		}
 	}
 
