@@ -79,8 +79,8 @@ public class Database {
 
 	//main features: insertion
 
-	public void insertUser(String login, String password, String status,
-	                       String firstname, String lastname, String phone, String address) throws SQLException {
+	private void insertUser(String login, String password, String status,
+							String firstname, String lastname, String phone, String address) throws SQLException {
 		this.execute("INSERT INTO users(login, password, status, firstname, lastname, phone, address)" +
 				" VALUES('" + login + "','" + password + "','" + status + "','" + firstname + "','" + lastname + "','" + phone + "','" + address + "')");
 	}
@@ -98,10 +98,10 @@ public class Database {
 	}
 
 	//main insertion(other methods just implement it for custom types)
-	public void insertDocument(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
-	                           boolean is_reference, double price, String keywords, String type, String publisher,
-	                           int edition, boolean bestseller, String journal_name, String issue, String editor,
-	                           String publication_date) throws SQLException {
+	private void insertDocument(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
+								boolean is_reference, double price, String keywords, String type, String publisher,
+								int edition, boolean bestseller, String journal_name, String issue, String editor,
+								String publication_date) throws SQLException {
 		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
 				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
 				" journal_name, issue, editor, publication_date)" +
@@ -367,7 +367,7 @@ public class Database {
 
 	public Debt getDebt(int id) throws SQLException, ParseException {
 		//language=SQLite
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE id = " + id);
+		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE debt_id = " + id);
 		if (debtsSet.next()) {
 			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
 					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
@@ -462,11 +462,12 @@ public class Database {
 
 	//main features: edit
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void editUserColumn(int id, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
 		try {
-			int temp = Integer.parseInt(value);
+			Integer.parseInt(value);
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
@@ -476,11 +477,12 @@ public class Database {
 				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void editDocumentColumn(int id, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
 		try {
-			int temp = Integer.parseInt(value);
+			Integer.parseInt(value);
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
@@ -490,11 +492,12 @@ public class Database {
 				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void editDebtColumn(int debtId, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
 		try {
-			int temp = Integer.parseInt(value);
+			Integer.parseInt(value);
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
