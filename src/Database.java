@@ -6,12 +6,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Database API for library system.
+ * Used for accessing, reading and writing data into database.
+ *
+ * @author Lenar Gumerov
+ */
 public class Database {
-
-	private Connection con;
+	/**
+	 * Current database connection session.
+	 */
+	private Connection connection;
 
 	/**
-	 * connection process
+	 * Stores current connection state.
+	 */
+	private boolean connected;
+
+	/**
+	 * Initialize current session, connect to database.
+	 * <p>
+	 * IMPORTANT: Please, close the connection when done, see <code>{@link Database}.close()</code>
 	 */
 	public void connect() {
 		try {
@@ -28,7 +43,8 @@ public class Database {
 
 			String connectionURL = "jdbc:sqlite:library.db";
 
-			con = DriverManager.getConnection(connectionURL);
+			connection = DriverManager.getConnection(connectionURL);
+			connected = true;
 			System.out.println("Database: Connection successful");
 		} catch (Exception e) {
 
@@ -37,54 +53,90 @@ public class Database {
 	}
 
 	/**
-	 * @return is connected to database
+	 * Get the current connection state.
+	 *
+	 * @return {@code true} if connection established, {@code false} otherwise.
 	 */
 	public boolean isConnected() {
-		return this.con != null;
+		return this.connected;
 	}
 
 	/**
-	 * closing connection
-	 * (you should better do it after usage)
+	 * Stop the current session, disconnect from database.
 	 */
 	public void close() {
-		if (con != null) {
+		if (connection != null) {
 			try {
-				con.close();
+				this.connection.close();
 				System.out.println("Database: Connection closed");
+				this.connected = false;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("Database: Connection was not opened, already closed.");
 		}
 	}
 
-	//basic methods
+	// TODO LENAR NAPISHI DOCUMENTATSIY PLS
+
+	/**
+	 * @param MySQLStatement
+	 * @throws SQLException
+	 */
 	private void executeUpdate(String MySQLStatement) throws SQLException {
-		Statement statement = con.createStatement();
+		Statement statement = connection.createStatement();
 		statement.executeUpdate(MySQLStatement);
 		statement.close();
 	}
 
+	/**
+	 * @param MySQLStatement
+	 * @throws SQLException
+	 */
 	private void execute(String MySQLStatement) throws SQLException {
-		Statement statement = con.createStatement();
+		Statement statement = connection.createStatement();
 		statement.execute(MySQLStatement);
 		statement.close();
 	}
 
+	/**
+	 * @param MySQLStatement
+	 * @return
+	 * @throws SQLException
+	 */
 	private ResultSet executeQuery(String MySQLStatement) throws SQLException {
-		Statement statement = con.createStatement();
+		Statement statement = connection.createStatement();
 		return statement.executeQuery(MySQLStatement);
 	}
 
-
-	//main features: insertion
-
+	/**
+	 * Insert the user with following parameters into database.
+	 *
+	 * @param login     User login.
+	 * @param password  User password.
+	 * @param status    User status.
+	 * @param firstName First name.
+	 * @param lastName  Last name.
+	 * @param phone     Phone number.
+	 * @param address   Living address.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
 	private void insertUser(String login, String password, String status,
-							String firstname, String lastname, String phone, String address) throws SQLException {
+	                        String firstName, String lastName, String phone, String address) throws SQLException {
 		this.execute("INSERT INTO users(login, password, status, firstname, lastname, phone, address)" +
-				" VALUES('" + login + "','" + password + "','" + status + "','" + firstname + "','" + lastname + "','" + phone + "','" + address + "')");
+				" VALUES('" + login + "','" + password + "','"
+				+ status + "','" + firstName + "','" + lastName + "','" +
+				phone + "','" + address + "')");
 	}
 
+	/**
+	 * Insert provided patron into database.
+	 *
+	 * @param patron Patron to insert.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS I DON'T UNDERSTAND
+	 * @see Patron
+	 */
 	public void insertPatron(Patron patron) throws SQLException {
 		String status = "STUDENT";
 		if (patron.getStatus().toLowerCase().equals("faculty")) {
@@ -93,40 +145,89 @@ public class Database {
 		insertUser(patron.getLogin(), patron.getPassword(), status, patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
 	}
 
+	/**
+	 * Insert provided librarian into database.
+	 *
+	 * @param librarian Librarian to insert.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Librarian
+	 */
 	public void insertLibrarian(Librarian librarian) throws SQLException {
 		insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress());
 	}
 
-	//main insertion(other methods just implement it for custom types)
-	private void insertDocument(String name, String authors, boolean is_allowed_for_students, int num_of_copies,
-								boolean is_reference, double price, String keywords, String type, String publisher,
-								int edition, boolean bestseller, String journal_name, String issue, String editor,
-								String publication_date) throws SQLException {
+	/**
+	 * Insert document with following properties into database.
+	 *
+	 * @param name                 Document title.
+	 * @param authors              Document authors.
+	 * @param isAllowedForStudents Student allowance.
+	 * @param numOfCopies          Count of copies.
+	 * @param isReference          Document reference status.
+	 * @param price                Document price.
+	 * @param keywords             Search keywords.
+	 * @param type                 Document type.
+	 * @param publisher            Document publisher.
+	 * @param edition              Year edition.
+	 * @param bestseller           Bestseller status.
+	 * @param journalName          Journal title.
+	 * @param issue                Article issue.
+	 * @param editor               Document editor.
+	 * @param publicationDate      Document publication date.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
+	                            boolean isReference, double price, String keywords, String type, String publisher,
+	                            int edition, boolean bestseller, String journalName, String issue, String editor,
+	                            String publicationDate) throws SQLException {
 		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
 				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
 				" journal_name, issue, editor, publication_date)" +
-				" VALUES('" + name + "','" + authors + "','" + is_allowed_for_students + "'," + num_of_copies + ",'" + is_reference + "'," + price + ",'" + keywords + "','" + type + "','"
-				+ publisher + "'," + edition + ",'" + bestseller + "','" + journal_name + "','" + issue + "','" + editor + "','" + publication_date + "')");
+				" VALUES('" + name + "','" + authors + "','" + isAllowedForStudents + "',"
+				+ numOfCopies + ",'" + isReference + "'," + price + ",'" + keywords + "','" + type + "','"
+				+ publisher + "'," + edition + ",'" + bestseller + "','" + journalName + "','" + issue + "','"
+				+ editor + "','" + publicationDate + "')");
 
 	}
 
+	/**
+	 * Insert provided book into database.
+	 *
+	 * @param book Book to insert.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Book
+	 */
 	public void insertBook(Book book) throws SQLException {
 		String type = "BOOK";
 		insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
 				book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
 				book.isBestseller(), "-", "-", "-", "NULL");
 		book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
-                book.isReference(), book.getPrice(), book.getKeyWords())));
+				book.isReference(), book.getPrice(), book.getKeyWords())));
 	}
 
+	/**
+	 * Insert provided Audio/Video into database.
+	 *
+	 * @param av Audio/Video to insert.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see AudioVideoMaterial
+	 */
 	public void insertAV(AudioVideoMaterial av) throws SQLException {
 		insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
 				av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
 				"-", "-", "-", "NULL");
 		av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
-                av.isReference(), av.getPrice(), av.getKeyWords())));
+				av.isReference(), av.getPrice(), av.getKeyWords())));
 	}
 
+	/**
+	 * Insert provided article into database.
+	 *
+	 * @param article Article to insert.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see JournalArticle
+	 */
 	public void insertArticle(JournalArticle article) throws SQLException {
 		insertDocument(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
 				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
@@ -134,20 +235,32 @@ public class Database {
 				article.getIssue(), article.getEditor(),
 				(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
 		article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
-                article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
+				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
 	}
 
+	/**
+	 * Insert provided debt into database.
+	 *
+	 * @param debt Debt to insert.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Debt
+	 */
 	public void insertDebt(Debt debt) throws SQLException {
 		execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
 				+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
 				+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
 				+ debt.canRenew() + "\')");
-		debt.setDebtId(this.findDebtID(debt.getPatronId(),debt.getDocumentId()));
+		debt.setDebtId(this.findDebtID(debt.getPatronId(), debt.getDocumentId()));
 	}
 
-
-	//main features: receiving lists
-
+	/**
+	 * Get the patrons list from database.
+	 *
+	 * @return List of patrons stored in database.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see Patron
+	 */
 	public ArrayList<Patron> getPatronList() throws SQLException {
 		ResultSet patronSet = executeQuery("SELECT * FROM users where status = 'FACULTY' or status = 'STUDENT'");
 		ArrayList<Patron> patronList = new ArrayList<>();
@@ -164,6 +277,14 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get the librarians list from database.
+	 *
+	 * @return List of librarians stored in database.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see Librarian
+	 */
 	public ArrayList<Librarian> getLibrarianList() throws SQLException {
 		ResultSet librarianSet = executeQuery("SELECT * FROM users where status = 'LIBRARIAN'");
 		ArrayList<Librarian> librarianList = new ArrayList<>();
@@ -180,6 +301,14 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get the documents list from database.
+	 *
+	 * @return List of documents stored in database.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see Document
+	 */
 	public ArrayList<Document> getDocumentList() throws SQLException {
 		ResultSet documentSet = executeQuery("SELECT * FROM documents");
 		ArrayList<Document> documentList = new ArrayList<>();
@@ -197,6 +326,15 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get the documents descriptions from database.
+	 *
+	 * @return List of descriptions of documents stored in database.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see String
+	 * @see Document
+	 */
 	public ArrayList<String> getDocumentStringList() throws SQLException {
 		ResultSet documentSet = executeQuery("SELECT * FROM documents");
 		ArrayList<String> documentsTitleList = new ArrayList<>();
@@ -207,9 +345,18 @@ public class Database {
 		if (documentsTitleList.size() != 0) {
 			return documentsTitleList;
 		}
+		// TODO Maybe it's ok to return empty list instead of throwing exception?
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get the book list from database.
+	 *
+	 * @return List of books stored in database.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see Book
+	 */
 	public ArrayList<Book> getBookList() throws SQLException {
 		ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\';");
 		ArrayList<Book> bookList = new ArrayList<>();
@@ -227,6 +374,14 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get the audio/video list from database.
+	 *
+	 * @return List of audios/videos stored in database.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see AudioVideoMaterial
+	 */
 	public ArrayList<AudioVideoMaterial> getAVList() throws SQLException {
 		ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
 		ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
@@ -244,6 +399,15 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get the article list from database.
+	 *
+	 * @return List of articles stored in database.
+	 * @throws SQLException   // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @throws ParseException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see JournalArticle
+	 */
 	public ArrayList<JournalArticle> getArticleList() throws SQLException, ParseException {
 		ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\'");
 		ArrayList<JournalArticle> articleList = new ArrayList<>();
@@ -266,6 +430,15 @@ public class Database {
 
 	}
 
+	/**
+	 * Get the debts list from database.
+	 *
+	 * @return List of debts stored in database.
+	 * @throws SQLException   // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @throws ParseException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see Debt
+	 */
 	public ArrayList<Debt> getDebtsList() throws SQLException, ParseException {
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts");
 		ArrayList<Debt> debtsList = new ArrayList<>();
@@ -285,8 +458,16 @@ public class Database {
 
 	}
 
-	public Patron getPatron(int id) throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + id);
+	/**
+	 * Get the patron with following ID from database.
+	 *
+	 * @param ID Patrons' ID stored in database.
+	 * @return Patron with following ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Patron
+	 */
+	public Patron getPatron(int ID) throws SQLException {
+		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
 					patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
@@ -297,8 +478,16 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public Librarian getLibrarian(int id) throws SQLException {
-		ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + id);
+	/**
+	 * Get the librarian with following ID from database.
+	 *
+	 * @param ID Librarians' ID stored in database.
+	 * @return Librarian with following ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Librarian
+	 */
+	public Librarian getLibrarian(int ID) throws SQLException {
+		ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + ID);
 		if (librarianSet.next()) {
 			Librarian temp = new Librarian(librarianSet.getString(2),
 					librarianSet.getString(3), librarianSet.getString(5),
@@ -310,8 +499,16 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public Document getDocument(int id) throws SQLException {
-		ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + id);
+	/**
+	 * Get the document with following ID from database.
+	 *
+	 * @param ID Document ID stored in database.
+	 * @return Document with following ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Document
+	 */
+	public Document getDocument(int ID) throws SQLException {
+		ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + ID);
 		if (documentSet.next()) {
 			Document temp = new Document(documentSet.getString(2),
 					documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
@@ -323,9 +520,17 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public Book getBook(int id) throws SQLException {
+	/**
+	 * Get the book with following ID from database.
+	 *
+	 * @param ID Book ID stored in database.
+	 * @return Book with following ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Book
+	 */
+	public Book getBook(int ID) throws SQLException {
 		//language=SQLite
-		ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id =" + id);
+		ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id =" + ID);
 		if (bookSet.next()) {
 			Book temp = new Book(bookSet.getString(2),
 					bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
@@ -337,8 +542,17 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public AudioVideoMaterial getAV(int id) throws SQLException {
-		ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = " + id);
+	/**
+	 * Get the audio/video with following ID from database.
+	 *
+	 * @param ID Audio/video ID stored in database.
+	 * @return Audio/video with following ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see AudioVideoMaterial
+	 */
+	public AudioVideoMaterial getAV(int ID) throws SQLException {
+		//language=SQLite
+		ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = " + ID);
 		if (AVSet.next()) {
 			AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
 					AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
@@ -349,8 +563,18 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public JournalArticle getArticle(int id) throws SQLException, ParseException {
-		ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + id);
+	/**
+	 * Get the article with following ID from database.
+	 *
+	 * @param ID Article ID stored in database.
+	 * @return Article with following ID.
+	 * @throws SQLException   // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @throws ParseException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see JournalArticle
+	 */
+	public JournalArticle getArticle(int ID) throws SQLException, ParseException {
+		//language=SQLite
+		ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + ID);
 		if (articleSet.next()) {
 			JournalArticle temp = new JournalArticle(articleSet.getString(2),
 					articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
@@ -365,9 +589,18 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public Debt getDebt(int id) throws SQLException, ParseException {
+	/**
+	 * Get the debt with following ID from database.
+	 *
+	 * @param ID Debt ID stored in database.
+	 * @return Debt with following ID.
+	 * @throws SQLException   // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @throws ParseException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see Debt
+	 */
+	public Debt getDebt(int ID) throws SQLException, ParseException {
 		//language=SQLite
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE debt_id = " + id);
+		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE debt_id = " + ID); // Fixed warning, may produce bug. RS
 		if (debtsSet.next()) {
 			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
 					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
@@ -379,6 +612,16 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Get list of debts for the following user.
+	 *
+	 * @param userID Users' ID.
+	 * @return List of debts for following user stored in database.
+	 * @throws SQLException   // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @throws ParseException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 * @see List
+	 * @see Debt
+	 */
 	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
 		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
@@ -397,9 +640,16 @@ public class Database {
 		return debts;
 	}
 
-	public void printDebtsForUser(int userId) throws SQLException {
+	/**
+	 * Print the debts list for the following user.
+	 *
+	 * @param userID Users' ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	@Deprecated
+	public void printDebtsForUser(int userID) throws SQLException {
 		//language=SQLite
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts where patron_id =" + userId);
+		ResultSet debtsSet = executeQuery("SELECT * FROM debts where patron_id =" + userID);
 
 		ArrayList<String> output = new ArrayList<>();
 		while (debtsSet.next()) {
@@ -422,7 +672,13 @@ public class Database {
 		}
 	}
 
-	public void soutDocs() throws SQLException {
+	/**
+	 * Print all the documents stored in database.
+	 *
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	@Deprecated
+	public void printDocs() throws SQLException {
 		System.out.println("\nAll documents in database: ");
 		for (String temp : getDocumentStringList()) {
 			System.out.println(temp);
@@ -430,7 +686,13 @@ public class Database {
 		System.out.println();
 	}
 
-	public void soutUsers() throws SQLException {
+	/**
+	 * Print all the users stored in database.
+	 *
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	@Deprecated
+	public void printUsers() throws SQLException {
 		ResultSet usersSet = executeQuery("SELECT * FROM users");
 		System.out.println("\nAll users in database:");
 		while (usersSet.next()) {
@@ -442,75 +704,121 @@ public class Database {
 		System.out.println();
 	}
 
-
-	//main features: deletion
-
-	public void deleteUser(int id) throws SQLException {
-		this.executeUpdate("DELETE FROM users WHERE id=" + id);
+	/**
+	 * Delete user with following ID from database.
+	 *
+	 * @param userID Users' ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public void deleteUser(int userID) throws SQLException {
+		this.executeUpdate("DELETE FROM users WHERE id=" + userID);
 	}
 
-	public void deleteDocument(int id) throws SQLException {
+	/**
+	 * Delete document with following ID from database.
+	 *
+	 * @param documentID Document ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public void deleteDocument(int documentID) throws SQLException {
 		//language=SQLite
-		this.executeUpdate("DELETE FROM documents WHERE id=" + id);
+		this.executeUpdate("DELETE FROM documents WHERE id=" + documentID);
 	}
 
-	public void deleteDebt(int debtId) throws SQLException {
+	/**
+	 * Delete debt with following ID from database.
+	 *
+	 * @param debtID Debt ID.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public void deleteDebt(int debtID) throws SQLException {
 		//language=SQLite
-		this.executeUpdate("DELETE FROM debts WHERE debt_id=" + debtId);
+		this.executeUpdate("DELETE FROM debts WHERE debt_id=" + debtID);
 	}
 
-
-	//main features: edit
-
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	public void editUserColumn(int id, String column, String value) throws SQLException {
+	/**
+	 * Modifies the user data in database.
+	 *
+	 * @param userID Users' ID.
+	 * @param column Column to edit. Available options:
+	 *               <br>"address" to edit address</br>
+	 *               <br>"phone" to edit phone number</br>
+	 *               <br>"lastname" to edit last name</br>
+	 *               <br></br>
+	 * @param value  New value.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public void editUserColumn(int userID, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
+
 		try {
-			Integer.parseInt(value);
+			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
 		//language=SQLite
 		this.executeUpdate("UPDATE users " +
-				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
+				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + userID);
 	}
 
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	public void editDocumentColumn(int id, String column, String value) throws SQLException {
+	/**
+	 * Modifies the document data in database.
+	 *
+	 * @param documentID Document ID.
+	 * @param column     Column to edit. Available options:
+	 *                   <br>"bestseller" to edit bestseller status</br>
+	 *                   <br>"edition" to edit edition</br>
+	 *                   <br>"is_allowed_for_students" to edit student allowance</br>
+	 *                   <br>"num_of_copies" to edit count of copies</br>
+	 *                   <br>"price" to edit price</br>
+	 *                   <br></br>
+	 * @param value      New value.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public void editDocumentColumn(int documentID, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
 		try {
-			Integer.parseInt(value);
+			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
 		//language=SQLite
 		this.executeUpdate("UPDATE documents " +
-				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + id);
+				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + documentID);
 	}
 
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	public void editDebtColumn(int debtId, String column, String value) throws SQLException {
+	/**
+	 * Modifies the user data in database.
+	 *
+	 * @param debtID Debt ID.
+	 * @param column Column to edit.
+	 * @param value  New value.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public void editDebtColumn(int debtID, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
 		try {
-			Integer.parseInt(value);
+			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
 		//language=SQLite
 		this.executeUpdate("UPDATE debts " +
-				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtId);
+				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtID);
 	}
 
 	/**
 	 * Erases all records in database and resets the indices.
+	 *
+	 * @throws SQLException if database is busy or something went wrong.
 	 */
-	public void clear() {
+	public void clear() throws SQLException {
 		try {
 			this.execute("DELETE FROM users");
 			this.execute("DELETE FROM documents");
@@ -519,16 +827,26 @@ public class Database {
 			this.execute("UPDATE sqlite_sequence SET seq=0");
 			System.out.println("Database: Indices reset.");
 		} catch (SQLException e) {
-			System.out.println("Database: Clearing failed.");
+			e.printStackTrace();
+			throw new SQLException("Database: Clearing failed.");
 		}
 	}
 
+	/**
+	 * Authorize and find user with following credentials.
+	 *
+	 * @param login    User login.
+	 * @param password User password.
+	 * @return {@code true} if user with following credentials found in database, {@code false} otherwise.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
 	public boolean login(String login, String password) throws SQLException {
 		//language=SQLite
 		ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
 		return answer.next();
 	}
 
+	// TODO Wtf this method does????
 	public int loginId(String login, String password) throws SQLException {
 		//language=SQLite
 		ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\';");
@@ -538,23 +856,39 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public String loginStatus(int id) throws SQLException {
+	// TODO Wtf this method does????
+	public String loginStatus(int ID) throws SQLException {
 		//language=SQLite
-		ResultSet answer = executeQuery("SELECT status FROM users WHERE id = " + id);
+		ResultSet answer = executeQuery("SELECT status FROM users WHERE id = " + ID);
 		if (answer.next()) {
 			return answer.getString(1);
 		}
 		throw new NoSuchElementException();
 	}
 
-	public int findDebtID(int patronID, int docId) throws SQLException {
-		ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = " + patronID + " AND document_id = " + docId);
+	/**
+	 * Find debt ID with following patron and document IDs.
+	 *
+	 * @param patronID Patron ID.
+	 * @param docID    Document ID.
+	 * @return ID for found debt.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	public int findDebtID(int patronID, int docID) throws SQLException {
+		ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = " + patronID + " AND document_id = " + docID);
 		if (debt.next()) {
 			return debt.getInt(1);
 		}
 		throw new NoSuchElementException();
 	}
 
+	/**
+	 * Find the ID for following document.
+	 *
+	 * @param document Document to find.
+	 * @return ID for found document.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
 	public int getDocumentID(Document document) throws SQLException {
 		for (Document i : getDocumentList()) {
 			if (i.compare(document)) return i.getID();
@@ -562,6 +896,13 @@ public class Database {
 		return -1;
 	}
 
+	/**
+	 * Find the ID for following patron.
+	 *
+	 * @param patron Patron to find.
+	 * @return ID for found patron.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
 	public int getPatronID(Patron patron) throws SQLException {
 		for (Patron i : getPatronList()) {
 			if (i.compare(patron)) return i.getId();
@@ -569,6 +910,13 @@ public class Database {
 		return -1;
 	}
 
+	/**
+	 * Find the ID for following librarian.
+	 *
+	 * @param librarian Librarian to find.
+	 * @return ID for found librarian.
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
 	public int getLibrarianID(Librarian librarian) throws SQLException {
 		for (Librarian i : getLibrarianList()) {
 			if (i.compare(librarian)) return i.getId();

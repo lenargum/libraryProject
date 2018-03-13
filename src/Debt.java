@@ -60,7 +60,7 @@ public class Debt {
 		return fee;
 	}
 
-	public void setFee(int fee) {
+	public void setFee(double fee) {
 		this.fee = fee;
 	}
 
@@ -73,8 +73,7 @@ public class Debt {
 	}
 
 	public int daysLeft() {
-		Date date = new Date();
-		return (int) (expireDate.getTime() - date.getTime()) / (60 * 60 * 24 * 1000);
+		return (int) ((expireDate.getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000));
 	}
 
 	public int getDebtId() {
@@ -85,4 +84,12 @@ public class Debt {
 		this.debtId = debtId;
 	}
 
+	public void countFee(Database database) throws SQLException {
+		if (daysLeft() > 0) setFee(min(daysLeft() * 100, database.getDocument(documentId).getPrice()));
+	}
+
+	public double min(double a, double b) {
+		if (a > b) return a;
+		return b;
+	}
 }
