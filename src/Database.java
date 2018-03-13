@@ -686,6 +686,12 @@ public class Database {
 		System.out.println();
 	}
 
+	/**
+	 * Print all the users stored in database.
+	 *
+	 * @throws SQLException // TODO LENAR, WHY AND WHEN THIS SHIT THROWS EXCEPTION, WHY PLS
+	 */
+	@Deprecated
 	public void printUsers() throws SQLException {
 		ResultSet usersSet = executeQuery("SELECT * FROM users");
 		System.out.println("\nAll users in database:");
@@ -735,7 +741,6 @@ public class Database {
 	 *
 	 * @param userID Users' ID.
 	 * @param column Column to edit. Available options:
-	 *               <br></br>
 	 *               <br>"address" to edit address</br>
 	 *               <br>"phone" to edit phone number</br>
 	 *               <br>"lastname" to edit last name</br>
@@ -763,7 +768,6 @@ public class Database {
 	 *
 	 * @param documentID Document ID.
 	 * @param column     Column to edit. Available options:
-	 *                   <br></br>
 	 *                   <br>"bestseller" to edit bestseller status</br>
 	 *                   <br>"edition" to edit edition</br>
 	 *                   <br>"is_allowed_for_students" to edit student allowance</br>
