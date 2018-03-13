@@ -1,8 +1,6 @@
 package graphicalUI;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXScrollPane;
-import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -27,6 +25,8 @@ public class DocSelector {
 	private JFXTabPane tabs;
 	private FlowPane booksFlow, articlesFlow, avFlow;
 	private JFXScrollPane bookScroll, articleScroll, avScroll;
+	private JFXDrawer detailsDrawer;
+	private JFXDrawersStack drawerStack;
 
 	private boolean booksAdded, articlesAdded, avsAdded;
 
@@ -60,7 +60,10 @@ public class DocSelector {
 			try {
 				DocItem picked = getSelectedDocItemFromEvent(event);
 				System.out.println("Selected " + picked.getTitle());
-			} catch (NullPointerException exception) {
+				detailsDrawer.getChildren().add(picked);
+				drawerStack.toggle(detailsDrawer);
+
+			} catch (NullPointerException ignored) {
 			}
 		});
 	}
@@ -75,7 +78,9 @@ public class DocSelector {
 
 	private void initialize() throws IOException {
 		selectorLayout = FXMLLoader.load(getClass().getResource("DocSelector.fxml"));
-		selectorScene = new Scene(selectorLayout);
+		drawerStack = new JFXDrawersStack();
+		drawerStack.setContent(selectorLayout);
+		selectorScene = new Scene(drawerStack);
 
 		goBackBtn = (JFXButton) selectorLayout.lookup("#goBackBtn");
 		goBackBtn.setOnAction(event -> primaryStage.setScene(previousScene));
@@ -104,6 +109,11 @@ public class DocSelector {
 			booksFlow.setPadding(new Insets(30));
 			booksAdded = true;
 		}
+
+		detailsDrawer = new JFXDrawer();
+		detailsDrawer.setDirection(JFXDrawer.DrawerDirection.RIGHT);
+		detailsDrawer.setDefaultDrawerSize(320);
+
 
 		System.out.println("Book view initialized.");
 
