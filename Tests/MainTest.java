@@ -8,11 +8,11 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
-	Book b1, b2, b3;
-	AudioVideoMaterial av1, av2;
-	Patron p1, p2, p3;
-	Librarian librarian;
-	Database database = new Database();
+	private Book b1, b2, b3;
+	private AudioVideoMaterial av1, av2;
+	private Patron p1, p2, p3;
+	private Librarian librarian;
+	private Database database = new Database();
 
 	@Test
 		// Test case 1
@@ -98,7 +98,7 @@ class MainTest {
 
 	@Test
 		// Test case 3
-	void TestCase3() throws SQLException, ParseException {
+	void TestCase3() throws SQLException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			TestCase1();
@@ -122,7 +122,7 @@ class MainTest {
 
 	@Test
 		// Test case 4
-	void TestCase4() throws SQLException, ParseException {
+	void TestCase4() throws SQLException {
 		if (!database.isConnected()) database.connect();
 		if (database.isConnected()) {
 			TestCase2();
