@@ -1,27 +1,38 @@
+/**
+ * This class describes book of library system.
+ *
+ * @author Anastasia Minakova
+ * @see Document
+ */
 public class Book extends Document {
 	/**
-	 * person or organisation published the book
+	 * Book publisher.
 	 */
 	private String Publisher;
+
 	/**
-	 * year of books edition
+	 * Edition year.
 	 */
 	private int Edition;
+
 	/**
-	 * shows wether book is bestseller
+	 * Bestseller status.
 	 */
 	private boolean IsBestseller;
 
 	/**
-	 * constructor
+	 * Initialize new book.
 	 *
-	 * @param Title
-	 * @param Authors
-	 * @param IsAllowedForStudents
-	 * @param NumberOfCopies
-	 * @param IsReference
-	 * @param Price
-	 * @param KeyWords
+	 * @param Title                Title.
+	 * @param Authors              Authors.
+	 * @param IsAllowedForStudents Student allowance status.
+	 * @param NumberOfCopies       Count of copies.
+	 * @param IsReference          Reference status.
+	 * @param Price                Price.
+	 * @param KeyWords             Search keywords.
+	 * @param Publisher            Books publisher.
+	 * @param Edition              Edition year.
+	 * @param IsBestseller         Bestseller status.
 	 */
 	public Book(String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords, String Publisher, int Edition, boolean IsBestseller) {
 		super(Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
@@ -32,53 +43,64 @@ public class Book extends Document {
 	}
 
 	/**
-	 * @return publisher of book
+	 * Get the publisher of this book.
+	 *
+	 * @return Publisher.
 	 */
 	public String getPublisher() {
 		return Publisher;
 	}
 
 	/**
-	 * sets publisher of book
+	 * Set the new publisher of this book.
 	 *
-	 * @param publisher
+	 * @param publisher New publisher.
 	 */
 	public void setPublisher(String publisher) {
 		this.Publisher = publisher;
 	}
 
 	/**
-	 * @return edition of book
+	 * Get the edition year of this book.
+	 *
+	 * @return Edition year.
 	 */
 	public int getEdition() {
 		return Edition;
 	}
 
 	/**
-	 * sets edition of the book
+	 * Set the new edition year to this book.
 	 *
-	 * @param edition
+	 * @param edition New edition year.
 	 */
 	public void setEdition(int edition) {
 		this.Edition = edition;
 	}
 
 	/**
-	 * @return is book bestseller
+	 * Get bestseller status of this book.
+	 *
+	 * @return {@code true} if this book is bestseller, {@code false} otherwise.
 	 */
 	public boolean isBestseller() {
 		return IsBestseller;
 	}
 
 	/**
-	 * sets wether book is bestseller
+	 * Set the new bestseller status.
 	 *
-	 * @param isBestseller
+	 * @param isBestseller New bestseller status.
 	 */
 	public void setBestseller(boolean isBestseller) {
 		this.IsBestseller = isBestseller;
 	}
 
+	/**
+	 * Get this book in string notation,
+	 *
+	 * @return String with book description.
+	 */
 	public String toString() {
 		return ("Id: " + this.getID() + "\n" +
 				"Title: " + this.getTitle() + "\n" +

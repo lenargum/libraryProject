@@ -1,38 +1,53 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This class describes journal article of library system.
+ *
+ * @author Anastasia Minakova
+ * @see Document
+ */
 public class JournalArticle extends Document {
 	/**
-	 * name of journal in which the article was published
+	 * Name of the journal where article is being published.
 	 */
 	private String JournalName;
+
 	/**
-	 * name of person or organisation published the article
+	 * Article publisher.
 	 */
 	private String Publisher;
+
 	/**
-	 * name of issue where journal was published
+	 * Article issue.
 	 */
 	private String Issue;
+
 	/**
-	 * name of person or organisation edited the article
+	 * Article editor.
 	 */
 	private String Editor;
+
 	/**
-	 * date when the article was published
+	 * Publication date.
 	 */
 	private Date PublicationDate;
 
 	/**
-	 * constructor
+	 * Initialize new article.
 	 *
-	 * @param Title
-	 * @param Authors
-	 * @param IsAllowedForStudents
-	 * @param NumberOfCopies
-	 * @param IsReference
-	 * @param Price
-	 * @param KeyWords
+	 * @param Title                Title.
+	 * @param Authors              Authors.
+	 * @param IsAllowedForStudents Student allowance status.
+	 * @param NumberOfCopies       Count of copies.
+	 * @param IsReference          Reference status.
+	 * @param Price                Price.
+	 * @param KeyWords             Search keywords.
+	 * @param JournalName          Publishing journal name.
+	 * @param Publisher            Article publisher.
+	 * @param Issue                Article issue.
+	 * @param Editor               Article editor.
+	 * @param PublicationDate      Article publication date.
 	 */
 	public JournalArticle(String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords, String JournalName, String Publisher, String Issue, String Editor, Date PublicationDate) {
 		super(Title, Authors, IsAllowedForStudents, NumberOfCopies, IsReference, Price, KeyWords);
@@ -45,85 +60,100 @@ public class JournalArticle extends Document {
 	}
 
 	/**
-	 * @return name of the journal where article was published
+	 * Get the publishing journal name.
+	 *
+	 * @return Journal name.
 	 */
 	public String getJournalName() {
 		return JournalName;
 	}
 
 	/**
-	 * sets name of the journal where article was published
+	 * Set the new publishing journal name.
 	 *
-	 * @param journalName
+	 * @param journalName New journal name.
 	 */
 	public void setJournalName(String journalName) {
 		this.JournalName = journalName;
 	}
 
 	/**
-	 * @return name of person or organisation published the article
+	 * Get the article publisher.
+	 *
+	 * @return Article publisher.
 	 */
 	public String getPublisher() {
 		return Publisher;
 	}
 
 	/**
-	 * sets name of person or organisation published the article
+	 * Set the new article publisher.
 	 *
-	 * @param publisher
+	 * @param publisher New article publisher.
 	 */
 	public void setPublisher(String publisher) {
 		this.Publisher = publisher;
 	}
 
 	/**
-	 * @return name of issue where journal was published
+	 * Get this article issue.
+	 *
+	 * @return Article issue.
 	 */
 	public String getIssue() {
 		return Issue;
 	}
 
 	/**
-	 * sets name of issue where journal was published
+	 * Set the new article issue.
 	 *
-	 * @param issue
+	 * @param issue New article issue.
 	 */
 	public void setIssue(String issue) {
 		this.Issue = issue;
 	}
 
 	/**
-	 * @return name of person or organisation edited the article
+	 * Get this article editor.
+	 *
+	 * @return Article editor.
 	 */
 	public String getEditor() {
 		return Editor;
 	}
 
 	/**
-	 * sets name of person or organisation edited the article
+	 * Set the new article editor.
 	 *
-	 * @param editor
+	 * @param editor New article editor.
 	 */
 	public void setEditor(String editor) {
 		this.Editor = editor;
 	}
 
 	/**
-	 * @return date when the article was published
+	 * Get the article publication date.
+	 *
+	 * @return Article publication date.
 	 */
 	public Date getPublicationDate() {
 		return PublicationDate;
 	}
 
 	/**
-	 * sets date when the article was published
+	 * Set the new article publication date.
 	 *
-	 * @param date
+	 * @param date New article publication date.
 	 */
 	public void setPublicationDate(Date date) {
 		this.PublicationDate = date;
 	}
 
+	/**
+	 * Get this article in string notation.
+	 *
+	 * @return String with article description.
+	 */
 	public String toString() {
 		return ("Id: " + this.getID() + "\n" +
 				"Title: " + this.getTitle() + "\n" +

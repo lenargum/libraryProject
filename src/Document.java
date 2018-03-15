@@ -1,252 +1,326 @@
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+/**
+ * This class describes document of library system.
+ *
+ * @author Anastasia Minakova
+ */
 public class Document {
 	/**
-	 * ID of  document
+	 * Document ID.
 	 */
 	private int ID;
+
 	/**
-	 * Title of document
+	 * Document title.
 	 */
 	private String Title;
+
 	/**
-	 * Author(s) of document
+	 * Document authors.
 	 */
 	private String Authors;
+
 	/**
-	 * shows wether students can take the document
+	 * Student allowance status.
 	 */
-	private boolean IsAllowedForStudents;
+	private boolean allowedForStudents;
+
 	/**
-	 * number of document copies stored in the library
+	 * Count of copies.
 	 */
 	private int NumberOfCopies;
+
 	/**
-	 * shows wether document is reference - if it is patrons cannot take it from the library
+	 * Reference status.
 	 */
 	private boolean IsReference;
+
 	/**
-	 * Price of document
+	 * Document price.
 	 */
 	private double Price;
+
 	/**
-	 * keywords we use to search document
+	 * Search keywords.
 	 */
 	private String KeyWords;
+
+	/**
+	 * Document type.
+	 */
 	private String Type;
 
 	/**
-	 * constructor
+	 * Initialize new Document.
 	 *
-	 * @param Title
-	 * @param Authors
-	 * @param IsAllowedForStudents
-	 * @param NumberOfCopies
-	 * @param IsReference
-	 * @param Price
-	 * @param KeyWords
+	 * @param Title              Title.
+	 * @param Authors            Authors.
+	 * @param allowedForStudents Student allowance status.
+	 * @param NumberOfCopies     Count of copies.
+	 * @param IsReference        Reference status.
+	 * @param Price              Price.
+	 * @param KeyWords           Search keywords.
 	 */
-	public Document(String Title, String Authors, boolean IsAllowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords) {
+	public Document(String Title, String Authors, boolean allowedForStudents, int NumberOfCopies, boolean IsReference, double Price, String KeyWords) {
 		setTitle(Title);
 		setAuthors(Authors);
-		setAllowedForStudents(IsAllowedForStudents);
+		setAllowedForStudents(allowedForStudents);
 		setNumberOfCopies(NumberOfCopies);
 		setReference(IsReference);
 		setPrice(Price);
 		setKeyWords(KeyWords);
 	}
 
+	/**
+	 * Get the type of document.
+	 * Possible values:
+	 * <table>
+	 * <tr>
+	 * <td>book</td>
+	 * <td>journal article</td>
+	 * <td>audio/video material</td>
+	 * </tr>
+	 * </table>
+	 *
+	 * @return String with document type.
+	 */
 	public String getType() {
 		return Type;
 	}
 
+	/**
+	 * Set the type of document.
+	 * Possible values:
+	 * <table>
+	 * <tr>
+	 * <td>book</td>
+	 * <td>journal article</td>
+	 * <td>audio/video material</td>
+	 * </tr>
+	 * </table>
+	 *
+	 * @param type String with document type.
+	 */
 	public void setType(String type) {
 		this.Type = type;
 	}
 
 	/**
-	 * @return ID of document
+	 * Get the document ID.
+	 *
+	 * @return Document ID.
 	 */
 	public int getID() {
 		return ID;
 	}
 
 	/**
-	 * sets ID of document
+	 * Set the new ID to this document.
 	 *
-	 * @param id
+	 * @param id New ID.
 	 */
 	public void setID(int id) {
 		this.ID = id;
 	}
 
 	/**
-	 * @return title of document
+	 * Get the document title.
+	 *
+	 * @return Document title.
 	 */
 	public String getTitle() {
 		return Title;
 	}
 
 	/**
-	 * sets Title of document
+	 * Set the new title to this document.
 	 *
-	 * @param title
+	 * @param title New title.
 	 */
 	public void setTitle(String title) {
 		this.Title = title;
 	}
 
 	/**
-	 * adds author to list of authors
+	 * Add author to this document.
 	 *
-	 * @param author
+	 * @param author Additional author.
 	 */
 	public void addAuthor(String author) {
 		this.Authors += ", " + author;
 	}
 
 	/**
-	 * @param author
-	 * @return true if author was among the authors created the document
+	 * Checks whether current document has following author.
+	 *
+	 * @param author Author to find.
+	 * @return {@code true} if document has following author, {@code false} otherwise.
 	 */
 	public boolean includesAuthor(String author) {//TODO: write it!
-		return true;
+		throw new NotImplementedException();
 	}
 
 	/**
-	 * @return list of authors created the document
+	 * Get all the authors of this document.
+	 *
+	 * @return All document authors.
 	 */
 	public String getAuthors() {
 		return Authors;
 	}
 
 	/**
-	 * sets author(s) of document
+	 * Set new authors to this document.
 	 *
-	 * @param authors
+	 * @param authors New authors.
 	 */
 	public void setAuthors(String authors) {
 		this.Authors = authors;
 	}
 
 	/**
-	 * @return wether sstudents can take the document
+	 * Get the student allowance status.
+	 *
+	 * @return Student allowance status.
 	 */
 	public boolean isAllowedForStudents() {
-		return IsAllowedForStudents;
+		return allowedForStudents;
 	}
 
 	/**
-	 * shows wether students can take document
+	 * Set the new student allowance status.
 	 *
-	 * @param isAllowed
+	 * @param isAllowed New allowance status.
 	 */
 	public void setAllowedForStudents(boolean isAllowed) {
-		this.IsAllowedForStudents = isAllowed;
+		this.allowedForStudents = isAllowed;
 	}
 
 	/**
-	 * adds copy of document
+	 * Increases number of document copies.
 	 */
 	public void addCopy() {
 		this.NumberOfCopies++;
 	}
 
 	/**
-	 * deletes copy of document
+	 * Decreases the number of document copies.
 	 */
 	public void deleteCopy() {
 		this.NumberOfCopies--;
 	}
 
 	/**
-	 * @return number of documents copies stored in the library
+	 * Get number of document copies stored in the library.
+	 *
+	 * @return Number of copies.
 	 */
 	public int getNumberOfCopies() {
 		return this.NumberOfCopies;
 	}
 
 	/**
-	 * sets number of copies of document that are stored in the library
+	 * Set the new number of document copies stored in the library.
 	 *
-	 * @param number
+	 * @param number New number of copies.
 	 */
 	public void setNumberOfCopies(int number) {
 		this.NumberOfCopies = number;
 	}
 
 	/**
-	 * @return is document reference or not
+	 * Get the reference status of this document.
+	 *
+	 * @return Reference status.
 	 */
 	public boolean isReference() {
 		return IsReference;
 	}
 
 	/**
-	 * shows wether document is reference
+	 * Set the new reference status for this document.
 	 *
-	 * @param isReference
+	 * @param isReference New reference status.
 	 */
 	public void setReference(boolean isReference) {
 		this.IsReference = isReference;
 	}
 
 	/**
-	 * adds keyword for document
+	 * Add new keyword to this document.
 	 *
-	 * @param newWord
+	 * @param newWord New keyword.
 	 */
 	public void addKeyWord(String newWord) {
 		this.KeyWords += ", " + newWord;
 	}
 
 	/**
-	 * checks out does keyword belong to keywords for document
+	 * Checks out does following keyword belongs to this document.
 	 *
-	 * @param keyWord
-	 * @return
+	 * @param keyWord Keyword to find.
+	 * @return {@code true} if keyword belongs to this document, {@code false} otherwise.
 	 */
 	public boolean includeKeyWord(String keyWord) {//TODO: write it!
-		return true;
+		throw new NotImplementedException();
 	}
 
 	/**
-	 * @return keywords of document
+	 * Get this document keywords.
+	 *
+	 * @return Keywords of this document.
 	 */
 	public String getKeyWords() {
 		return KeyWords;
 	}
 
 	/**
-	 * sets keywords we can use to search for document
+	 * Sets the new search keywords for this document.
 	 *
-	 * @param keyWords
+	 * @param keyWords New keywords.
 	 */
 	public void setKeyWords(String keyWords) {
 		this.KeyWords = keyWords;
 	}
 
 	/**
-	 * @return price of document
+	 * Get the price of this document.
+	 *
+	 * @return Document price.
 	 */
 	public double getPrice() {
 		return Price;
 	}
 
 	/**
-	 * sets price of document
+	 * Set the new price for this document.
 	 *
-	 * @param price
+	 * @param price New price.
 	 */
 	public void setPrice(double price) {
 		this.Price = price;
 	}
 
-	boolean compare(Document document) {
+	/**
+	 * Compare two documents.
+	 *
+	 * @param document Another document to compare.
+	 * @return {@code true} if documents are similar, {@code false} otherwise.
+	 */
+	public boolean compare(Document document) {
 		return this.getAuthors().equals(document.getAuthors())
 				&& this.getTitle().equals(document.getTitle())
 				&& this.KeyWords.equals(document.getKeyWords());
 	}
 
-	boolean equals(Document document) {
+	/**
+	 * Compare two documents.
+	 *
+	 * @param document Another document to compare.
+	 * @return {@code true} if documents are similar, {@code false} otherwise.
+	 */
+	public boolean equals(Document document) {
 		return compare(document);
 	}
 }
