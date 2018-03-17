@@ -4,28 +4,73 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
+/**
+ * This class describes patron in library system.
+ *
+ * @author Madina Gafarova
+ * @see User
+ */
 public class Patron extends User {
+	/**
+	 * Patron type.
+	 * Possible values: {@code "faculty"}, {@code "student"}
+	 */
 	private String status;
+
+	/**
+	 * List of patrons' documents IDs.
+	 */
 	private ArrayList<Integer> listOfDocumentsPatron = new ArrayList<>();
 
-	Patron(String login, String password, String status, String name, String surname, String phone, String address) {
+	/**
+	 * Initialize new user.
+	 *
+	 * @param login    Login.
+	 * @param password Password.
+	 * @param status   Patron type. Possible values: {@code "faculty"}, {@code "student"}
+	 * @param name     First name.
+	 * @param surname  Last name.
+	 * @param phone    Phone number.
+	 * @param address  Living address.
+	 */
+	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		this.status = status;
 	}
 
+	/**
+	 * Get the patrons' documents IDs.
+	 *
+	 * @return List of patrons' documents IDs.
+	 */
 	public ArrayList<Integer> getListOfDocumentsPatron() {
 		return listOfDocumentsPatron;
 	}
 
+	/**
+	 * Get the patron status. Possible values: {@code "faculty"}, {@code "student"}
+	 *
+	 * @return Patron status.
+	 */
 	public String getStatus() {
 		return status;
 	}
 
+	/**
+	 * Set the new patron status. Possible values: {@code "faculty"}, {@code "student"}
+	 *
+	 * @param status New patron status.
+	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	/* @return true if Patron can get the document, otherwise false
+	/**
+	 * Checks whether patron can take the following book.
+	 *
+	 * @param idBook   Book ID to check.
+	 * @param database Database that stores the information.
+	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
@@ -66,6 +111,13 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Checks whether patron can take the following article.
+	 *
+	 * @param idArticle Article ID to check.
+	 * @param database  Database that stores the information.
+	 * @return {@code true} if this patron can get the article, otherwise {@code false}.
+	 */
 	public boolean canRequestArticle(int idArticle, Database database) {
 		try {
 			database.getPatron(getId());
@@ -106,6 +158,13 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Checks whether patron can take the following audio/video.
+	 *
+	 * @param idAV     Audio/video ID to check.
+	 * @param database Database that stores the information.
+	 * @return {@code true} if this patron can get the audio/video, otherwise {@code false}.
+	 */
 	public boolean canRequestAV(int idAV, Database database) {
 		try {
 			database.getPatron(getId());
@@ -148,7 +207,12 @@ public class Patron extends User {
 		}
 	}
 
-	/* MAIN FUNCTION OF REQUESTING DOCUMENTS
+	/**
+	 * Checks whether patron can take the following document.
+	 *
+	 * @param idDocument Document ID to check.
+	 * @param database   Database that stores the information.
+	 * @return {@code true} if this patron can get the document, otherwise {@code false}.
 	 */
 	public boolean canRequestDocument(int idDocument, Database database) {
 		try {
@@ -184,14 +248,18 @@ public class Patron extends User {
 		}
 	}
 
-	/* @param : id of Document, Database
+	/**
+	 * Take the following book ang give it to this patron.
+	 *
+	 * @param idBook   Book to take.
+	 * @param database Database that stores the information.
 	 */
 	public void takeBook(int idBook, Database database) {
 		try {
 			if (canRequestBook(idBook, database)) {
 				this.getListOfDocumentsPatron().add(idBook);
 				database.getBook(idBook).deleteCopy();
-				decreaseCountOdCopies(idBook, database);
+				decreaseCountOfCopies(idBook, database);
 				Date dateBook = new Date();
 				Date dateExpire = new Date();
 				if (database.getBook(idBook).isBestseller())
@@ -212,12 +280,18 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Take the following audio/video ang give it to this patron.
+	 *
+	 * @param idAV     Audio/video to take.
+	 * @param database Database that stores the information.
+	 */
 	public void takeAV(int idAV, Database database) {
 		try {
 			if (canRequestAV(idAV, database)) {
 				this.getListOfDocumentsPatron().add(idAV);
 				database.getAV(idAV).deleteCopy();
-				decreaseCountOdCopies(idAV, database);
+				decreaseCountOfCopies(idAV, database);
 				Date date = new Date();
 				Date date2 = new Date();
 				date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
@@ -229,12 +303,18 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Take the following article ang give it to this patron.
+	 *
+	 * @param idArticle Article to take.
+	 * @param database  Database that stores the information.
+	 */
 	public void takeArticle(int idArticle, Database database) throws ParseException {
 		try {
 			if (canRequestArticle(idArticle, database)) {
 				this.getListOfDocumentsPatron().add(idArticle);
 				database.getArticle(idArticle).deleteCopy();
-				decreaseCountOdCopies(idArticle, database);
+				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
 				date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
@@ -247,15 +327,18 @@ public class Patron extends User {
 		}
 	}
 
-	/* MAIN FUNCTIOM OF BOOKING SYSTEM
+	/**
+	 * Take the following document ang give it to this patron.
+	 *
+	 * @param idDocument document to take.
+	 * @param database   Database that stores the information.
 	 */
-
 	public void takeDocument(int idDocument, Database database) {
 		try {
 			if (canRequestDocument(idDocument, database)) {
 				getListOfDocumentsPatron().add(idDocument);
 				database.getDocument(idDocument).deleteCopy();
-				decreaseCountOdCopies(idDocument, database);
+				decreaseCountOfCopies(idDocument, database);
 				Date date = new Date();
 				Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
 				database.insertDebt(debt);
@@ -265,19 +348,35 @@ public class Patron extends User {
 		}
 	}
 
-
-	public void decreaseCountOdCopies(int idDocument, Database database) throws SQLException {
+	/**
+	 * Decrease the number of copies of specified document by one.
+	 *
+	 * @param idDocument Document ID.
+	 * @param database   Database that stores the information.
+	 * @throws SQLException If passed the wrong document ID.
+	 */
+	private void decreaseCountOfCopies(int idDocument, Database database) throws SQLException {
 		int count = database.getDocument(idDocument).getNumberOfCopies();
 		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
 	}
 
-	public void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
+	/**
+	 * Increase the number of copies of specified document by one.
+	 *
+	 * @param idDocument Document ID.
+	 * @param database   Database that stores the information.
+	 * @throws SQLException If passed the wrong document ID.
+	 */
+	private void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
 		int count = database.getDocument(idDocument).getNumberOfCopies();
 		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count + 1));
 	}
 
-
-	/* @param : id of Document, Database
+	/**
+	 * Return the book to the library.
+	 *
+	 * @param idBook   Book ID.
+	 * @param database Database that stores the information.
 	 */
 	public void returnBook(int idBook, Database database) {
 		try {
@@ -298,6 +397,12 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Return the article to the library.
+	 *
+	 * @param idArticle Article ID.
+	 * @param database  Database that stores the information.
+	 */
 	public void returnArticle(int idArticle, Database database) throws ParseException {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
@@ -317,6 +422,12 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Return the audio/video to the library.
+	 *
+	 * @param idAV     Audio/video ID.
+	 * @param database Database that stores the information.
+	 */
 	public void returnAV(int idAV, Database database) {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
@@ -336,9 +447,12 @@ public class Patron extends User {
 		}
 	}
 
-	/* MAIN FUNCTION OF RETURNING SYSTEM
+	/**
+	 * Return the document to the library.
+	 *
+	 * @param idDocument Document ID.
+	 * @param database   Database that stores the information.
 	 */
-
 	public void returnDocument(int idDocument, Database database) {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
@@ -358,6 +472,12 @@ public class Patron extends User {
 		}
 	}
 
+	/**
+	 * Compare this patron with another.
+	 *
+	 * @param patron Another patron to compare.
+	 * @return {@code true} if patrons are similar, {@code false} otherwise.
+	 */
 	boolean compare(Patron patron) {
 		return this.getLogin().equals(patron.getLogin());
 	}

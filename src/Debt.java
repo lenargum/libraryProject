@@ -113,6 +113,7 @@ public class Debt {
 	 * Get the booking date.
 	 *
 	 * @return Booking date.
+	 * @see Date
 	 */
 	public Date getBookingDate() {
 		return bookingDate;
@@ -122,6 +123,7 @@ public class Debt {
 	 * Set the new booking date.
 	 *
 	 * @param bookingDate New booking date.
+	 * @see Date
 	 */
 	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
@@ -131,6 +133,7 @@ public class Debt {
 	 * Get the expire date.
 	 *
 	 * @return Expire date.
+	 * @see Date
 	 */
 	public Date getExpireDate() {
 		return expireDate;
@@ -140,6 +143,7 @@ public class Debt {
 	 * Set the new expire date.
 	 *
 	 * @param date New expire date.
+	 * @see Date
 	 */
 	public void setExpireDate(Date date) {
 		this.expireDate = date;
@@ -211,7 +215,7 @@ public class Debt {
 	/**
 	 * Apply fee for this debt.
 	 *
-	 * @param database Database that stores documents information.
+	 * @param database Database that stores the documents information.
 	 */
 	public void countFee(Database database) throws SQLException {
 		if (daysLeft() > 0) {
