@@ -1,5 +1,7 @@
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.NoSuchElementException;
+import java.util.Date;
 
 /**
  * This class describes librarian in library system.
@@ -280,5 +282,29 @@ public class Librarian extends User {
 	 */
 	boolean compare(Librarian librarian) {
 		return this.getLogin().equals(librarian.getLogin());
+	}
+
+	/**
+	 * Document renew confirmation
+	 *
+	 * @param debtID is debt we want to renew
+	 * @param database Database storing the information
+	 */
+	public void renewDocument(int debtID, Database database){
+		try{
+			Debt debt = database.getDebt(debtID);
+			if(false){
+				//here we check for outstanding request for document
+			} else {
+				Date expDate = debt.getExpireDate();
+				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
+				debt.setCanRenew(false);
+				debt.setExpireDate(expDate);
+			}
+		} catch (SQLException | NoSuchElementException e){
+			System.out.println("Incorrect ID");
+		} catch (ParseException e){
+			//need to write something
+		}
 	}
 }

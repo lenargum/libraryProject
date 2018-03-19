@@ -497,8 +497,10 @@ public class Patron extends User {
 			} else {
 				System.out.println("The document is already renewed!");
 			}
-		} catch (NoSuchElementException | SQLException | ParseException e){
+		} catch (NoSuchElementException | SQLException e){
 			System.out.println("Incorrect id");
-		}
+		} catch(ParseException e) {
+		    //need to write something
+        }
 	}
 }
