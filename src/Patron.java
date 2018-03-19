@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -480,5 +481,24 @@ public class Patron extends User {
 	 */
 	boolean compare(Patron patron) {
 		return this.getLogin().equals(patron.getLogin());
+	}
+
+	/**
+	 * patron requests the document renew
+	 * @param docID Document ID
+	 * @param database Database stores the information
+	 */
+	public void renewDocument(int docID, Database database){
+		try{
+			int debtID = database.findDebtID(this.getId(), docID);
+			Debt debt = database.getDebt(debtID);
+			if(debt.canRenew()){
+				//Sent renew request to the librarian
+			} else {
+				System.out.println("The document is already renewed!");
+			}
+		} catch (NoSuchElementException | SQLException | ParseException e){
+			System.out.println("Incorrect id");
+		}
 	}
 }
