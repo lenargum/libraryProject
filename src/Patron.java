@@ -268,8 +268,10 @@ public class Patron extends User {
 				else {
 					if (status.toLowerCase().equals("student"))
 						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
-					else {
+					else if (status.toLowerCase().equals("faculty")){
 						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
+					} else {
+						dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
 					}
 				}
 
@@ -295,7 +297,9 @@ public class Patron extends User {
 				decreaseCountOfCopies(idAV, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
+				if(status.toLowerCase().equals("visiting professor"))
+					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
+					else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
 				Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
 				database.insertDebt(debt);
 			}
@@ -318,7 +322,9 @@ public class Patron extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
+				if(status.toLowerCase().equals("visiting professor"))
+					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
+				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
 				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
 
 				database.insertDebt(debt);
@@ -488,12 +494,13 @@ public class Patron extends User {
 	 * @param docID Document ID
 	 * @param database Database stores the information
 	 */
-	public void renewDocument(int docID, Database database){
+	public void renewDocument(int docID, int libID, Database database){
 		try{
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
 			if(debt.canRenew()){
-				//Sent renew request to the librarian
+				Librarian librarian = database.getLibrarian(libID);
+				librarian.renewDocument(debtID, database);
 			} else {
 				System.out.println("The document is already renewed!");
 			}

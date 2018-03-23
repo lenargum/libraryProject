@@ -301,6 +301,7 @@ public class Librarian extends User {
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
 				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("visiting professor"));
 				debt.setExpireDate(expDate);
+                System.out.println("Document was renewed!");
 			}
 		} catch (SQLException | NoSuchElementException e){
 			System.out.println("Incorrect ID");
