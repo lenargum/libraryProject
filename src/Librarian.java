@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
@@ -293,12 +294,12 @@ public class Librarian extends User {
 	public void renewDocument(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
-			if(false){
-				//here we check for outstanding request for document
+			if(false){//in the condition we check if there is outstanding request for document
+				System.out.println("You can not renew this document!");
 			} else {
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false);
+				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("visiting professor"));
 				debt.setExpireDate(expDate);
 			}
 		} catch (SQLException | NoSuchElementException e){
@@ -307,4 +308,6 @@ public class Librarian extends User {
 			//need to write something
 		}
 	}
+
+	
 }
