@@ -306,9 +306,20 @@ public class Librarian extends User {
 		} catch (SQLException | NoSuchElementException e){
 			System.out.println("Incorrect ID");
 		} catch (ParseException e){
-			//need to write something
+			System.out.println("By default");
 		}
 	}
 
+	public void getFee(int debtID, Database database){
+		try{
+			Debt debt = database.getDebt(debtID);
+			debt.setFee(0);
+			System.out.println("Payout confirmed!");
+		} catch (SQLException | NoSuchElementException e){
+			System.out.println("Incorrect ID");
+		} catch (ParseException e){
+			System.out.println("By default");
+		}
+	}
 	
 }

@@ -935,4 +935,12 @@ public class Database {
 		}
 		return -1;
 	}
+
+	public void renew(int debtId){
+		//nado chto-to napisat'
+	}
+
+	public void fee(int debtId){
+		//nado chto-to napisat'
+	}
 }

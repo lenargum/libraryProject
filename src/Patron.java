@@ -499,15 +499,30 @@ public class Patron extends User {
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
 			if(debt.canRenew()){
-				Librarian librarian = database.getLibrarian(libID);
-				librarian.renewDocument(debtID, database);
+				database.renew(debtID);
 			} else {
 				System.out.println("The document is already renewed!");
 			}
 		} catch (NoSuchElementException | SQLException e){
 			System.out.println("Incorrect id");
 		} catch(ParseException e) {
-		    //need to write something
+			System.out.println("By default");
         }
+	}
+
+	public void fine(int debtID, Database database){
+		try{
+			Debt debt = database.getDebt(debtID);
+			debt.countFee(database);
+			if(debt.getFee() > 0){
+				database.fee(debtID);
+			} else {
+				System.out.println("You do not owe Library anything");
+			}
+		} catch (NoSuchElementException | SQLException e) {
+			System.out.println("Incorrect ID");
+		} catch (ParseException e) {
+			System.out.println("By default");
+		}
 	}
 }
