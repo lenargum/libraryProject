@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,6 +29,16 @@ public class DocSelector {
 	private JFXScrollPane bookScroll, articleScroll, avScroll;
 	private JFXDrawer detailsDrawer;
 	private JFXDrawersStack drawerStack;
+	@FXML
+	private AnchorPane detailsLayout;
+	@FXML
+	private Pane coverContainer;
+	@FXML
+	private Text docTitle, docAuthors;
+	@FXML
+	private JFXButton bookThisBtn;
+	@FXML
+	private JFXBadge countBadge;
 
 	private boolean booksAdded, articlesAdded, avsAdded;
 
@@ -60,10 +72,15 @@ public class DocSelector {
 			try {
 				DocItem picked = getSelectedDocItemFromEvent(event);
 				System.out.println("Selected " + picked.getTitle());
-				detailsDrawer.getChildren().add(picked);
+				coverContainer.getChildren().add(picked);
+				docTitle.setText(picked.getTitle());
+				docAuthors.setText(picked.getAuthor());
+//				countBadge.setText("5 items");
+//				countBadge.refreshBadge();
+				detailsDrawer.setSidePane(detailsLayout);
 				drawerStack.toggle(detailsDrawer);
-
-			} catch (NullPointerException ignored) {
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -73,7 +90,7 @@ public class DocSelector {
 		while (!(x instanceof DocItem)) {
 			x = x.getParent();
 		}
-		return (DocItem) x;
+		return ((DocItem) x).copy();
 	}
 
 	private void initialize() throws IOException {
@@ -112,11 +129,19 @@ public class DocSelector {
 
 		detailsDrawer = new JFXDrawer();
 		detailsDrawer.setDirection(JFXDrawer.DrawerDirection.RIGHT);
-		detailsDrawer.setDefaultDrawerSize(320);
+		detailsDrawer.setDefaultDrawerSize(350);
 
+		detailsLayout = FXMLLoader.load(getClass().getResource("DocDetails.fxml"));
+		coverContainer = (Pane) detailsLayout.lookup("#coverContainer");
+		docTitle = (Text) detailsLayout.lookup("#docTitle");
+		docAuthors = (Text) detailsLayout.lookup("#docAuthors");
+		bookThisBtn = (JFXButton) detailsLayout.lookup("#bookThisBtn");
+		countBadge = (JFXBadge) detailsLayout.lookup("#countBadge");
+		if (MainPage.isLoggedIn()) {
+			bookThisBtn.setDisable(false);
+		}
 
 		System.out.println("Book view initialized.");
-
 		initialized = true;
 	}
 }

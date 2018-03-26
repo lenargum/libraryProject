@@ -84,4 +84,8 @@ public class DocItem extends Pane {
 	public int getDocId() {
 		return id;
 	}
+
+	public DocItem copy() {
+		return new DocItem(title.getText(), author.getText().substring(3), id);
+	}
 }

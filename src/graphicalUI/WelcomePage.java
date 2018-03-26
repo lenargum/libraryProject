@@ -15,66 +15,66 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class WelcomePage {
+	private MainPage creator;
 	private Stage primaryStage;
 	@FXML
 	private StackPane welcomeLayout;
+	@FXML
+	private JFXTextField usernameField;
+	@FXML
+	private JFXPasswordField passwordField;
+	@FXML
+	private JFXDialog loginDialog;
 
-	private String username;
-	private String password;
+	private DocSelector selector;
 
 	public WelcomePage() {
 	}
 
-	public WelcomePage(Stage primaryStage) {
+	public WelcomePage(Stage primaryStage, MainPage creator) {
+		this.creator = creator;
 		this.primaryStage = primaryStage;
-		username = "";
+		creator.setUsername("");
 	}
 
-	public void show() throws IOException {
-		primaryStage.setMinWidth(800);
-		primaryStage.setMinHeight(600);
-		welcomeLayout = FXMLLoader.load(getClass().getResource("WelcomePage.fxml"));
+	public void show() {
+//		primaryStage.setMinWidth(800);
+//		primaryStage.setMinHeight(600);
+		try {
+			welcomeLayout = FXMLLoader.load(getClass().getResource("WelcomePage.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		final Scene mainScene = new Scene(welcomeLayout);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 
 		JFXButton showLoginBtn = (JFXButton) welcomeLayout.lookup("#showLoginBtn");
 
-		AnchorPane loginLayout = FXMLLoader.load(getClass().getResource("LoginDialog.fxml"));
-		JFXDialog loginDialog = new JFXDialog();
+		AnchorPane loginLayout = null;
+		try {
+			loginLayout = FXMLLoader.load(getClass().getResource("LoginDialog.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		loginDialog = new JFXDialog();
 		loginDialog.setContent(loginLayout);
-		JFXTextField usernameField = (JFXTextField) loginLayout.lookup("#usernameField");
-		JFXPasswordField passwordField = (JFXPasswordField) loginLayout.lookup("#passwordField");
+		usernameField = (JFXTextField) loginLayout.lookup("#usernameField");
+		passwordField = (JFXPasswordField) loginLayout.lookup("#passwordField");
 		JFXButton proceedLoginButton = (JFXButton) loginLayout.lookup("#proceedLoginButton");
 
-		showLoginBtn.setOnAction(event -> {
-			loginDialog.show(welcomeLayout);
-		});
+		showLoginBtn.setOnAction(event -> loginDialog.show(welcomeLayout));
 
-		// TODO remove duplicated code
-		proceedLoginButton.setOnAction(event -> {
-			username = usernameField.getText();
-			password = passwordField.getText();
-			passwordField.clear();
-			loginDialog.close();
-			// TODO Sign in
-			System.out.println(username);
-			System.out.println(password);
-		});
+		proceedLoginButton.setOnAction(event -> processLogin());
 
 		passwordField.setOnKeyPressed(event -> {
 			if (event.getCode().equals(KeyCode.ENTER)) {
-				username = usernameField.getText();
-				password = passwordField.getText();
-				passwordField.clear();
-				loginDialog.close();
-				System.out.println(username);
-				System.out.println(password);
+				processLogin();
 			}
 		});
 
 		JFXButton browseLibBtn = (JFXButton) welcomeLayout.lookup("#browseLibBtn");
-		DocSelector selector = new DocSelector(primaryStage, mainScene);
+		selector = new DocSelector(primaryStage, mainScene);
 		browseLibBtn.setOnAction(event -> {
 			try {
 				selector.show();
@@ -82,5 +82,14 @@ public class WelcomePage {
 				e.printStackTrace();
 			}
 		});
+	}
+
+	private void processLogin() {
+		creator.setUsername(usernameField.getText());
+		creator.setPassword(passwordField.getText());
+		passwordField.clear();
+		loginDialog.close();
+		System.out.println("Logged in as " + creator.getUsername());
+		creator.resolveLoginTransition();
 	}
 }

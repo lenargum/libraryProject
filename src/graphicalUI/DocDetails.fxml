@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXBadge?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane maxWidth="350.0" minWidth="350.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.DocSelector">
+	<children>
+		<Pane fx:id="coverContainer" layoutX="28.0" layoutY="43.0" AnchorPane.leftAnchor="45.0"/>
+		<VBox layoutX="45.0" layoutY="271.755859375" AnchorPane.leftAnchor="45.0">
+			<children>
+				<Text fx:id="docTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="240.0">
+					<font>
+						<Font name="Roboto Slab Regular" size="26.0"/>
+					</font>
+				</Text>
+				<Text fx:id="docAuthors" fill="#00000099" strokeType="OUTSIDE" strokeWidth="0.0" text="Authors"
+				      wrappingWidth="240.0">
+					<font>
+						<Font name="Roboto Condensed" size="16.0"/>
+					</font>
+				</Text>
+			</children>
+		</VBox>
+		<JFXBadge fx:id="countBadge" layoutX="85.0" layoutY="232.0" AnchorPane.bottomAnchor="45.0">
+			<children>
+				<JFXButton fx:id="bookThisBtn" buttonType="RAISED" disable="true" mnemonicParsing="false"
+				           prefHeight="40.0" prefWidth="180.0" ripplerFill="#80e27e"
+				           style="-fx-background-color: #4caf50; -fx-background-radius: 30;" text="BOOK THES"
+				           textAlignment="CENTER" textFill="#fafafa">
+					<font>
+						<Font name="Roboto Bold" size="18.0"/>
+					</font>
+				</JFXButton>
+			</children>
+		</JFXBadge>
+	</children>
+</AnchorPane>

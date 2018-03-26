@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.UserPage">
+   <children>
+      <Pane fx:id="accountIconContainer" prefHeight="30.0" prefWidth="30.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <JFXButton layoutX="574.0" layoutY="19.0" mnemonicParsing="false" text="LIBRARIAN PANEL" textFill="#757575" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Roboto Bold" size="16.0" />
+         </font>
+      </JFXButton>
+      <VBox layoutX="70.0" layoutY="79.1015625">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back,">
+               <font>
+                  <Font name="Roboto" size="24.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пидор Ебаный">
+               <font>
+                  <Font name="Roboto" size="28.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
