@@ -510,6 +510,11 @@ public class Patron extends User {
         }
 	}
 
+	/**
+	 * patron wants to fine his debt
+	 * @param debtID  - debt to fine
+	 * @param database - information storage
+	 */
 	public void fine(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
