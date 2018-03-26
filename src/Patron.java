@@ -258,7 +258,7 @@ public class Patron extends User {
 	public void takeBook(int idBook, Database database) {
 		try {
 			if (canRequestBook(idBook, database)) {
-			    //send request to database
+			    database.requestBook(getId(), idBook);
 			}
 		} catch ( NoSuchElementException e) {
 			System.out.println("Incorrect id=" + idBook);
@@ -274,7 +274,7 @@ public class Patron extends User {
 	public void takeAV(int idAV, Database database) {
 		try {
 			if (canRequestAV(idAV, database)) {
-			    //send request  to database
+			    database.reqestAV(getId(), idAV);
 			}
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idAV);
@@ -290,7 +290,7 @@ public class Patron extends User {
 	public void takeArticle(int idArticle, Database database) throws ParseException {
 		try {
 			if (canRequestArticle(idArticle, database)) {
-				//send request to database
+				database.requestArticle(getId(), idArticle);
 			}
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idArticle);
@@ -306,7 +306,7 @@ public class Patron extends User {
 	public void takeDocument(int idDocument, Database database) {
 		try {
 			if (canRequestDocument(idDocument, database)) {
-				//send request to the database
+				database.requestDocument(getId(), idDocument);
 			}
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idDocument);
@@ -324,7 +324,7 @@ public class Patron extends User {
 		        Debt debt = database.getDebt(database.findDebtID(this.getId(), idBook));
 		        debt.countFee(database);
 		        if(debt.getFee() > 0){
-		            //send request to the library
+		            database.requestReturnBook(getId(), idBook);
                 } else System.out.println("You need to pay!");
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -346,7 +346,7 @@ public class Patron extends User {
             Debt debt = database.getDebt(database.findDebtID(this.getId(), idArticle));
             debt.countFee(database);
             if(debt.getFee() > 0){
-                //send request to the library
+                database.requestReturnArticle(getId(), idArticle);
             } else System.out.println("You need to pay!");
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -366,7 +366,7 @@ public class Patron extends User {
              Debt debt = database.getDebt(database.findDebtID(this.getId(), idAV));
              debt.countFee(database);
              if(debt.getFee() > 0){
-
+                database.requestReturnAV(getId(), idAV);
             } else System.out.println("You need to pay!");
 		    } catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -388,7 +388,7 @@ public class Patron extends User {
 		    Debt debt = database.getDebt(database.findDebtID(this.getId(), idDocument));
             debt.countFee(database);
             if(debt.getFee() > 0){
-                //send request to the library
+                database.requestReturnDocument(getId(), idDocument);
             } else System.out.println("You need to pay!");
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");

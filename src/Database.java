@@ -943,4 +943,36 @@ public class Database {
 	public void fee(int debtId){
 		//nado chto-to napisat'
 	}
+
+	public void requestDocument(int idPatron, int idDocument){
+
+	}
+
+	public void requestArticle(int idPatron, int idArticle){
+
+	}
+
+	public void reqestAV(int idPatron, int idAV){
+
+	}
+
+	public void requestBook(int idPatron, int idBook){
+
+	}
+
+	public void requestReturnDocument(int idPatron, int idDocument){
+
+	}
+
+	public void requestReturnArticle(int idPatron, int idArticle){
+
+	}
+
+	public void requestReturnAV(int idPatron, int idAV){
+
+	}
+
+	public void requestReturnBook(int idPatron, int idBook){
+
+	}
 }
