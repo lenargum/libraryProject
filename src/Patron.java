@@ -14,9 +14,15 @@ import java.util.NoSuchElementException;
 public class Patron extends User {
 	/**
 	 * Patron type.
-	 * Possible values: {@code "faculty"}, {@code "student"}
+	 * Possible values: {@code "faculty"}, {@code "student"}, {@code "ta"}, {@code "vp"} , {@code "professor"}
 	 */
 	private String status;
+
+	/**
+	 * Priority of Patron.
+	 * Levels of priority: student, faculty(instructions), TA, VP, professor
+	 */
+	private int priority;
 
 	/**
 	 * List of patrons' documents IDs.
@@ -37,6 +43,7 @@ public class Patron extends User {
 	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		this.status = status;
+		this.setPriority(status);
 	}
 
 	/**
@@ -66,6 +73,23 @@ public class Patron extends User {
 		this.status = status;
 	}
 
+	public void setPriority(String status){
+		if (status == "student"){
+			priority = 0;
+		} else if (status == "faculty"){
+			priority = 1;
+		} else if (status == "ta"){
+			priority = 2;
+		} else if (status == "vp"){
+			priority = 3;
+		} else {
+			priority = 4;
+		}
+	}
+
+	public int getPriority(){
+		return priority;
+	}
 	/**
 	 * Checks whether patron can take the following book.
 	 *
@@ -73,6 +97,8 @@ public class Patron extends User {
 	 * @param database Database that stores the information.
 	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
+
+	//TODO: NEW STATUS OF PATRON!!!
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
 			database.getPatron(getId());
@@ -82,10 +108,13 @@ public class Patron extends User {
 		}
 		try {
 			Book book = database.getBook(idBook);
-			if ((this.status.toLowerCase().equals("faculty")) && (book.getNumberOfCopies() != 0) &&
+			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+					(this.status.toLowerCase().equals("professor")))
+					&& (book.getNumberOfCopies() != 0) &&
 					!book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty"))) {
+			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) ||(this.status.toLowerCase().equals("vp")) ||
+					(this.status.toLowerCase().equals("professor"))) {
 				if (book.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
 				if (getListOfDocumentsPatron().contains(idBook))
@@ -128,10 +157,12 @@ public class Patron extends User {
 		}
 		try {
 			JournalArticle article = database.getArticle(idArticle);
-			if ((this.status.toLowerCase().equals("faculty")) && (article.getNumberOfCopies() != 0) &&
+			if ((this.status.toLowerCase().equals("faculty")|| (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp"))||
+					(this.status.toLowerCase().equals("professor"))) && (article.getNumberOfCopies() != 0) &&
 					!article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty"))) {
+			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+					(this.status.toLowerCase().equals("professor"))) {
 				if (article.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
 				if (getListOfDocumentsPatron().contains(idArticle))
@@ -175,10 +206,12 @@ public class Patron extends User {
 		}
 		try {
 			AudioVideoMaterial av = database.getAV(idAV);
-			if ((this.status.toLowerCase().equals("faculty")) && (av.getNumberOfCopies() != 0) &&
+			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp"))||
+					(this.status.toLowerCase().equals("professor"))) && (av.getNumberOfCopies() != 0) &&
 					!av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty"))) {
+			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp"))||
+					(this.status.toLowerCase().equals("professor"))) {
 				if (av.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
 				if (getListOfDocumentsPatron().contains(idAV))
@@ -224,7 +257,8 @@ public class Patron extends User {
 		}
 		try {
 			Document doc = database.getDocument(idDocument);
-			if ((this.status.toLowerCase().equals("faculty")) && (doc.getNumberOfCopies() != 0) &&
+			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+					(this.status.toLowerCase().equals("professor"))) && (doc.getNumberOfCopies() != 0) &&
 					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
 				return true;
 			} else if (doc.isAllowedForStudents() &&
@@ -255,6 +289,7 @@ public class Patron extends User {
 	 * @param idBook   Book to take.
 	 * @param database Database that stores the information.
 	 */
+
 	public void takeBook(int idBook, Database database) {
 		try {
 			if (canRequestBook(idBook, database)) {
@@ -268,7 +303,8 @@ public class Patron extends User {
 				else {
 					if (status.toLowerCase().equals("student"))
 						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
-					else if (status.toLowerCase().equals("faculty")){
+					else if (status.toLowerCase().equals("faculty") ||(status.toLowerCase().equals("ta")) ||
+							(status.toLowerCase().equals("professor"))){
 						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
 					} else {
 						dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -297,7 +333,7 @@ public class Patron extends User {
 				decreaseCountOfCopies(idAV, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(status.toLowerCase().equals("visiting professor"))
+				if(status.toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 					else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
 				Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
@@ -322,7 +358,7 @@ public class Patron extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(status.toLowerCase().equals("visiting professor"))
+				if(status.toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
 				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
@@ -351,6 +387,23 @@ public class Patron extends User {
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
+			System.out.println("Incorrect id" + idDocument);
+		}
+	}
+
+	/**
+	 * Make request the following document
+	 * @param idDocument document to request
+	 * @param database DatabasE that stores the information
+	 * @throws SQLException
+	 */
+	public void makeRequest(int idDocument, Database database) throws SQLException {
+		try {
+			//TODO: set current date
+			Date currentDate = new Date();
+			Request request = new Request(this.getId(), idDocument, currentDate, database);
+			request.addToQueue(this.getId(), idDocument, database);
+		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}
 	}
