@@ -6,8 +6,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainPage extends Application {
-	private static boolean loggedIn;
-	private String username, password;
+	private CoreAPI api;
 	private WelcomePage welcomePage;
 	private UserPage userPage;
 	private Stage primaryStage;
@@ -16,15 +15,8 @@ public class MainPage extends Application {
 		launch(args);
 	}
 
-	public static boolean isLoggedIn() {
-		return loggedIn;
-	}
-
-	public static void setLoggedIn(boolean loggedIn) {
-		MainPage.loggedIn = loggedIn;
-	}
-
-	public void resolveLoginTransition() {
+	public void resolveLoginTransition(Credentials credentials) {
+		api.authorize(credentials);
 		userPage = new UserPage(primaryStage, this);
 		userPage.show();
 
@@ -32,35 +24,25 @@ public class MainPage extends Application {
 		System.gc();
 	}
 
-	public void resolveLogoutTrensition() {
+	public void resolveLogoutTransition() {
 
 
 		userPage = null;
 		System.gc();
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
+		primaryStage.setMinWidth(800);
+		primaryStage.setMinHeight(600);
 		primaryStage.setTitle("InLibrary Manager");
-		loggedIn = false;
+		api = new CoreAPI();
 		welcomePage = new WelcomePage(primaryStage, this);
 		welcomePage.show();
+	}
+
+	public CoreAPI getApi() {
+		return api;
 	}
 }

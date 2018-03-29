@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class WelcomePage {
-	private MainPage creator;
+	private MainPage rootPage;
 	private Stage primaryStage;
 	@FXML
 	private StackPane welcomeLayout;
@@ -31,15 +31,12 @@ public class WelcomePage {
 	public WelcomePage() {
 	}
 
-	public WelcomePage(Stage primaryStage, MainPage creator) {
-		this.creator = creator;
+	public WelcomePage(Stage primaryStage, MainPage rootPage) {
+		this.rootPage = rootPage;
 		this.primaryStage = primaryStage;
-		creator.setUsername("");
 	}
 
 	public void show() {
-//		primaryStage.setMinWidth(800);
-//		primaryStage.setMinHeight(600);
 		try {
 			welcomeLayout = FXMLLoader.load(getClass().getResource("WelcomePage.fxml"));
 		} catch (IOException e) {
@@ -59,6 +56,7 @@ public class WelcomePage {
 		}
 		loginDialog = new JFXDialog();
 		loginDialog.setContent(loginLayout);
+		assert loginLayout != null;
 		usernameField = (JFXTextField) loginLayout.lookup("#usernameField");
 		passwordField = (JFXPasswordField) loginLayout.lookup("#passwordField");
 		JFXButton proceedLoginButton = (JFXButton) loginLayout.lookup("#proceedLoginButton");
@@ -74,7 +72,7 @@ public class WelcomePage {
 		});
 
 		JFXButton browseLibBtn = (JFXButton) welcomeLayout.lookup("#browseLibBtn");
-		selector = new DocSelector(primaryStage, mainScene);
+		selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
 		browseLibBtn.setOnAction(event -> {
 			try {
 				selector.show();
@@ -85,11 +83,10 @@ public class WelcomePage {
 	}
 
 	private void processLogin() {
-		creator.setUsername(usernameField.getText());
-		creator.setPassword(passwordField.getText());
+		Credentials credentials = new Credentials(usernameField.getText(), passwordField.getText());
 		passwordField.clear();
 		loginDialog.close();
-		System.out.println("Logged in as " + creator.getUsername());
-		creator.resolveLoginTransition();
+		System.out.println("Logged in as " + credentials.getLogin());
+		rootPage.resolveLoginTransition(credentials);
 	}
 }

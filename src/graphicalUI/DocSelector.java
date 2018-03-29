@@ -1,6 +1,7 @@
 package graphicalUI;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.svg.SVGGlyph;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -10,12 +11,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class DocSelector {
+	private CoreAPI api;
 	private Stage primaryStage;
 	private Scene selectorScene;
 	private Scene previousScene;
@@ -45,9 +48,10 @@ public class DocSelector {
 	public DocSelector() {
 	}
 
-	public DocSelector(Stage primaryStage, Scene previousScene) {
+	public DocSelector(Stage primaryStage, Scene previousScene, CoreAPI api) {
 		this.primaryStage = primaryStage;
 		this.previousScene = previousScene;
+		this.api = api;
 		initialized = false;
 	}
 
@@ -100,6 +104,10 @@ public class DocSelector {
 		selectorScene = new Scene(drawerStack);
 
 		goBackBtn = (JFXButton) selectorLayout.lookup("#goBackBtn");
+		SVGGlyph arrowBack = Glyphs.ARROW_BACK;
+		arrowBack.setFill(Paint.valueOf("#fafafa"));
+		arrowBack.setSize(15, 15);
+		goBackBtn.setGraphic(arrowBack);
 		goBackBtn.setOnAction(event -> primaryStage.setScene(previousScene));
 
 		tabs = (JFXTabPane) selectorLayout.lookup("#tabs");
@@ -137,7 +145,7 @@ public class DocSelector {
 		docAuthors = (Text) detailsLayout.lookup("#docAuthors");
 		bookThisBtn = (JFXButton) detailsLayout.lookup("#bookThisBtn");
 		countBadge = (JFXBadge) detailsLayout.lookup("#countBadge");
-		if (MainPage.isLoggedIn()) {
+		if (api.isLoggedIn()) {
 			bookThisBtn.setDisable(false);
 		}
 
