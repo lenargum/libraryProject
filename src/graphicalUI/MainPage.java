@@ -16,7 +16,9 @@ public class MainPage extends Application {
 	}
 
 	public void resolveLoginTransition(Credentials credentials) {
-		api.authorize(credentials);
+		Thread authorizeParallel = new Thread(() -> api.authorize(credentials));
+		authorizeParallel.start();
+
 		userPage = new UserPage(primaryStage, this);
 		userPage.show();
 
@@ -25,7 +27,10 @@ public class MainPage extends Application {
 	}
 
 	public void resolveLogoutTransition() {
+		api.deauthorize();
 
+		welcomePage = new WelcomePage(primaryStage, this);
+		welcomePage.show();
 
 		userPage = null;
 		System.gc();
