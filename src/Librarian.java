@@ -299,7 +299,7 @@ public class Librarian extends User {
 			} else {
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("visiting professor"));
+				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
 				debt.setExpireDate(expDate);
                 System.out.println("Document was renewed!");
 			}
