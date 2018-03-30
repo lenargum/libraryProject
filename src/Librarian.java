@@ -285,7 +285,14 @@ public class Librarian extends User {
 		return this.getLogin().equals(librarian.getLogin());
 	}
 
-	public void articleRequestConfirmation(int idPatron, int idAV, Database database){
+	/**
+	 * Audio/Video material request confirmation
+	 *
+	 * @param idPatron - id of patron who wants to take the material
+	 * @param idAV - id of material patron wants to take
+	 * @param database - information storage
+	 */
+	public void avRequestConfirmation(int idPatron, int idAV, Database database){
 		try {
 				Patron pat = database.getPatron(idPatron);
 				pat.getListOfDocumentsPatron().add(idAV);
@@ -293,17 +300,24 @@ public class Librarian extends User {
 				decreaseCountOfCopies(idAV, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(pat.getStatus().toLowerCase().equals("visiting professor"))
+				if(pat.getStatus().toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
-				Debt debt = new Debt(pat.getId(), idAV, date, date2, 0, true);
+				Debt debt = new Debt(idPatron, idAV, date, date2, 0, true);
 				database.insertDebt(debt);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id" + idAV);
 		}
 	}
 
-	public void avRequestConfirmation(int idPatron, int idBook, Database database){
+	/**
+	 * Book request document
+	 *
+	 * @param idPatron - id of patron who wants to take the book
+	 * @param idBook - id of book patron wants to take
+	 * @param database - information storage
+	 */
+	public void bookRequestConfirmation(int idPatron, int idBook, Database database){
 		try {
 			Patron pat = database.getPatron(idPatron);
 				pat.getListOfDocumentsPatron().add(idBook);
@@ -323,7 +337,7 @@ public class Librarian extends User {
 					}
 
 
-				Debt debt = new Debt(pat.getId(), idBook, dateBook, dateExpire, 0, true);
+				Debt debt = new Debt(idPatron, idBook, dateBook, dateExpire, 0, true);
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
@@ -331,7 +345,14 @@ public class Librarian extends User {
 		}
 	}
 
-	public void bookRequestConfirmation(int idPatron, int idArticle, Database database){
+	/**Article request confirmation
+	 *
+	 *
+	 * @param idPatron - id of patron who wants to take the article
+	 * @param idArticle - id of article patron wants to take
+	 * @param database - information storage
+	 */
+	public void articleRequestConfirmation(int idPatron, int idArticle, Database database){
 		try {
 				Patron pat = database.getPatron(idPatron);
 				pat.getListOfDocumentsPatron().add(idArticle);
@@ -339,10 +360,10 @@ public class Librarian extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(pat.getStatus().toLowerCase().equals("visiting professor"))
+				if(pat.getStatus().toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
-				Debt debt = new Debt(pat.getId(), idArticle, date, date, 0, true);
+				Debt debt = new Debt(idPatron, idArticle, date, date, 0, true);
 
 				database.insertDebt(debt);
 		} catch (SQLException | NoSuchElementException e) {
@@ -352,7 +373,14 @@ public class Librarian extends User {
 		}
 	}
 
-	public void documentRequestConfrmation(int idPatron, int idDocument, Database database){
+	/**
+	 * Document request confirmation - executes when patron takes the document
+	 *
+	 * @param idPatron - id of patron who want to take the document
+	 * @param idDocument - id of document patron wants to take
+	 * @param database - information storage
+	 */
+	public void documentRequestConfirmation(int idPatron, int idDocument, Database database){
 		try{
 			Patron pat = database.getPatron(idPatron);
 			Document doc= database.getDocument(idDocument);
@@ -360,7 +388,7 @@ public class Librarian extends User {
 			doc.deleteCopy();
 			decreaseCountOfCopies(idDocument, database);
 			Date date = new Date();
-			Debt debt = new Debt(pat.getId(), idDocument, date, date, 0, true);
+			Debt debt = new Debt(idPatron, idDocument, date, date, 0, true);
 			database.insertDebt(debt);
 		} catch(SQLException | NoSuchElementException e){
 			System.out.println("Incorrect ID!");
@@ -368,7 +396,13 @@ public class Librarian extends User {
 
 	}
 
-
+	/**
+	 * Article return confirmation
+	 *
+	 * @param idPatron - patron wants to return article
+	 * @param idArticle - id of article patron wants to return
+	 * @param database - information storage
+	 */
 	public void articleReturnConfirmation(int idPatron, int idArticle, Database database){
 		try {
 			Patron pat = database.getPatron(idPatron);
@@ -381,7 +415,7 @@ public class Librarian extends User {
 			}
 			article.addCopy();
 			increaseCountOfCopies(idArticle, database);
-			int debtID = database.findDebtID(pat.getId(), idArticle);
+			int debtID = database.findDebtID(idPatron, idArticle);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -392,6 +426,13 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * Audio/Video material return confirmation
+	 *
+	 * @param idPatron - id of patron who wants to return material
+	 * @param idAV - id of material patron wants to return
+	 * @param database - information storage
+	 */
 	public void avReturnConfirmation(int idPatron, int idAV, Database database){
 		try {
 			Patron pat = database.getPatron(idPatron);
@@ -403,7 +444,7 @@ public class Librarian extends User {
 			}
 			database.getAV(idAV).addCopy();
 			increaseCountOfCopies(idAV, database);
-			int debtID = database.findDebtID(pat.getId(), idAV);
+			int debtID = database.findDebtID(idPatron, idAV);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -412,6 +453,13 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * Book return confirmation
+	 *
+	 * @param idPatron - id of patron who wants to return the book
+	 * @param idBook - id of book patron wants to return
+	 * @param database - information storage
+	 */
 	public void bookReturnConfirmation(int idPatron, int idBook, Database database){
 		try {
 			Book book = database.getBook(idBook);
@@ -424,7 +472,7 @@ public class Librarian extends User {
 			}
 			book.addCopy();
 			increaseCountOfCopies(idBook, database);
-			int debtID = database.findDebtID(pat.getId(), idBook);
+			int debtID = database.findDebtID(idPatron, idBook);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -433,6 +481,13 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * Document return confirmation
+	 *
+	 * @param idPatron - id of patron that wants to return document
+	 * @param idDocument - id of the document patron wants to return
+	 * @param database - information storage
+	 */
 	public void documentReturnConfirmation(int idPatron, int idDocument, Database database){
 		try {
 			Patron pat = database.getPatron(idPatron);
@@ -445,7 +500,7 @@ public class Librarian extends User {
 			}
 			database.getDocument(idDocument).addCopy();
 			increaseCountOfCopies(idDocument, database);
-			int debtID = database.findDebtID(pat.getId(), idDocument);
+			int debtID = database.findDebtID(idPatron, idDocument);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -479,6 +534,12 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * Getting fee confirmation
+	 *
+	 * @param debtID
+	 * @param database
+	 */
 	public void getFee(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
