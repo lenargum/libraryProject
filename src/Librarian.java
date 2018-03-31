@@ -300,7 +300,7 @@ public class Librarian extends User {
 
 
 	public void documentReturnConfirmation(ReturnRequest request, Database database){
-		
+
 	}
 
 	/**
