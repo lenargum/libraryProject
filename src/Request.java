@@ -28,10 +28,6 @@ public class Request {
         canTake = false;
     }
 
-//    public void abilityToTake(boolean canTake){
-//        this.canTake = canTake;
-//    }
-
     public void addToQueue(int idPatron, Database database) throws SQLException {
         queue.add(database.getPatron(idPatron));
 
@@ -39,14 +35,16 @@ public class Request {
 
     public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
         queue.remove(database.getPatron(idPatron));
+        canTake = true;
         database.getPatron(idPatron).takeDocument(idDocument, database);
     }
 
     public void refuseRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        if (!canTake){
+        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
             queue.remove(database.getPatron(idPatron));
-        } else if (database.getDocument(idDocument).getNumberOfCopies() == 0){
-            System.out.println("Wait until the copies appear");
+        }
+        if (database.getDocument(idDocument).getNumberOfCopies() == 0){
+            System.out.println("Wait until the copies appear or Please, check your status!");
         }
     }
 
