@@ -299,8 +299,8 @@ public class Librarian extends User {
 	}
 
 
-	public void documentReturnConfirmation(ReturnRequest request, Database database){
-
+	public void confirmReturnRequest(ReturnRequest request, Database database) throws SQLException{
+		request.approveReturn(database);
 	}
 
 	/**

@@ -17,11 +17,8 @@ public class ReturnRequest {
         this.patSurname = database.getPatron(patronID).getSurname();
     }
 
-    public void approveReturn(){
-
+    public void approveReturn(Database database) throws SQLException{
+        database.getPatron(patronID).returnDocument(docID, database);
     }
 
-    public void refuseReturn(){
-
-    }
 }
