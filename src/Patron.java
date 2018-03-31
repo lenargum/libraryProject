@@ -249,6 +249,9 @@ public class Patron extends User {
 		}
 	}
 
+
+
+
 	/**
 	 * Take the following book ang give it to this patron.
 	 *
@@ -257,10 +260,27 @@ public class Patron extends User {
 	 */
 	public void takeBook(int idBook, Database database) {
 		try {
-			if (canRequestBook(idBook, database)) {
-			    database.requestBook(getId(), idBook);
+			getListOfDocumentsPatron().add(idBook);
+			database.getBook(idBook).deleteCopy();
+			decreaseCountOfCopies(idBook, database);
+			Date dateBook = new Date();
+			Date dateExpire = new Date();
+			if (database.getBook(idBook).isBestseller())
+				dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
+			else {
+				if (getStatus().toLowerCase().equals("student"))
+					dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
+				else if (getStatus().toLowerCase().equals("faculty")){
+					dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
+				} else {
+					dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
+				}
+
+
+				Debt debt = new Debt(getId(), idBook, dateBook, dateExpire, 0, true);
+				database.insertDebt(debt);
 			}
-		} catch ( NoSuchElementException e) {
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id=" + idBook);
 		}
 	}
@@ -273,10 +293,17 @@ public class Patron extends User {
 	 */
 	public void takeAV(int idAV, Database database) {
 		try {
-			if (canRequestAV(idAV, database)) {
-			    database.reqestAV(getId(), idAV);
-			}
-		} catch (NoSuchElementException e) {
+			getListOfDocumentsPatron().add(idAV);
+			database.getAV(idAV).deleteCopy();
+			decreaseCountOfCopies(idAV, database);
+			Date date = new Date();
+			Date date2 = new Date();
+			if(getStatus().toLowerCase().equals("vp"))
+				date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
+			else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
+			Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
+			database.insertDebt(debt);
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id" + idAV);
 		}
 	}
@@ -289,11 +316,21 @@ public class Patron extends User {
 	 */
 	public void takeArticle(int idArticle, Database database) throws ParseException {
 		try {
-			if (canRequestArticle(idArticle, database)) {
-				database.requestArticle(getId(), idArticle);
-			}
-		} catch (NoSuchElementException e) {
+			getListOfDocumentsPatron().add(idArticle);
+			database.getArticle(idArticle).deleteCopy();
+			decreaseCountOfCopies(idArticle, database);
+			Date date = new Date();
+			Date date2 = new Date();
+			if(getStatus().toLowerCase().equals("vp"))
+				date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
+			else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
+			Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
+
+			database.insertDebt(debt);
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id" + idArticle);
+		} catch(ParseException e){
+
 		}
 	}
 
@@ -304,12 +341,63 @@ public class Patron extends User {
 	 * @param database   Database that stores the information.
 	 */
 	public void takeDocument(int idDocument, Database database) {
-		try {
-			if (canRequestDocument(idDocument, database)) {
-				database.requestDocument(getId(), idDocument);
+		try{
+			Document doc= database.getDocument(idDocument);
+			getListOfDocumentsPatron().add(idDocument);
+			doc.deleteCopy();
+			decreaseCountOfCopies(idDocument, database);
+			Date date = new Date();
+			Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
+			database.insertDebt(debt);
+		} catch(SQLException | NoSuchElementException e){
+			System.out.println("Incorrect ID!");
+		}
+	}
+
+
+
+	public void makeReturnRequest(int debtID, Database database){
+		try{
+			Debt debt = database.getDebt(debtID);
+			debt.countFee(database);
+			if(debt.getFee() > 0)
+				System.out.println("You cannot return this document until you pay for delay!");
+			else{
+				ReturnRequest request = new ReturnRequest(debtID, database);
 			}
-		} catch (NoSuchElementException e) {
-			System.out.println("Incorrect id" + idDocument);
+		} catch (SQLException e){
+
+		} catch (ParseException e){
+
+		}
+
+	}
+
+
+	/**
+	 * Return the document to the library.
+	 *
+	 * @param idDocument Document ID.
+	 * @param database   Database that stores the information.
+	 */
+	public void returnDocument(int idDocument, Database database) {
+		try {
+
+
+			for (int i = 0; i < getListOfDocumentsPatron().size(); i++) {
+				if (getListOfDocumentsPatron().get(i).equals(idDocument)) {
+					getListOfDocumentsPatron().remove(i);
+					break;
+				}
+			}
+			database.getDocument(idDocument).addCopy();
+			increaseCountOfCopies(idDocument, database);
+			int debtID = database.findDebtID(this.getId(), idDocument);
+			database.deleteDebt(debtID);
+		} catch (NoSuchElementException | SQLException e) {
+			System.out.println("Incorrect id");
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Incorrect input");
 		}
 	}
 
@@ -321,18 +409,22 @@ public class Patron extends User {
 	 */
 	public void returnBook(int idBook, Database database) {
 		try {
-		        Debt debt = database.getDebt(database.findDebtID(this.getId(), idBook));
-		        debt.countFee(database);
-		        if(debt.getFee() > 0){
-		            database.requestReturnBook(getId(), idBook);
-                } else System.out.println("You need to pay!");
+			Book book = database.getBook(idBook);
+			for (int i = 0; i < getListOfDocumentsPatron().size(); i++) {
+				if (getListOfDocumentsPatron().get(i).equals(idBook)) {
+					getListOfDocumentsPatron().remove(i);
+					break;
+				}
+			}
+			book.addCopy();
+			increaseCountOfCopies(idBook, database);
+			int debtID = database.findDebtID(getId(), idBook);
+			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Incorrect input");
-		} catch (ParseException e){
-
-        }
+		}
 	}
 
 	/**
@@ -343,15 +435,23 @@ public class Patron extends User {
 	 */
 	public void returnArticle(int idArticle, Database database) throws ParseException {
 		try {
-            Debt debt = database.getDebt(database.findDebtID(this.getId(), idArticle));
-            debt.countFee(database);
-            if(debt.getFee() > 0){
-                database.requestReturnArticle(getId(), idArticle);
-            } else System.out.println("You need to pay!");
+			JournalArticle article = database.getArticle(idArticle);
+			for (int i = 0; i < getListOfDocumentsPatron().size(); i++) {
+				if (getListOfDocumentsPatron().get(i).equals(idArticle)) {
+					getListOfDocumentsPatron().remove(i);
+					break;
+				}
+			}
+			article.addCopy();
+			increaseCountOfCopies(idArticle, database);
+			int debtID = database.findDebtID(getId(), idArticle);
+			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Incorrect input");
+		} catch (ParseException e){
+
 		}
 	}
 
@@ -363,41 +463,27 @@ public class Patron extends User {
 	 */
 	public void returnAV(int idAV, Database database) {
 		try {
-             Debt debt = database.getDebt(database.findDebtID(this.getId(), idAV));
-             debt.countFee(database);
-             if(debt.getFee() > 0){
-                database.requestReturnAV(getId(), idAV);
-            } else System.out.println("You need to pay!");
-		    } catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect id");
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("Incorrect input");
-		} catch (ParseException e){
-
-        }
-	}
-
-	/**
-	 * Return the document to the library.
-	 *
-	 * @param idDocument Document ID.
-	 * @param database   Database that stores the information.
-	 */
-	public void returnDocument(int idDocument, Database database) {
-		try {
-		    Debt debt = database.getDebt(database.findDebtID(this.getId(), idDocument));
-            debt.countFee(database);
-            if(debt.getFee() > 0){
-                database.requestReturnDocument(getId(), idDocument);
-            } else System.out.println("You need to pay!");
+			for (int i = 0; i < getListOfDocumentsPatron().size(); i++) {
+				if (getListOfDocumentsPatron().get(i).equals(idAV)) {
+					getListOfDocumentsPatron().remove(i);
+					break;
+				}
+			}
+			database.getAV(idAV).addCopy();
+			increaseCountOfCopies(idAV, database);
+			int debtID = database.findDebtID(getId(), idAV);
+			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Incorrect input");
-		} catch (ParseException e){
-
-        }
+		}
 	}
+
+
+
+
+
 
 	/**
 	 * Compare this patron with another.
@@ -450,4 +536,29 @@ public class Patron extends User {
 			System.out.println("By default");
 		}
 	}
+
+	/**
+	 * Decrease the number of copies of specified document by one.
+	 *
+	 * @param idDocument Document ID.
+	 * @param database   Database that stores the information.
+	 * @throws SQLException If passed the wrong document ID.
+	 */
+	private void decreaseCountOfCopies(int idDocument, Database database) throws SQLException {
+		int count = database.getDocument(idDocument).getNumberOfCopies();
+		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
+	}
+
+	/**
+	 * Increase the number of copies of specified document by one.
+	 *
+	 * @param idDocument Document ID.
+	 * @param database   Database that stores the information.
+	 * @throws SQLException If passed the wrong document ID.
+	 */
+	private void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
+		int count = database.getDocument(idDocument).getNumberOfCopies();
+		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count + 1));
+	}
+
 }
