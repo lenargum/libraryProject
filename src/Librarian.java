@@ -323,11 +323,11 @@ public class Librarian extends User {
 	}
 
 	public void submitRequest(Request request, Database database) throws SQLException {
-		request.approveRequest(request.idPatron, request.idDocument,database);
+		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
 	}
 
 	public void deleteRequest(Request request, Database database) throws SQLException {
-		request.refuseRequest(request.idPatron, request.idDocument, database);
+		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 	
 }
