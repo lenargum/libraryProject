@@ -299,8 +299,14 @@ public class Librarian extends User {
 	}
 
 
-	public void confirmReturnRequest(ReturnRequest request, Database database) throws SQLException{
-		request.approveReturn(database);
+	public void confirmReturnRequest(ReturnRequest request, Database database) throws SQLException, ParseException{
+		Debt debt = database.getDebt(request.debtID);
+		debt.countFee(database);
+		if(debt.getFee() == 0)
+			request.approveReturn(database);
+		else {
+			System.out.println("You need to pay for delay");
+		}
 	}
 
 	/**
@@ -308,7 +314,7 @@ public class Librarian extends User {
 	 *
 	 * @param debtID is debt we want to renew
 	 * @param database Database storing the information
-	 */
+	 */ //TODO: think about renewing!
 	public void renewDocument(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
