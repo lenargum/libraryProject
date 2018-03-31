@@ -18,15 +18,14 @@ public class Request {
     private ComparatorPriority comparator = new ComparatorPriority();
     private PriorityQueue<Patron> queue = new PriorityQueue<>(comparator);
 
-    public Request(int idPatron, int idDocument,Date date, Database database) throws SQLException {
-        Patron temp = database.getPatron(idPatron);
-        this.idPatron = idPatron;
-        this.namePatron = temp.getName();
-        this.surnamePatron = temp.getSurname();
-        this.idDocument = idDocument;
+    public Request(Patron patron, Document document,Date date) {
+        this.idPatron = patron.getId();
+        this.namePatron = patron.getName();
+        this.surnamePatron = patron.getSurname();
+        this.idDocument = document.getID();
         this.date = date;
-        this.priority = temp.getPriority();
-        canTake = temp.canRequestDocument(idDocument, database);
+        this.priority = patron.getPriority();
+        canTake = false;
     }
 
 //    public void abilityToTake(boolean canTake){
