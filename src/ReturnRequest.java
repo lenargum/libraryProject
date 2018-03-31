@@ -8,13 +8,12 @@ public class ReturnRequest {
     String patName;
     String patSurname;
 
-    public ReturnRequest(int debtId, Database database) throws ParseException, SQLException{
-        Debt debt = database.getDebt(debtId);
-        this.debtID = debtId;
-        this.patronID = debt.getPatronId();
-        this.docID = debt.getDocumentId();
-        this.patName = database.getPatron(patronID).getName();
-        this.patSurname = database.getPatron(patronID).getSurname();
+    public ReturnRequest(int debtID, int docID, int patronID, String name, String surname){
+        this.debtID = debtID;
+        this.patronID = patronID;
+        this.docID = docID;
+        this.patName = name;
+        this.patSurname = surname;
     }
 
     public void approveReturn(Database database) throws SQLException{

@@ -533,6 +533,18 @@ public class Patron extends User {
 	}
 
 	/**
+	 * makes request for returning debt
+	 * @param database information storage
+	 * @param debtID id of debt patron wants to return
+	 * @throws ParseException 
+	 * @throws SQLException
+	 */
+	public void makeReturnRequest(Database database, int debtID) throws ParseException, SQLException{
+		Debt debt = database.getDebt(debtID);
+		ReturnRequest request = new ReturnRequest(debtID, debt.getDocumentId(), getId(), getName(), getSurname());
+	}
+
+	/**
 	 * Compare this patron with another.
 	 *
 	 * @param patron Another patron to compare.
