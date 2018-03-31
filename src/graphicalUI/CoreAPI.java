@@ -31,7 +31,7 @@ public class CoreAPI {
 		// to be continued
 	}
 
-	public void deauthorize(){
+	public void deauthorize() {
 		assert loggedIn;
 		credentials = null;
 		loggedIn = false;

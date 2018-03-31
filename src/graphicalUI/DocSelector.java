@@ -5,7 +5,6 @@ import com.jfoenix.svg.SVGGlyph;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -140,8 +139,7 @@ public class DocSelector {
 //				countBadge.refreshBadge();
 				detailsDrawer.setSidePane(detailsLayout);
 				drawerStack.toggle(detailsDrawer);
-			} catch (NullPointerException e) {
-				e.printStackTrace();
+			} catch (NullPointerException ignored) {
 			}
 		});
 

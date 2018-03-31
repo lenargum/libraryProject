@@ -4,8 +4,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxWidth="350.0" minWidth="350.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.DocSelector">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxWidth="350.0" minWidth="350.0" prefWidth="350.0"
+            xmlns="http://javafx.com/javafx/8.0.121" fx:controller="graphicalUI.DocSelector">
 	<children>
 		<Pane fx:id="coverContainer" layoutX="28.0" layoutY="43.0" AnchorPane.leftAnchor="45.0"/>
 		<VBox layoutX="45.0" layoutY="271.755859375" AnchorPane.leftAnchor="45.0">
