@@ -321,7 +321,7 @@ public class Librarian extends User {
 	public void confirmRenew(Request request, Database database){
 	   try{
 	        request.approveRenew(database);
-
+			database.deleteRequest(request.getRequestId());
         } catch (SQLException e){
 
         }
@@ -331,8 +331,13 @@ public class Librarian extends User {
 	 * renew document refuse
 	 * @param request - request librarian refuses
 	 */
-	public void refuseRenew(Request request){
+	public void refuseRenew(Request request, Database database){
+		try {
 			request.refuseRenew();
+			database.deleteRequest(request.getRequestId());
+		} catch (SQLException e){
+
+		}
 	}
 
 	/**

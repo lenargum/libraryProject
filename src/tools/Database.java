@@ -946,7 +946,11 @@ public class Database {
 		return -1;
 	}
 
-	//insert,get,delete,edit request
+	/**
+	 * inserts request to the library
+	 * @param request
+	 * @throws SQLException
+	 */
 	public void insertRequest(Request request) throws SQLException {
 		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
 				"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
@@ -954,6 +958,12 @@ public class Database {
 				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()),request.isRenewRequest()));
 	}
 
+	/**
+	 *
+	 * @return list of all the unclosed requests from the database
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public List<Request> getRequests() throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
 		LinkedList<Request> requests = new LinkedList<>();
@@ -966,6 +976,13 @@ public class Database {
 		return requests;
 	}
 
+	/**
+	 *
+	 * @param id - id of request we want to return
+	 * @return request from the database
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public Request getRequest(int id) throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = "+id);
 		if (requestsSet.next()) {
@@ -977,16 +994,33 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-
+	/**
+	 * deletes request from the database by patron and document ids
+	 * @param patronId - id of patron whose request was closed
+	 * @param documentId - id of document patron wanted to take
+	 * @throws SQLException
+	 */
 	public void deleteRequest(int patronId,int documentId) throws SQLException {
 		executeUpdate(String.format("DELETE FROM requests WHERE patron_id = %d AND document_id = %d",
 				patronId,documentId));
 	}
 
+	/**
+	 * deletes request from the database by request id
+	 * @param requestId
+	 * @throws SQLException
+	 */
 	public void deleteRequest(int requestId) throws SQLException {
 		executeUpdate("DELETE FROM requests WHERE request_id = "+requestId);
 	}
 
+	/**
+	 * edit request table
+	 * @param requestId id of request we want to edit
+	 * @param column - column to edit.
+	 * @param value - new value
+	 * @throws SQLException
+	 */
 	public void editRequest(int requestId, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";

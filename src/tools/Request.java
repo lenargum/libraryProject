@@ -56,7 +56,7 @@ public class Request {
     }
 
     public void approveRenew(Database database)throws SQLException{
-        database.getPatron(idPatron, database).returnDocument(idDocument, database);
+        database.getPatron(idPatron, database).renewDocument(idDocument, database);
     }
 
     public void refuseRenew(){
