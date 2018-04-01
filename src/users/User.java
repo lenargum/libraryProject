@@ -1,3 +1,10 @@
+package users;
+
+import documents.AudioVideoMaterial;
+import documents.Book;
+import documents.JournalArticle;
+import tools.Database;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,7 +16,7 @@ import java.util.ArrayList;
  */
 public abstract class User {
 	/**
-	 * User ID.
+	 * users.User ID.
 	 */
 	private int id;
 
@@ -34,12 +41,12 @@ public abstract class User {
 	private String phoneNumber;
 
 	/**
-	 * User login.
+	 * users.User login.
 	 */
 	private String login;
 
 	/**
-	 * User password.
+	 * users.User password.
 	 */
 	private String password;
 
@@ -65,7 +72,7 @@ public abstract class User {
 	/**
 	 * Get user ID.
 	 *
-	 * @return User ID.
+	 * @return users.User ID.
 	 */
 	public int getId() {
 		return id;
@@ -155,7 +162,7 @@ public abstract class User {
 	/**
 	 * Get the user login.
 	 *
-	 * @return User login.
+	 * @return users.User login.
 	 */
 	public String getLogin() {
 		return login;
@@ -173,7 +180,7 @@ public abstract class User {
 	/**
 	 * Get the user password.
 	 *
-	 * @return User password.
+	 * @return users.User password.
 	 */
 	public String getPassword() {
 		return password;
@@ -191,7 +198,7 @@ public abstract class User {
 	/**
 	 * Get all the documents stored in the library in string notation.
 	 *
-	 * @param database Database that stores the document information.
+	 * @param database tools.Database that stores the document information.
 	 * @return List of strings describes documents in library.
 	 * @see java.util.List
 	 * @see ArrayList
@@ -203,7 +210,7 @@ public abstract class User {
 	/**
 	 * Get all the books stored in the library.
 	 *
-	 * @param database Database that stores the document information.
+	 * @param database tools.Database that stores the document information.
 	 * @return List of books in library.
 	 * @see java.util.List
 	 * @see ArrayList
@@ -215,7 +222,7 @@ public abstract class User {
 	/**
 	 * Get all the audios/videos stored in the library.
 	 *
-	 * @param database Database that stores the document information.
+	 * @param database tools.Database that stores the document information.
 	 * @return List of audios/videos in the library.
 	 * @see java.util.List
 	 * @see ArrayList
@@ -227,7 +234,7 @@ public abstract class User {
 	/**
 	 * Get all the articles stored in the library.
 	 *
-	 * @param database Database that stores the document information.
+	 * @param database tools.Database that stores the document information.
 	 * @return List of articles in the library.
 	 * @see java.util.List
 	 * @see ArrayList

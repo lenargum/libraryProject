@@ -1,3 +1,7 @@
+package tools;
+
+import users.Patron;
+
 import java.util.Comparator;
 /**
  * Comparator to compare priority in PriorityQueue

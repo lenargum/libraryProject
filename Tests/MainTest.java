@@ -1,4 +1,10 @@
+import documents.AudioVideoMaterial;
+import documents.Book;
 import org.junit.jupiter.api.Test;
+import tools.Database;
+import tools.Debt;
+import users.Librarian;
+import users.Patron;
 
 import java.sql.SQLException;
 import java.text.ParseException;

@@ -1,3 +1,5 @@
+package documents;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -7,17 +9,17 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class Document {
 	/**
-	 * Document ID.
+	 * documents.Document ID.
 	 */
 	private int ID;
 
 	/**
-	 * Document title.
+	 * documents.Document title.
 	 */
 	private String Title;
 
 	/**
-	 * Document authors.
+	 * documents.Document authors.
 	 */
 	private String Authors;
 
@@ -37,7 +39,7 @@ public class Document {
 	private boolean IsReference;
 
 	/**
-	 * Document price.
+	 * documents.Document price.
 	 */
 	private double Price;
 
@@ -47,12 +49,12 @@ public class Document {
 	private String KeyWords;
 
 	/**
-	 * Document type.
+	 * documents.Document type.
 	 */
 	private String Type;
 
 	/**
-	 * Initialize new Document.
+	 * Initialize new documents.Document.
 	 *
 	 * @param Title              Title.
 	 * @param Authors            Authors.
@@ -109,7 +111,7 @@ public class Document {
 	/**
 	 * Get the document ID.
 	 *
-	 * @return Document ID.
+	 * @return documents.Document ID.
 	 */
 	public int getID() {
 		return ID;
@@ -127,7 +129,7 @@ public class Document {
 	/**
 	 * Get the document title.
 	 *
-	 * @return Document title.
+	 * @return documents.Document title.
 	 */
 	public String getTitle() {
 		return Title;
@@ -287,7 +289,7 @@ public class Document {
 	/**
 	 * Get the price of this document.
 	 *
-	 * @return Document price.
+	 * @return documents.Document price.
 	 */
 	public double getPrice() {
 		return Price;
