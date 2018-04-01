@@ -55,6 +55,7 @@ public class UserDocs {
 
 		scene = new Scene(layout);
 		stage = new Stage();
+		stage.setTitle("Your documents");
 		stage.setScene(scene);
 	}
 

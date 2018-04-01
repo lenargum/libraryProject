@@ -74,6 +74,22 @@ public class CoreAPI {
 		return waitlist;
 	}
 
+	public ObservableList<ApprovalCell> getRenewRequests() {
+		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
+		list.addAll(new ApprovalCell("Sdbdjks", 1, "Succi", 1),
+				new ApprovalCell("ubjksd", 2, "You", 2));
+
+		return list;
+	}
+
+	public ObservableList<ApprovalCell> getTakeRequests() {
+		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
+		list.addAll(new ApprovalCell("hfiushfid", 1, "Succi", 1),
+				new ApprovalCell("sidhvidhs", 2, "You", 2));
+
+		return list;
+	}
+
 	public UserType userType() {
 		return UserType.LIBRARIAN;
 	}

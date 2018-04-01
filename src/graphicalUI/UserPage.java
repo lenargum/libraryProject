@@ -11,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -30,6 +29,7 @@ public class UserPage {
 	private JFXButton browseLibBtn;
 	private DocSelector selector;
 	private UserDocs userDocs;
+	private LibrarianPanel librarianPanel;
 	private Scene mainScene;
 	@FXML
 	private JFXListView<DocCell> myLastBooks;
@@ -51,6 +51,7 @@ public class UserPage {
 		mainScene = new Scene(userLayout);
 
 		userDocs = new UserDocs(rootPage.getApi());
+		librarianPanel = new LibrarianPanel(rootPage.getApi());
 
 		Thread initSelector = new Thread(() -> {
 			System.out.print("Loading document selector in parallel thread:\n\t");
@@ -85,6 +86,7 @@ public class UserPage {
 			controlPanelBtn.setDisable(false);
 			controlPanelBtn.setVisible(true);
 		}
+		controlPanelBtn.setOnAction(event -> librarianPanel.show());
 
 		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
 		seeMoreBtn.setOnAction(event -> userDocs.show());
@@ -111,12 +113,7 @@ public class UserPage {
 
 	private void myLastBooksOnMouseClicked(MouseEvent event) {
 		DocCell selectedNode = myLastBooks.getSelectionModel().getSelectedItem();
-		DocItem selectedItem = new DocItem(selectedNode.getTitle(), "Author", 1);
-		VBox popupContainer = new VBox();
-		popupContainer.getChildren().addAll(selectedItem, new JFXButton("RENEW"), new JFXButton("RETURN"));
-		popupContainer.setPadding(new Insets(20));
-		detailsPopup = new JFXPopup();
-		detailsPopup.setPopupContent(popupContainer);
-		detailsPopup.show(myLastBooks, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 335, event.getY());
+		DocumentPopup popup = new DocumentPopup(selectedNode.getTitle(), "Author", selectedNode.getDocumentId());
+		popup.show(myLastBooks, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 335, event.getY());
 	}
 }
