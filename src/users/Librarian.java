@@ -294,6 +294,13 @@ public class Librarian extends User {
 	}
 
 
+	/**
+	 * Return confirmation
+	 * @param debtID - id of debt patron wants to close
+	 * @param database - information storage
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException{
 		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
@@ -306,6 +313,11 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * renew document confirmation
+	 * @param request - request that patron sent to renew document
+	 * @param database - information storage
+	 */
 	public void confirmRenew(Request request, Database database){
 	   try{
 	        request.approveRenew(database);
@@ -315,10 +327,19 @@ public class Librarian extends User {
         }
     }
 
-    public void refuseRenew(Request request){
+	/**
+	 * renew document refuse
+	 * @param request - request librarian refuses
+	 */
+	public void refuseRenew(Request request){
 			request.refuseRenew();
 	}
 
+	/**
+	 * confirmation of getting fee
+	 * @param debtID - id of debt patron wants to close
+	 * @param database - information storage
+	 */
 	public void getFee(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
@@ -331,10 +352,22 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * taking document request confirmation
+	 * @param request - request librarian confirms
+	 * @param database - information storage
+	 * @throws SQLException
+	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
 	}
 
+	/**
+	 * delete taking document request
+	 * @param request - request the librarian refuses
+	 * @param database - information storage
+	 * @throws SQLException
+	 */
 	public void deleteRequest(Request request, Database database) throws SQLException {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
