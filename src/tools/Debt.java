@@ -1,3 +1,5 @@
+package tools;
+
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +13,7 @@ import java.util.Date;
  */
 public class Debt {
 	/**
-	 * Debt ID.
+	 * tools.Debt ID.
 	 */
 	private int debtId;
 
@@ -76,7 +78,7 @@ public class Debt {
 	/**
 	 * Get the associated patron ID.
 	 *
-	 * @return Patron ID.
+	 * @return users.Patron ID.
 	 */
 	public int getPatronId() {
 		return patronId;
@@ -94,7 +96,7 @@ public class Debt {
 	/**
 	 * Get the associated document ID.
 	 *
-	 * @return Document ID.
+	 * @return documents.Document ID.
 	 */
 	public int getDocumentId() {
 		return documentId;
@@ -197,7 +199,7 @@ public class Debt {
 	/**
 	 * Get this debt ID.
 	 *
-	 * @return Debt ID.
+	 * @return tools.Debt ID.
 	 */
 	public int getDebtId() {
 		return debtId;
@@ -215,7 +217,7 @@ public class Debt {
 	/**
 	 * Apply fee for this debt.
 	 *
-	 * @param database Database that stores the documents information.
+	 * @param database tools.Database that stores the documents information.
 	 */
 	public void countFee(Database database) throws SQLException {
 		if (daysLeft() > 0) {

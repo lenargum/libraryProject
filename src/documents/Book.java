@@ -1,3 +1,5 @@
+package documents;
+
 /**
  * This class describes book of library system.
  *
@@ -6,7 +8,7 @@
  */
 public class Book extends Document {
 	/**
-	 * Book publisher.
+	 * documents.Book publisher.
 	 */
 	private String Publisher;
 

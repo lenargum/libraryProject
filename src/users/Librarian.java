@@ -1,4 +1,13 @@
-import javax.xml.crypto.Data;
+package users;
+
+import documents.AudioVideoMaterial;
+import documents.Book;
+import documents.Document;
+import documents.JournalArticle;
+import tools.Database;
+import tools.Debt;
+import tools.Request;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
@@ -28,8 +37,8 @@ public class Librarian extends User {
 	/**
 	 * Add new book to the database.
 	 *
-	 * @param book     Book to add.
-	 * @param database Database that stores the information.
+	 * @param book     documents.Book to add.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void addBook(Book book, Database database) {
 		try {
@@ -45,7 +54,7 @@ public class Librarian extends User {
 	 * Add new audio/video to the database.
 	 *
 	 * @param AV       Audio/video to add.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void addAV(AudioVideoMaterial AV, Database database) {
 		try {
@@ -61,7 +70,7 @@ public class Librarian extends User {
 	 * Add new article to the database.
 	 *
 	 * @param journalArticle Article to add.
-	 * @param database       Database that stores the information.
+	 * @param database       tools.Database that stores the information.
 	 */
 	public void addArticle(JournalArticle journalArticle, Database database) {
 		try {
@@ -76,8 +85,8 @@ public class Librarian extends User {
 	/**
 	 * Add new patron to the database.
 	 *
-	 * @param patron   Patron to add.
-	 * @param database Database that stores the information.
+	 * @param patron   users.Patron to add.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void registerPatron(Patron patron, Database database) {
 		try {
@@ -91,7 +100,7 @@ public class Librarian extends User {
 	 * Delete the document from the database.
 	 *
 	 * @param idDocument ID of document which is going to be deleted.
-	 * @param database   Database that stores the information.
+	 * @param database   tools.Database that stores the information.
 	 */
 	public void deleteDocument(int idDocument, Database database) {
 		try {
@@ -105,7 +114,7 @@ public class Librarian extends User {
 	 * Delete the patron from the database.
 	 *
 	 * @param idPatron ID of patron which is going to be deleted.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void deletePatron(int idPatron, Database database) {
 		try {
@@ -119,7 +128,7 @@ public class Librarian extends User {
 	 * Modify the price of document stored in database.
 	 *
 	 * @param idDocument ID of document which is going to be modified.
-	 * @param database   Database that stores the information.
+	 * @param database   tools.Database that stores the information.
 	 * @param price      New price.
 	 */
 	public void modifyDocumentPrice(int idDocument, Database database, double price) {
@@ -135,7 +144,7 @@ public class Librarian extends User {
 	 * Modify the edition year of book stored in database.
 	 *
 	 * @param idBook   ID of book which is going to be modified.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 * @param edition  New edition year.
 	 */
 	public void modifyBookEdition(int idBook, Database database, int edition) {
@@ -151,7 +160,7 @@ public class Librarian extends User {
 	 * Modify the student allowance status of document stored in database.
 	 *
 	 * @param idDocument           ID of document which is going to be modified.
-	 * @param database             Database that stores the information.
+	 * @param database             tools.Database that stores the information.
 	 * @param isAllowedForStudents New status.
 	 */
 	public void modifyDocumentAllowance(int idDocument, Database database, boolean isAllowedForStudents) {
@@ -167,7 +176,7 @@ public class Librarian extends User {
 	 * Modify the count of copies of document stored in database.
 	 *
 	 * @param idDocument    ID of document which is going to be modified.
-	 * @param database      Database that stores the information.
+	 * @param database      tools.Database that stores the information.
 	 * @param countOfCopies New number.
 	 */
 	public void modifyDocumentCopies(int idDocument, Database database, int countOfCopies) {
@@ -183,7 +192,7 @@ public class Librarian extends User {
 	 * Modify the bestseller status of book stored in database.
 	 *
 	 * @param idBook     ID of book which is going to be modified.
-	 * @param database   Database that stores the information.
+	 * @param database   tools.Database that stores the information.
 	 * @param bestseller New status.
 	 */
 	public void modifyBookBestseller(int idBook, Database database, boolean bestseller) {
@@ -199,7 +208,7 @@ public class Librarian extends User {
 	 * Modify the last name of patron stored in database.
 	 *
 	 * @param idPatron ID of patron which is going to be modified.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 * @param surname  New last name.
 	 */
 	public void modifyPatronSurname(int idPatron, Database database, String surname) {
@@ -215,7 +224,7 @@ public class Librarian extends User {
 	 * Modify the living address of patron stored in database.
 	 *
 	 * @param idPatron ID of patron which is going to be modified.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 * @param address  New living address.
 	 */
 	public void modifyPatronAddress(int idPatron, Database database, String address) {
@@ -231,7 +240,7 @@ public class Librarian extends User {
 	 * Modify the phone number of patron stored in database.
 	 *
 	 * @param idPatron    ID of patron which is going to be modified.
-	 * @param database    Database that stores the information.
+	 * @param database    tools.Database that stores the information.
 	 * @param phoneNumber New phone number.
 	 */
 	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
@@ -248,7 +257,7 @@ public class Librarian extends User {
 	 * Possible values: {@code "faculty"}, {@code "student"}
 	 *
 	 * @param idPatron ID of patron which is going to be modified.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 * @param status   New status.
 	 */
 	public void modifyPatronStatus(int idPatron, Database database, String status) {
@@ -263,7 +272,7 @@ public class Librarian extends User {
 	/**
 	 * Get count of all possible copies of documents in the library.
 	 *
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 * @return Count of all copies.
 	 * @throws SQLException If database is busy.
 	 */
@@ -286,10 +295,10 @@ public class Librarian extends User {
 	}
 
 	/**
-	 * Document renew confirmation
+	 * documents.Document renew confirmation
 	 *
 	 * @param debtID is debt we want to renew
-	 * @param database Database storing the information
+	 * @param database tools.Database storing the information
 	 */
 	public void renewDocument(int debtID, Database database){
 		try{
@@ -301,7 +310,7 @@ public class Librarian extends User {
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
 				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("visiting professor"));
 				debt.setExpireDate(expDate);
-                System.out.println("Document was renewed!");
+                System.out.println("documents.Document was renewed!");
 			}
 		} catch (SQLException | NoSuchElementException e){
 			System.out.println("Incorrect ID");

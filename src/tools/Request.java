@@ -1,3 +1,7 @@
+package tools;
+
+import documents.Document;
+import users.Patron;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -12,13 +16,13 @@ public class Request {
     private Date date;
 
 
-    private boolean canTake; // Librarian can change this field //TODO: think about it
+    private boolean canTake; // users.Librarian can change this field //TODO: think about it
     //TODO: create getter and setter for canTake
 
     private ComparatorPriority comparator = new ComparatorPriority();
     private PriorityQueue<Patron> queue = new PriorityQueue<>(comparator);
 
-    public Request(Patron patron, Document document,Date date) {
+    public Request(Patron patron, Document document, Date date) {
         this.idPatron = patron.getId();
         this.namePatron = patron.getName();
         this.surnamePatron = patron.getSurname();

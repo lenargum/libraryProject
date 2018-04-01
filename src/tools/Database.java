@@ -1,3 +1,12 @@
+package tools;
+
+import documents.AudioVideoMaterial;
+import documents.Book;
+import documents.Document;
+import documents.JournalArticle;
+import users.Librarian;
+import users.Patron;
+
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,7 +16,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Database API for library system.
+ * tools.Database API for library system.
  * Used for accessing, reading and writing data into database.
  *
  * @author Lenar Gumerov
@@ -31,24 +40,24 @@ public class Database {
 	public void connect() {
 		try {
 			if (isConnected()) {
-				System.out.println("Database: Already connected");
+				System.out.println("tools.Database: Already connected");
 				return;
 			}
 
 			try {
 				Class.forName("org.sqlite.JDBC");
 			} catch (ClassNotFoundException e) {
-				throw new Exception("Database: Database driver not found");
+				throw new Exception("tools.Database: tools.Database driver not found");
 			}
 
 			String connectionURL = "jdbc:sqlite:library.db";
 
 			connection = DriverManager.getConnection(connectionURL);
 			connected = true;
-			System.out.println("Database: Connection successful");
+			System.out.println("tools.Database: Connection successful");
 		} catch (Exception e) {
 
-			System.out.println("Database: Connection failed");
+			System.out.println("tools.Database: Connection failed");
 		}
 	}
 
@@ -68,13 +77,13 @@ public class Database {
 		if (connection != null) {
 			try {
 				this.connection.close();
-				System.out.println("Database: Connection closed");
+				System.out.println("tools.Database: Connection closed");
 				this.connected = false;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} else {
-			System.out.println("Database: Connection was not opened, already closed.");
+			System.out.println("tools.Database: Connection was not opened, already closed.");
 		}
 	}
 
@@ -111,9 +120,9 @@ public class Database {
 	/**
 	 * Insert the user with following parameters into database.
 	 *
-	 * @param login     User login.
-	 * @param password  User password.
-	 * @param status    User status.
+	 * @param login     users.User login.
+	 * @param password  users.User password.
+	 * @param status    users.User status.
 	 * @param firstName First name.
 	 * @param lastName  Last name.
 	 * @param phone     Phone number.
@@ -131,7 +140,7 @@ public class Database {
 	/**
 	 * Insert provided patron into database.
 	 *
-	 * @param patron Patron to insert.
+	 * @param patron users.Patron to insert.
 	 * @throws SQLException user with such login exists.
 	 * @see Patron
 	 */
@@ -146,7 +155,7 @@ public class Database {
 	/**
 	 * Insert provided librarian into database.
 	 *
-	 * @param librarian Librarian to insert.
+	 * @param librarian users.Librarian to insert.
 	 * @throws SQLException user with such login exists.
 	 * @see Librarian
 	 */
@@ -157,21 +166,21 @@ public class Database {
 	/**
 	 * Insert document with following properties into database.
 	 *
-	 * @param name                 Document title.
-	 * @param authors              Document authors.
+	 * @param name                 documents.Document title.
+	 * @param authors              documents.Document authors.
 	 * @param isAllowedForStudents Student allowance.
 	 * @param numOfCopies          Count of copies.
-	 * @param isReference          Document reference status.
-	 * @param price                Document price.
+	 * @param isReference          documents.Document reference status.
+	 * @param price                documents.Document price.
 	 * @param keywords             Search keywords.
-	 * @param type                 Document type.
-	 * @param publisher            Document publisher.
+	 * @param type                 documents.Document type.
+	 * @param publisher            documents.Document publisher.
 	 * @param edition              Year edition.
 	 * @param bestseller           Bestseller status.
 	 * @param journalName          Journal title.
 	 * @param issue                Article issue.
-	 * @param editor               Document editor.
-	 * @param publicationDate      Document publication date.
+	 * @param editor               documents.Document editor.
+	 * @param publicationDate      documents.Document publication date.
 	 * @throws SQLException inserted document with incorrect type.
 	 */
 	private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
@@ -191,7 +200,7 @@ public class Database {
 	/**
 	 * Insert provided book into database.
 	 *
-	 * @param book Book to insert.
+	 * @param book documents.Book to insert.
 	 * @throws SQLException By default.
 	 * @see Book
 	 */
@@ -239,7 +248,7 @@ public class Database {
 	/**
 	 * Insert provided debt into database.
 	 *
-	 * @param debt Debt to insert.
+	 * @param debt tools.Debt to insert.
 	 * @throws SQLException By default.
 	 * @see Debt
 	 */
@@ -459,7 +468,7 @@ public class Database {
 	 * Get the patron with following ID from database.
 	 *
 	 * @param ID Patrons' ID stored in database.
-	 * @return Patron with following ID.
+	 * @return users.Patron with following ID.
 	 * @throws SQLException By default.
 	 * @see Patron
 	 */
@@ -479,7 +488,7 @@ public class Database {
 	 * Get the librarian with following ID from database.
 	 *
 	 * @param ID Librarians' ID stored in database.
-	 * @return Librarian with following ID.
+	 * @return users.Librarian with following ID.
 	 * @throws SQLException By default.
 	 * @see Librarian
 	 */
@@ -499,8 +508,8 @@ public class Database {
 	/**
 	 * Get the document with following ID from database.
 	 *
-	 * @param ID Document ID stored in database.
-	 * @return Document with following ID.
+	 * @param ID documents.Document ID stored in database.
+	 * @return documents.Document with following ID.
 	 * @throws SQLException By default.
 	 * @see Document
 	 */
@@ -520,8 +529,8 @@ public class Database {
 	/**
 	 * Get the book with following ID from database.
 	 *
-	 * @param ID Book ID stored in database.
-	 * @return Book with following ID.
+	 * @param ID documents.Book ID stored in database.
+	 * @return documents.Book with following ID.
 	 * @throws SQLException By default.
 	 * @see Book
 	 */
@@ -589,8 +598,8 @@ public class Database {
 	/**
 	 * Get the debt with following ID from database.
 	 *
-	 * @param ID Debt ID stored in database.
-	 * @return Debt with following ID.
+	 * @param ID tools.Debt ID stored in database.
+	 * @return tools.Debt with following ID.
 	 * @throws SQLException   By default.
 	 * @throws ParseException Incorrect data format.
 	 * @see Debt
@@ -612,7 +621,7 @@ public class Database {
 	/**
 	 * Get list of debts for the following user.
 	 *
-	 * @param userID Users' ID.
+	 * @param userID users' ID.
 	 * @return List of debts for following user stored in database.
 	 * @throws SQLException   By default.
 	 * @throws ParseException Incorrect data format.
@@ -640,7 +649,7 @@ public class Database {
 	/**
 	 * Print the debts list for the following user.
 	 *
-	 * @param userID User's ID.
+	 * @param userID users.User's ID.
 	 * @throws SQLException By default.
 	 */
 	public void printDebtsForUser(int userID) throws SQLException {
@@ -649,7 +658,7 @@ public class Database {
 
 		ArrayList<String> output = new ArrayList<>();
 		while (debtsSet.next()) {
-			output.add("Document id: " + debtsSet.getInt(3));
+			output.add("documents.Document id: " + debtsSet.getInt(3));
 			output.add("Booking date: " + debtsSet.getString(4));
 			output.add("Expire date: " + debtsSet.getString(5));
 			output.add("Fee: " + debtsSet.getDouble(6));
@@ -703,7 +712,7 @@ public class Database {
 	/**
 	 * Delete user with following ID from database.
 	 *
-	 * @param userID Users' ID.
+	 * @param userID users' ID.
 	 * @throws SQLException By default.
 	 */
 	public void deleteUser(int userID) throws SQLException {
@@ -713,7 +722,7 @@ public class Database {
 	/**
 	 * Delete document with following ID from database.
 	 *
-	 * @param documentID Document ID.
+	 * @param documentID documents.Document ID.
 	 * @throws SQLException By default.
 	 */
 	public void deleteDocument(int documentID) throws SQLException {
@@ -724,7 +733,7 @@ public class Database {
 	/**
 	 * Delete debt with following ID from database.
 	 *
-	 * @param debtID Debt ID.
+	 * @param debtID tools.Debt ID.
 	 * @throws SQLException By default.
 	 */
 	public void deleteDebt(int debtID) throws SQLException {
@@ -735,7 +744,7 @@ public class Database {
 	/**
 	 * Modifies the user data in database.
 	 *
-	 * @param userID Users' ID.
+	 * @param userID users' ID.
 	 * @param column Column to edit. Available options:
 	 *               <br>"address" to edit address</br>
 	 *               <br>"phone" to edit phone number</br>
@@ -763,7 +772,7 @@ public class Database {
 	/**
 	 * Modifies the document data in database.
 	 *
-	 * @param documentID Document ID.
+	 * @param documentID documents.Document ID.
 	 * @param column     Column to edit. Available options:
 	 *                   <br>"bestseller" to edit bestseller status</br>
 	 *                   <br>"edition" to edit edition</br>
@@ -792,7 +801,7 @@ public class Database {
 	/**
 	 * Modifies the user data in database.
 	 *
-	 * @param debtID Debt ID.
+	 * @param debtID tools.Debt ID.
 	 * @param column Column to edit.
 	 * @param value  New value.
 	 * @throws SQLException Incorrect column name or value.
@@ -822,20 +831,20 @@ public class Database {
 			this.execute("DELETE FROM users");
 			this.execute("DELETE FROM documents");
 			this.execute("DELETE FROM debts");
-			System.out.println("Database: Records cleared.");
+			System.out.println("tools.Database: Records cleared.");
 			this.execute("UPDATE sqlite_sequence SET seq=0");
-			System.out.println("Database: Indices reset.");
+			System.out.println("tools.Database: Indices reset.");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new SQLException("Database: Clearing failed.");
+			throw new SQLException("tools.Database: Clearing failed.");
 		}
 	}
 
 	/**
 	 * Authorize and find user with following credentials.
 	 *
-	 * @param login    User login.
-	 * @param password User password.
+	 * @param login    users.User login.
+	 * @param password users.User password.
 	 * @return {@code true} if user with following credentials found in database, {@code false} otherwise.
 	 * @throws SQLException By default.
 	 */
@@ -848,9 +857,9 @@ public class Database {
 	/**
 	 * Returns user id with such login and password.
 	 *
-	 * @param login    User login.
-	 * @param password User password.
-	 * @return User's ID.
+	 * @param login    users.User login.
+	 * @param password users.User password.
+	 * @return users.User's ID.
 	 * @throws SQLException By default.
 	 */
 	public int loginId(String login, String password) throws SQLException {
@@ -865,8 +874,8 @@ public class Database {
 	/**
 	 * Returns user's status by ID.
 	 *
-	 * @param ID User's ID.
-	 * @return User's status.
+	 * @param ID users.User's ID.
+	 * @return users.User's status.
 	 * @throws SQLException By default.
 	 */
 	public String loginStatus(int ID) throws SQLException {
@@ -881,8 +890,8 @@ public class Database {
 	/**
 	 * Find debt ID with following patron and document IDs.
 	 *
-	 * @param patronID Patron ID.
-	 * @param docID    Document ID.
+	 * @param patronID users.Patron ID.
+	 * @param docID    documents.Document ID.
 	 * @return ID for found debt.
 	 * @throws SQLException By default.
 	 */
@@ -897,7 +906,7 @@ public class Database {
 	/**
 	 * Find the ID for following document.
 	 *
-	 * @param document Document to find.
+	 * @param document documents.Document to find.
 	 * @return ID for found document.
 	 * @throws SQLException By default.
 	 */
@@ -911,7 +920,7 @@ public class Database {
 	/**
 	 * Find the ID for following patron.
 	 *
-	 * @param patron Patron to find.
+	 * @param patron users.Patron to find.
 	 * @return ID for found patron.
 	 * @throws SQLException By default.
 	 */
@@ -925,7 +934,7 @@ public class Database {
 	/**
 	 * Find the ID for following librarian.
 	 *
-	 * @param librarian Librarian to find.
+	 * @param librarian users.Librarian to find.
 	 * @return ID for found librarian.
 	 * @throws SQLException By default.
 	 */

@@ -1,4 +1,12 @@
-import javax.xml.crypto.Data;
+package users;
+
+import documents.AudioVideoMaterial;
+import documents.Book;
+import documents.Document;
+import documents.JournalArticle;
+import tools.Database;
+import tools.*;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -13,13 +21,13 @@ import java.util.NoSuchElementException;
  */
 public class Patron extends User {
 	/**
-	 * Patron type.
+	 * users.Patron type.
 	 * Possible values: {@code "faculty"}, {@code "student"}, {@code "ta"}, {@code "vp"} , {@code "professor"}
 	 */
 	private String status;
 
 	/**
-	 * Priority of Patron.
+	 * Priority of users.Patron.
 	 * Levels of priority: student, faculty(instructions), TA, VP, professor
 	 */
 	private int priority;
@@ -34,7 +42,7 @@ public class Patron extends User {
 	 *
 	 * @param login    Login.
 	 * @param password Password.
-	 * @param status   Patron type. Possible values: {@code "faculty"}, {@code "student"}
+	 * @param status   users.Patron type. Possible values: {@code "faculty"}, {@code "student"}
 	 * @param name     First name.
 	 * @param surname  Last name.
 	 * @param phone    Phone number.
@@ -58,7 +66,7 @@ public class Patron extends User {
 	/**
 	 * Get the patron status. Possible values: {@code "faculty"}, {@code "student"}
 	 *
-	 * @return Patron status.
+	 * @return users.Patron status.
 	 */
 	public String getStatus() {
 		return status;
@@ -93,8 +101,8 @@ public class Patron extends User {
 	/**
 	 * Checks whether patron can take the following book.
 	 *
-	 * @param idBook   Book ID to check.
-	 * @param database Database that stores the information.
+	 * @param idBook   documents.Book ID to check.
+	 * @param database tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
 
@@ -103,7 +111,7 @@ public class Patron extends User {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
 		}
 		try {
@@ -135,7 +143,7 @@ public class Patron extends User {
 						!book.isReference() && !getListOfDocumentsPatron().contains(idBook);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: Incorrect ID. Book with ID="
+			System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Book with ID="
 					+ idBook + " may not be registered id database.");
 			return false;
 		}
@@ -145,14 +153,14 @@ public class Patron extends User {
 	 * Checks whether patron can take the following article.
 	 *
 	 * @param idArticle Article ID to check.
-	 * @param database  Database that stores the information.
+	 * @param database  tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the article, otherwise {@code false}.
 	 */
 	public boolean canRequestArticle(int idArticle, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
 		}
 		try {
@@ -184,7 +192,7 @@ public class Patron extends User {
 						!article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
 			}
 		} catch (SQLException | ParseException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: Incorrect ID. Article with ID="
+			System.out.println("tools.Database <- users.Patron: Incorrect ID. Article with ID="
 					+ idArticle + " may not be registered id database.");
 			return false;
 		}
@@ -194,14 +202,14 @@ public class Patron extends User {
 	 * Checks whether patron can take the following audio/video.
 	 *
 	 * @param idAV     Audio/video ID to check.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the audio/video, otherwise {@code false}.
 	 */
 	public boolean canRequestAV(int idAV, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
 		}
 		try {
@@ -235,7 +243,7 @@ public class Patron extends User {
 						!av.isReference() && !getListOfDocumentsPatron().contains(idAV);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: Incorrect ID. AV with ID="
+			System.out.println("tools.Database <- users.Patron: Incorrect ID. AV with ID="
 					+ idAV + " may not be registered id database.");
 			return false;
 		}
@@ -244,15 +252,15 @@ public class Patron extends User {
 	/**
 	 * Checks whether patron can take the following document.
 	 *
-	 * @param idDocument Document ID to check.
-	 * @param database   Database that stores the information.
+	 * @param idDocument documents.Document ID to check.
+	 * @param database   tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the document, otherwise {@code false}.
 	 */
 	public boolean canRequestDocument(int idDocument, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
 		}
 		try {
@@ -277,7 +285,7 @@ public class Patron extends User {
 				return false;
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Database <- Patron: Incorrect ID. Document with ID="
+			System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Document with ID="
 					+ idDocument + " may not be registered id database.");
 			return false;
 		}
@@ -286,8 +294,8 @@ public class Patron extends User {
 	/**
 	 * Take the following book ang give it to this patron.
 	 *
-	 * @param idBook   Book to take.
-	 * @param database Database that stores the information.
+	 * @param idBook   documents.Book to take.
+	 * @param database tools.Database that stores the information.
 	 */
 
 	public void takeBook(int idBook, Database database) {
@@ -323,7 +331,7 @@ public class Patron extends User {
 	 * Take the following audio/video ang give it to this patron.
 	 *
 	 * @param idAV     Audio/video to take.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void takeAV(int idAV, Database database) {
 		try {
@@ -348,7 +356,7 @@ public class Patron extends User {
 	 * Take the following article ang give it to this patron.
 	 *
 	 * @param idArticle Article to take.
-	 * @param database  Database that stores the information.
+	 * @param database  tools.Database that stores the information.
 	 */
 	public void takeArticle(int idArticle, Database database) throws ParseException {
 		try {
@@ -374,7 +382,7 @@ public class Patron extends User {
 	 * Take the following document ang give it to this patron.
 	 *
 	 * @param idDocument document to take.
-	 * @param database   Database that stores the information.
+	 * @param database   tools.Database that stores the information.
 	 */
 	public void takeDocument(int idDocument, Database database) {
 		try {
@@ -411,8 +419,8 @@ public class Patron extends User {
 	/**
 	 * Decrease the number of copies of specified document by one.
 	 *
-	 * @param idDocument Document ID.
-	 * @param database   Database that stores the information.
+	 * @param idDocument documents.Document ID.
+	 * @param database   tools.Database that stores the information.
 	 * @throws SQLException If passed the wrong document ID.
 	 */
 	private void decreaseCountOfCopies(int idDocument, Database database) throws SQLException {
@@ -423,8 +431,8 @@ public class Patron extends User {
 	/**
 	 * Increase the number of copies of specified document by one.
 	 *
-	 * @param idDocument Document ID.
-	 * @param database   Database that stores the information.
+	 * @param idDocument documents.Document ID.
+	 * @param database   tools.Database that stores the information.
 	 * @throws SQLException If passed the wrong document ID.
 	 */
 	private void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
@@ -435,8 +443,8 @@ public class Patron extends User {
 	/**
 	 * Return the book to the library.
 	 *
-	 * @param idBook   Book ID.
-	 * @param database Database that stores the information.
+	 * @param idBook   documents.Book ID.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void returnBook(int idBook, Database database) {
 		try {
@@ -461,7 +469,7 @@ public class Patron extends User {
 	 * Return the article to the library.
 	 *
 	 * @param idArticle Article ID.
-	 * @param database  Database that stores the information.
+	 * @param database  tools.Database that stores the information.
 	 */
 	public void returnArticle(int idArticle, Database database) throws ParseException {
 		try {
@@ -486,7 +494,7 @@ public class Patron extends User {
 	 * Return the audio/video to the library.
 	 *
 	 * @param idAV     Audio/video ID.
-	 * @param database Database that stores the information.
+	 * @param database tools.Database that stores the information.
 	 */
 	public void returnAV(int idAV, Database database) {
 		try {
@@ -510,8 +518,8 @@ public class Patron extends User {
 	/**
 	 * Return the document to the library.
 	 *
-	 * @param idDocument Document ID.
-	 * @param database   Database that stores the information.
+	 * @param idDocument documents.Document ID.
+	 * @param database   tools.Database that stores the information.
 	 */
 	public void returnDocument(int idDocument, Database database) {
 		try {
@@ -544,8 +552,8 @@ public class Patron extends User {
 
 	/**
 	 * patron requests the document renew
-	 * @param docID Document ID
-	 * @param database Database stores the information
+	 * @param docID documents.Document ID
+	 * @param database tools.Database stores the information
 	 */
 	public void renewDocument(int docID, int libID, Database database){
 		try{

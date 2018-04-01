@@ -1,3 +1,9 @@
+import documents.AudioVideoMaterial;
+import documents.Book;
+import tools.Database;
+import tools.Debt;
+import users.Librarian;
+import users.Patron;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

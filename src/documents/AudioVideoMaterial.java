@@ -1,3 +1,5 @@
+package documents;
+
 /**
  * This class describes audio and video materials of library system.
  *
