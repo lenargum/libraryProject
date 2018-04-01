@@ -401,8 +401,8 @@ public class Patron extends User {
 		try {
 			//TODO: set current date
 			Date currentDate = new Date();
-			Request request = new Request(this.getId(), idDocument, currentDate, database);
-			request.addToQueue(this.getId(), idDocument, database);
+			Request request = new Request(this,database.getDocument(idDocument), currentDate);
+			request.addToQueue(this.getId(), database);
 		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}
