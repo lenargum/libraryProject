@@ -31,7 +31,7 @@ Please use one of these credentials:
 These users are being added to database after running tests.
 
 ## Team contribution
-- [Lenar Gumerov](https://github.com/lenargum) – Database routines and its API
-- [Anastasia Minakova](https://github.com/stalem9) – Core, Document entities
-- [Madina Gafarova](https://github.com/gafmn) – Core, User entities
+- [Lenar Gumerov](https://github.com/lenargum) – tools.Database routines and its API
+- [Anastasia Minakova](https://github.com/stalem9) – Core, documents.Document entities
+- [Madina Gafarova](https://github.com/gafmn) – Core, users.User entities
 - [Ruslan Shakirov](https://github.com/Shakirovrrr) – Desktop app; Testing
