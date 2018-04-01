@@ -572,6 +572,11 @@ public class Patron extends User {
         }
 	}
 
+	/**
+	 * patron sends request to renew document
+	 * @param debtId - id of debt patron wants to renew
+	 * @param database - information storage
+	 */
 	public void sendRenewRequest(int debtId, Database database){
 	    try{
 	        Debt debt = database.getDebt(debtId);
