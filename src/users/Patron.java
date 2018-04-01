@@ -106,7 +106,6 @@ public class Patron extends User {
 	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
 
-	//TODO: NEW STATUS OF PATRON!!!
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
 			database.getPatron(getId());
@@ -407,10 +406,10 @@ public class Patron extends User {
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
-			//TODO: set current date
 			Date currentDate = new Date();
 			Request request = new Request(this,database.getDocument(idDocument), currentDate);
 			request.addToQueue(this.getId(), database);
+			database.insertRequest(request);
 		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}
@@ -546,7 +545,7 @@ public class Patron extends User {
 	 * @param patron Another patron to compare.
 	 * @return {@code true} if patrons are similar, {@code false} otherwise.
 	 */
-	boolean compare(Patron patron) {
+	public boolean compare(Patron patron) {
 		return this.getLogin().equals(patron.getLogin());
 	}
 

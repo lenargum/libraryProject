@@ -290,7 +290,7 @@ public class Librarian extends User {
 	 * @param librarian Another librarian to compare.
 	 * @return {@code true} if librarians are similar, {@code false} otherwise.
 	 */
-	boolean compare(Librarian librarian) {
+    public boolean compare(Librarian librarian) {
 		return this.getLogin().equals(librarian.getLogin());
 	}
 
@@ -333,10 +333,12 @@ public class Librarian extends User {
 
 	public void submitRequest(Request request, Database database) throws SQLException {
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
+		database.deleteRequest(request.getIdPatron(), request.getIdDocument());
 	}
 
 	public void deleteRequest(Request request, Database database) throws SQLException {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
+		database.deleteRequest(request.getIdPatron(), request.getIdDocument());
 	}
 	
 }
