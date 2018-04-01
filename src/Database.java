@@ -944,41 +944,42 @@ public class Database {
 		//nado chto-to napisat'
 	}
 
-	//insert,get,delete,edit
+	//insert,get,delete,edit request
 	public void insertRequest(Request request) throws SQLException {
-		this.execute("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date)" +
-				"VALUES("+request.getIdPatron()+", \'"+request.getNamePatron()+"\', \''"+request.getSurnamePatron()+"\', "
-				+request.getIdDocument()+", "+request.getPriority()+", \'"+
-				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate())+"\')");
+		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date)" +
+				"VALUES(%d, '%s', '%s', %d, %d,'%s')", request.getIdPatron(), request.getNamePatron(),
+				request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
+				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate())));
 	}
 
 	public List<Request> getRequests() throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests");
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
 		LinkedList<Request> requests = new LinkedList<>();
-
 		while (requestsSet.next()) {
-			Request temp = new Request(requestsSet.getInt(1),requestsSet.getInt(4),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(6), ));
+			Request temp = new Request(this.getPatron(requestsSet.getInt(1)),this.getDocument(requestsSet.getInt(5)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(6)));
 
 			requests.add(temp);
 		}
-
 		return requests;
 	}
 
+	public void deleteRequest(int patronId,int documentId) throws SQLException {
+		executeUpdate(String.format("DELETE FROM requests WHERE patron_id = %d AND document_id = %d",
+				patronId,documentId));
+	}
 
+	public void editRequest(int patronId, int documentId, String column, String value) throws SQLException {
+		String quotes1 = "";
+		String quotes2 = "";
 
-	/*private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
-								boolean isReference, double price, String keywords, String type, String publisher,
-								int edition, boolean bestseller, String journalName, String issue, String editor,
-								String publicationDate) throws SQLException {
-		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
-				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
-				" journal_name, issue, editor, publication_date)" +
-				" VALUES('" + name + "','" + authors + "','" + isAllowedForStudents + "',"
-				+ numOfCopies + ",'" + isReference + "'," + price + ",'" + keywords + "','" + type + "','"
-				+ publisher + "'," + edition + ",'" + bestseller + "','" + journalName + "','" + issue + "','"
-				+ editor + "','" + publicationDate + "')");
-
-	}*/
+		try {
+			//noinspection ResultOfMethodCallIgnored
+			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
+		} catch (NumberFormatException e) {
+			quotes1 = "\'";
+			quotes2 = "\'";
+		}
+		executeUpdate(String.format("UPDATE requests SET %s = %s"+value+"%s WHERE patron_id = %d AND document_id = %d",column,quotes1,quotes2,patronId,documentId));
+	}
 }
