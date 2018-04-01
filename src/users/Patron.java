@@ -108,7 +108,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -157,7 +157,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestArticle(int idArticle, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -206,7 +206,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestAV(int idAV, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -257,7 +257,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestDocument(int idDocument, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -559,7 +559,7 @@ public class Patron extends User {
 			if(debt.canRenew()){
                 Date expDate = debt.getExpireDate();
                 expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-                debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+                debt.setCanRenew(false || database.getPatron(debt.getPatronId(), database).getStatus().toLowerCase().equals("vp"));
                 debt.setExpireDate(expDate);
                 System.out.println("documents.Document was renewed!");
 			} else {

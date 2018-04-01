@@ -135,7 +135,7 @@ class MainTest {
 			database.connect();
 
 			try {
-				database.getPatron(p2.getId());
+				database.getPatron(p2.getId(), database);
 			} catch (NoSuchElementException e) {
 				System.out.println("No information for p2.");
 			}

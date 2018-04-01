@@ -468,11 +468,12 @@ public class Database {
 	 * Get the patron with following ID from database.
 	 *
 	 * @param ID Patrons' ID stored in database.
+	 * @param database
 	 * @return users.Patron with following ID.
 	 * @throws SQLException By default.
 	 * @see Patron
 	 */
-	public Patron getPatron(int ID) throws SQLException {
+	public Patron getPatron(int ID, Database database) throws SQLException {
 		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
@@ -628,7 +629,7 @@ public class Database {
 	 * @see List
 	 * @see Debt
 	 */
-	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
+	public List<Debt> getDebtsForUser(boolean userID) throws SQLException, ParseException {
 		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 		LinkedList<Debt> debts = new LinkedList<>();
@@ -945,14 +946,6 @@ public class Database {
 		return -1;
 	}
 
-	public void renew(int debtId){
-		//nado chto-to napisat'
-	}
-
-	public void fee(int debtId){
-		//nado chto-to napisat'
-	}
-
 	//insert,get,delete,edit request
 	public void insertRequest(Request request) throws SQLException {
 		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
@@ -965,7 +958,7 @@ public class Database {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
 		LinkedList<Request> requests = new LinkedList<>();
 		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)),this.getDocument(requestsSet.getInt(6)),
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
 					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
 			temp.setRequestId(requestsSet.getInt(1));
 			requests.add(temp);
@@ -976,7 +969,7 @@ public class Database {
 	public Request getRequest(int id) throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = "+id);
 		if (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)),this.getDocument(requestsSet.getInt(6)),
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
 					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
 			temp.setRequestId(requestsSet.getInt(1));
 			return temp;

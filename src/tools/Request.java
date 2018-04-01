@@ -36,19 +36,19 @@ public class Request {
     }
 
     public void addToQueue(int idPatron, Database database) throws SQLException {
-        queue.add(database.getPatron(idPatron));
+        queue.add(database.getPatron(idPatron, database));
 
     }
 
     public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        queue.remove(database.getPatron(idPatron));
+        queue.remove(database.getPatron(idPatron, database));
         canTake = true;
-        database.getPatron(idPatron).takeDocument(idDocument, database);
+        database.getPatron(idPatron, database).takeDocument(idDocument, database);
     }
 
     public void refuseRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
-            queue.remove(database.getPatron(idPatron));
+        if (!database.getPatron(idPatron, database).canRequestDocument(idDocument, database)){
+            queue.remove(database.getPatron(idPatron, database));
         }
         if (database.getDocument(idDocument).getNumberOfCopies() == 0){
             System.out.println("Wait until the copies appear or Please, check your status!");
@@ -56,7 +56,7 @@ public class Request {
     }
 
     public void approveRenew(Database database)throws SQLException{
-        database.getPatron(idPatron).returnDocument(idDocument, database);
+        database.getPatron(idPatron, database).returnDocument(idDocument, database);
     }
 
     public void refuseRenew(){
