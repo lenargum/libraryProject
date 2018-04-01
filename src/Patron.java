@@ -399,10 +399,8 @@ public class Patron extends User {
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
-			//TODO: set current date
-			Date currentDate = new Date();
-			Request request = new Request(this.getId(), idDocument, currentDate, database);
-			request.addToQueue(this.getId(), idDocument, database);
+			Request request = new Request(this, database.getDocument(idDocument), new Date(),false);
+			request.addToQueue(this.getId(), database);
 		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}

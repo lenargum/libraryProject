@@ -299,7 +299,7 @@ public class Librarian extends User {
 			} else {
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("visiting professor"));
 				debt.setExpireDate(expDate);
                 System.out.println("Document was renewed!");
 			}
@@ -323,11 +323,11 @@ public class Librarian extends User {
 	}
 
 	public void submitRequest(Request request, Database database) throws SQLException {
-		request.approveRequest(request.idPatron, request.idDocument,database);
+		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
 	}
 
 	public void deleteRequest(Request request, Database database) throws SQLException {
-		request.refuseRequest(request.idPatron, request.idDocument, database);
+		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 	
 }
