@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.PriorityQueue;
 
 public class Request {
+    private int requestId;
     private int idPatron;
     private String namePatron;
     private String surnamePatron;
     private int idDocument;
     private int priority;
     private Date date;
+    private boolean isRenewRequest = false;
 
 
     private boolean canTake; // Librarian can change this field //TODO: think about it
@@ -18,7 +20,7 @@ public class Request {
     private ComparatorPriority comparator = new ComparatorPriority();
     private PriorityQueue<Patron> queue = new PriorityQueue<>(comparator);
 
-    public Request(Patron patron, Document document,Date date) {
+    public Request(Patron patron, Document document,Date date,boolean isRenewRequest) {
         this.idPatron = patron.getId();
         this.namePatron = patron.getName();
         this.surnamePatron = patron.getSurname();
@@ -26,6 +28,7 @@ public class Request {
         this.date = date;
         this.priority = patron.getPriority();
         canTake = false;
+        this.isRenewRequest = isRenewRequest;
     }
 
     public void addToQueue(int idPatron, Database database) throws SQLException {
@@ -94,5 +97,21 @@ public class Request {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isRenewRequest() {
+        return isRenewRequest;
+    }
+
+    public void setIsRenewRequest(boolean renewRequest) {
+        isRenewRequest = renewRequest;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 }
