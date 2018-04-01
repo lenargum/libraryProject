@@ -285,13 +285,11 @@ public class Librarian extends User {
 		return this.getLogin().equals(librarian.getLogin());
 	}
 
-
 	/**
-	 * Document request confirmation - executes when patron takes the document
+	 * Document renew confirmation
 	 *
-	 * @param idPatron - id of patron who want to take the document
-	 * @param idDocument - id of document patron wants to take
-	 * @param database - information storage
+	 * @param debtID is debt we want to renew
+	 * @param database Database storing the information
 	 */
 	public void documentRequestConfirmation(int idPatron, int idDocument, Database database){
 
@@ -324,12 +322,7 @@ public class Librarian extends User {
         }
     }
 
-	/**
-	 * patron wants to fine his debt
-	 * @param debtID  - debt to fine
-	 * @param database - information storage
-	 */
-	public void fine(int debtID, Database database){
+	public void getFee(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
 			debt.setFee(0);
@@ -339,6 +332,14 @@ public class Librarian extends User {
 		} catch (ParseException e){
 			System.out.println("By default");
 		}
+	}
+
+	public void submitRequest(Request request, Database database) throws SQLException {
+		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
+	}
+
+	public void deleteRequest(Request request, Database database) throws SQLException {
+		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 
 }

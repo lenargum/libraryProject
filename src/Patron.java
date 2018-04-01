@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 public class Patron extends User {
 	/**
 	 * Patron type.
-	 * Possible values: {@code "faculty"}, {@code "student"}, {@code "ta"}, {@code "vp"} , {@code "professor"}
+	 * Possible values: {@code "faculty"}, {@code "student"}
 	 */
 	private String status;
 
@@ -97,8 +97,6 @@ public class Patron extends User {
 	 * @param database Database that stores the information.
 	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
-
-	//TODO: NEW STATUS OF PATRON!!!
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
 			database.getPatron(getId());
@@ -289,7 +287,6 @@ public class Patron extends User {
 	 * @param idBook   Book to take.
 	 * @param database Database that stores the information.
 	 */
-
 	public void takeBook(int idBook, Database database) {
 		try {
 			if (canRequestBook(idBook, database)) {
@@ -358,7 +355,7 @@ public class Patron extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(status.toLowerCase().equals("vp"))
+				if(status.toLowerCase().equals("visiting professor"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
 				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
@@ -399,10 +396,8 @@ public class Patron extends User {
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
-			//TODO: set current date
-			Date currentDate = new Date();
-			Request request = new Request(this.getId(), idDocument, currentDate, database);
-			request.addToQueue(this.getId(), idDocument, database);
+			Request request = new Request(this, database.getDocument(idDocument), new Date(),false);
+			request.addToQueue(this.getId(), database);
 		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}
@@ -572,8 +567,11 @@ public class Patron extends User {
 	    try{
 	        Debt debt = database.getDebt(debtId);
 	        Document doc = database.getDocument(debt.getDocumentId());
-	        RenewRequest request = new RenewRequest(debtId, getId(), debt.getDocumentId(), getName(), getSurname(), doc.toString());
-        } catch (SQLException | ParseException e){
+
+            RenewRequest request = new RenewRequest(debtId, getId(), debt.getDocumentId(), getName(), getSurname(), doc.toString());
+            //database.insertRequest();
+	    }
+        catch (SQLException | ParseException e){
 
         }
 

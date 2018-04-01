@@ -944,35 +944,58 @@ public class Database {
 		//nado chto-to napisat'
 	}
 
-	public void requestDocument(int idPatron, int idDocument){
-
+	//insert,get,delete,edit request
+	public void insertRequest(Request request) throws SQLException {
+		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
+				"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
+				request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
+				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()),request.isRenewRequest()));
 	}
 
-	public void requestArticle(int idPatron, int idArticle){
-
+	public List<Request> getRequests() throws SQLException, ParseException {
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
+		LinkedList<Request> requests = new LinkedList<>();
+		while (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)),this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			requests.add(temp);
+		}
+		return requests;
 	}
 
-	public void reqestAV(int idPatron, int idAV){
-
+	public Request getRequest(int id) throws SQLException, ParseException {
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = "+id);
+		if (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)),this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			return temp;
+		}
+		throw new NoSuchElementException();
 	}
 
-	public void requestBook(int idPatron, int idBook){
 
+	public void deleteRequest(int patronId,int documentId) throws SQLException {
+		executeUpdate(String.format("DELETE FROM requests WHERE patron_id = %d AND document_id = %d",
+				patronId,documentId));
 	}
 
-	public void requestReturnDocument(int idPatron, int idDocument){
-
+	public void deleteRequest(int requestId) throws SQLException {
+		executeUpdate("DELETE FROM requests WHERE request_id = "+requestId);
 	}
 
-	public void requestReturnArticle(int idPatron, int idArticle){
+	public void editRequest(int requestId, String column, String value) throws SQLException {
+		String quotes1 = "";
+		String quotes2 = "";
 
-	}
-
-	public void requestReturnAV(int idPatron, int idAV){
-
-	}
-
-	public void requestReturnBook(int idPatron, int idBook){
-
+		try {
+			//noinspection ResultOfMethodCallIgnored
+			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
+		} catch (NumberFormatException e) {
+			quotes1 = "\'";
+			quotes2 = "\'";
+		}
+		executeUpdate(String.format("UPDATE requests SET %s = %s"+value+"%s WHERE request_id = %d",column,quotes1,quotes2,requestId));
 	}
 }
