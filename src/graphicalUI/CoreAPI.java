@@ -1,5 +1,9 @@
 package graphicalUI;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +39,39 @@ public class CoreAPI {
 		assert loggedIn;
 		credentials = null;
 		loggedIn = false;
+	}
+
+	public ObservableList<UserDocs.MyDocsView> getUserBooks() {
+		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
+		list.add(new UserDocs.MyDocsView("Boookee 1", 12, 1));
+		list.add(new UserDocs.MyDocsView("AVVEE", 3, 2));
+		list.add(new UserDocs.MyDocsView("Porn", -16, 3));
+		list.add(new UserDocs.MyDocsView("Introduction to Something", 9, 4));
+		list.add(new UserDocs.MyDocsView("Another book", 5, 5));
+		list.add(new UserDocs.MyDocsView("MORE DOCS", 10, 6));
+		list.add(new UserDocs.MyDocsView("Heeey", 2, 7));
+
+		return list;
+	}
+
+	public ObservableList<DocCell> getRecent() {
+		ObservableList<DocCell> recent = FXCollections.observableArrayList();
+		int count = getUserBooks().size() > 5 ? 5 : getUserBooks().size();
+		ObservableList<UserDocs.MyDocsView> sorted = getUserBooks().sorted(Comparator.comparing(o -> o.daysLeft.getValue()));
+
+		for (int i = 0; i < count; i++) {
+			recent.add(new DocCell(sorted.get(i).docTitle.getValue(), sorted.get(i).daysLeft.intValue(), i));
+		}
+
+		return recent;
+	}
+
+	public ObservableList<UserDocs.WaitlistView> getWaitList() {
+		ObservableList<UserDocs.WaitlistView> waitlist = FXCollections.observableArrayList();
+		waitlist.add(new UserDocs.WaitlistView("Cormen!", 100500, 1));
+		waitlist.add(new UserDocs.WaitlistView("Some Strange Book", 0, 2));
+
+		return waitlist;
 	}
 
 	public UserType userType() {

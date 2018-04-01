@@ -1,7 +1,6 @@
 package graphicalUI;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.svg.SVGGlyph;
@@ -10,10 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -32,14 +29,13 @@ public class UserPage {
 	@FXML
 	private JFXButton browseLibBtn;
 	private DocSelector selector;
+	private UserDocs userDocs;
 	private Scene mainScene;
 	@FXML
-	private GridPane infoGrid;
-	@FXML
-	private JFXListView<Label> myLastBooks;
+	private JFXListView<DocCell> myLastBooks;
 	private JFXPopup detailsPopup;
-
-	private boolean initialized;
+	@FXML
+	private JFXButton seeMoreBtn;
 
 	public UserPage() {
 	}
@@ -54,17 +50,20 @@ public class UserPage {
 		}
 		mainScene = new Scene(userLayout);
 
+		userDocs = new UserDocs(rootPage.getApi());
+
+		Thread initSelector = new Thread(() -> {
+			System.out.print("Loading document selector in parallel thread:\n\t");
+			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
+		});
+
+		initSelector.start();
+
 		initialize();
 	}
 
 	public void show() {
 		primaryStage.setScene(mainScene);
-
-		Thread initSelector = new Thread(() -> {
-			System.out.println("Loading document selector in parallel thread:\n\t");
-			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
-		});
-		initSelector.start();
 	}
 
 	private void initialize() {
@@ -87,13 +86,14 @@ public class UserPage {
 			controlPanelBtn.setVisible(true);
 		}
 
-		myLastBooks = (JFXListView<Label>) userLayout.lookup("#myLastBooks");
+		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
+		seeMoreBtn.setOnAction(event -> userDocs.show());
+
+		myLastBooks = (JFXListView<DocCell>) userLayout.lookup("#myLastBooks");
 		myLastBooks.setDepth(2);
-		myLastBooks.getItems().addAll(new Label("Booooooook"), new Label("ARRRRRRticle"), new Label("AV"));
+		myLastBooks.getItems().addAll(rootPage.getApi().getRecent());
 
 		myLastBooks.setOnMouseClicked(this::myLastBooksOnMouseClicked);
-
-		initialized = true;
 	}
 
 	private void accountBtnClicked(ActionEvent event) {
@@ -104,13 +104,14 @@ public class UserPage {
 		logoutButton.setOnAction(event1 -> {
 			popup.hide();
 			rootPage.resolveLogoutTransition();
+			System.out.println("Logged out.");
 		});
 		popup.show(accountBtn, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT);
 	}
 
 	private void myLastBooksOnMouseClicked(MouseEvent event) {
-		JFXListCell<Label> intersectedNode = (JFXListCell<Label>) event.getPickResult().getIntersectedNode();
-		DocItem selectedItem = new DocItem(intersectedNode.getItem().getText(), "Author", 1);
+		DocCell selectedNode = myLastBooks.getSelectionModel().getSelectedItem();
+		DocItem selectedItem = new DocItem(selectedNode.getTitle(), "Author", 1);
 		VBox popupContainer = new VBox();
 		popupContainer.getChildren().addAll(selectedItem, new JFXButton("RENEW"), new JFXButton("RETURN"));
 		popupContainer.setPadding(new Insets(20));
