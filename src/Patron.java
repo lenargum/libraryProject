@@ -523,6 +523,7 @@ public class Patron extends User {
 			}
 			database.getDocument(idDocument).addCopy();
 			increaseCountOfCopies(idDocument, database);
+            System.out.println("Return confirmed!");
 			int debtID = database.findDebtID(this.getId(), idDocument);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
@@ -531,29 +532,6 @@ public class Patron extends User {
 			System.out.println("Incorrect input");
 		}
 	}
-
-	/**
-	 * makes request for returning debt
-	 * @param database information storage
-	 * @param debtID id of debt patron wants to return
-	 */
-    public void makeReturnRequest(int debtID, Database database){
-        try{
-            Debt debt = database.getDebt(debtID);
-            debt.countFee(database);
-            if(debt.getFee() > 0)
-                System.out.println("You cannot return this document until you pay for delay!");
-            else{
-                ReturnRequest request = new ReturnRequest(debtID, debt.getDocumentId(), getId(), getName(), getSurname());
-            }
-        } catch (SQLException e){
-            System.out.println("Incorrect ID");
-
-        } catch (ParseException e){
-
-        }
-
-    }
 
 	/**
 	 * Compare this patron with another.
@@ -570,7 +548,7 @@ public class Patron extends User {
 	 * @param docID Document ID
 	 * @param database Database stores the information
 	 */
-	public void renewDocument(int docID, int libID, Database database){
+	public void renewDocument(int docID, Database database){
 		try{
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);

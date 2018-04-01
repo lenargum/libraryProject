@@ -299,11 +299,13 @@ public class Librarian extends User {
 	}
 
 
-	public void confirmReturnRequest(ReturnRequest request, Database database) throws SQLException, ParseException{
-		Debt debt = database.getDebt(request.debtID);
+	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException{
+		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
-		if(debt.getFee() == 0)
-			request.approveReturn(database);
+		if(debt.getFee() == 0){
+		    Patron patron = database.getPatron(debt.getPatronId());
+		    patron.returnDocument(debt.getDocumentId(), database);
+        }
 		else {
 			System.out.println("You need to pay for delay");
 		}
