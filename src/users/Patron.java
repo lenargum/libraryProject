@@ -6,7 +6,6 @@ import documents.Document;
 import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
-import tools.RenewRequest;
 import tools.Request;
 
 import java.sql.SQLException;
@@ -577,9 +576,9 @@ public class Patron extends User {
 	    try{
 	        Debt debt = database.getDebt(debtId);
 	        Document doc = database.getDocument(debt.getDocumentId());
-
-            RenewRequest request = new RenewRequest(debtId, getId(), debt.getDocumentId(), getName(), getSurname(), doc.toString());
-            //database.insertRequest();
+			Date date = new Date();
+            Request request = new Request(this, doc, date, true);
+            database.insertRequest(request);
 	    }
         catch (SQLException | ParseException e){
 

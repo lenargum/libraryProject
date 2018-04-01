@@ -55,6 +55,14 @@ public class Request {
         }
     }
 
+    public void approveRenew(Database database)throws SQLException{
+        database.getPatron(idPatron).returnDocument(idDocument, database);
+    }
+
+    public void refuseRenew(){
+        System.out.println("There is outstanding request for this document, so you cannot renew it :(");
+    }
+
     public int getIdPatron() {
         return idPatron;
     }

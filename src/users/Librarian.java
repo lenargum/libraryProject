@@ -6,7 +6,6 @@ import documents.Document;
 import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
-import tools.RenewRequest;
 import tools.Request;
 
 import java.sql.SQLException;
@@ -318,12 +317,12 @@ public class Librarian extends User {
 		}
 	}
 
-	public void confirmRenew(RenewRequest request, Database database){
+	public void confirmRenew(Request request, Database database){
 	   try{
 	        if(false){ //TODO: how to check if there is outstanding request?
-	            request.refuse();
+	            request.refuseRenew();
             } else {
-	            request.approve(database);
+	            request.approveRenew(database);
             }
 
         } catch (SQLException e){
