@@ -335,12 +335,11 @@ public class Librarian extends User {
 	}
 
 	/**
-	 * Getting fee confirmation
-	 *
-	 * @param debtID
-	 * @param database
+	 * patron wants to fine his debt
+	 * @param debtID  - debt to fine
+	 * @param database - information storage
 	 */
-	public void getFee(int debtID, Database database){
+	public void fine(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
 			debt.setFee(0);

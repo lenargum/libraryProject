@@ -536,13 +536,24 @@ public class Patron extends User {
 	 * makes request for returning debt
 	 * @param database information storage
 	 * @param debtID id of debt patron wants to return
-	 * @throws ParseException 
-	 * @throws SQLException
 	 */
-	public void makeReturnRequest(Database database, int debtID) throws ParseException, SQLException{
-		Debt debt = database.getDebt(debtID);
-		ReturnRequest request = new ReturnRequest(debtID, debt.getDocumentId(), getId(), getName(), getSurname());
-	}
+    public void makeReturnRequest(int debtID, Database database){
+        try{
+            Debt debt = database.getDebt(debtID);
+            debt.countFee(database);
+            if(debt.getFee() > 0)
+                System.out.println("You cannot return this document until you pay for delay!");
+            else{
+                ReturnRequest request = new ReturnRequest(debtID, debt.getDocumentId(), getId(), getName(), getSurname());
+            }
+        } catch (SQLException e){
+            System.out.println("Incorrect ID");
+
+        } catch (ParseException e){
+
+        }
+
+    }
 
 	/**
 	 * Compare this patron with another.
@@ -575,24 +586,6 @@ public class Patron extends User {
         }
 	}
 
-	/**
-	 * patron wants to fine his debt
-	 * @param debtID  - debt to fine
-	 * @param database - information storage
-	 */
-	public void fine(int debtID, Database database){
-		try{
-			Debt debt = database.getDebt(debtID);
-			debt.countFee(database);
-			if(debt.getFee() > 0){
-				database.fee(debtID);
-			} else {
-				System.out.println("You do not owe Library anything");
-			}
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect ID");
-		} catch (ParseException e) {
-			System.out.println("By default");
-		}
-	}
+
+
 }
