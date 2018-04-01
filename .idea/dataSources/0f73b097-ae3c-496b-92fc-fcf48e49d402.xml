@@ -60,7 +60,6 @@
     <index id="19" parent="6" name="sqlite_autoindex_debts_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>debt_id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="20" parent="6">
@@ -160,7 +159,6 @@
     <index id="39" parent="7" name="sqlite_autoindex_documents_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="40" parent="7">
@@ -226,7 +224,6 @@
     <index id="54" parent="8" name="sqlite_autoindex_requests_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>request_id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="55" parent="8">
@@ -311,13 +308,11 @@
     <index id="73" parent="11" name="sqlite_autoindex_users_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <index id="74" parent="11" name="sqlite_autoindex_users_2">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>login</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="75" parent="11">
