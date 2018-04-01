@@ -311,30 +311,18 @@ public class Librarian extends User {
 		}
 	}
 
-	/**
-	 * Document renew confirmation
-	 *
-	 * @param debtID is debt we want to renew
-	 * @param database Database storing the information
-	 */ //TODO: think about renewing!
-	public void renewDocument(int debtID, Database database){
-		try{
-			Debt debt = database.getDebt(debtID);
-			if(false){//in the condition we check if there is outstanding request for document
-				System.out.println("You can not renew this document!");
-			} else {
-				Date expDate = debt.getExpireDate();
-				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
-				debt.setExpireDate(expDate);
-                System.out.println("Document was renewed!");
-			}
-		} catch (SQLException | NoSuchElementException e){
-			System.out.println("Incorrect ID");
-		} catch (ParseException e){
-			System.out.println("By default");
-		}
-	}
+	public void confirmRenew(RenewRequest request, Database database){
+	   try{
+	        if(false){ //TODO: how to check if there is outstanding request?
+	            request.refuse();
+            } else {
+	            request.approve(database);
+            }
+
+        } catch (SQLException e){
+
+        }
+    }
 
 	/**
 	 * patron wants to fine his debt

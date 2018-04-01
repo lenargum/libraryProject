@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class RenewRequest {
 
     int debtID;
@@ -14,11 +16,11 @@ public class RenewRequest {
         this.patronSurname = patronSurname;
     }
 
-    public void approveRequest(){
-
+    public void approve(Database database)throws SQLException{
+        database.getPatron(patronID).returnDocument(documentID, database);
     }
 
-    public void refuseRequest(){
-
+    public void refuse(){
+        System.out.println("There is outstanding request for this document, so you cannot renew it :(");
     }
 }

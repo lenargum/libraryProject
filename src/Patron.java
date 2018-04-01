@@ -553,9 +553,13 @@ public class Patron extends User {
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
 			if(debt.canRenew()){
-				database.renew(debtID);
+                Date expDate = debt.getExpireDate();
+                expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
+                debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+                debt.setExpireDate(expDate);
+                System.out.println("Document was renewed!");
 			} else {
-				System.out.println("The document is already renewed!");
+				System.out.println("The document is already renewed, so you need to return it!");
 			}
 		} catch (NoSuchElementException | SQLException e){
 			System.out.println("Incorrect id");
@@ -563,6 +567,16 @@ public class Patron extends User {
 			System.out.println("By default");
         }
 	}
+
+	public void sendRenewRequest(int debtId, Database database){
+	    try{
+	        Debt debt = database.getDebt(debtId);
+	        RenewRequest request = new RenewRequest(debtId, getId(), debt.getDocumentId(), getName(), getSurname());
+        } catch (SQLException | ParseException e){
+
+        }
+
+    }
 
 
 
