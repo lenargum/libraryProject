@@ -571,7 +571,8 @@ public class Patron extends User {
 	public void sendRenewRequest(int debtId, Database database){
 	    try{
 	        Debt debt = database.getDebt(debtId);
-	        RenewRequest request = new RenewRequest(debtId, getId(), debt.getDocumentId(), getName(), getSurname());
+	        Document doc = database.getDocument(debt.getDocumentId());
+	        RenewRequest request = new RenewRequest(debtId, getId(), debt.getDocumentId(), getName(), getSurname(), doc.toString());
         } catch (SQLException | ParseException e){
 
         }
