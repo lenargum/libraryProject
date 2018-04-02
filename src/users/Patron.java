@@ -581,7 +581,7 @@ public class Patron extends User {
             database.insertRequest(request);
 	    }
         catch (SQLException | ParseException e){
-
+			System.out.println("Incorrect id");
         }
 
     }
