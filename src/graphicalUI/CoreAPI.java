@@ -90,6 +90,14 @@ public class CoreAPI {
 		return list;
 	}
 
+	public ObservableList<DebtsManager.DebtCell> getUserDebts() {
+		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
+		list.add(new DebtsManager.DebtCell(1, "BIsufubsu", 1, "Rivera",
+				1, "22/02/2018", "08/04/2018"));
+
+		return list;
+	}
+
 	public UserType userType() {
 		return UserType.LIBRARIAN;
 	}
