@@ -364,7 +364,9 @@ public class Librarian extends User {
 	 * @throws SQLException
 	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
-		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
+		Patron p = database.getPatron(request.getIdPatron());
+		if (p.canRequestDocument(request.getIdDocument(), database))
+			request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
 	}
 
 	/**

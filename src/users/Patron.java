@@ -385,21 +385,15 @@ public class Patron extends User {
 	 */
 	public void takeDocument(int idDocument, Database database) {
 		try {
-			if (canRequestDocument(idDocument, database)) {
 				getListOfDocumentsPatron().add(idDocument);
 				database.getDocument(idDocument).deleteCopy();
 				decreaseCountOfCopies(idDocument, database);
 				Date date = new Date();
 				Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
 				database.insertDebt(debt);
-			} else {
-				System.out.println("Patron is not allowed to take this document. Patron ID: " + getId() +
-						", Document ID: " + idDocument);
-			}
-		} catch (SQLException e) {
-			System.out.println("Something went wrong while processing request. Document ID: " + idDocument);
-		} catch (NoSuchElementException e) {
-			System.out.println("Incorrect document ID: " + idDocument);
+
+		} catch (SQLException | NoSuchElementException e) {
+			System.out.println("Incorrect id" + idDocument);
 		}
 	}
 
@@ -420,15 +414,13 @@ public class Patron extends User {
 		}
 
 	}
-
-	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
+	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException{
 		ArrayList<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
 			if (i.getIdDocument() == docId) return true;
 		}
 		return false;
 	}
-
 	/**
 	 * Decrease the number of copies of specified document by one.
 	 *
