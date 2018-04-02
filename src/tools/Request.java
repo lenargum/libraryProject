@@ -6,7 +6,6 @@ import users.Patron;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.PriorityQueue;
 
 /**
  * This class describes the requests of booking system
@@ -54,12 +53,8 @@ public class Request {
 	/**
 	 * Flag to check of type of request
 	 */
-	private boolean isRenewRequest = false;
+	private boolean isRenewRequest;
 
-	/**
-	 * tools.Comparator to compare the priority
-	 */
-	private ComparatorPriority comparator = new ComparatorPriority();
 
 	/**
 	 * Initialize new request
@@ -86,7 +81,7 @@ public class Request {
 	 * @param idPatron   Associated patron's ID.
 	 * @param idDocument Associated document's ID.
 	 * @param database   Database
-	 * @throws SQLException
+	 * @throws SQLException something in database went wrong
 	 */
 	public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
@@ -101,7 +96,7 @@ public class Request {
 	 * @param idPatron   Associated patron's ID.
 	 * @param idDocument Associated document's ID.
 	 * @param database   Database
-	 * @throws SQLException
+	 * @throws SQLException something in database went wrong
 	 */
 	public void refuseRequest(int idPatron, int idDocument, Database database) throws SQLException {
 //        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
@@ -115,7 +110,7 @@ public class Request {
 	 * Approve request to renew document.
 	 *
 	 * @param database Database
-	 * @throws SQLException
+	 * @throws SQLException by deafult
 	 */
 	public void approveRenew(Database database) throws SQLException {
 		database.getPatron(idPatron).renewDocument(idDocument, database);
