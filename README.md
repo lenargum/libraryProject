@@ -1,4 +1,4 @@
-
+**
 # InLibrary Manager
 
 A course project - Library managing system.
@@ -16,7 +16,7 @@ Different parts are being developed in different branches.
 - JavaFX 8
 - [JFoeniX 8.0.3](https://github.com/jfoenixadmin/JFoenix)
 
-JavaFX 8 is required for desktop application. Please install FX module if you are using OpenJDK, or use Oracle JDK instead (recommended).
+JavaFX 8 is required for desktop application. Please install FX module if you are using OpenJDK, or use **Oracle JDK instead (recommended)**.
 
 This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `Main` class. You may use `javac`, but it was not tested.
 
