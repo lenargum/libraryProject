@@ -52,8 +52,8 @@ public class Patron extends User {
 	 */
 	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
-		this.status = status;
-		this.setPriority(status);
+		this.status = status.toLowerCase();
+		this.setPriority(this.status);
 	}
 
 	/**
@@ -87,17 +87,26 @@ public class Patron extends User {
 		return priority;
 	}
 
-	public void setPriority(String status) {
-		if (status.toLowerCase().equals("student")) {
-			priority = 0;
-		} else if (status.toLowerCase().equals("faculty")) {
-			priority = 1;
-		} else if (status.toLowerCase().equals("ta")) {
-			priority = 2;
-		} else if (status.toLowerCase().equals("vp")) {
-			priority = 3;
-		} else {
-			priority = 4;
+	private void setPriority(String status) {
+		switch (status.toLowerCase()) {
+			case "student":
+				priority = 0;
+				break;
+			case "faculty":
+				priority = 1;
+				break;
+			case "ta":
+				priority = 2;
+				break;
+			case "vp":
+				priority = 3;
+				break;
+			case "professor":
+				priority = 4;
+				break;
+			default:
+				priority = -1;
+				break;
 		}
 	}
 
@@ -157,7 +166,7 @@ public class Patron extends User {
 	 * @param database  tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the article, otherwise {@code false}.
 	 */
-	public boolean canRequestArticle(int idArticle, Database database) {
+	private boolean canRequestArticle(int idArticle, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
@@ -206,7 +215,7 @@ public class Patron extends User {
 	 * @param database tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the audio/video, otherwise {@code false}.
 	 */
-	public boolean canRequestAV(int idAV, Database database) {
+	private boolean canRequestAV(int idAV, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
@@ -310,13 +319,18 @@ public class Patron extends User {
 				if (database.getBook(idBook).isBestseller())
 					dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
 				else {
-					if (status.toLowerCase().equals("student"))
-						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
-					else if (status.toLowerCase().equals("faculty") || (status.toLowerCase().equals("ta")) ||
-							(status.toLowerCase().equals("professor"))) {
-						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
-					} else {
-						dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
+					switch (status.toLowerCase()) {
+						case "student":
+							dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
+							break;
+						case "faculty":
+						case "ta":
+						case "professor":
+							dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
+							break;
+						default:
+							dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
+							break;
 					}
 				}
 
@@ -407,7 +421,7 @@ public class Patron extends User {
 	 *
 	 * @param idDocument document to request
 	 * @param database   Database that stores the information
-	 * @throws SQLException
+	 * @throws SQLException something went wrong in database
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
@@ -574,7 +588,7 @@ public class Patron extends User {
 			if (debt.canRenew()) {
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+				debt.setCanRenew(database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
 				debt.setExpireDate(expDate);
 				System.out.println("documents.Document was renewed!");
 			} else {
