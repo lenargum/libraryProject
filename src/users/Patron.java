@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -420,7 +421,7 @@ public class Patron extends User {
 	}
 
 	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
-		ArrayList<Request> requests = database.getRequestsForPatron(this.getId());
+		List<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
 			if (i.getIdDocument() == docId) return true;
 		}
