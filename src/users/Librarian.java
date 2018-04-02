@@ -212,7 +212,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronSurname(int idPatron, Database database, String surname) {
 		try {
-			database.getPatron(idPatron, database).setSurname(surname);
+			database.getPatron(idPatron).setSurname(surname);
 			database.editUserColumn(idPatron, "lastname", surname);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -228,7 +228,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronAddress(int idPatron, Database database, String address) {
 		try {
-			database.getPatron(idPatron, database).setAddress(address);
+			database.getPatron(idPatron).setAddress(address);
 			database.editUserColumn(idPatron, "address", address);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -244,7 +244,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
 		try {
-			database.getPatron(idPatron, database).setPhoneNumber(phoneNumber);
+			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
 			database.editUserColumn(idPatron, "phone", phoneNumber);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -261,7 +261,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronStatus(int idPatron, Database database, String status) {
 		try {
-			database.getPatron(idPatron, database).setStatus(status);
+			database.getPatron(idPatron).setStatus(status);
 			database.editDocumentColumn(idPatron, "status", status);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id");
@@ -305,7 +305,7 @@ public class Librarian extends User {
 		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
 		if(debt.getFee() == 0){
-		    Patron patron = database.getPatron(debt.getPatronId(), database);
+		    Patron patron = database.getPatron(debt.getPatronId());
 		    patron.returnDocument(debt.getDocumentId(), database);
         }
 		else {

@@ -135,6 +135,14 @@ public class DocSelector {
 				coverContainer.getChildren().add(picked);
 				docTitle.setText(picked.getTitle());
 				docAuthors.setText(picked.getAuthor());
+
+				if (api.canTakeDocument(picked.getDocId())) {
+					bookThisBtn.setDisable(false);
+				}
+				bookThisBtn.setOnAction(event1 -> {
+					api.bookOrRequest(picked.getDocId());
+					bookThisBtn.setDisable(true);
+				});
 //				countBadge.setText("5 items");
 //				countBadge.refreshBadge();
 				detailsDrawer.setSidePane(detailsLayout);
@@ -147,6 +155,8 @@ public class DocSelector {
 		detailsDrawer.setDirection(JFXDrawer.DrawerDirection.RIGHT);
 		detailsDrawer.setDefaultDrawerSize(350);
 
+		detailsDrawer.setOnDrawerClosing(event -> bookThisBtn.setDisable(true));
+
 		try {
 			detailsLayout = FXMLLoader.load(getClass().getResource("DocDetails.fxml"));
 		} catch (IOException e) {
@@ -157,9 +167,6 @@ public class DocSelector {
 		docAuthors = (Text) detailsLayout.lookup("#docAuthors");
 		bookThisBtn = (JFXButton) detailsLayout.lookup("#bookThisBtn");
 		countBadge = (JFXBadge) detailsLayout.lookup("#countBadge");
-		if (api.isLoggedIn()) {
-			bookThisBtn.setDisable(false);
-		}
 
 		System.out.println("Book view initialized.");
 		initialized = true;

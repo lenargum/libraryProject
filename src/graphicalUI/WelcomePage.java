@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -84,9 +85,16 @@ public class WelcomePage {
 
 	private void processLogin() {
 		Credentials credentials = new Credentials(usernameField.getText(), passwordField.getText());
-		passwordField.clear();
-		loginDialog.close();
-		System.out.println("Logged in as " + credentials.getLogin());
-		rootPage.resolveLoginTransition(credentials);
+		boolean respond = rootPage.getApi().authorize(credentials);
+		if (respond) {
+			passwordField.clear();
+			loginDialog.close();
+			System.out.println("Logged in as " + credentials.getLogin());
+			rootPage.resolveLoginTransition(credentials);
+		} else {
+			usernameField.setUnFocusColor(Paint.valueOf("#e53935"));
+			passwordField.setUnFocusColor(Paint.valueOf("#e53935"));
+			System.out.println("Faild to log in.");
+		}
 	}
 }

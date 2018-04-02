@@ -90,7 +90,7 @@ public class Request {
      * @throws SQLException
      */
     public void addToQueue(int idPatron, Database database) throws SQLException {
-        queue.add(database.getPatron(idPatron, database));
+        queue.add(database.getPatron(idPatron));
     }
 
     /**
@@ -101,8 +101,8 @@ public class Request {
      * @throws SQLException
      */
     public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        queue.remove(database.getPatron(idPatron, database));
-        database.getPatron(idPatron, database).takeDocument(idDocument, database);
+        queue.remove(database.getPatron(idPatron));
+        database.getPatron(idPatron).takeDocument(idDocument, database);
     }
 
     /**
@@ -113,8 +113,8 @@ public class Request {
      * @throws SQLException
      */
     public void refuseRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        if (!database.getPatron(idPatron, database).canRequestDocument(idDocument, database)){
-            queue.remove(database.getPatron(idPatron, database));
+        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
+            queue.remove(database.getPatron(idPatron));
     }
         if (database.getDocument(idDocument).getNumberOfCopies() == 0){
             System.out.println("Wait until the copies appear or Please, check your status!");
@@ -127,7 +127,7 @@ public class Request {
      * @throws SQLException
      */
     public void approveRenew(Database database)throws SQLException{
-        database.getPatron(idPatron, database).renewDocument(idDocument, database);
+        database.getPatron(idPatron).renewDocument(idDocument, database);
     }
 
     /**

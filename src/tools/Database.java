@@ -469,12 +469,11 @@ public class Database {
 	 * Get the patron with following ID from database.
 	 *
 	 * @param ID Patrons' ID stored in database.
-	 * @param database
 	 * @return users.Patron with following ID.
 	 * @throws SQLException By default.
 	 * @see Patron
 	 */
-	public Patron getPatron(int ID, Database database) throws SQLException {
+	public Patron getPatron(int ID) throws SQLException {
 		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
@@ -486,15 +485,16 @@ public class Database {
 		throw new NoSuchElementException();
 	}
 
-	public User authorise(String login, String password)throws SQLException{
-		ResultSet userSet = executeQuery("SELECT * FROM users where login = " + login +" and password = " + password);
+	public User authorise(String login, String password) throws SQLException {
+		ResultSet userSet = executeQuery("SELECT * FROM users where login = " + login + " and password = " + password);
 		if (userSet.next()) {
 			Patron temp = new Patron(userSet.getString(2),
 					userSet.getString(3), userSet.getString(4), userSet.getString(5),
 					userSet.getString(6), userSet.getString(7), userSet.getString(8));
 			temp.setId(userSet.getInt(1));
 			return temp;
-		} throw new NoSuchElementException();
+		}
+		throw new NoSuchElementException();
 	}
 
 	/**
@@ -641,7 +641,7 @@ public class Database {
 	 * @see List
 	 * @see Debt
 	 */
-	public List<Debt> getDebtsForUser(boolean userID) throws SQLException, ParseException {
+	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
 		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 		LinkedList<Debt> debts = new LinkedList<>();
@@ -960,18 +960,18 @@ public class Database {
 
 	/**
 	 * inserts request to the library
+	 *
 	 * @param request
 	 * @throws SQLException
 	 */
 	public void insertRequest(Request request) throws SQLException {
 		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
-				"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
+						"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
 				request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
-				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()),request.isRenewRequest()));
+				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()), request.isRenewRequest()));
 	}
 
 	/**
-	 *
 	 * @return list of all the unclosed requests from the database
 	 * @throws SQLException
 	 * @throws ParseException
@@ -980,8 +980,8 @@ public class Database {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
 		LinkedList<Request> requests = new LinkedList<>();
 		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
 			temp.setRequestId(requestsSet.getInt(1));
 			requests.add(temp);
 		}
@@ -989,17 +989,16 @@ public class Database {
 	}
 
 	/**
-	 *
 	 * @param id - id of request we want to return
 	 * @return request from the database
 	 * @throws SQLException
 	 * @throws ParseException
 	 */
 	public Request getRequest(int id) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = "+id);
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = " + id);
 		if (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
 			temp.setRequestId(requestsSet.getInt(1));
 			return temp;
 		}
@@ -1008,29 +1007,32 @@ public class Database {
 
 	/**
 	 * deletes request from the database by patron and document ids
-	 * @param patronId - id of patron whose request was closed
+	 *
+	 * @param patronId   - id of patron whose request was closed
 	 * @param documentId - id of document patron wanted to take
 	 * @throws SQLException
 	 */
-	public void deleteRequest(int patronId,int documentId) throws SQLException {
+	public void deleteRequest(int patronId, int documentId) throws SQLException {
 		executeUpdate(String.format("DELETE FROM requests WHERE patron_id = %d AND document_id = %d",
-				patronId,documentId));
+				patronId, documentId));
 	}
 
 	/**
 	 * deletes request from the database by request id
+	 *
 	 * @param requestId
 	 * @throws SQLException
 	 */
 	public void deleteRequest(int requestId) throws SQLException {
-		executeUpdate("DELETE FROM requests WHERE request_id = "+requestId);
+		executeUpdate("DELETE FROM requests WHERE request_id = " + requestId);
 	}
 
 	/**
 	 * edit request table
+	 *
 	 * @param requestId id of request we want to edit
-	 * @param column - column to edit.
-	 * @param value - new value
+	 * @param column    - column to edit.
+	 * @param value     - new value
 	 * @throws SQLException
 	 */
 	public void editRequest(int requestId, String column, String value) throws SQLException {
@@ -1044,6 +1046,6 @@ public class Database {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
-		executeUpdate(String.format("UPDATE requests SET %s = %s"+value+"%s WHERE request_id = %d",column,quotes1,quotes2,requestId));
+		executeUpdate(String.format("UPDATE requests SET %s = %s" + value + "%s WHERE request_id = %d", column, quotes1, quotes2, requestId));
 	}
 }

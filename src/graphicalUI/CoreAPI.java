@@ -1,8 +1,17 @@
 package graphicalUI;
 
+import documents.Document;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import tools.Database;
+import tools.Debt;
+import users.Librarian;
+import users.Patron;
+import users.User;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,15 +19,27 @@ import java.util.List;
 public class CoreAPI {
 	private Credentials credentials;
 	private boolean loggedIn;
+	private User user;
+	private Database db;
 
 	public CoreAPI() {
+		db = new Database();
 		loggedIn = false;
 	}
 
 	public List<DocItem> getAllBooks() {
 		List<DocItem> list = new LinkedList<>();
-		for (int i = 0; i < 20; i++) {
-			list.add(new DocItem("Introduction to Something " + (i + 1), "Author Authorovich", i + 1));
+		List<Document> documents = new LinkedList<>();
+		try {
+			db.connect();
+			documents = db.getDocumentList();
+			db.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		for (Document doc : documents) {
+			list.add(new DocItem(doc.getTitle(), doc.getAuthors(), doc.getID()));
 		}
 
 		return list;
@@ -28,28 +49,75 @@ public class CoreAPI {
 		return loggedIn;
 	}
 
-	public void authorize(Credentials credentials) {
+	public boolean authorize(Credentials credentials) {
 		this.credentials = credentials;
-		loggedIn = true;
+		boolean respond = false;
+		db.connect();
+		try {
+			respond = db.login(credentials.getLogin(), credentials.getPassword());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-		// to be continued
+		if (respond) {
+			try {
+				for (Librarian librarian : db.getLibrarianList()) {
+					if (librarian.getLogin().equals(credentials.getLogin())) {
+						user = librarian;
+						db.close();
+						break;
+					}
+				}
+
+				if (user == null) {
+					for (Patron patron : db.getPatronList()) {
+						if (patron.getLogin().equals(credentials.getLogin())) {
+							user = patron;
+							db.close();
+							break;
+						}
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (user != null) {
+			loggedIn = true;
+		}
+
+		return loggedIn;
 	}
 
 	public void deauthorize() {
 		assert loggedIn;
 		credentials = null;
+		user = null;
 		loggedIn = false;
 	}
 
 	public ObservableList<UserDocs.MyDocsView> getUserBooks() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
-		list.add(new UserDocs.MyDocsView("Boookee 1", 12, 1));
-		list.add(new UserDocs.MyDocsView("AVVEE", 3, 2));
-		list.add(new UserDocs.MyDocsView("Porn", -16, 3));
-		list.add(new UserDocs.MyDocsView("Introduction to Something", 9, 4));
-		list.add(new UserDocs.MyDocsView("Another book", 5, 5));
-		list.add(new UserDocs.MyDocsView("MORE DOCS", 10, 6));
-		list.add(new UserDocs.MyDocsView("Heeey", 2, 7));
+		List<Integer> documents = new ArrayList<>();
+		if (user instanceof Patron) {
+			documents = ((Patron) user).getListOfDocumentsPatron();
+		}
+
+		db.connect();
+		for (Integer id : documents) {
+			Document doc = null;
+			Debt debt = null;
+			try {
+				doc = db.getDocument(id);
+				debt = db.getDebt(db.findDebtID(user.getId(), id));
+			} catch (SQLException | ParseException e) {
+				e.printStackTrace();
+			}
+
+			list.add(new UserDocs.MyDocsView(doc.getTitle(), debt.daysLeft(), id));
+		}
+		db.close();
 
 		return list;
 	}
@@ -68,8 +136,6 @@ public class CoreAPI {
 
 	public ObservableList<UserDocs.WaitlistView> getWaitList() {
 		ObservableList<UserDocs.WaitlistView> waitlist = FXCollections.observableArrayList();
-		waitlist.add(new UserDocs.WaitlistView("Cormen!", 100500, 1));
-		waitlist.add(new UserDocs.WaitlistView("Some Strange Book", 0, 2));
 
 		return waitlist;
 	}
@@ -92,14 +158,57 @@ public class CoreAPI {
 
 	public ObservableList<DebtsManager.DebtCell> getUserDebts() {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
-		list.add(new DebtsManager.DebtCell(1, "BIsufubsu", 1, "Rivera",
-				1, "22/02/2018", "08/04/2018"));
+
+		db.connect();
+		try {
+			for (Debt debt : db.getDebtsForUser(user.getId())) {
+				Patron pat = db.getPatron(debt.getPatronId());
+				Document doc = db.getDocument(debt.getDocumentId());
+				list.add(new DebtsManager.DebtCell(debt.getDebtId(),
+						pat.getName() + " " + pat.getSurname(), pat.getId(),
+						doc.getTitle(), doc.getID(),
+						debt.getBookingDate().toString(),
+						debt.getExpireDate().toString()));
+			}
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
 
 		return list;
 	}
 
+	public boolean canTakeDocument(int docID) {
+		if (user instanceof Librarian) {
+			return false;
+		} else {
+			db.connect();
+			boolean respond = ((Patron) user).canRequestDocument(docID, db);
+			db.close();
+			return respond;
+		}
+	}
+
+	public void bookOrRequest(int docID) {
+		if (canTakeDocument(docID)) {
+			try {
+				db.connect();
+				((Patron) user).makeRequest(docID, db);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				db.close();
+			}
+		}
+	}
+
 	public UserType userType() {
-		return UserType.LIBRARIAN;
+		if (user instanceof Librarian) {
+			return UserType.LIBRARIAN;
+		} else {
+			return UserType.PATRON;
+		}
 	}
 
 	public static enum UserType {
