@@ -384,14 +384,13 @@ public class Patron extends User {
 	 */
 	public void takeDocument(int idDocument, Database database) {
 		try {
-			if (canRequestDocument(idDocument, database)) {
 				getListOfDocumentsPatron().add(idDocument);
 				database.getDocument(idDocument).deleteCopy();
 				decreaseCountOfCopies(idDocument, database);
 				Date date = new Date();
 				Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
 				database.insertDebt(debt);
-			}
+
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id" + idDocument);
 		}
