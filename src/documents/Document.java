@@ -1,6 +1,5 @@
 package documents;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This class describes document of library system.
@@ -104,7 +103,7 @@ public class Document {
 	 *
 	 * @param type String with document type.
 	 */
-	public void setType(String type) {
+	void setType(String type) {
 		this.Type = type;
 	}
 
@@ -182,7 +181,7 @@ public class Document {
 	 *
 	 * @param authors New authors.
 	 */
-	public void setAuthors(String authors) {
+	private void setAuthors(String authors) {
 		this.Authors = authors;
 	}
 
@@ -250,7 +249,7 @@ public class Document {
 	 *
 	 * @param isReference New reference status.
 	 */
-	public void setReference(boolean isReference) {
+	private void setReference(boolean isReference) {
 		this.IsReference = isReference;
 	}
 
@@ -292,7 +291,7 @@ public class Document {
 	 *
 	 * @param keyWords New keywords.
 	 */
-	public void setKeyWords(String keyWords) {
+	private void setKeyWords(String keyWords) {
 		this.KeyWords = keyWords;
 	}
 

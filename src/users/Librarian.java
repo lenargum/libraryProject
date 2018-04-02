@@ -42,9 +42,7 @@ public class Librarian extends User {
 	public void addBook(Book book, Database database) {
 		try {
 			database.insertBook(book);
-		} catch (SQLException e) {
-			System.out.println("Incorrect input");
-		} catch (NoSuchElementException e) {
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect input");
 		}
 	}
@@ -58,9 +56,7 @@ public class Librarian extends User {
 	public void addAV(AudioVideoMaterial AV, Database database) {
 		try {
 			database.insertAV(AV);
-		} catch (SQLException e) {
-			System.out.println("Incorrect document");
-		} catch (NoSuchElementException e) {
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect document");
 		}
 	}
@@ -74,9 +70,7 @@ public class Librarian extends User {
 	public void addArticle(JournalArticle journalArticle, Database database) {
 		try {
 			database.insertArticle(journalArticle);
-		} catch (SQLException e) {
-			System.out.println("Incorrect document");
-		} catch (NoSuchElementException e) {
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect document");
 		}
 	}
@@ -299,8 +293,8 @@ public class Librarian extends User {
 	 *
 	 * @param debtID   - id of debt patron wants to close
 	 * @param database - information storage
-	 * @throws SQLException
-	 * @throws ParseException
+	 * @throws SQLException Something went wrong in database.
+	 * @throws ParseException Something wrong with input.
 	 */
 	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException {
 		Debt debt = database.getDebt(debtID);
@@ -323,7 +317,7 @@ public class Librarian extends User {
 		try {
 			request.approveRenew(database);
 			database.deleteRequest(request.getRequestId());
-		} catch (SQLException e) {
+		} catch (SQLException ignored) {
 
 		}
 	}
@@ -337,7 +331,7 @@ public class Librarian extends User {
 		try {
 			request.refuseRenew();
 			database.deleteRequest(request.getRequestId());
-		} catch (SQLException e) {
+		} catch (SQLException ignored) {
 
 		}
 	}
@@ -365,12 +359,10 @@ public class Librarian extends User {
 	 *
 	 * @param request  - request librarian confirms
 	 * @param database - information storage
-	 * @throws SQLException
+	 * @throws SQLException Something went wrong in database.
 	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
 		System.out.println("users.Librarian <- submitting request " + request.getRequestId() + " . . .");
-		Patron p = database.getPatron(request.getIdPatron());
-		//if (p.canRequestDocument(request.getIdDocument(), database))
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 
@@ -379,7 +371,7 @@ public class Librarian extends User {
 	 *
 	 * @param request  - request the librarian refuses
 	 * @param database - information storage
-	 * @throws SQLException
+	 * @throws SQLException Something went wrong in database.
 	 */
 	public void deleteRequest(Request request, Database database) throws SQLException {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);

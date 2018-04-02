@@ -75,7 +75,7 @@ public class JournalArticle extends Document {
 	 *
 	 * @param journalName New journal name.
 	 */
-	public void setJournalName(String journalName) {
+	private void setJournalName(String journalName) {
 		this.JournalName = journalName;
 	}
 
@@ -93,7 +93,7 @@ public class JournalArticle extends Document {
 	 *
 	 * @param publisher New article publisher.
 	 */
-	public void setPublisher(String publisher) {
+	private void setPublisher(String publisher) {
 		this.Publisher = publisher;
 	}
 
@@ -111,7 +111,7 @@ public class JournalArticle extends Document {
 	 *
 	 * @param issue New article issue.
 	 */
-	public void setIssue(String issue) {
+	private void setIssue(String issue) {
 		this.Issue = issue;
 	}
 
@@ -129,7 +129,7 @@ public class JournalArticle extends Document {
 	 *
 	 * @param editor New article editor.
 	 */
-	public void setEditor(String editor) {
+	private void setEditor(String editor) {
 		this.Editor = editor;
 	}
 
@@ -147,7 +147,7 @@ public class JournalArticle extends Document {
 	 *
 	 * @param date New article publication date.
 	 */
-	public void setPublicationDate(Date date) {
+	private void setPublicationDate(Date date) {
 		this.PublicationDate = date;
 	}
 

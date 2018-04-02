@@ -58,7 +58,7 @@ public class Book extends Document {
 	 *
 	 * @param publisher New publisher.
 	 */
-	public void setPublisher(String publisher) {
+	private void setPublisher(String publisher) {
 		this.Publisher = publisher;
 	}
 
