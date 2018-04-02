@@ -7,7 +7,7 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
 import tools.Request;
-
+import tools.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
@@ -212,7 +212,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronSurname(int idPatron, Database database, String surname) {
 		try {
-			database.getPatron(idPatron).setSurname(surname);
+			database.getPatron(idPatron, database).setSurname(surname);
 			database.editUserColumn(idPatron, "lastname", surname);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -228,7 +228,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronAddress(int idPatron, Database database, String address) {
 		try {
-			database.getPatron(idPatron).setAddress(address);
+			database.getPatron(idPatron, database).setAddress(address);
 			database.editUserColumn(idPatron, "address", address);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -244,7 +244,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
 		try {
-			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
+			database.getPatron(idPatron, database).setPhoneNumber(phoneNumber);
 			database.editUserColumn(idPatron, "phone", phoneNumber);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -261,7 +261,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronStatus(int idPatron, Database database, String status) {
 		try {
-			database.getPatron(idPatron).setStatus(status);
+			database.getPatron(idPatron, database).setStatus(status);
 			database.editDocumentColumn(idPatron, "status", status);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id");
@@ -293,23 +293,19 @@ public class Librarian extends User {
 		return this.getLogin().equals(librarian.getLogin());
 	}
 
+
 	/**
-	 * documents.Document renew confirmation
-	 *
-	 * @param idDocument is debt we want to renew
-	 * @param database tools.Database storing the information
+	 * Return confirmation
+	 * @param debtID - id of debt patron wants to close
+	 * @param database - information storage
+	 * @throws SQLException
+	 * @throws ParseException
 	 */
-	public void documentRequestConfirmation(int idPatron, int idDocument, Database database){
-
-
-	}
-
-
 	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException{
 		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
 		if(debt.getFee() == 0){
-		    Patron patron = database.getPatron(debt.getPatronId());
+		    Patron patron = database.getPatron(debt.getPatronId(), database);
 		    patron.returnDocument(debt.getDocumentId(), database);
         }
 		else {
@@ -317,19 +313,38 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * renew document confirmation
+	 * @param request - request that patron sent to renew document
+	 * @param database - information storage
+	 */
 	public void confirmRenew(Request request, Database database){
 	   try{
-	        if(false){ //TODO: how to check if there is outstanding request?
-	            request.refuseRenew();
-            } else {
-	            request.approveRenew(database);
-            }
-
+	        request.approveRenew(database);
+			database.deleteRequest(request.getRequestId());
         } catch (SQLException e){
 
         }
     }
 
+	/**
+	 * renew document refuse
+	 * @param request - request librarian refuses
+	 */
+	public void refuseRenew(Request request, Database database){
+		try {
+			request.refuseRenew();
+			database.deleteRequest(request.getRequestId());
+		} catch (SQLException e){
+
+		}
+	}
+
+	/**
+	 * confirmation of getting fee
+	 * @param debtID - id of debt patron wants to close
+	 * @param database - information storage
+	 */
 	public void getFee(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
@@ -342,10 +357,22 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * taking document request confirmation
+	 * @param request - request librarian confirms
+	 * @param database - information storage
+	 * @throws SQLException
+	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
 	}
 
+	/**
+	 * delete taking document request
+	 * @param request - request the librarian refuses
+	 * @param database - information storage
+	 * @throws SQLException
+	 */
 	public void deleteRequest(Request request, Database database) throws SQLException {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
