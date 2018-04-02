@@ -101,7 +101,6 @@ public class Request {
      * @throws SQLException
      */
     public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
-
         database.getPatron(idPatron).takeDocument(idDocument, database);
         queue.remove(database.getPatron(idPatron));
         database.deleteRequest(idPatron, idDocument);

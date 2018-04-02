@@ -82,23 +82,24 @@ public class Patron extends User {
 		this.status = status;
 	}
 
-	public void setPriority(String status){
-		if (status == "student"){
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String status) {
+		if (status == "student") {
 			priority = 0;
-		} else if (status == "faculty"){
+		} else if (status == "faculty") {
 			priority = 1;
-		} else if (status == "ta"){
+		} else if (status == "ta") {
 			priority = 2;
-		} else if (status == "vp"){
+		} else if (status == "vp") {
 			priority = 3;
 		} else {
 			priority = 4;
 		}
 	}
 
-	public int getPriority(){
-		return priority;
-	}
 	/**
 	 * Checks whether patron can take the following book.
 	 *
@@ -120,7 +121,7 @@ public class Patron extends User {
 					&& (book.getNumberOfCopies() != 0) &&
 					!book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) ||(this.status.toLowerCase().equals("vp")) ||
+			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (book.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
@@ -164,7 +165,7 @@ public class Patron extends User {
 		}
 		try {
 			JournalArticle article = database.getArticle(idArticle);
-			if ((this.status.toLowerCase().equals("faculty")|| (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp"))||
+			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (article.getNumberOfCopies() != 0) &&
 					!article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
 				return true;
@@ -213,11 +214,11 @@ public class Patron extends User {
 		}
 		try {
 			AudioVideoMaterial av = database.getAV(idAV);
-			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp"))||
+			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (av.getNumberOfCopies() != 0) &&
 					!av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp"))||
+			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (av.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
@@ -309,8 +310,8 @@ public class Patron extends User {
 				else {
 					if (status.toLowerCase().equals("student"))
 						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
-					else if (status.toLowerCase().equals("faculty") ||(status.toLowerCase().equals("ta")) ||
-							(status.toLowerCase().equals("professor"))){
+					else if (status.toLowerCase().equals("faculty") || (status.toLowerCase().equals("ta")) ||
+							(status.toLowerCase().equals("professor"))) {
 						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
 					} else {
 						dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -339,9 +340,9 @@ public class Patron extends User {
 				decreaseCountOfCopies(idAV, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(status.toLowerCase().equals("vp"))
+				if (status.toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
-					else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
+				else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
 				Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
 				database.insertDebt(debt);
 			}
@@ -364,7 +365,7 @@ public class Patron extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(status.toLowerCase().equals("visiting professor"))
+				if (status.toLowerCase().equals("visiting professor"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
 				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
@@ -391,35 +392,43 @@ public class Patron extends User {
 				Date date = new Date();
 				Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
 				database.insertDebt(debt);
+			} else {
+				System.out.println("Patron is not allowed to take this document. Patron ID: " + getId() +
+						", Document ID: " + idDocument);
 			}
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id" + idDocument);
+		} catch (SQLException e) {
+			System.out.println("Something went wrong while processing request. Document ID: " + idDocument);
+		} catch (NoSuchElementException e) {
+			System.out.println("Incorrect document ID: " + idDocument);
 		}
 	}
 
 	/**
 	 * Make request the following document
+	 *
 	 * @param idDocument document to request
-	 * @param database Database that stores the information
+	 * @param database   Database that stores the information
 	 * @throws SQLException
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
-				Request request = new Request(this, database.getDocument(idDocument), new Date(), false);
-				request.addToQueue(this.getId(), database);
-				database.insertRequest(request);
-		} catch(NoSuchElementException e ){
+			Request request = new Request(this, database.getDocument(idDocument), new Date(), false);
+			request.addToQueue(this.getId(), database);
+			database.insertRequest(request);
+		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idDocument);
 		}
 
 	}
-	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException{
+
+	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
 		ArrayList<Request> requests = database.getRequestsForPatron(this.getId());
-		for(Request i: requests){
-			if(i.getIdDocument() == docId) return true;
+		for (Request i : requests) {
+			if (i.getIdDocument() == docId) return true;
 		}
 		return false;
 	}
+
 	/**
 	 * Decrease the number of copies of specified document by one.
 	 *
@@ -535,7 +544,7 @@ public class Patron extends User {
 			}
 			database.getDocument(idDocument).addCopy();
 			increaseCountOfCopies(idDocument, database);
-            System.out.println("Return confirmed!");
+			System.out.println("Return confirmed!");
 			int debtID = database.findDebtID(this.getId(), idDocument);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
@@ -557,48 +566,48 @@ public class Patron extends User {
 
 	/**
 	 * patron requests the document renew
-	 * @param docID documents.Document ID
+	 *
+	 * @param docID    documents.Document ID
 	 * @param database tools.Database stores the information
 	 */
-	public void renewDocument(int docID, Database database){
-		try{
+	public void renewDocument(int docID, Database database) {
+		try {
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
-			if(debt.canRenew()){
-                Date expDate = debt.getExpireDate();
-                expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-                debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
-                debt.setExpireDate(expDate);
-                System.out.println("documents.Document was renewed!");
+			if (debt.canRenew()) {
+				Date expDate = debt.getExpireDate();
+				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
+				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+				debt.setExpireDate(expDate);
+				System.out.println("documents.Document was renewed!");
 			} else {
 				System.out.println("The document is already renewed, so you need to return it!");
 			}
-		} catch (NoSuchElementException | SQLException e){
+		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
-		} catch(ParseException e) {
+		} catch (ParseException e) {
 			System.out.println("By default");
-        }
+		}
 	}
 
 	/**
 	 * patron sends request to renew document
-	 * @param debtId - id of debt patron wants to renew
+	 *
+	 * @param debtId   - id of debt patron wants to renew
 	 * @param database - information storage
 	 */
-	public void sendRenewRequest(int debtId, Database database){
-	    try{
-	        Debt debt = database.getDebt(debtId);
-	        Document doc = database.getDocument(debt.getDocumentId());
+	public void sendRenewRequest(int debtId, Database database) {
+		try {
+			Debt debt = database.getDebt(debtId);
+			Document doc = database.getDocument(debt.getDocumentId());
 			Date date = new Date();
-            Request request = new Request(this, doc, date, true);
-            database.insertRequest(request);
-	    }
-        catch (SQLException | ParseException e){
+			Request request = new Request(this, doc, date, true);
+			database.insertRequest(request);
+		} catch (SQLException | ParseException e) {
 			System.out.println("Incorrect id");
-        }
+		}
 
-    }
-
+	}
 
 
 }

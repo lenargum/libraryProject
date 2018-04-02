@@ -1012,18 +1012,19 @@ public class Database {
 		return requests;
 	}
 
-	public Request getRequest(int patronId, int docId){
-		try{
+	public Request getRequest(int patronId, int docId) {
+		try {
 			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronId + " and document_id = " + docId);
-			if(requestsSet.next()){
+			if (requestsSet.next()) {
 				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(6)),
 						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
 				temp.setRequestId(requestsSet.getInt(1));
 				return temp;
 			}
-		} catch(SQLException | ParseException e){
+		} catch (SQLException | ParseException e) {
 
-		} throw new NoSuchElementException();
+		}
+		throw new NoSuchElementException();
 	}
 
 	/**
@@ -1051,8 +1052,7 @@ public class Database {
 	 * @throws SQLException
 	 */
 	public void deleteRequest(int patronId, int documentId) throws SQLException {
-		executeUpdate(String.format("DELETE FROM requests WHERE patron_id = %d AND document_id = %d",
-				patronId, documentId));
+		executeUpdate("DELETE FROM requests WHERE patron_id = " + patronId + " AND document_id = " + documentId);
 	}
 
 	/**
