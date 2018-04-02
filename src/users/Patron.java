@@ -412,12 +412,10 @@ public class Patron extends User {
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
 			Request request = new Request(this, database.getDocument(idDocument), new Date(), false);
-			request.addToQueue(this.getId(), database);
 			database.insertRequest(request);
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idDocument);
 		}
-
 	}
 
 	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {

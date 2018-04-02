@@ -4,6 +4,7 @@ import documents.Document;
 import users.Patron;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.PriorityQueue;
 
@@ -61,11 +62,6 @@ public class Request {
 	private ComparatorPriority comparator = new ComparatorPriority();
 
 	/**
-	 * Priority queue
-	 */
-	private PriorityQueue<Patron> queue = new PriorityQueue<>(comparator);
-
-	/**
 	 * Initialize new request
 	 *
 	 * @param patron         Associated Patron.
@@ -83,16 +79,6 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-	/**
-	 * Add Patron to priority queue
-	 *
-	 * @param idPatron Associated patron's ID.
-	 * @param database Database
-	 * @throws SQLException
-	 */
-	public void addToQueue(int idPatron, Database database) throws SQLException {
-		queue.add(database.getPatron(idPatron));
-	}
 
 	/**
 	 * Approve request (Patron can take this document)
@@ -106,7 +92,6 @@ public class Request {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
 				" with document " + idDocument);
 		database.getPatron(idPatron).takeDocument(idDocument, database);
-		queue.remove(database.getPatron(idPatron));
 		database.deleteRequest(idPatron, idDocument);
 	}
 
@@ -288,4 +273,15 @@ public class Request {
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
 	}
+
+	public String toString() {
+		        return "id{"+getRequestId()+"} "+
+				                "patId{"+getIdPatron()+"} "+
+				                "patName{"+getNamePatron()+"} "+
+				                "patSurname{"+getSurnamePatron()+"} "+
+				                "docId{"+getIdDocument()+"} "+
+				                "priorityLvl{"+getPriority()+"} "+
+				                "date{"+(new SimpleDateFormat("yyyy-MM-dd")).format(getDate())+"} "+
+				                "isRenewReq{"+isRenewRequest()+"}";
+		    }
 }
