@@ -1,3 +1,4 @@
+
 # InLibrary Manager
 
 A course project - Library managing system.
@@ -12,8 +13,10 @@ Different parts are being developed in different branches.
 - Java 8
 - JUnit 5.0 (for tests)
 - SQLite JDBC ([Installation guide](http://telegra.ph/Kak-sdelat-tak-chtoby-vsyo-zarabotalo-03-01))
+- JavaFX 8
+- [JFoeniX 8.0.3](https://github.com/jfoenixadmin/JFoenix)
 
-Use system console (Just run program!)
+JavaFX 8 is required for desktop application. Please install FX module if you are using OpenJDK, or use Oracle JDK instead (recommended).
 
 This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `Main` class. You may use `javac`, but it was not tested.
 
