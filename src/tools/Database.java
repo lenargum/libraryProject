@@ -6,6 +6,7 @@ import documents.Document;
 import documents.JournalArticle;
 import users.Librarian;
 import users.Patron;
+import users.User;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -483,6 +484,17 @@ public class Database {
 			return temp;
 		}
 		throw new NoSuchElementException();
+	}
+
+	public User authorise(String login, String password)throws SQLException{
+		ResultSet userSet = executeQuery("SELECT * FROM users where login = " + login +" and password = " + password);
+		if (userSet.next()) {
+			Patron temp = new Patron(userSet.getString(2),
+					userSet.getString(3), userSet.getString(4), userSet.getString(5),
+					userSet.getString(6), userSet.getString(7), userSet.getString(8));
+			temp.setId(userSet.getInt(1));
+			return temp;
+		} throw new NoSuchElementException();
 	}
 
 	/**
