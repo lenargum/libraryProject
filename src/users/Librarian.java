@@ -7,11 +7,10 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
 import tools.Request;
-
+import tools.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
-import java.util.Date;
 
 /**
  * This class describes librarian in library system.
@@ -213,7 +212,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronSurname(int idPatron, Database database, String surname) {
 		try {
-			database.getPatron(idPatron).setSurname(surname);
+			database.getPatron(idPatron, database).setSurname(surname);
 			database.editUserColumn(idPatron, "lastname", surname);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -229,7 +228,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronAddress(int idPatron, Database database, String address) {
 		try {
-			database.getPatron(idPatron).setAddress(address);
+			database.getPatron(idPatron, database).setAddress(address);
 			database.editUserColumn(idPatron, "address", address);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -245,7 +244,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
 		try {
-			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
+			database.getPatron(idPatron, database).setPhoneNumber(phoneNumber);
 			database.editUserColumn(idPatron, "phone", phoneNumber);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect input");
@@ -262,7 +261,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronStatus(int idPatron, Database database, String status) {
 		try {
-			database.getPatron(idPatron).setStatus(status);
+			database.getPatron(idPatron, database).setStatus(status);
 			database.editDocumentColumn(idPatron, "status", status);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id");
@@ -290,35 +289,62 @@ public class Librarian extends User {
 	 * @param librarian Another librarian to compare.
 	 * @return {@code true} if librarians are similar, {@code false} otherwise.
 	 */
-    public boolean compare(Librarian librarian) {
+	public boolean compare(Librarian librarian) {
 		return this.getLogin().equals(librarian.getLogin());
 	}
 
+
 	/**
-	 * documents.Document renew confirmation
-	 *
-	 * @param debtID is debt we want to renew
-	 * @param database tools.Database storing the information
+	 * Return confirmation
+	 * @param debtID - id of debt patron wants to close
+	 * @param database - information storage
+	 * @throws SQLException
+	 * @throws ParseException
 	 */
-	public void renewDocument(int debtID, Database database){
-		try{
-			Debt debt = database.getDebt(debtID);
-			if(false){//in the condition we check if there is outstanding request for document
-				System.out.println("You can not renew this document!");
-			} else {
-				Date expDate = debt.getExpireDate();
-				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("visiting professor"));
-				debt.setExpireDate(expDate);
-                System.out.println("documents.Document was renewed!");
-			}
-		} catch (SQLException | NoSuchElementException e){
-			System.out.println("Incorrect ID");
-		} catch (ParseException e){
-			System.out.println("By default");
+	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException{
+		Debt debt = database.getDebt(debtID);
+		debt.countFee(database);
+		if(debt.getFee() == 0){
+		    Patron patron = database.getPatron(debt.getPatronId(), database);
+		    patron.returnDocument(debt.getDocumentId(), database);
+        }
+		else {
+			System.out.println("You need to pay for delay");
 		}
 	}
 
+	/**
+	 * renew document confirmation
+	 * @param request - request that patron sent to renew document
+	 * @param database - information storage
+	 */
+	public void confirmRenew(Request request, Database database){
+	   try{
+	        request.approveRenew(database);
+			database.deleteRequest(request.getRequestId());
+        } catch (SQLException e){
+
+        }
+    }
+
+	/**
+	 * renew document refuse
+	 * @param request - request librarian refuses
+	 */
+	public void refuseRenew(Request request, Database database){
+		try {
+			request.refuseRenew();
+			database.deleteRequest(request.getRequestId());
+		} catch (SQLException e){
+
+		}
+	}
+
+	/**
+	 * confirmation of getting fee
+	 * @param debtID - id of debt patron wants to close
+	 * @param database - information storage
+	 */
 	public void getFee(int debtID, Database database){
 		try{
 			Debt debt = database.getDebt(debtID);
@@ -331,14 +357,24 @@ public class Librarian extends User {
 		}
 	}
 
+	/**
+	 * taking document request confirmation
+	 * @param request - request librarian confirms
+	 * @param database - information storage
+	 * @throws SQLException
+	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
-		database.deleteRequest(request.getIdPatron(), request.getIdDocument());
 	}
 
+	/**
+	 * delete taking document request
+	 * @param request - request the librarian refuses
+	 * @param database - information storage
+	 * @throws SQLException
+	 */
 	public void deleteRequest(Request request, Database database) throws SQLException {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
-		database.deleteRequest(request.getIdPatron(), request.getIdDocument());
 	}
-	
+
 }

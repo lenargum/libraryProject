@@ -5,7 +5,8 @@ import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
 import tools.Database;
-import tools.*;
+import tools.Debt;
+import tools.Request;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -22,7 +23,7 @@ import java.util.NoSuchElementException;
 public class Patron extends User {
 	/**
 	 * users.Patron type.
-	 * Possible values: {@code "faculty"}, {@code "student"}, {@code "ta"}, {@code "vp"} , {@code "professor"}
+	 * Possible values: {@code "faculty"}, {@code "student"}
 	 */
 	private String status;
 
@@ -105,10 +106,9 @@ public class Patron extends User {
 	 * @param database tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
-
 	public boolean canRequestBook(int idBook, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -157,7 +157,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestArticle(int idArticle, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -206,7 +206,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestAV(int idAV, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -257,7 +257,7 @@ public class Patron extends User {
 	 */
 	public boolean canRequestDocument(int idDocument, Database database) {
 		try {
-			database.getPatron(getId());
+			database.getPatron(getId(), database);
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
 			return false;
@@ -296,7 +296,6 @@ public class Patron extends User {
 	 * @param idBook   documents.Book to take.
 	 * @param database tools.Database that stores the information.
 	 */
-
 	public void takeBook(int idBook, Database database) {
 		try {
 			if (canRequestBook(idBook, database)) {
@@ -365,7 +364,7 @@ public class Patron extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if(status.toLowerCase().equals("vp"))
+				if(status.toLowerCase().equals("visiting professor"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
 				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
@@ -406,10 +405,8 @@ public class Patron extends User {
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
-			Date currentDate = new Date();
-			Request request = new Request(this,database.getDocument(idDocument), currentDate);
+			Request request = new Request(this, database.getDocument(idDocument), new Date(),false);
 			request.addToQueue(this.getId(), database);
-			database.insertRequest(request);
 		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}
@@ -530,6 +527,7 @@ public class Patron extends User {
 			}
 			database.getDocument(idDocument).addCopy();
 			increaseCountOfCopies(idDocument, database);
+            System.out.println("Return confirmed!");
 			int debtID = database.findDebtID(this.getId(), idDocument);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
@@ -554,14 +552,18 @@ public class Patron extends User {
 	 * @param docID documents.Document ID
 	 * @param database tools.Database stores the information
 	 */
-	public void renewDocument(int docID, int libID, Database database){
+	public void renewDocument(int docID, Database database){
 		try{
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
 			if(debt.canRenew()){
-				database.renew(debtID);
+                Date expDate = debt.getExpireDate();
+                expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
+                debt.setCanRenew(false || database.getPatron(debt.getPatronId(), database).getStatus().toLowerCase().equals("vp"));
+                debt.setExpireDate(expDate);
+                System.out.println("documents.Document was renewed!");
 			} else {
-				System.out.println("The document is already renewed!");
+				System.out.println("The document is already renewed, so you need to return it!");
 			}
 		} catch (NoSuchElementException | SQLException e){
 			System.out.println("Incorrect id");
@@ -571,23 +573,24 @@ public class Patron extends User {
 	}
 
 	/**
-	 * patron wants to fine his debt
-	 * @param debtID  - debt to fine
+	 * patron sends request to renew document
+	 * @param debtId - id of debt patron wants to renew
 	 * @param database - information storage
 	 */
-	public void fine(int debtID, Database database){
-		try{
-			Debt debt = database.getDebt(debtID);
-			debt.countFee(database);
-			if(debt.getFee() > 0){
-				database.fee(debtID);
-			} else {
-				System.out.println("You do not owe Library anything");
-			}
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect ID");
-		} catch (ParseException e) {
-			System.out.println("By default");
-		}
-	}
+	public void sendRenewRequest(int debtId, Database database){
+	    try{
+	        Debt debt = database.getDebt(debtId);
+	        Document doc = database.getDocument(debt.getDocumentId());
+			Date date = new Date();
+            Request request = new Request(this, doc, date, true);
+            database.insertRequest(request);
+	    }
+        catch (SQLException | ParseException e){
+			System.out.println("Incorrect id");
+        }
+
+    }
+
+
+
 }

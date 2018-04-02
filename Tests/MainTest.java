@@ -1,10 +1,10 @@
 import documents.AudioVideoMaterial;
 import documents.Book;
+import org.junit.jupiter.api.Test;
 import tools.Database;
 import tools.Debt;
 import users.Librarian;
 import users.Patron;
-import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -135,7 +135,7 @@ class MainTest {
 			database.connect();
 
 			try {
-				database.getPatron(p2.getId());
+				database.getPatron(p2.getId(), database);
 			} catch (NoSuchElementException e) {
 				System.out.println("No information for p2.");
 			}

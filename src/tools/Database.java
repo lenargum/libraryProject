@@ -468,11 +468,12 @@ public class Database {
 	 * Get the patron with following ID from database.
 	 *
 	 * @param ID Patrons' ID stored in database.
+	 * @param database
 	 * @return users.Patron with following ID.
 	 * @throws SQLException By default.
 	 * @see Patron
 	 */
-	public Patron getPatron(int ID) throws SQLException {
+	public Patron getPatron(int ID, Database database) throws SQLException {
 		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
@@ -621,14 +622,14 @@ public class Database {
 	/**
 	 * Get list of debts for the following user.
 	 *
-	 * @param userID users' ID.
+	 * @param userID Users' ID.
 	 * @return List of debts for following user stored in database.
 	 * @throws SQLException   By default.
 	 * @throws ParseException Incorrect data format.
 	 * @see List
 	 * @see Debt
 	 */
-	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
+	public List<Debt> getDebtsForUser(boolean userID) throws SQLException, ParseException {
 		//language=SQLite
 		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 		LinkedList<Debt> debts = new LinkedList<>();
@@ -712,7 +713,7 @@ public class Database {
 	/**
 	 * Delete user with following ID from database.
 	 *
-	 * @param userID users' ID.
+	 * @param userID Users' ID.
 	 * @throws SQLException By default.
 	 */
 	public void deleteUser(int userID) throws SQLException {
@@ -744,7 +745,7 @@ public class Database {
 	/**
 	 * Modifies the user data in database.
 	 *
-	 * @param userID users' ID.
+	 * @param userID Users' ID.
 	 * @param column Column to edit. Available options:
 	 *               <br>"address" to edit address</br>
 	 *               <br>"phone" to edit phone number</br>
@@ -945,40 +946,82 @@ public class Database {
 		return -1;
 	}
 
-	public void renew(int debtId){
-		//nado chto-to napisat'
-	}
-
-	public void fee(int debtId){
-		//nado chto-to napisat'
-	}
-
-	//insert,get,delete,edit request
+	/**
+	 * inserts request to the library
+	 * @param request
+	 * @throws SQLException
+	 */
 	public void insertRequest(Request request) throws SQLException {
-		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date)" +
-				"VALUES(%d, '%s', '%s', %d, %d,'%s')", request.getIdPatron(), request.getNamePatron(),
+		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
+				"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
 				request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
-				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate())));
+				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()),request.isRenewRequest()));
 	}
 
+	/**
+	 *
+	 * @return list of all the unclosed requests from the database
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public List<Request> getRequests() throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
 		LinkedList<Request> requests = new LinkedList<>();
 		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(1)),this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(6)));
-
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
 			requests.add(temp);
 		}
 		return requests;
 	}
 
+	/**
+	 *
+	 * @param id - id of request we want to return
+	 * @return request from the database
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
+	public Request getRequest(int id) throws SQLException, ParseException {
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = "+id);
+		if (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			return temp;
+		}
+		throw new NoSuchElementException();
+	}
+
+	/**
+	 * deletes request from the database by patron and document ids
+	 * @param patronId - id of patron whose request was closed
+	 * @param documentId - id of document patron wanted to take
+	 * @throws SQLException
+	 */
 	public void deleteRequest(int patronId,int documentId) throws SQLException {
 		executeUpdate(String.format("DELETE FROM requests WHERE patron_id = %d AND document_id = %d",
 				patronId,documentId));
 	}
 
-	public void editRequest(int patronId, int documentId, String column, String value) throws SQLException {
+	/**
+	 * deletes request from the database by request id
+	 * @param requestId
+	 * @throws SQLException
+	 */
+	public void deleteRequest(int requestId) throws SQLException {
+		executeUpdate("DELETE FROM requests WHERE request_id = "+requestId);
+	}
+
+	/**
+	 * edit request table
+	 * @param requestId id of request we want to edit
+	 * @param column - column to edit.
+	 * @param value - new value
+	 * @throws SQLException
+	 */
+	public void editRequest(int requestId, String column, String value) throws SQLException {
 		String quotes1 = "";
 		String quotes2 = "";
 
@@ -989,6 +1032,6 @@ public class Database {
 			quotes1 = "\'";
 			quotes2 = "\'";
 		}
-		executeUpdate(String.format("UPDATE requests SET %s = %s"+value+"%s WHERE patron_id = %d AND document_id = %d",column,quotes1,quotes2,patronId,documentId));
+		executeUpdate(String.format("UPDATE requests SET %s = %s"+value+"%s WHERE request_id = %d",column,quotes1,quotes2,requestId));
 	}
 }
