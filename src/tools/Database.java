@@ -801,7 +801,7 @@ public class Database {
 		String quotes2 = "";
 		try {
 			//noinspection ResultOfMethodCallIgnored
-			Integer.parseInt(value);
+			Double.parseDouble(value);
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
@@ -824,7 +824,7 @@ public class Database {
 		String quotes2 = "";
 		try {
 			//noinspection ResultOfMethodCallIgnored
-			Integer.parseInt(value);
+			Double.parseDouble(value);
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
@@ -1097,7 +1097,7 @@ public class Database {
 
 		try {
 			//noinspection ResultOfMethodCallIgnored
-			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
+			Double.parseDouble(value); // Removed unused variable, may produce bug. RS
 		} catch (NumberFormatException e) {
 			quotes1 = "\'";
 			quotes2 = "\'";
