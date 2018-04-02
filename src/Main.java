@@ -30,7 +30,7 @@ public class Main {
 				password = in.nextLine();
 			}
 			int userId = db.loginId(login, password);
-			Patron user = db.getPatron(userId, database);
+			Patron user = db.getPatron(userId, db);
 
 			while (true) {
 				clearScreen();
