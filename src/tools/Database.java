@@ -487,7 +487,7 @@ public class Database {
 	}
 
 	public User authorise(String login, String password)throws SQLException{
-		ResultSet userSet = executeQuery("SELECT * FROM users where login = \'" + login +"\' and password = \'" + password + "\'");
+		ResultSet userSet = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
 		if (userSet.next()) {
 			Patron temp = new Patron(userSet.getString(2),
 					userSet.getString(3), userSet.getString(4), userSet.getString(5),
@@ -978,6 +978,30 @@ public class Database {
 	 */
 	public List<Request> getRequests() throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
+		LinkedList<Request> requests = new LinkedList<>();
+		while (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			requests.add(temp);
+		}
+		return requests;
+	}
+
+	public List<Request> getRequestsForPatron(int patronID)throws SQLException, ParseException{
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'false' ORDER BY priority, date");
+		LinkedList<Request> requests = new LinkedList<>();
+		while (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)),Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			requests.add(temp);
+		}
+		return requests;
+	}
+
+	public List<Request> getRenewRequestsForPatron(int patronID)throws SQLException, ParseException{
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'true'");
 		LinkedList<Request> requests = new LinkedList<>();
 		while (requestsSet.next()) {
 			Request temp = new Request(this.getPatron(requestsSet.getInt(2), this),this.getDocument(requestsSet.getInt(6)),
