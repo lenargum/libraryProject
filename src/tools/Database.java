@@ -977,7 +977,7 @@ public class Database {
 	 * @throws ParseException
 	 */
 	public List<Request> getRequests() throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests ORDER BY priority, date");
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'false' ORDER BY priority, date");
 		LinkedList<Request> requests = new LinkedList<>();
 		while (requestsSet.next()) {
 			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
@@ -988,7 +988,25 @@ public class Database {
 		return requests;
 	}
 
-	public ArrayList<Request> getRequestsForPatron(int patronID) throws SQLException, ParseException {
+    /**
+     * @return list of all the unclosed requests from the database
+     * @throws SQLException
+     * @throws ParseException
+     */
+    public List<Request> getRenewRequests() throws SQLException, ParseException {
+        ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'true' ORDER BY priority, date");
+        LinkedList<Request> requests = new LinkedList<>();
+        while (requestsSet.next()) {
+            Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+            temp.setRequestId(requestsSet.getInt(1));
+            requests.add(temp);
+        }
+        return requests;
+    }
+
+
+	public List<Request> getRequestsForPatron(int patronID) throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'false' ORDER BY priority, date");
 		ArrayList<Request> requests = new ArrayList<>();
 		while (requestsSet.next()) {

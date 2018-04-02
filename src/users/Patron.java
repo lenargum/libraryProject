@@ -300,7 +300,7 @@ public class Patron extends User {
 	 */
 	public void takeBook(int idBook, Database database) {
 		try {
-			if (canRequestBook(idBook, database)) {
+
 				this.getListOfDocumentsPatron().add(idBook);
 				database.getBook(idBook).deleteCopy();
 				decreaseCountOfCopies(idBook, database);
@@ -321,7 +321,7 @@ public class Patron extends User {
 
 				Debt debt = new Debt(getId(), idBook, dateBook, dateExpire, 0, true);
 				database.insertDebt(debt);
-			}
+
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id=" + idBook);
 		}
