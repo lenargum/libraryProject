@@ -381,7 +381,7 @@ public class Patron extends User {
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
 				Date date2 = new Date();
-				if (status.toLowerCase().equals("visiting professor"))
+				if (status.toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
 				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);

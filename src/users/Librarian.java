@@ -247,7 +247,7 @@ public class Librarian extends User {
 
 	/**
 	 * Modify the status of patron stored in database.
-	 * Possible values: {@code "faculty"}, {@code "student"}
+	 * Possible values: {@code "instructor"}, {@code "student"}, {@code "ta"}, {@code "professor"}
 	 *
 	 * @param idPatron ID of patron which is going to be modified.
 	 * @param database tools.Database that stores the information.

@@ -147,8 +147,8 @@ public class Database {
 	 */
 	public void insertPatron(Patron patron) throws SQLException {
 		String status = "STUDENT";
-		if (patron.getStatus().toLowerCase().equals("faculty")) {
-			status = "FACULTY";
+		if (!patron.getStatus().toLowerCase().equals("librarian")) {
+			status = patron.getStatus().toUpperCase();
 		}
 		insertUser(patron.getLogin(), patron.getPassword(), status, patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
 	}
@@ -270,7 +270,7 @@ public class Database {
 	 * @see Patron
 	 */
 	public ArrayList<Patron> getPatronList() throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where status = 'FACULTY' or status = 'STUDENT'");
+		ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN'");
 		ArrayList<Patron> patronList = new ArrayList<>();
 		while (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
@@ -474,7 +474,7 @@ public class Database {
 	 * @see Patron
 	 */
 	public Patron getPatron(int ID) throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'FACULTY' or status = 'STUDENT') and id = " + ID);
+		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'INSTRUCTOR' or status = 'TA' or status = 'PROFESSOR' or 'VP' or status = 'STUDENT') and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
 					patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
