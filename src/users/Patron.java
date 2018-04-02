@@ -24,13 +24,13 @@ import java.util.NoSuchElementException;
 public class Patron extends User {
 	/**
 	 * users.Patron type.
-	 * Possible values: {@code "faculty"}, {@code "student"}
+	 * Possible values: {@code "instructor"}, {@code "student"}
 	 */
 	private String status;
 
 	/**
 	 * Priority of users.Patron.
-	 * Levels of priority: student, faculty(instructions), TA, VP, professor
+	 * Levels of priority: student, instructor(instructions), TA, VP, professor
 	 */
 	private int priority;
 
@@ -44,7 +44,7 @@ public class Patron extends User {
 	 *
 	 * @param login    Login.
 	 * @param password Password.
-	 * @param status   users.Patron type. Possible values: {@code "faculty"}, {@code "student"}
+	 * @param status   users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
 	 * @param name     First name.
 	 * @param surname  Last name.
 	 * @param phone    Phone number.
@@ -66,7 +66,7 @@ public class Patron extends User {
 	}
 
 	/**
-	 * Get the patron status. Possible values: {@code "faculty"}, {@code "student"}
+	 * Get the patron status. Possible values: {@code "instructor"}, {@code "student"}
 	 *
 	 * @return users.Patron status.
 	 */
@@ -75,7 +75,7 @@ public class Patron extends User {
 	}
 
 	/**
-	 * Set the new patron status. Possible values: {@code "faculty"}, {@code "student"}
+	 * Set the new patron status. Possible values: {@code "instructor"}, {@code "student"}
 	 *
 	 * @param status New patron status.
 	 */
@@ -92,7 +92,7 @@ public class Patron extends User {
 			case "student":
 				priority = 0;
 				break;
-			case "faculty":
+			case "instructor":
 				priority = 1;
 				break;
 			case "ta":
@@ -126,12 +126,12 @@ public class Patron extends User {
 		}
 		try {
 			Book book = database.getBook(idBook);
-			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor")))
 					&& (book.getNumberOfCopies() != 0) &&
 					!book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (book.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
@@ -175,11 +175,11 @@ public class Patron extends User {
 		}
 		try {
 			JournalArticle article = database.getArticle(idArticle);
-			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (article.getNumberOfCopies() != 0) &&
 					!article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (article.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
@@ -224,11 +224,11 @@ public class Patron extends User {
 		}
 		try {
 			AudioVideoMaterial av = database.getAV(idAV);
-			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (av.getNumberOfCopies() != 0) &&
 					!av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
 				return true;
-			} else if ((this.status.toLowerCase().equals("faculty")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (av.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
@@ -275,7 +275,7 @@ public class Patron extends User {
 		}
 		try {
 			Document doc = database.getDocument(idDocument);
-			if ((this.status.toLowerCase().equals("faculty") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
+			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (doc.getNumberOfCopies() != 0) &&
 					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
 				return true;
@@ -323,7 +323,7 @@ public class Patron extends User {
 						case "student":
 							dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
 							break;
-						case "faculty":
+						case "instructor":
 						case "ta":
 						case "professor":
 							dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
