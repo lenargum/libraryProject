@@ -272,16 +272,20 @@ public class CoreAPI {
 
 	public void rejectBookRequest(int requestID) {
 		if (user instanceof Librarian) {
+			System.out.println("Current user is librarian, asking database to reject...");
 			db.connect();
 
 			try {
 				Request request = db.getRequest(requestID);
+				System.out.println("Deleting request " + request.getRequestId());
 				((Librarian) user).deleteRequest(request, db);
 			} catch (SQLException | ParseException e) {
 				e.printStackTrace();
 			} finally {
 				db.close();
 			}
+		} else {
+			System.out.println("Current user is not a librarian.");
 		}
 	}
 
