@@ -12,7 +12,7 @@ import java.util.PriorityQueue;
  * This class describes the requests of booking system
  *
  * @author Madina Gafarova
- * @author Anastasiya Minakova
+ * @author Anastasiia Minakova
  * @author Lenar Gumerov
  */
 public class Request {
