@@ -385,15 +385,17 @@ public class Patron extends User {
 	 */
 	public void takeDocument(int idDocument, Database database) {
 		try {
-				getListOfDocumentsPatron().add(idDocument);
-				database.getDocument(idDocument).deleteCopy();
-				decreaseCountOfCopies(idDocument, database);
-				Date date = new Date();
-				Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
-				database.insertDebt(debt);
+			getListOfDocumentsPatron().add(idDocument);
+			database.getDocument(idDocument).deleteCopy();
+			decreaseCountOfCopies(idDocument, database);
+			Date date = new Date();
+			Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
+			database.insertDebt(debt);
 
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id" + idDocument);
+		} catch (SQLException e) {
+			System.out.println("Something went wrong while processing request. Document ID: " + idDocument);
+		} catch (NoSuchElementException e) {
+			System.out.println("Incorrect document ID: " + idDocument);
 		}
 	}
 
