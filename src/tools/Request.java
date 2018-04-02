@@ -75,12 +75,8 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-    //TODO: CHECK ME
-    public boolean  documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
-        if (database.getRequests().contains(database.getRequest(idDocument))){
-            return true;
-        } else
-            return false;
+    public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
+	    return database.getRequests().contains(database.getRequest(idDocument));
     }
 	/**
 	 * Approve request (Patron can take this document)
@@ -275,6 +271,8 @@ public class Request {
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
 	}
+
+	//TODO: FUCK YOU
 
 	public String toString() {
 		        return "id{"+getRequestId()+"} "+
