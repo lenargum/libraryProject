@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class TakeApproval {
+	CoreAPI api;
 	AnchorPane layout;
 	Stage stage;
 	Scene scene, previousScene;
@@ -28,6 +29,7 @@ public class TakeApproval {
 	}
 
 	public TakeApproval(Stage mainStage, Scene previousScene, CoreAPI api) {
+		this.api = api;
 		stage = mainStage;
 		this.previousScene = previousScene;
 		try {
@@ -58,12 +60,12 @@ public class TakeApproval {
 		JFXButton accept = new JFXButton("ACCEPT");
 		JFXButton reject = new JFXButton("REJECT");
 		accept.setOnAction(event1 -> {
-			// do smth
+			api.acceptBookRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
 		});
 		reject.setOnAction(event1 -> {
-			// do smth
+			api.rejectBookRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
 		});

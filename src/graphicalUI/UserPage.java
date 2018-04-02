@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +37,14 @@ public class UserPage {
 	private JFXPopup detailsPopup;
 	@FXML
 	private JFXButton seeMoreBtn;
+	@FXML
+	private Text nameSurname;
+	@FXML
+	private Text statusField;
+	@FXML
+	private Text addressField;
+	@FXML
+	private Text phoneField;
 
 	public UserPage() {
 	}
@@ -96,6 +105,16 @@ public class UserPage {
 		myLastBooks.getItems().addAll(rootPage.getApi().getRecent());
 
 		myLastBooks.setOnMouseClicked(this::myLastBooksOnMouseClicked);
+
+		nameSurname = (Text) userLayout.lookup("#nameSurname");
+		statusField = (Text) userLayout.lookup("#statusField");
+		addressField = (Text) userLayout.lookup("#addressField");
+		phoneField = (Text) userLayout.lookup("#phoneField");
+
+		nameSurname.setText(rootPage.getApi().getUser().getName() + " " + rootPage.getApi().getUser().getSurname());
+		statusField.setText(rootPage.getApi().userType().name());
+		addressField.setText(rootPage.getApi().getUser().getAddress());
+		phoneField.setText(rootPage.getApi().getUser().getPhoneNumber());
 	}
 
 	private void accountBtnClicked(ActionEvent event) {

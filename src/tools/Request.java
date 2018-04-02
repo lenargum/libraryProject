@@ -101,8 +101,10 @@ public class Request {
      * @throws SQLException
      */
     public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        queue.remove(database.getPatron(idPatron));
+
         database.getPatron(idPatron).takeDocument(idDocument, database);
+        queue.remove(database.getPatron(idPatron));
+        database.deleteRequest(idPatron, idDocument);
     }
 
     /**
@@ -113,12 +115,11 @@ public class Request {
      * @throws SQLException
      */
     public void refuseRequest(int idPatron, int idDocument, Database database) throws SQLException {
-        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
-            queue.remove(database.getPatron(idPatron));
-    }
-        if (database.getDocument(idDocument).getNumberOfCopies() == 0){
-            System.out.println("Wait until the copies appear or Please, check your status!");
-        }
+//        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
+//            //queue.remove(database.getPatron(idPatron));
+//	        System.out.println("Not for this patron");
+//    }
+        database.deleteRequest(idPatron, idDocument);
     }
 
     /**
@@ -128,6 +129,7 @@ public class Request {
      */
     public void approveRenew(Database database)throws SQLException{
         database.getPatron(idPatron).renewDocument(idDocument, database);
+        database.deleteRequest(idPatron);
     }
 
     /**

@@ -400,18 +400,26 @@ public class Patron extends User {
 	/**
 	 * Make request the following document
 	 * @param idDocument document to request
-	 * @param database DatabasE that stores the information
+	 * @param database Database that stores the information
 	 * @throws SQLException
 	 */
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
-			Request request = new Request(this, database.getDocument(idDocument), new Date(),false);
-			request.addToQueue(this.getId(), database);
+				Request request = new Request(this, database.getDocument(idDocument), new Date(), false);
+				request.addToQueue(this.getId(), database);
+				database.insertRequest(request);
 		} catch(NoSuchElementException e ){
 			System.out.println("Incorrect id" + idDocument);
 		}
-	}
 
+	}
+	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException{
+		ArrayList<Request> requests = database.getRequestsForPatron(this.getId());
+		for(Request i: requests){
+			if(i.getIdDocument() == docId) return true;
+		}
+		return false;
+	}
 	/**
 	 * Decrease the number of copies of specified document by one.
 	 *

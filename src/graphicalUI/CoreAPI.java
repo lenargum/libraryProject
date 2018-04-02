@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tools.Database;
 import tools.Debt;
+import tools.Request;
 import users.Librarian;
 import users.Patron;
 import users.User;
@@ -25,6 +26,10 @@ public class CoreAPI {
 	public CoreAPI() {
 		db = new Database();
 		loggedIn = false;
+	}
+
+	public User getUser() {
+		return user;
 	}
 
 	public List<DocItem> getAllBooks() {
@@ -136,22 +141,65 @@ public class CoreAPI {
 
 	public ObservableList<UserDocs.WaitlistView> getWaitList() {
 		ObservableList<UserDocs.WaitlistView> waitlist = FXCollections.observableArrayList();
+		List<Request> requests = new ArrayList<>();
+		db.connect();
+		try {
+			requests = db.getRequestsForPatron(user.getId());
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		}
+
+		for (Request request : requests) {
+			try {
+				Document doc = db.getDocument(request.getIdDocument());
+				waitlist.add(new UserDocs.WaitlistView(doc.getTitle(), 0,
+						request.getRequestId()));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		db.close();
 
 		return waitlist;
 	}
 
 	public ObservableList<ApprovalCell> getRenewRequests() {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
-		list.addAll(new ApprovalCell("Sdbdjks", 1, "Succi", 1),
-				new ApprovalCell("ubjksd", 2, "You", 2));
+
+		db.connect();
+		try {
+			for (Request request : db.getRequests()) {
+				Document doc = db.getDocument(request.getIdDocument());
+				Patron pat = db.getPatron(request.getIdPatron());
+				list.add(new ApprovalCell(request.getRequestId(),
+						doc.getTitle(), doc.getID(),
+						pat.getName() + " " + pat.getSurname(), pat.getId()));
+			}
+		} catch (ParseException | SQLException e) {
+			e.printStackTrace();
+		}
+		db.close();
 
 		return list;
 	}
 
 	public ObservableList<ApprovalCell> getTakeRequests() {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
-		list.addAll(new ApprovalCell("hfiushfid", 1, "Succi", 1),
-				new ApprovalCell("sidhvidhs", 2, "You", 2));
+
+		db.connect();
+		try {
+			for (Request request : db.getRequests()) {
+				Document doc = db.getDocument(request.getIdDocument());
+				Patron pat = db.getPatron(request.getIdPatron());
+				list.add(new ApprovalCell(request.getRequestId(),
+						doc.getTitle(), doc.getID(),
+						pat.getName() + " " + pat.getSurname(), pat.getId()));
+			}
+		} catch (ParseException | SQLException e) {
+			e.printStackTrace();
+		}
+		db.close();
 
 		return list;
 	}
@@ -196,6 +244,40 @@ public class CoreAPI {
 				db.connect();
 				((Patron) user).makeRequest(docID, db);
 			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				db.close();
+			}
+		}
+	}
+
+	public void acceptBookRequest(int requestID) {
+		if (user instanceof Librarian) {
+			System.out.println("Current user is librarian, asking database to accept...");
+			db.connect();
+
+			try {
+				Request request = db.getRequest(requestID);
+				System.out.println("Submitting request " + request.getRequestId());
+				((Librarian) user).submitRequest(request, db);
+			} catch (SQLException | ParseException e) {
+				e.printStackTrace();
+			} finally {
+				db.close();
+			}
+		} else {
+			System.out.println("Current user is not librarian.");
+		}
+	}
+
+	public void rejectBookRequest(int requestID) {
+		if (user instanceof Librarian) {
+			db.connect();
+
+			try {
+				Request request = db.getRequest(requestID);
+				((Librarian) user).deleteRequest(request, db);
+			} catch (SQLException | ParseException e) {
 				e.printStackTrace();
 			} finally {
 				db.close();

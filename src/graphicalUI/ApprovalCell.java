@@ -1,6 +1,5 @@
 package graphicalUI;
 
-import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -8,6 +7,7 @@ import javafx.scene.text.Font;
 
 
 public class ApprovalCell extends HBox {
+	private int id;
 	private int docID, userID;
 	private String docTitle;
 	private String userName;
@@ -16,7 +16,8 @@ public class ApprovalCell extends HBox {
 
 	}
 
-	public ApprovalCell(String docTitle, int docID, String userName, int userID) {
+	public ApprovalCell(int id, String docTitle, int docID, String userName, int userID) {
+		this.id = id;
 		this.docID = docID;
 		this.userID = userID;
 		Label title = new Label(docTitle);
@@ -30,6 +31,10 @@ public class ApprovalCell extends HBox {
 		getChildren().addAll(title, name);
 
 		setPadding(new Insets(10));
+	}
+
+	public int getRequestId() {
+		return id;
 	}
 
 	public int getDocID() {
