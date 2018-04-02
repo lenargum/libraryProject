@@ -2,8 +2,10 @@ package tools;
 
 import documents.Document;
 import users.Patron;
+import users.*;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.PriorityQueue;
 
@@ -65,34 +67,33 @@ public class Request {
 	 */
 	private PriorityQueue<Patron> queue = new PriorityQueue<>(comparator);
 
-	/**
-	 * Initialize new request
-	 *
-	 * @param patron         Associated Patron.
-	 * @param document       Associated Document
-	 * @param date           Date of booking
-	 * @param isRenewRequest Flag
-	 */
-	public Request(Patron patron, Document document, Date date, boolean isRenewRequest) {
-		this.idPatron = patron.getId();
-		this.namePatron = patron.getName();
-		this.surnamePatron = patron.getSurname();
-		this.idDocument = document.getID();
-		this.date = date;
-		this.priority = patron.getPriority();
-		this.isRenewRequest = isRenewRequest;
-	}
 
-	/**
-	 * Add Patron to priority queue
-	 *
-	 * @param idPatron Associated patron's ID.
-	 * @param database Database
-	 * @throws SQLException
-	 */
-	public void addToQueue(int idPatron, Database database) throws SQLException {
-		queue.add(database.getPatron(idPatron));
-	}
+    public Request(Patron patron, Document document, Date date, boolean isRenewRequest) {
+        this.idPatron = patron.getId();
+        this.namePatron = patron.getName();
+        this.surnamePatron = patron.getSurname();
+        this.idDocument = document.getID();
+        this.date = date;
+        this.priority = patron.getPriority();
+        this.isRenewRequest = isRenewRequest;
+    }
+
+    //TODO: CHECK ME
+    public boolean  documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
+        if (database.getRequests().contains(database.getRequest(idDocument))){
+            return true;
+        } else
+            return false;
+    }
+    /**
+     * Add Patron to priority queue
+     * @param idPatron Associated patron's ID.
+     * @param database Database
+     * @throws SQLException
+     */
+    public void addToQueue(int idPatron, Database database) throws SQLException {
+        queue.add(database.getPatron(idPatron));
+    }
 
 	/**
 	 * Approve request (Patron can take this document)
