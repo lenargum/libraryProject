@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -577,7 +578,7 @@ public class Patron extends User {
 			if (debt.canRenew()) {
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(false || database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+				debt.setCanRenew(database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
 				debt.setExpireDate(expDate);
 				System.out.println("documents.Document was renewed!");
 			} else {
