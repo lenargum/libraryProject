@@ -67,7 +67,7 @@ public class Database {
 	 *
 	 * @return {@code true} if connection established, {@code false} otherwise.
 	 */
-	public boolean isConnected() {
+	private boolean isConnected() {
 		return this.connected;
 	}
 
@@ -923,7 +923,7 @@ public class Database {
 	 * @return ID for found document.
 	 * @throws SQLException By default.
 	 */
-	public int getDocumentID(Document document) throws SQLException {
+	private int getDocumentID(Document document) throws SQLException {
 		for (Document i : getDocumentList()) {
 			if (i.compare(document)) return i.getID();
 		}
@@ -961,8 +961,8 @@ public class Database {
 	/**
 	 * inserts request to the library
 	 *
-	 * @param request
-	 * @throws SQLException
+	 * @param request request object which will be inserted
+	 * @throws SQLException something went wrong in database
 	 */
 	public void insertRequest(Request request) throws SQLException {
 		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
@@ -973,8 +973,8 @@ public class Database {
 
 	/**
 	 * @return list of all the unclosed requests from the database
-	 * @throws SQLException
-	 * @throws ParseException
+	 * @throws SQLException   something went wrong in database
+	 * @throws ParseException date parsing failed
 	 */
 	public List<Request> getRequests() throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'false' ORDER BY priority, date");
@@ -988,22 +988,22 @@ public class Database {
 		return requests;
 	}
 
-    /**
-     * @return list of all the unclosed requests from the database
-     * @throws SQLException
-     * @throws ParseException
-     */
-    public List<Request> getRenewRequests() throws SQLException, ParseException {
-        ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'true' ORDER BY priority, date");
-        LinkedList<Request> requests = new LinkedList<>();
-        while (requestsSet.next()) {
-            Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-                    new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-            temp.setRequestId(requestsSet.getInt(1));
-            requests.add(temp);
-        }
-        return requests;
-    }
+	/**
+	 * @return list of all the unclosed requests from the database
+	 * @throws SQLException   something went wrong in database
+	 * @throws ParseException date parsing failed
+	 */
+	public List<Request> getRenewRequests() throws SQLException, ParseException {
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'true' ORDER BY priority, date");
+		LinkedList<Request> requests = new LinkedList<>();
+		while (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			requests.add(temp);
+		}
+		return requests;
+	}
 
 
 	public List<Request> getRequestsForPatron(int patronID) throws SQLException, ParseException {
@@ -1030,26 +1030,30 @@ public class Database {
 		return requests;
 	}
 
-	public Request getRequest(int patronId, int docId) {
-		try {
-			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronId + " and document_id = " + docId);
-			if (requestsSet.next()) {
-				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-				temp.setRequestId(requestsSet.getInt(1));
-				return temp;
-			}
-		} catch (SQLException | ParseException e) {
-
+	/**
+	 * @param patronId patron's id
+	 * @param docId document's id
+	 * @return request from database with id = patronId
+	 * @throws SQLException something went wrong in database
+	 * @throws ParseException date parsing failed
+	 */
+	public Request getRequest(int patronId, int docId) throws SQLException, ParseException {
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronId + " and document_id = " + docId);
+		if (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			return temp;
 		}
+
 		throw new NoSuchElementException();
 	}
 
 	/**
 	 * @param id - id of request we want to return
 	 * @return request from the database
-	 * @throws SQLException
-	 * @throws ParseException
+	 * @throws SQLException   something went wrong in database
+	 * @throws ParseException date parsing failed
 	 */
 	public Request getRequest(int id) throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = " + id);
@@ -1067,7 +1071,7 @@ public class Database {
 	 *
 	 * @param patronId   - id of patron whose request was closed
 	 * @param documentId - id of document patron wanted to take
-	 * @throws SQLException
+	 * @throws SQLException something went wrong in database
 	 */
 	public void deleteRequest(int patronId, int documentId) throws SQLException {
 		executeUpdate("DELETE FROM requests WHERE patron_id = " + patronId + " AND document_id = " + documentId);
@@ -1076,8 +1080,8 @@ public class Database {
 	/**
 	 * deletes request from the database by request id
 	 *
-	 * @param requestId
-	 * @throws SQLException
+	 * @param requestId request id in datbase
+	 * @throws SQLException something went wrond in database
 	 */
 	public void deleteRequest(int requestId) throws SQLException {
 		executeUpdate("DELETE FROM requests WHERE request_id = " + requestId);
@@ -1089,7 +1093,7 @@ public class Database {
 	 * @param requestId id of request we want to edit
 	 * @param column    - column to edit.
 	 * @param value     - new value
-	 * @throws SQLException
+	 * @throws SQLException something went wrong in database
 	 */
 	public void editRequest(int requestId, String column, String value) throws SQLException {
 		String quotes1 = "";

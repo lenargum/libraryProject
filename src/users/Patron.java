@@ -88,13 +88,13 @@ public class Patron extends User {
 	}
 
 	public void setPriority(String status) {
-		if (status == "student") {
+		if (status.toLowerCase().equals("student")) {
 			priority = 0;
-		} else if (status == "faculty") {
+		} else if (status.toLowerCase().equals("faculty")) {
 			priority = 1;
-		} else if (status == "ta") {
+		} else if (status.toLowerCase().equals("ta")) {
 			priority = 2;
-		} else if (status == "vp") {
+		} else if (status.toLowerCase().equals("vp")) {
 			priority = 3;
 		} else {
 			priority = 4;
