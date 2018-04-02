@@ -1036,7 +1036,7 @@ public class Database {
 	public Request getRequest(int id) throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = " + id);
 		if (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(6)),
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
 					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
 			temp.setRequestId(requestsSet.getInt(1));
 			return temp;

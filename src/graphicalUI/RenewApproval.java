@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class RenewApproval {
+	CoreAPI api;
 	AnchorPane layout;
 	Stage stage;
 	Scene scene, previousScene;
@@ -28,6 +29,7 @@ public class RenewApproval {
 	}
 
 	public RenewApproval(Stage mainStage, Scene previousScene, CoreAPI api) {
+		this.api = api;
 		stage = mainStage;
 		this.previousScene = previousScene;
 		try {
@@ -53,12 +55,14 @@ public class RenewApproval {
 		ApprovalCell selected = listView.getSelectionModel().getSelectedItem();
 		if (selected == null) return;
 		int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+
 		JFXPopup popup = new JFXPopup();
 		HBox container = new HBox();
 		JFXButton accept = new JFXButton("ACCEPT");
 		JFXButton reject = new JFXButton("REJECT");
+
 		accept.setOnAction(event1 -> {
-			// do smth
+			api.acceptRenewRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
 		});
@@ -67,9 +71,11 @@ public class RenewApproval {
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
 		});
+
 		container.getChildren().addAll(accept, reject);
 		container.setPadding(new Insets(5));
 		popup.setPopupContent(container);
+
 		popup.show(listView, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());
 	}
 

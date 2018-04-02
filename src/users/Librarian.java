@@ -7,7 +7,7 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
 import tools.Request;
-import tools.*;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
@@ -296,82 +296,88 @@ public class Librarian extends User {
 
 	/**
 	 * Return confirmation
-	 * @param debtID - id of debt patron wants to close
+	 *
+	 * @param debtID   - id of debt patron wants to close
 	 * @param database - information storage
 	 * @throws SQLException
 	 * @throws ParseException
 	 */
-	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException{
+	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException {
 		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
-		if(debt.getFee() == 0){
-		    Patron patron = database.getPatron(debt.getPatronId());
-		    patron.returnDocument(debt.getDocumentId(), database);
-        }
-		else {
+		if (debt.getFee() == 0) {
+			Patron patron = database.getPatron(debt.getPatronId());
+			patron.returnDocument(debt.getDocumentId(), database);
+		} else {
 			System.out.println("You need to pay for delay");
 		}
 	}
 
 	/**
 	 * renew document confirmation
-	 * @param request - request that patron sent to renew document
+	 *
+	 * @param request  - request that patron sent to renew document
 	 * @param database - information storage
 	 */
-	public void confirmRenew(Request request, Database database){
-	   try{
-	        request.approveRenew(database);
+	public void confirmRenew(Request request, Database database) {
+		try {
+			request.approveRenew(database);
 			database.deleteRequest(request.getRequestId());
-        } catch (SQLException e){
+		} catch (SQLException e) {
 
-        }
-    }
+		}
+	}
 
 	/**
 	 * renew document refuse
+	 *
 	 * @param request - request librarian refuses
 	 */
-	public void refuseRenew(Request request, Database database){
+	public void refuseRenew(Request request, Database database) {
 		try {
 			request.refuseRenew();
 			database.deleteRequest(request.getRequestId());
-		} catch (SQLException e){
+		} catch (SQLException e) {
 
 		}
 	}
 
 	/**
 	 * confirmation of getting fee
-	 * @param debtID - id of debt patron wants to close
+	 *
+	 * @param debtID   - id of debt patron wants to close
 	 * @param database - information storage
 	 */
-	public void getFee(int debtID, Database database){
-		try{
+	public void getFee(int debtID, Database database) {
+		try {
 			Debt debt = database.getDebt(debtID);
 			debt.setFee(0);
 			System.out.println("Payout confirmed!");
-		} catch (SQLException | NoSuchElementException e){
+		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect ID");
-		} catch (ParseException e){
+		} catch (ParseException e) {
 			System.out.println("By default");
 		}
 	}
 
 	/**
 	 * taking document request confirmation
-	 * @param request - request librarian confirms
+	 *
+	 * @param request  - request librarian confirms
 	 * @param database - information storage
 	 * @throws SQLException
 	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
+		System.out.println("users.Librarian <- submitting request " + request.getRequestId() + " . . .");
 		Patron p = database.getPatron(request.getIdPatron());
-		if (p.canRequestDocument(request.getIdDocument(), database))
-			request.approveRequest(request.getIdPatron(), request.getIdDocument(),database);
+		//if (p.canRequestDocument(request.getIdDocument(), database))
+		request.approveRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 
 	/**
 	 * delete taking document request
-	 * @param request - request the librarian refuses
+	 *
+	 * @param request  - request the librarian refuses
 	 * @param database - information storage
 	 * @throws SQLException
 	 */

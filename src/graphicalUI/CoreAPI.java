@@ -289,6 +289,44 @@ public class CoreAPI {
 		}
 	}
 
+	public void acceptRenewRequest(int requestID) {
+		if (user instanceof Librarian) {
+			System.out.println("Current user is librarian, asking database to accept...");
+			db.connect();
+
+			try {
+				Request request = db.getRequest(requestID);
+				System.out.println("Submitting request " + request.getRequestId());
+				((Librarian) user).confirmRenew(request, db);
+			} catch (SQLException | ParseException e) {
+				e.printStackTrace();
+			} finally {
+				db.close();
+			}
+		} else {
+			System.out.println("Current user is not librarian.");
+		}
+	}
+
+	public void rejectRenewRequest(int requestID) {
+		if (user instanceof Librarian) {
+			System.out.println("Current user is librarian, asking database to accept...");
+			db.connect();
+
+			try {
+				Request request = db.getRequest(requestID);
+				System.out.println("Submitting request " + request.getRequestId());
+				((Librarian) user).refuseRenew(request, db);
+			} catch (SQLException | ParseException e) {
+				e.printStackTrace();
+			} finally {
+				db.close();
+			}
+		} else {
+			System.out.println("Current user is not librarian.");
+		}
+	}
+
 	public UserType userType() {
 		if (user instanceof Librarian) {
 			return UserType.LIBRARIAN;

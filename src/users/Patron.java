@@ -275,13 +275,14 @@ public class Patron extends User {
 				return true;
 			} else {
 				if (doc.isReference() && doc.getNumberOfCopies() == 0)
-					System.out.println("Not copies");
+					System.out.println("No available copies. Document ID: " + idDocument);
 				if (getListOfDocumentsPatron().contains(idDocument))
-					System.out.println("You already have copy of this document");
+					System.out.println("Patron already have a copy of this document. Patron ID: " + getId() +
+							", Document ID: " + idDocument);
 				if (!doc.isAllowedForStudents())
-					System.out.println("This document is not for students");
+					System.out.println("This document is not allowed for students. Document ID:" + idDocument);
 				if (doc.isReference())
-					System.out.println("You can not borrow reference materials");
+					System.out.println("Reference materials are not available for taking. Document ID: " + idDocument);
 				return false;
 			}
 		} catch (SQLException | NoSuchElementException e) {
@@ -384,6 +385,7 @@ public class Patron extends User {
 	 * @param database   tools.Database that stores the information.
 	 */
 	public void takeDocument(int idDocument, Database database) {
+		System.out.println("users.Patron:" + getId() + " <- taking document " + idDocument + " . . .");
 		try {
 			getListOfDocumentsPatron().add(idDocument);
 			database.getDocument(idDocument).deleteCopy();
@@ -416,13 +418,15 @@ public class Patron extends User {
 		}
 
 	}
-	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException{
+
+	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
 		ArrayList<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
 			if (i.getIdDocument() == docId) return true;
 		}
 		return false;
 	}
+
 	/**
 	 * Decrease the number of copies of specified document by one.
 	 *
