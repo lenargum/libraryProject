@@ -431,8 +431,7 @@ public class Patron extends User {
 			System.out.println("Incorrect id" + idDocument);
 		}
 	}
-
-	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
+	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException{
 		List<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
 			if (i.getIdDocument() == docId) return true;
@@ -582,7 +581,10 @@ public class Patron extends User {
 	 * @param database tools.Database stores the information
 	 */
 	public void renewDocument(int docID, Database database) {
+
 		try {
+			Request request = database.getRequest(this.getId(), docID);
+			if(request.documentHasQueue(request.getIdDocument(), database)){
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
 			if (debt.canRenew()) {
@@ -593,6 +595,8 @@ public class Patron extends User {
 				System.out.println("documents.Document was renewed!");
 			} else {
 				System.out.println("The document is already renewed, so you need to return it!");
+			}} else {
+				System.out.println("There is outstanding request for document, so you cannot renew it");
 			}
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");

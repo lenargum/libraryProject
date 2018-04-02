@@ -159,8 +159,13 @@ public class Document {
 	 * @param author Author to find.
 	 * @return {@code true} if document has following author, {@code false} otherwise.
 	 */
-	public boolean includesAuthor(String author) {//TODO: write it!
-		throw new NotImplementedException();
+	public boolean includesAuthor(String author) {
+		String[] authors = this.getAuthors().split(", ");
+		for(String i: authors){
+			if(i.equals(author))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -264,8 +269,13 @@ public class Document {
 	 * @param keyWord Keyword to find.
 	 * @return {@code true} if keyword belongs to this document, {@code false} otherwise.
 	 */
-	public boolean includeKeyWord(String keyWord) {//TODO: write it!
-		throw new NotImplementedException();
+	public boolean includeKeyWord(String keyWord) {
+		String[] keywords = this.getKeyWords().split(", ");
+		for(String i: keywords){
+			if(i.equals(keyWord))
+				return true;
+		}
+		return false;
 	}
 
 	/**

@@ -4,6 +4,7 @@ import documents.Document;
 import users.Patron;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -74,7 +75,13 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-
+    //TODO: CHECK ME
+    public boolean  documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
+        if (database.getRequests().contains(database.getRequest(idDocument))){
+            return true;
+        } else
+            return false;
+    }
 	/**
 	 * Approve request (Patron can take this document)
 	 *
