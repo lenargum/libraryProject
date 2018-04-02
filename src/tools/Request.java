@@ -2,10 +2,8 @@ package tools;
 
 import documents.Document;
 import users.Patron;
-import users.*;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.PriorityQueue;
 
@@ -63,20 +61,22 @@ public class Request {
 	private ComparatorPriority comparator = new ComparatorPriority();
 
 	/**
-	 * Priority queue
+	 * Initialize new request
+	 *
+	 * @param patron         Associated Patron.
+	 * @param document       Associated Document
+	 * @param date           Date of booking
+	 * @param isRenewRequest Flag
 	 */
-	private PriorityQueue<Patron> queue = new PriorityQueue<>(comparator);
-
-
-    public Request(Patron patron, Document document, Date date, boolean isRenewRequest) {
-        this.idPatron = patron.getId();
-        this.namePatron = patron.getName();
-        this.surnamePatron = patron.getSurname();
-        this.idDocument = document.getID();
-        this.date = date;
-        this.priority = patron.getPriority();
-        this.isRenewRequest = isRenewRequest;
-    }
+	public Request(Patron patron, Document document, Date date, boolean isRenewRequest) {
+		this.idPatron = patron.getId();
+		this.namePatron = patron.getName();
+		this.surnamePatron = patron.getSurname();
+		this.idDocument = document.getID();
+		this.date = date;
+		this.priority = patron.getPriority();
+		this.isRenewRequest = isRenewRequest;
+	}
 
     //TODO: CHECK ME
     public boolean  documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
@@ -289,4 +289,15 @@ public class Request {
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
 	}
+
+	public String toString() {
+		        return "id{"+getRequestId()+"} "+
+				                "patId{"+getIdPatron()+"} "+
+				                "patName{"+getNamePatron()+"} "+
+				                "patSurname{"+getSurnamePatron()+"} "+
+				                "docId{"+getIdDocument()+"} "+
+				                "priorityLvl{"+getPriority()+"} "+
+				                "date{"+(new SimpleDateFormat("yyyy-MM-dd")).format(getDate())+"} "+
+				                "isRenewReq{"+isRenewRequest()+"}";
+		    }
 }
