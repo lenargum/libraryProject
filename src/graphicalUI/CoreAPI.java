@@ -12,13 +12,9 @@ import users.User;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class CoreAPI {
-	private Credentials credentials;
 	private boolean loggedIn;
 	private User user;
 	private Database db;
@@ -30,6 +26,24 @@ public class CoreAPI {
 
 	public User getUser() {
 		return user;
+	}
+
+	public User getUserByID(int userID) {
+		db.connect();
+		User result = null;
+		try {
+			result = db.getLibrarian(userID);
+		} catch (SQLException | NoSuchElementException e) {
+			try {
+				result = db.getPatron(userID);
+			} catch (SQLException e1) {
+				System.out.println("Cannot find exact user. User ID: " + userID);
+			}
+		} finally {
+			db.close();
+		}
+
+		return result;
 	}
 
 	public List<DocItem> getAllBooks() {
@@ -75,9 +89,9 @@ public class CoreAPI {
 	}
 
 	public boolean authorize(Credentials credentials) {
-		this.credentials = credentials;
 		boolean respond = false;
 		db.connect();
+
 		try {
 			respond = db.login(credentials.getLogin(), credentials.getPassword());
 		} catch (SQLException e) {
@@ -117,7 +131,6 @@ public class CoreAPI {
 
 	public void deauthorize() {
 		assert loggedIn;
-		credentials = null;
 		user = null;
 		loggedIn = false;
 	}
@@ -140,6 +153,8 @@ public class CoreAPI {
 				e.printStackTrace();
 			}
 
+			assert doc != null;
+			assert debt != null;
 			list.add(new UserDocs.MyDocsView(doc.getTitle(), debt.daysLeft(), id));
 		}
 		db.close();
@@ -217,6 +232,19 @@ public class CoreAPI {
 			}
 		} catch (SQLException e) {
 			System.out.println("Cannot add user to database.");
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
+	}
+
+	public void editUser(int userID, String column, String newValue) {
+		db.connect();
+
+		try {
+			db.editUserColumn(userID, column, newValue);
+		} catch (SQLException e) {
+			System.out.println("Unable to mdify user. User ID: " + userID);
 			e.printStackTrace();
 		} finally {
 			db.close();
@@ -370,7 +398,7 @@ public class CoreAPI {
 		return determineUserType(user);
 	}
 
-	private UserType determineUserType(User usr) {
+	public UserType determineUserType(User usr) {
 		if (usr instanceof Librarian) {
 			return UserType.LIBRARIAN;
 		} else {

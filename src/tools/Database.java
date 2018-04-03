@@ -474,7 +474,7 @@ public class Database {
 	 * @see Patron
 	 */
 	public Patron getPatron(int ID) throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'INSTRUCTOR' or status = 'TA' or status = 'PROFESSOR' or 'VP' or status = 'STUDENT') and id = " + ID);
+		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'INSTRUCTOR' or status = 'TA' or status = 'PROFESSOR' or status = 'VP' or status = 'STUDENT') and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
 					patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
@@ -725,9 +725,13 @@ public class Database {
 	 *
 	 * @param userID Users' ID.
 	 * @param column Column to edit. Available options:
+	 *               <br>"firstname" to edit name</br>
+	 *               <br>"lastname" to edit last name</br>
 	 *               <br>"address" to edit address</br>
 	 *               <br>"phone" to edit phone number</br>
-	 *               <br>"lastname" to edit last name</br>
+	 *               <br>"status" to edit status</br>
+	 *               <br>"login" to edit login</br>
+	 *               <br>"password" to edit password</br>
 	 *               <br></br>
 	 * @param value  New value.
 	 * @throws SQLException Incorrect column name or value.

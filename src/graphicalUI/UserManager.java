@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import users.Librarian;
 import users.Patron;
+import users.User;
 
 import java.io.IOException;
 
@@ -87,6 +88,8 @@ public class UserManager {
 		usersTable.getColumns().setAll(names, surnames, addresses, phones, statuses);
 		usersTable.setRoot(tableRoot);
 		usersTable.setShowRoot(false);
+
+		usersTable.setOnMouseClicked(event -> showEditDialog());
 	}
 
 	private void showAddDialog() {
@@ -139,34 +142,119 @@ public class UserManager {
 		container.getChildren().addAll(addUser, loginPassword,
 				nameSurname, phoneField, addressField, comboBox, saveBtn);
 
+		container.setSpacing(40);
+		container.setPadding(new Insets(20));
+
 		saveBtn.setOnAction(event -> {
 			if (comboBox.getValue() == null) return;
+			User newUser;
 			if (comboBox.getValue().getText().equals("Librarian")) {
-				Librarian newUser = new Librarian(loginField.getText(), passwordField.getText(),
+				newUser = new Librarian(loginField.getText(), passwordField.getText(),
 						nameField.getText(), surnameField.getText(),
 						phoneField.getText(), addressField.getText());
 				api.addNewUser(newUser);
 			} else {
 				System.out.println(comboBox.getValue().getText());
-				Patron newUser = new Patron(loginField.getText(), passwordField.getText(),
+				newUser = new Patron(loginField.getText(), passwordField.getText(),
 						determineStatus(comboBox.getValue().getText()),
 						nameField.getText(), surnameField.getText(),
 						phoneField.getText(), addressField.getText());
 				api.addNewUser(newUser);
 			}
 
+			TreeItem<UserCell> newCell =
+					new TreeItem<UserCell>(new UserCell(newUser.getId(), newUser.getName(),
+							newUser.getSurname(), newUser.getAddress(),
+							newUser.getPhoneNumber(), api.determineUserType(newUser).name()));
+			usersTable.getRoot().getChildren().add(newCell);
+
 			addUserDialog.close();
 		});
-
-		container.setSpacing(20);
-		container.setPadding(new Insets(20));
 
 		addUserDialog.setContent(container);
 		addUserDialog.show(layout);
 	}
 
 	private void showEditDialog() {
+		UserCell selected = usersTable.getSelectionModel().getSelectedItem().getValue();
+		if (selected == null) return;
 
+		JFXDialog addUserDialog = new JFXDialog();
+
+		Label editUser = new Label("Edit user");
+		editUser.setFont(new Font("Roboto", 26));
+
+		JFXTextField loginField = new JFXTextField();
+		loginField.setPromptText("Login");
+		loginField.setLabelFloat(true);
+
+		JFXTextField passwordField = new JFXTextField();
+		passwordField.setPromptText("Password");
+		passwordField.setLabelFloat(true);
+
+		HBox loginPassword = new HBox();
+		loginPassword.getChildren().addAll(loginField, passwordField);
+		loginPassword.setSpacing(20);
+
+		JFXTextField nameField = new JFXTextField();
+		nameField.setPromptText("Name");
+		nameField.setLabelFloat(true);
+
+		JFXTextField surnameField = new JFXTextField();
+		surnameField.setPromptText("Surname");
+		surnameField.setLabelFloat(true);
+
+		HBox nameSurname = new HBox();
+		nameSurname.getChildren().addAll(nameField, surnameField);
+		nameSurname.setSpacing(20);
+
+		JFXTextField phoneField = new JFXTextField();
+		phoneField.setPromptText("Phone");
+		phoneField.setLabelFloat(true);
+
+		JFXTextField addressField = new JFXTextField();
+		addressField.setPromptText("Address");
+		addressField.setLabelFloat(true);
+
+		JFXComboBox<Label> comboBox = new JFXComboBox<>();
+		comboBox.getItems().addAll(new Label("Student"), new Label("Instructor"),
+				new Label("Teaching assistant"), new Label("Visiting professor"),
+				new Label("Professor"), new Label("Librarian"));
+		comboBox.setPromptText("Select status");
+
+		JFXButton saveBtn = new JFXButton("SAVE");
+
+		VBox container = new VBox();
+		container.getChildren().addAll(editUser, loginPassword,
+				nameSurname, phoneField, addressField, comboBox, saveBtn);
+
+		container.setPadding(new Insets(20));
+		container.setSpacing(40);
+
+		User found = api.getUserByID(selected.id);
+
+		loginField.setText(found.getLogin());
+		passwordField.setText(found.getPassword());
+		nameField.setText(selected.name.getValue());
+		surnameField.setText(selected.surname.getValue());
+		phoneField.setText(selected.phone.getValue());
+		addressField.setText(selected.address.getValue());
+		comboBox.setValue(new Label(determineComboBoxValue(selected.status.toString().toLowerCase())));
+
+		saveBtn.setOnAction(event -> {
+			api.editUser(selected.id, "login", loginField.getText());
+			api.editUser(selected.id, "password", passwordField.getText());
+			api.editUser(selected.id, "firstname", nameField.getText());
+			api.editUser(selected.id, "lastname", surnameField.getText());
+			api.editUser(selected.id, "phone", phoneField.getText());
+			api.editUser(selected.id, "address", addressField.getText());
+			addUserDialog.close();
+		});
+
+		//TODO change table row
+
+		addUserDialog.setContent(container);
+		addUserDialog.show(layout);
 	}
 
 	private String determineStatus(String comboBoxVal) {
@@ -184,6 +272,23 @@ public class UserManager {
 		}
 
 		return "Kek";
+	}
+
+	private String determineComboBoxValue(String status) {
+		switch (status) {
+			case "student":
+				return "Student";
+			case "instructor":
+				return "Instructor";
+			case "ta":
+				return "Teaching assistant";
+			case "vp":
+				return "Visiting professor";
+			case "professor":
+				return "Professor";
+		}
+
+		return "Eke";
 	}
 
 	public static class UserCell extends RecursiveTreeObject<UserCell> {
