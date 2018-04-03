@@ -125,7 +125,8 @@ class MainTest {
         debtId = database.findDebtID(p1.getId(), d1.getID());
         Debt debt = database.getDebt(debtId);
         debt.countFee(database);
-        System.out.println(p1.getListOfDocumentsPatron().toString());
+        System.out.println(database.getDebtsForUser(p1.getId()));
+
         assertTrue(debt.getFee() == 0);
 
         database.close();
@@ -138,6 +139,7 @@ class MainTest {
         initialStateTC2();
         database.connect();
 
+        System.out.println(database.getDebtsList().toString());
 
         database.close();
     }
@@ -149,6 +151,20 @@ class MainTest {
         initialStateTC34();
         database.connect();
 
+        p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
+        librarian.confirmRenew(database.getRequest(p1.getId(), d1.getID()), database);
+
+        s.sendRenewRequest(database.findDebtID(s.getId(), d2.getID()), database);
+        librarian.confirmRenew(database.getRequest(s.getId(), d2.getID()), database);
+
+        v.sendRenewRequest(database.findDebtID(v.getId(), d2.getID()), database);
+        librarian.confirmRenew(database.getRequest(v.getId(), d2.getID()), database);
+
+        System.out.println(database.getDebtsForUser(p1.getId()));
+
+        System.out.println(database.getDebtsForUser(s.getId()));
+
+        System.out.println(database.getDebtsForUser(v.getId()));
 
         database.close();
     }
