@@ -220,8 +220,8 @@ public class Debt {
 	 * @param database tools.Database that stores the documents information.
 	 */
 	public void countFee(Database database) throws SQLException {
-		if (daysLeft() > 0) {
-			setFee(min(daysLeft() * 100, database.getDocument(documentId).getPrice()));
+		if (daysLeft() < 0) {
+			setFee(min(daysLeft() * (-100), database.getDocument(documentId).getPrice()));
 		}
 	}
 

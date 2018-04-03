@@ -317,7 +317,7 @@ public class Patron extends User {
 			decreaseCountOfCopies(idBook, database);
 			Date dateBook = new Date();
 			Date dateExpire = new Date();
-			if (database.getBook(idBook).isBestseller())
+			if (database.getBook(idBook).isBestseller() && !getStatus().toLowerCase().equals("vp"))
 				dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
 			else {
 				switch (status.toLowerCase()) {
@@ -385,7 +385,7 @@ public class Patron extends User {
 				if (status.toLowerCase().equals("vp"))
 					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
-				Debt debt = new Debt(getId(), idArticle, date, date, 0, true);
+				Debt debt = new Debt(getId(), idArticle, date, date2, 0, true);
 
 				database.insertDebt(debt);
 			}

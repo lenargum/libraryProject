@@ -6,6 +6,7 @@ import users.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -94,11 +95,11 @@ class MainTest {
         p1.makeRequest(d1.getID(), database);
         librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
 
-        s.makeRequest(d2.getID(), database);
-        librarian.submitRequest(database.getRequest(s.getId(), d2.getID()), database);
+        s.makeRequest(d3.getID(), database);
+        librarian.submitRequest(database.getRequest(s.getId(), d3.getID()), database);
 
-        v.makeRequest(d2.getID(), database);
-        librarian.submitRequest(database.getRequest(v.getId(), d2.getID()), database);
+        v.makeRequest(d3.getID(), database);
+        librarian.submitRequest(database.getRequest(v.getId(), d3.getID()), database);
         database.close();
     }
 
@@ -109,6 +110,11 @@ class MainTest {
         librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
         v.makeRequest(d1.getID(), database);
         librarian.submitRequest(database.getRequest(v.getId(), d1.getID()), database);
+
+        p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
+        librarian.confirmRenew(database.getRequest(p1.getId(), d1.getID()), database);
+        v.sendRenewRequest(database.findDebtID(v.getId(), d1.getID()), database);
+        librarian.confirmRenew(database.getRequest(v.getId(), d1.getID()), database);
         database.close();
         database.close();
     }
@@ -126,9 +132,11 @@ class MainTest {
         debtId = database.findDebtID(p1.getId(), d1.getID());
         Debt debt = database.getDebt(debtId);
         debt.countFee(database);
+
         System.out.println(database.getDebtsForUser(p1.getId()));
 
-        //assertTrue(debt.getFee() == 0);
+        assertTrue(debt.getFee() == 0);
+        //TODO: write assertions!
 
         database.close();
     }
@@ -141,6 +149,7 @@ class MainTest {
         database.connect();
 
         System.out.println(database.getDebtsList().toString());
+        //TODO: write assertions!
 
         database.close();
     }
@@ -155,17 +164,19 @@ class MainTest {
         p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
         librarian.confirmRenew(database.getRequest(p1.getId(), d1.getID()), database);
 
-        s.sendRenewRequest(database.findDebtID(s.getId(), d2.getID()), database);
-        librarian.confirmRenew(database.getRequest(s.getId(), d2.getID()), database);
+        s.sendRenewRequest(database.findDebtID(s.getId(), d3.getID()), database);
+        librarian.confirmRenew(database.getRequest(s.getId(), d3.getID()), database);
 
-        v.sendRenewRequest(database.findDebtID(v.getId(), d2.getID()), database);
-        librarian.confirmRenew(database.getRequest(v.getId(), d2.getID()), database);
+        v.sendRenewRequest(database.findDebtID(v.getId(), d3.getID()), database);
+        librarian.confirmRenew(database.getRequest(v.getId(), d3.getID()), database);
 
         System.out.println(database.getDebtsForUser(p1.getId()));
 
         System.out.println(database.getDebtsForUser(s.getId()));
 
         System.out.println(database.getDebtsForUser(v.getId()));
+
+        //TODO: write assertions!
 
         database.close();
     }
@@ -180,22 +191,31 @@ class MainTest {
         p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
         librarian.confirmRenew(database.getRequest(p1.getId(), d1.getID()), database);
 
-        s.sendRenewRequest(database.findDebtID(s.getId(), d2.getID()), database);
+        p1.makeRequest(d3.getID(), database);
+        s.sendRenewRequest(database.findDebtID(s.getId(), d3.getID()), database);
 
-        v.sendRenewRequest(database.findDebtID(v.getId(), d2.getID()), database);
+        v.sendRenewRequest(database.findDebtID(v.getId(), d3.getID()), database);
 
         //librarian checks debts of patrons p1, s, v
+        //TODO: write assertions!
 
         database.close();
     }
 
     @Test
-    void TestCase05()throws SQLException{
+    void TestCase05() throws SQLException, ParseException {
         System.out.println("Test Case 5");
         initialState();
         database.connect();
 
+        p1.makeRequest(d3.getID(), database);
+        s.makeRequest(d3.getID(), database);
+        v.makeRequest(d3.getID(), database);
 
+        librarian.submitRequest(database.getRequest(s.getId(), d3.getID()), database);
+        librarian.submitRequest(database.getRequest(p1.getId(), d3.getID()), database);
+
+        //TODO: write assertions!
         database.close();
     }
 
@@ -207,11 +227,15 @@ class MainTest {
 
         p1.makeRequest(d3.getID(), database);
         p2.makeRequest(d3.getID(), database);
-        p3.makeRequest(d3.getID(), database);
         s.makeRequest(d3.getID(), database);
         v.makeRequest(d3.getID(), database);
+        p3.makeRequest(d3.getID(), database);
+
+        librarian.submitRequest(database.getRequest(p1.getId(), d3.getID()), database);
+        librarian.submitRequest(database.getRequest(p2.getId(), d3.getID()), database);
 
         System.out.println(database.getRequests());
+        //TODO: write assertions!
 
         database.close();
     }
@@ -222,6 +246,8 @@ class MainTest {
         initialState();
         TestCase06();
         database.connect();
+
+        //we still have no notifications
 
 
         database.close();
@@ -234,6 +260,8 @@ class MainTest {
         TestCase06();
         database.connect();
 
+        librarian.confirmReturn(database.findDebtID(p2.getId(), d3.getID()), database);
+        //TODO: write assertions!
 
         database.close();
     }
@@ -245,6 +273,8 @@ class MainTest {
         TestCase06();
         database.connect();
 
+        p1.sendRenewRequest(database.findDebtID(p1.getId(), d3.getID()), database);
+        //TODO: write assertions!
 
         database.close();
     }
@@ -255,7 +285,10 @@ class MainTest {
         initialState();
         initialStateTC10();
         database.connect();
+        p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
 
+        v.sendRenewRequest(database.findDebtID(v.getId(), d1.getID()), database);
+        librarian.confirmRenew(database.getRequest(v.getId(), d1.getID()), database);
 
         database.close();
     }
