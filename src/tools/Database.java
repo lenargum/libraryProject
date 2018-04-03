@@ -814,7 +814,9 @@ public class Database {
 			this.execute("DELETE FROM users");
 			this.execute("DELETE FROM documents");
 			this.execute("DELETE FROM debts");
+			this.execute("DELETE FROM requests");
 			System.out.println("tools.Database: Records cleared.");
+
 			this.execute("UPDATE sqlite_sequence SET seq=0");
 			System.out.println("tools.Database: Indices reset.");
 		} catch (SQLException e) {
