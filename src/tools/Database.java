@@ -474,7 +474,7 @@ public class Database {
 	 * @see Patron
 	 */
 	public Patron getPatron(int ID) throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where (status = 'INSTRUCTOR' or status = 'TA' or status = 'PROFESSOR' or status = 'VP' or status = 'STUDENT') and id = " + ID);
+		ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' and id = " + ID);
 		if (patronSet.next()) {
 			Patron temp = new Patron(patronSet.getString(2),
 					patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
@@ -893,7 +893,7 @@ public class Database {
 	 * @return ID for found document.
 	 * @throws SQLException By default.
 	 */
-	private int getDocumentID(Document document) throws SQLException {
+	public int getDocumentID(Document document) throws SQLException {
 		for (Document i : getDocumentList()) {
 			if (i.compare(document)) return i.getID();
 		}
