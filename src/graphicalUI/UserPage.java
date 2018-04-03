@@ -33,7 +33,7 @@ public class UserPage {
 	private LibrarianPanel librarianPanel;
 	private Scene mainScene;
 	@FXML
-	private JFXListView<DocCell> myLastBooks;
+	private JFXListView<DocListItem> myLastBooks;
 	private JFXPopup detailsPopup;
 	@FXML
 	private JFXButton seeMoreBtn;
@@ -100,7 +100,7 @@ public class UserPage {
 		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
 		seeMoreBtn.setOnAction(event -> userDocs.show());
 
-		myLastBooks = (JFXListView<DocCell>) userLayout.lookup("#myLastBooks");
+		myLastBooks = (JFXListView<DocListItem>) userLayout.lookup("#myLastBooks");
 		myLastBooks.setDepth(2);
 		myLastBooks.getItems().addAll(rootPage.getApi().getRecent());
 
@@ -131,7 +131,7 @@ public class UserPage {
 	}
 
 	private void myLastBooksOnMouseClicked(MouseEvent event) {
-		DocCell selectedNode = myLastBooks.getSelectionModel().getSelectedItem();
+		DocListItem selectedNode = myLastBooks.getSelectionModel().getSelectedItem();
 		DocumentPopup popup = new DocumentPopup(selectedNode.getTitle(), "Author", selectedNode.getDocumentId());
 		popup.show(myLastBooks, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 335, event.getY());
 	}

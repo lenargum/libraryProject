@@ -5,15 +5,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-public class DocCell extends HBox {
+public class DocListItem extends HBox {
 	private int id;
 	private int daysLeft;
 	private String title;
 
-	public DocCell() {
+	public DocListItem() {
 	}
 
-	public DocCell(String title, int daysLeft, int id) {
+	public DocListItem(String title, int daysLeft, int id) {
 		this.id = id;
 		this.title = title;
 		this.daysLeft = daysLeft;
