@@ -131,7 +131,6 @@ public class Request {
 	 */
 	public void approveRenew(Database database) throws SQLException {
 		database.getPatron(idPatron).renewDocument(idDocument, database);
-		database.deleteRequest(idPatron);
 	}
 
 	/**
