@@ -90,7 +90,20 @@ public class Request {
 	public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
 				" with document " + idDocument);
-		database.getPatron(idPatron).takeDocument(idDocument, database);
+		Patron temp = database.getPatron(idPatron);
+		switch (database.getStatusForDocument(idDocument)) {
+			case "book":
+				temp.takeBook(idDocument, database);
+				break;
+			case "av":
+				temp.takeAV(idDocument, database);
+				break;
+			case "article":
+				temp.takeArticle(idDocument, database);
+				break;
+			default:
+				System.err.println("Wrong status declaration");
+		}
 		database.deleteRequest(idPatron, idDocument);
 	}
 

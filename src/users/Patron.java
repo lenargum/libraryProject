@@ -373,7 +373,7 @@ public class Patron extends User {
 	 * @param idArticle Article to take.
 	 * @param database  tools.Database that stores the information.
 	 */
-	public void takeArticle(int idArticle, Database database) throws ParseException {
+	public void takeArticle(int idArticle, Database database) {
 		try {
 			if (canRequestArticle(idArticle, database)) {
 				this.getListOfDocumentsPatron().add(idArticle);
@@ -390,29 +390,8 @@ public class Patron extends User {
 			}
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id" + idArticle);
-		}
-	}
-
-	/**
-	 * Take the following document ang give it to this patron.
-	 *
-	 * @param idDocument document to take.
-	 * @param database   tools.Database that stores the information.
-	 */
-	public void takeDocument(int idDocument, Database database) {
-		System.out.println("users.Patron:" + getId() + " <- taking document " + idDocument + " . . .");
-		try {
-			getListOfDocumentsPatron().add(idDocument);
-			database.getDocument(idDocument).deleteCopy();
-			decreaseCountOfCopies(idDocument, database);
-			Date date = new Date();
-			Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
-			database.insertDebt(debt);
-
-		} catch (SQLException e) {
-			System.out.println("Something went wrong while processing request. Document ID: " + idDocument);
-		} catch (NoSuchElementException e) {
-			System.out.println("Incorrect document ID: " + idDocument);
+		} catch (ParseException e) {
+			System.out.println("Data parsing failed");
 		}
 	}
 

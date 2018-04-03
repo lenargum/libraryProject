@@ -1080,4 +1080,13 @@ public class Database {
 		}
 		executeUpdate(String.format("UPDATE requests SET %s = %s" + value + "%s WHERE request_id = %d", column, quotes1, quotes2, requestId));
 	}
+
+	public String getStatusForDocument(int documentId) throws SQLException {
+		ResultSet resultSet = executeQuery("SELECT type FROM documents WHERE id = "+documentId);
+		if(resultSet.next()) {
+			return resultSet.getString(1).toLowerCase();
+		}
+		throw new NoSuchElementException();
+
+	}
 }
