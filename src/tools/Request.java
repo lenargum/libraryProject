@@ -135,13 +135,6 @@ public class Request {
 	}
 
 	/**
-	 * Refuse request to renew document.
-	 */
-	public void refuseRenew() {
-		System.out.println("There is outstanding request for this document, so you cannot renew it :(");
-	}
-
-	/**
 	 * Get Patron's ID.
 	 *
 	 * @return users.Patron Id
