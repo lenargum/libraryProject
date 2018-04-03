@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This class describes the requests of booking system
@@ -75,8 +76,13 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-	public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
-		return database.getRequests().contains(database.getRequest(idDocument));
+	public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException { //TODO: rewrite
+		List<Request> list = database.getRequests();
+		for(Request i: list){
+			if(i.getIdDocument() == idDocument)
+				return true;
+		}
+		return false;
 	}
 
 	/**
