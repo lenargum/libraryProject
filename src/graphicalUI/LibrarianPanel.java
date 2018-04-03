@@ -16,6 +16,7 @@ public class LibrarianPanel {
 	private TakeApproval takeApproval;
 	private RenewApproval renewApproval;
 	private DebtsManager debtsManager;
+	private UserManager userManager;
 	private CoreAPI api;
 	@FXML
 	private JFXButton takeApprovalBtn;
@@ -53,10 +54,12 @@ public class LibrarianPanel {
 		takeApproval = new TakeApproval(stage, scene, api);
 		renewApproval = new RenewApproval(stage, scene, api);
 		debtsManager = new DebtsManager(stage, scene, api);
+		userManager = new UserManager(stage, scene, api);
 
 		takeApprovalBtn.setOnAction(event -> takeApproval.show());
 		renewApprovalBtn.setOnAction(event -> renewApproval.show());
 		manageDebtsBtn.setOnAction(event -> debtsManager.show());
+		manageUsersBtn.setOnAction(event -> userManager.show());
 	}
 
 	public void show() {
