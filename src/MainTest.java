@@ -29,70 +29,110 @@ class MainTest {
         s = new Patron("patron4", "patpass", "student", "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
         v = new Patron("patron5", "patpass", "vp", "Veronika", "Rama", "30005", "Stret Atocha, 27");
         database.insertLibrarian(librarian);
+        librarian.setId(database.getLibrarianID(librarian));
+
         database.insertAV(d3);
+        d3.setID(database.getDocumentID(d3));
+
         database.insertBook(d1);
+        d1.setID(database.getDocumentID(d1));
+
         database.insertBook(d2);
+        d2.setID(database.getDocumentID(d2));
+
         database.insertPatron(p1);
+        p1.setId(database.getPatronID(p1));
+
         database.insertPatron(p2);
+        p2.setId(database.getPatronID(p2));
+
         database.insertPatron(p3);
+        p3.setId(database.getPatronID(p3));
+
         database.insertPatron(s);
+        s.setId(database.getPatronID(s));
+
         database.insertPatron(v);
+        v.setId(database.getPatronID(v));
+
 
         database.close();
     }
 
-    void initialStateTC1()throws SQLException{
+    void initialStateTC1() throws SQLException, ParseException {
         database.connect();
         p1.makeRequest(d1.getID(), database);
-        database.close();
-    }
-
-    void initialStateTC2()throws SQLException{
-        database.connect();
-        p1.makeRequest(d1.getID(), database);
+        librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
         p1.makeRequest(d2.getID(), database);
+        librarian.submitRequest(database.getRequest(p1.getId(), d2.getID()), database);
+        database.close();
+    }
+
+    void initialStateTC2() throws SQLException, ParseException {
+        database.connect();
+        p1.makeRequest(d1.getID(), database);
+        librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
+        p1.makeRequest(d2.getID(), database);
+        librarian.submitRequest(database.getRequest(p1.getId(), d2.getID()), database);
 
         s.makeRequest(d1.getID(), database);
+        librarian.submitRequest(database.getRequest(s.getId(), d1.getID()), database);
         s.makeRequest(d2.getID(), database);
+        librarian.submitRequest(database.getRequest(s.getId(), d2.getID()), database);
 
         v.makeRequest(d1.getID(), database);
+        librarian.submitRequest(database.getRequest(v.getId(), d1.getID()), database);
         v.makeRequest(d2.getID(), database);
+        librarian.submitRequest(database.getRequest(v.getId(), d2.getID()), database);
+
         database.close();
     }
 
-    void initialStateTC34()throws SQLException{
+    void initialStateTC34() throws SQLException, ParseException {
         database.connect();
         p1.makeRequest(d1.getID(), database);
+        librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
 
         s.makeRequest(d2.getID(), database);
+        librarian.submitRequest(database.getRequest(s.getId(), d2.getID()), database);
 
         v.makeRequest(d2.getID(), database);
+        librarian.submitRequest(database.getRequest(v.getId(), d2.getID()), database);
         database.close();
     }
 
-    void initialStateTC10()throws SQLException{
+    void initialStateTC10() throws SQLException, ParseException {
         database.connect();
         database.connect();
         p1.makeRequest(d1.getID(), database);
-
+        librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
         v.makeRequest(d1.getID(), database);
+        librarian.submitRequest(database.getRequest(v.getId(), d1.getID()), database);
         database.close();
         database.close();
     }
 
     @Test
-    void TestCase01() throws SQLException{
+    void TestCase01() throws SQLException, ParseException {
         System.out.println("Test Case 1");
         initialState();
         initialStateTC1();
         database.connect();
 
+        int debtId = database.findDebtID(p1.getId(), d2.getID());
+        librarian.confirmReturn(debtId, database);
+
+        debtId = database.findDebtID(p1.getId(), d1.getID());
+        Debt debt = database.getDebt(debtId);
+        debt.countFee(database);
+        System.out.println(p1.getListOfDocumentsPatron().toString());
+        assertTrue(debt.getFee() == 0);
 
         database.close();
     }
 
     @Test
-    void TestCase02()throws SQLException{
+    void TestCase02() throws SQLException, ParseException {
         System.out.println("Test Case 2");
         initialState();
         initialStateTC2();
@@ -103,7 +143,7 @@ class MainTest {
     }
 
     @Test
-    void TestCase03()throws SQLException{
+    void TestCase03() throws SQLException, ParseException {
         System.out.println("Test Case 3");
         initialState();
         initialStateTC34();
@@ -114,7 +154,7 @@ class MainTest {
     }
 
     @Test
-    void TestCase04()throws SQLException{
+    void TestCase04() throws SQLException, ParseException {
         System.out.println("Test Case 4");
         initialState();
         initialStateTC34();
@@ -185,7 +225,7 @@ class MainTest {
     }
 
     @Test
-    void TestCase10()throws SQLException{
+    void TestCase10() throws SQLException, ParseException {
         System.out.println("Test Case 10");
         initialState();
         initialStateTC10();
