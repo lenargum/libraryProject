@@ -38,13 +38,33 @@ public class CoreAPI {
 		try {
 			db.connect();
 			documents = db.getDocumentList();
-			db.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			db.close();
 		}
 
 		for (Document doc : documents) {
 			list.add(new DocItem(doc.getTitle(), doc.getAuthors(), doc.getID()));
+		}
+
+		return list;
+	}
+
+	public ObservableList<UserManager.UserCell> getAllUsers() {
+		ObservableList<UserManager.UserCell> list = FXCollections.observableArrayList();
+
+		db.connect();
+
+		try {
+			for (User usr : db.getUsers()) {
+				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
+						usr.getAddress(), usr.getPhoneNumber(), determineUserType(usr).name()));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.close();
 		}
 
 		return list;
@@ -169,7 +189,7 @@ public class CoreAPI {
 
 		db.connect();
 		try {
-			for (Request request : db.getRequests()) {
+			for (Request request : db.getRenewRequests()) {
 				Document doc = db.getDocument(request.getIdDocument());
 				Patron pat = db.getPatron(request.getIdPatron());
 				list.add(new ApprovalCell(request.getRequestId(),
@@ -182,6 +202,25 @@ public class CoreAPI {
 		db.close();
 
 		return list;
+	}
+
+	public void addNewUser(User newUser) {
+		db.connect();
+
+		try {
+			if (newUser instanceof Librarian) {
+				db.insertLibrarian((Librarian) newUser);
+				newUser.setId(db.getLibrarianID((Librarian) newUser));
+			} else {
+				db.insertPatron((Patron) newUser);
+				newUser.setId(db.getPatronID((Patron) newUser));
+			}
+		} catch (SQLException e) {
+			System.out.println("Cannot add user to database.");
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
 	}
 
 	public ObservableList<ApprovalCell> getTakeRequests() {
@@ -328,14 +367,36 @@ public class CoreAPI {
 	}
 
 	public UserType userType() {
-		if (user instanceof Librarian) {
+		return determineUserType(user);
+	}
+
+	private UserType determineUserType(User usr) {
+		if (usr instanceof Librarian) {
 			return UserType.LIBRARIAN;
 		} else {
-			return UserType.PATRON;
+			return determinePatronType((Patron) usr);
 		}
 	}
 
-	public static enum UserType {
-		LIBRARIAN, PATRON
+	private UserType determinePatronType(Patron patron) {
+		switch (patron.getPriority()) {
+			case 0:
+				return UserType.STUDENT;
+			case 1:
+				return UserType.INSTRUCTOR;
+			case 2:
+				return UserType.TA;
+			case 3:
+				return UserType.VP;
+			case 4:
+				return UserType.PROFESSOR;
+			default:
+				return UserType.PATRON;
+		}
+	}
+
+	public enum UserType {
+		LIBRARIAN, PATRON,
+		STUDENT, INSTRUCTOR, TA, VP, PROFESSOR
 	}
 }

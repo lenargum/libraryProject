@@ -660,66 +660,32 @@ public class Database {
 	}
 
 	/**
-	 * Print the debts list for the following user.
+	 * Get array list of users
 	 *
-	 * @param userID users.User's ID.
-	 * @throws SQLException By default.
+	 * @return array list of users
+	 * @throws SQLException something went wrong in database
 	 */
-	public void printDebtsForUser(int userID) throws SQLException {
-		//language=SQLite
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts where patron_id =" + userID);
-
-		ArrayList<String> output = new ArrayList<>();
-		while (debtsSet.next()) {
-			output.add("documents.Document id: " + debtsSet.getInt(3));
-			output.add("Booking date: " + debtsSet.getString(4));
-			output.add("Expire date: " + debtsSet.getString(5));
-			output.add("Fee: " + debtsSet.getDouble(6));
-			output.add("Can renew: " + debtsSet.getString(7));
-			output.add("");
-		}
-		ArrayList<String> finalOutput = new ArrayList<>();
-		if (output.size() != 0) {
-			finalOutput.add("All borrowed documents:\n");
-			finalOutput.addAll(output);
-		} else {
-			finalOutput.add("There is no any borrowed documents! Go grab one!");
-		}
-		for (String temp : finalOutput) {
-			System.out.println(temp);
-		}
-	}
-
-	/**
-	 * Print all the documents stored in database.
-	 *
-	 * @throws SQLException By default.
-	 */
-	@Deprecated
-	public void printDocs() throws SQLException {
-		System.out.println("\nAll documents in database: ");
-		for (String temp : getDocumentStringList()) {
-			System.out.println(temp);
-		}
-		System.out.println();
-	}
-
-	/**
-	 * Print all the users stored in database.
-	 *
-	 * @throws SQLException By default.
-	 */
-	@Deprecated
-	public void printUsers() throws SQLException {
+	public ArrayList<User> getUsers() throws SQLException {
 		ResultSet usersSet = executeQuery("SELECT * FROM users");
-		System.out.println("\nAll users in database:");
+		ArrayList<User> usersList = new ArrayList<>();
 		while (usersSet.next()) {
-			System.out.println(usersSet.getInt(1) + " " + usersSet.getString(2) + " "
-					+ usersSet.getString(3) + " " + usersSet.getString(4) + " "
-					+ usersSet.getString(5) + " " + usersSet.getString(6) + " "
-					+ usersSet.getString(7) + " " + usersSet.getString(8));
+			String status = usersSet.getString(4).toLowerCase();
+			if (status.equals("librarian")) {
+				Librarian tempLib = new Librarian(usersSet.getString(2), usersSet.getString(3),
+						usersSet.getString(5), usersSet.getString(6),
+						usersSet.getString(7), usersSet.getString(8));
+				tempLib.setId(usersSet.getInt(1));
+				usersList.add(tempLib);
+			} else {
+				Patron tempPat = new Patron(usersSet.getString(2), usersSet.getString(3), status,
+						usersSet.getString(5), usersSet.getString(6),
+						usersSet.getString(7), usersSet.getString(8));
+				tempPat.setId(usersSet.getInt(1));
+				usersList.add(tempPat);
+			}
+
 		}
-		System.out.println();
+		return usersList;
 	}
 
 	/**
@@ -1032,9 +998,9 @@ public class Database {
 
 	/**
 	 * @param patronId patron's id
-	 * @param docId document's id
+	 * @param docId    document's id
 	 * @return request from database with id = patronId
-	 * @throws SQLException something went wrong in database
+	 * @throws SQLException   something went wrong in database
 	 * @throws ParseException date parsing failed
 	 */
 	public Request getRequest(int patronId, int docId) throws SQLException, ParseException {

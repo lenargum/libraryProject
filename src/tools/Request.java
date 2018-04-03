@@ -75,9 +75,10 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-    public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
-	    return database.getRequests().contains(database.getRequest(idDocument));
-    }
+	public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
+		return database.getRequests().contains(database.getRequest(idDocument));
+	}
+
 	/**
 	 * Approve request (Patron can take this document)
 	 *
@@ -275,13 +276,13 @@ public class Request {
 	//TODO: FUCK YOU
 
 	public String toString() {
-		        return "id{"+getRequestId()+"} "+
-				                "patId{"+getIdPatron()+"} "+
-				                "patName{"+getNamePatron()+"} "+
-				                "patSurname{"+getSurnamePatron()+"} "+
-				                "docId{"+getIdDocument()+"} "+
-				                "priorityLvl{"+getPriority()+"} "+
-				                "date{"+(new SimpleDateFormat("yyyy-MM-dd")).format(getDate())+"} "+
-				                "isRenewReq{"+isRenewRequest()+"}";
-		    }
+		return "id{" + getRequestId() + "} " +
+				"patId{" + getIdPatron() + "} " +
+				"patName{" + getNamePatron() + "} " +
+				"patSurname{" + getSurnamePatron() + "} " +
+				"docId{" + getIdDocument() + "} " +
+				"priorityLvl{" + getPriority() + "} " +
+				"date{" + (new SimpleDateFormat("yyyy-MM-dd")).format(getDate()) + "} " +
+				"isRenewReq{" + isRenewRequest() + "}";
+	}
 }

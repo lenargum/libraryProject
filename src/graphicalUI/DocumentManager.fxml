@@ -3,8 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.DocumentManager">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/8.0.121" fx:controller="graphicalUI.DocumentManager">
 	<children>
 		<JFXButton fx:id="goBackBtn" mnemonicParsing="false" text="GO BACK" AnchorPane.leftAnchor="10.0"
 		           AnchorPane.topAnchor="10.0"/>
