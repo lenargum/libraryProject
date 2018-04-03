@@ -28,6 +28,7 @@ class MainTest {
         p3 = new Patron("patron3", "patpass", "professor", "Elvira", "Espindola", "30003", "Via del Corso, 22");
         s = new Patron("patron4", "patpass", "student", "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
         v = new Patron("patron5", "patpass", "vp", "Veronika", "Rama", "30005", "Stret Atocha, 27");
+
         database.insertLibrarian(librarian);
         librarian.setId(database.getLibrarianID(librarian));
 
@@ -127,7 +128,7 @@ class MainTest {
         debt.countFee(database);
         System.out.println(database.getDebtsForUser(p1.getId()));
 
-        assertTrue(debt.getFee() == 0);
+        //assertTrue(debt.getFee() == 0);
 
         database.close();
     }
@@ -176,6 +177,14 @@ class MainTest {
         initialStateTC34();
         database.connect();
 
+        p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
+        librarian.confirmRenew(database.getRequest(p1.getId(), d1.getID()), database);
+
+        s.sendRenewRequest(database.findDebtID(s.getId(), d2.getID()), database);
+
+        v.sendRenewRequest(database.findDebtID(v.getId(), d2.getID()), database);
+
+        //librarian checks debts of patrons p1, s, v
 
         database.close();
     }

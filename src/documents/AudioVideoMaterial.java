@@ -38,4 +38,9 @@ public class AudioVideoMaterial extends Document {
 				"Price: " + this.getPrice() + "\n" +
 				"KeyWords: " + this.getKeyWords() + "\n");
 	}
+
+	@Override
+	public String getType(){
+		return "av";
+	}
 }

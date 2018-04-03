@@ -58,7 +58,7 @@ public class JournalArticle extends Document {
 		setIssue(Issue);
 		setEditor(Editor);
 		setPublicationDate(PublicationDate);
-		setType("journal article");
+		setType("article");
 	}
 
 	/**
@@ -171,5 +171,10 @@ public class JournalArticle extends Document {
 				"Editor: " + this.getEditor() + "\n" +
 				"Publication date: " +
 				(new SimpleDateFormat("dd-MMM-yyyy")).format(this.getPublicationDate()) + "\n");
+	}
+
+	@Override
+	public String getType(){
+		return "article";
 	}
 }
