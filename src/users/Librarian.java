@@ -322,19 +322,6 @@ public class Librarian extends User {
 		}
 	}
 
-	/**
-	 * renew document refuse
-	 *
-	 * @param request - request librarian refuses
-	 */
-	public void refuseRenew(Request request, Database database) {
-		try {
-			request.refuseRenew();
-			database.deleteRequest(request.getRequestId());
-		} catch (SQLException ignored) {
-
-		}
-	}
 
 	/**
 	 * confirmation of getting fee

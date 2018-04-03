@@ -41,7 +41,7 @@ public class Book extends Document {
 		setPublisher(Publisher);
 		setEdition(Edition);
 		setBestseller(IsBestseller);
-		setType("book");
+		this.setType("book");
 	}
 
 	/**
@@ -115,5 +115,10 @@ public class Book extends Document {
 				"Publisher: " + this.getPublisher() + "\n" +
 				"Edition: " + this.getEdition() + "\n" +
 				"This book is bestseller: " + this.getTitle() + "\n");
+	}
+
+	@Override
+	public String getType(){
+		return "book";
 	}
 }

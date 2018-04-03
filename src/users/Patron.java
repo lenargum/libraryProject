@@ -10,6 +10,7 @@ import tools.Request;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -311,31 +312,31 @@ public class Patron extends User {
 	public void takeBook(int idBook, Database database) {
 		try {
 
-				this.getListOfDocumentsPatron().add(idBook);
-				database.getBook(idBook).deleteCopy();
-				decreaseCountOfCopies(idBook, database);
-				Date dateBook = new Date();
-				Date dateExpire = new Date();
-				if (database.getBook(idBook).isBestseller())
-					dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
-				else {
-					switch (status.toLowerCase()) {
-						case "student":
-							dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
-							break;
-						case "instructor":
-						case "ta":
-						case "professor":
-							dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
-							break;
-						default:
-							dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
-							break;
-					}
+			this.getListOfDocumentsPatron().add(idBook);
+			database.getBook(idBook).deleteCopy();
+			decreaseCountOfCopies(idBook, database);
+			Date dateBook = new Date();
+			Date dateExpire = new Date();
+			if (database.getBook(idBook).isBestseller())
+				dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
+			else {
+				switch (status.toLowerCase()) {
+					case "student":
+						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
+						break;
+					case "instructor":
+					case "ta":
+					case "professor":
+						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
+						break;
+					default:
+						dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
+						break;
 				}
+			}
 
-				Debt debt = new Debt(getId(), idBook, dateBook, dateExpire, 0, true);
-				database.insertDebt(debt);
+			Debt debt = new Debt(getId(), idBook, dateBook, dateExpire, 0, true);
+			database.insertDebt(debt);
 
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id=" + idBook);
@@ -373,7 +374,7 @@ public class Patron extends User {
 	 * @param idArticle Article to take.
 	 * @param database  tools.Database that stores the information.
 	 */
-	public void takeArticle(int idArticle, Database database) throws ParseException {
+	public void takeArticle(int idArticle, Database database) {
 		try {
 			if (canRequestArticle(idArticle, database)) {
 				this.getListOfDocumentsPatron().add(idArticle);
@@ -390,29 +391,8 @@ public class Patron extends User {
 			}
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("Incorrect id" + idArticle);
-		}
-	}
-
-	/**
-	 * Take the following document ang give it to this patron.
-	 *
-	 * @param idDocument document to take.
-	 * @param database   tools.Database that stores the information.
-	 */
-	public void takeDocument(int idDocument, Database database) {
-		System.out.println("users.Patron:" + getId() + " <- taking document " + idDocument + " . . .");
-		try {
-			getListOfDocumentsPatron().add(idDocument);
-			database.getDocument(idDocument).deleteCopy();
-			decreaseCountOfCopies(idDocument, database);
-			Date date = new Date();
-			Debt debt = new Debt(getId(), idDocument, date, date, 0, true);
-			database.insertDebt(debt);
-
-		} catch (SQLException e) {
-			System.out.println("Something went wrong while processing request. Document ID: " + idDocument);
-		} catch (NoSuchElementException e) {
-			System.out.println("Incorrect document ID: " + idDocument);
+		} catch (ParseException e) {
+			System.out.println("Data parsing failed");
 		}
 	}
 
@@ -431,7 +411,8 @@ public class Patron extends User {
 			System.out.println("Incorrect id" + idDocument);
 		}
 	}
-	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException{
+
+	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
 		List<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
 			if (i.getIdDocument() == docId) return true;
@@ -575,7 +556,7 @@ public class Patron extends User {
 	}
 
 	/**
-	 * patron requests the document renew
+	 * patron renews document after approving
 	 *
 	 * @param docID    documents.Document ID
 	 * @param database tools.Database stores the information
@@ -583,25 +564,20 @@ public class Patron extends User {
 	public void renewDocument(int docID, Database database) {
 
 		try {
-			Request request = database.getRequest(this.getId(), docID);
-			if(request.documentHasQueue(request.getIdDocument(), database)){
-			int debtID = database.findDebtID(this.getId(), docID);
-			Debt debt = database.getDebt(debtID);
-			if (debt.canRenew()) {
+				Debt debt = database.getDebt(database.findDebtID(this.getId(), docID));
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
-				debt.setCanRenew(database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
+				if(!this.getStatus().equals("vp")) {
+					database.editDebtColumn(debt.getDebtId(),"can_renew","false");
+				}
 				debt.setExpireDate(expDate);
-				System.out.println("documents.Document was renewed!");
-			} else {
-				System.out.println("The document is already renewed, so you need to return it!");
-			}} else {
-				System.out.println("There is outstanding request for document, so you cannot renew it");
-			}
+				database.editDebtColumn(debt.getDebtId(),"expire_date",
+						(new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()));
+
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
 		} catch (ParseException e) {
-			System.out.println("By default");
+			System.out.println("Incorrect data parsing");
 		}
 	}
 
@@ -617,7 +593,11 @@ public class Patron extends User {
 			Document doc = database.getDocument(debt.getDocumentId());
 			Date date = new Date();
 			Request request = new Request(this, doc, date, true);
-			database.insertRequest(request);
+
+			if(!request.documentHasQueue(request.getIdDocument(), database) && debt.canRenew())
+				database.insertRequest(request);
+			else  if(request.documentHasQueue(debt.getDocumentId(), database))System.out.println("You cannot renew this document because of outstanding request");
+			else  System.out.println("The document is already renewed, so you need to return it!");
 		} catch (SQLException | ParseException e) {
 			System.out.println("Incorrect id");
 		}

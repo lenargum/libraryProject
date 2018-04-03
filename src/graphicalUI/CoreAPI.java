@@ -383,7 +383,7 @@ public class CoreAPI {
 			try {
 				Request request = db.getRequest(requestID);
 				System.out.println("Submitting request " + request.getRequestId());
-				((Librarian) user).refuseRenew(request, db);
+
 			} catch (SQLException | ParseException e) {
 				e.printStackTrace();
 			} finally {

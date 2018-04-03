@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This class describes the requests of booking system
@@ -75,8 +76,13 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-	public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException {
-		return database.getRequests().contains(database.getRequest(idDocument));
+	public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException { //TODO: rewrite
+		List<Request> list = database.getRequests();
+		for(Request i: list){
+			if(i.getIdDocument() == idDocument)
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -90,7 +96,20 @@ public class Request {
 	public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
 				" with document " + idDocument);
-		database.getPatron(idPatron).takeDocument(idDocument, database);
+		Patron temp = database.getPatron(idPatron);
+		switch (database.getStatusForDocument(idDocument)) {
+			case "book":
+				temp.takeBook(idDocument, database);
+				break;
+			case "av":
+				temp.takeAV(idDocument, database);
+				break;
+			case "article":
+				temp.takeArticle(idDocument, database);
+				break;
+			default:
+				System.err.println("Wrong status declaration");
+		}
 		database.deleteRequest(idPatron, idDocument);
 	}
 
@@ -118,14 +137,6 @@ public class Request {
 	 */
 	public void approveRenew(Database database) throws SQLException {
 		database.getPatron(idPatron).renewDocument(idDocument, database);
-		database.deleteRequest(idPatron);
-	}
-
-	/**
-	 * Refuse request to renew document.
-	 */
-	public void refuseRenew() {
-		System.out.println("There is outstanding request for this document, so you cannot renew it :(");
 	}
 
 	/**

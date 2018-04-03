@@ -814,7 +814,9 @@ public class Database {
 			this.execute("DELETE FROM users");
 			this.execute("DELETE FROM documents");
 			this.execute("DELETE FROM debts");
+			this.execute("DELETE FROM requests");
 			System.out.println("tools.Database: Records cleared.");
+
 			this.execute("UPDATE sqlite_sequence SET seq=0");
 			System.out.println("tools.Database: Indices reset.");
 		} catch (SQLException e) {
@@ -1077,5 +1079,14 @@ public class Database {
 			quotes2 = "\'";
 		}
 		executeUpdate(String.format("UPDATE requests SET %s = %s" + value + "%s WHERE request_id = %d", column, quotes1, quotes2, requestId));
+	}
+
+	public String getStatusForDocument(int documentId) throws SQLException {
+		ResultSet resultSet = executeQuery("SELECT type FROM documents WHERE id = "+documentId);
+		if(resultSet.next()) {
+			return resultSet.getString(1).toLowerCase();
+		}
+		throw new NoSuchElementException();
+
 	}
 }
