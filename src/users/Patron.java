@@ -565,15 +565,11 @@ public class Patron extends User {
 			Request request = database.getRequest(this.getId(), docID);
 			int debtID = database.findDebtID(this.getId(), docID);
 			Debt debt = database.getDebt(debtID);
-			if (debt.canRenew()) {
 				Date expDate = debt.getExpireDate();
 				expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
 				debt.setCanRenew(database.getPatron(debt.getPatronId()).getStatus().toLowerCase().equals("vp"));
 				debt.setExpireDate(expDate);
 				System.out.println("documents.Document was renewed!");
-			} else {
-				System.out.println("The document is already renewed, so you need to return it!");
-			}
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
 		} catch (ParseException e) {
@@ -594,8 +590,10 @@ public class Patron extends User {
 			Date date = new Date();
 			Request request = new Request(this, doc, date, true);
 
-			if(!request.documentHasQueue(request.getIdDocument(), database))
-				database.insertRequest(request); else System.out.println("You cannot renew this document because of outstanding request");
+			if(!request.documentHasQueue(request.getIdDocument(), database) && debt.canRenew())
+				database.insertRequest(request);
+			else  if(request.documentHasQueue(debt.getDocumentId(), database))System.out.println("You cannot renew this document because of outstanding request");
+			else  System.out.println("The document is already renewed, so you need to return it!");
 		} catch (SQLException | ParseException e) {
 			System.out.println("Incorrect id");
 		}
