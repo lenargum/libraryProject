@@ -162,7 +162,7 @@ public class UserManager {
 			}
 
 			TreeItem<UserCell> newCell =
-					new TreeItem<UserCell>(new UserCell(newUser.getId(), newUser.getName(),
+					new TreeItem<>(new UserCell(newUser.getId(), newUser.getName(),
 							newUser.getSurname(), newUser.getAddress(),
 							newUser.getPhoneNumber(), api.determineUserType(newUser).name()));
 			usersTable.getRoot().getChildren().add(newCell);

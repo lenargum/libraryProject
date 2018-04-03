@@ -84,6 +84,25 @@ public class CoreAPI {
 		return list;
 	}
 
+	public ObservableList<DocumentManager.DocCell> getAllDocs() {
+		ObservableList<DocumentManager.DocCell> list = FXCollections.observableArrayList();
+
+		db.connect();
+		try {
+			for (Document doc : db.getDocumentList()) {
+				list.add(new DocumentManager.DocCell(doc.getID(), doc.getTitle(), doc.getAuthors(),
+						doc.getType(), doc.getNumberOfCopies(),
+						doc.isAllowedForStudents(), doc.isReference()));
+			}
+		} catch (SQLException e) {
+			System.out.println("Failed to fetch document list.");
+		} finally {
+			db.close();
+		}
+
+		return list;
+	}
+
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
