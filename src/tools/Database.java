@@ -1058,7 +1058,7 @@ public class Database {
 	}
 
 	public ArrayList<Request> getRequests(int docID) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID + " ORDER BY priority, data");
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID + " ORDER BY priority, date");
 		ArrayList<Request> requests = new ArrayList<>();
 		if (requestsSet.next()) {
 			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),

@@ -380,10 +380,12 @@ public class Librarian extends User {
 	}
 
 	private void sendNotificationsForOutstandingRequest(Request request, Database db) throws SQLException, ParseException {
-		ArrayList<Request> requesters = db.getRequests(request.getIdDocument());
-		for (Request temp : requesters) {
-			if (temp.getIdPatron() != request.getIdPatron()) {
-				db.insertNotification(temp.getRequestId(), temp.getIdPatron(), "outstanding request", new Date());
+		ArrayList<Request> requests = db.getRequests(request.getIdDocument());
+		for (Request temp : requests) {
+			if (temp.getIdPatron() == request.getIdPatron()) {
+				Document doc = db.getDocument(request.getIdDocument());
+				db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
+						"Outstanding request for " + doc.getTitle(), new Date());
 			}
 		}
 	}
@@ -393,7 +395,7 @@ public class Librarian extends User {
 		int i = 0;
 		while (i < database.getDocument(docId).getNumberOfCopies()) {
 			Request temp = requests.get(i);
-			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "set available document", new Date());
+			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "Set available document", new Date());
 			i++;
 		}
 	}
