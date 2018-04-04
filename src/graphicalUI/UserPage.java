@@ -45,6 +45,8 @@ public class UserPage {
 	private Text addressField;
 	@FXML
 	private Text phoneField;
+	@FXML
+	private JFXButton refreshBtn;
 
 	public UserPage() {
 	}
@@ -70,6 +72,12 @@ public class UserPage {
 		initSelector.start();
 
 		initialize();
+	}
+
+	@FXML
+	public void updateViews() {
+		userDocs = new UserDocs(rootPage.getApi());
+		myLastBooks.getItems().setAll(rootPage.getApi().getRecent());
 	}
 
 	public void show() {
@@ -115,6 +123,9 @@ public class UserPage {
 		statusField.setText(rootPage.getApi().userType().name());
 		addressField.setText(rootPage.getApi().getUser().getAddress());
 		phoneField.setText(rootPage.getApi().getUser().getPhoneNumber());
+
+		refreshBtn = (JFXButton) userLayout.lookup("#refreshBtn");
+		refreshBtn.setOnAction(event -> updateViews());
 	}
 
 	private void accountBtnClicked(ActionEvent event) {
