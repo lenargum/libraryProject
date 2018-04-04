@@ -394,7 +394,6 @@ public class Librarian extends User {
 	    List<Request> requests = database.getRequests(docId);
 	    Request temp = requests.get(0);
 	    database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "set available document", new Date());
-	    database.deleteRequest(temp.getRequestId());
 	}
 
 }
