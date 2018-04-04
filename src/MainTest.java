@@ -135,8 +135,9 @@ class MainTest {
 
         System.out.println(database.getDebtsForUser(p1.getId()));
 
-        assertTrue(debt.getFee() == 0);
-        //TODO: write assertions!
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1); //we check that p1 has only one document
+        assertTrue(debt.daysLeft() > 0);//we check if there is no overdue
+        assertTrue(debt.getFee() == 0);  //so patron don't need to pay
 
         database.close();
     }
@@ -149,7 +150,37 @@ class MainTest {
         database.connect();
 
         System.out.println(database.getDebtsList().toString());
-        //TODO: write assertions!
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 2);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
+        Debt debt2 = database.getDebt(database.findDebtID(p1.getId(), d2.getID()));
+        debt1.countFee(database);
+        debt2.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt2.daysLeft() == 13);
+        assertTrue(debt1.getFee() == 0);
+        assertTrue(debt2.getFee() == 0);
+
+
+        assertTrue(database.getDebtsForUser(s.getId()).size() == 2);
+        debt1 = database.getDebt(database.findDebtID(s.getId(), d1.getID()));
+        debt2 = database.getDebt(database.findDebtID(s.getId(), d2.getID()));
+        debt1.countFee(database);
+        debt2.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt2.daysLeft() == 13);
+        assertTrue(debt1.getFee() == 0);
+        assertTrue(debt2.getFee() == 0);
+
+
+        assertTrue(database.getDebtsForUser(v.getId()).size() == 2);
+        debt1 = database.getDebt(database.findDebtID(v.getId(), d1.getID()));
+        debt2 = database.getDebt(database.findDebtID(v.getId(), d2.getID()));
+        debt1.countFee(database);
+        debt2.countFee(database);
+        assertTrue(debt1.daysLeft() == 6);
+        assertTrue(debt2.daysLeft() == 6);
+        assertTrue(debt1.getFee()  == 0);
+        assertTrue(debt2.getFee()  == 0);
 
         database.close();
     }
@@ -171,12 +202,26 @@ class MainTest {
         librarian.confirmRenew(database.getRequest(v.getId(), d3.getID()), database);
 
         System.out.println(database.getDebtsForUser(p1.getId()));
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 20);
+        assertTrue(debt1.getFee()  == 0);
 
         System.out.println(database.getDebtsForUser(s.getId()));
+        assertTrue(database.getDebtsForUser(s.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 20);
+        assertTrue(debt1.getFee()  == 0);
 
         System.out.println(database.getDebtsForUser(v.getId()));
+        assertTrue(database.getDebtsForUser(v.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(v.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
 
-        //TODO: write assertions!
 
         database.close();
     }
@@ -191,13 +236,31 @@ class MainTest {
         p1.sendRenewRequest(database.findDebtID(p1.getId(), d1.getID()), database);
         librarian.confirmRenew(database.getRequest(p1.getId(), d1.getID()), database);
 
-        p1.makeRequest(d3.getID(), database);
+        p3.makeRequest(d3.getID(), database);
         s.sendRenewRequest(database.findDebtID(s.getId(), d3.getID()), database);
 
         v.sendRenewRequest(database.findDebtID(v.getId(), d3.getID()), database);
 
-        //librarian checks debts of patrons p1, s, v
-        //TODO: write assertions!
+        System.out.println(database.getDebtsForUser(p1.getId()));
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 20);
+        assertTrue(debt1.getFee()  == 0);
+
+        System.out.println(database.getDebtsForUser(s.getId()));
+        assertTrue(database.getDebtsForUser(s.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
+
+        System.out.println(database.getDebtsForUser(v.getId()));
+        assertTrue(database.getDebtsForUser(v.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(v.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 6);
+        assertTrue(debt1.getFee()  == 0);
 
         database.close();
     }
@@ -215,7 +278,23 @@ class MainTest {
         librarian.submitRequest(database.getRequest(s.getId(), d3.getID()), database);
         librarian.submitRequest(database.getRequest(p1.getId(), d3.getID()), database);
 
-        //TODO: write assertions!
+        System.out.println(database.getDebtsForUser(p1.getId()));
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
+
+        System.out.println(database.getDebtsForUser(s.getId()));
+        assertTrue(database.getDebtsForUser(s.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
+
+        System.out.println(database.getDebtsForUser(v.getId()));
+        assertTrue(database.getDebtsForUser(v.getId()).size() == 0);
+
         database.close();
     }
 
@@ -235,7 +314,18 @@ class MainTest {
         librarian.submitRequest(database.getRequest(p2.getId(), d3.getID()), database);
 
         System.out.println(database.getRequests());
-        //TODO: write assertions!
+        assertTrue(database.getDebtsList().size() == 2);
+        assertTrue(database.getRequests().size() == 3);
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
+        assertTrue(database.getDebtsForUser(p2.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(p2.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
 
         database.close();
     }
@@ -261,7 +351,14 @@ class MainTest {
         database.connect();
 
         librarian.confirmReturn(database.findDebtID(p2.getId(), d3.getID()), database);
-        //TODO: write assertions!
+        assertTrue(database.getDebtsList().size() == 1);
+        assertTrue(database.getRequests().size() == 3);
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
+        assertTrue(database.getDebtsForUser(p2.getId()).size() == 0);
 
         database.close();
     }
@@ -274,8 +371,18 @@ class MainTest {
         database.connect();
 
         p1.sendRenewRequest(database.findDebtID(p1.getId(), d3.getID()), database);
-        //TODO: write assertions!
-
+        assertTrue(database.getDebtsList().size() == 2);
+        assertTrue(database.getRequests().size() == 3);
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
+        assertTrue(database.getDebtsForUser(p2.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(p2.getId(), d3.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 13);
+        assertTrue(debt1.getFee()  == 0);
         database.close();
     }
 
@@ -290,6 +397,17 @@ class MainTest {
         v.sendRenewRequest(database.findDebtID(v.getId(), d1.getID()), database);
         librarian.confirmRenew(database.getRequest(v.getId(), d1.getID()), database);
 
+        assertTrue(database.getDebtsList().size() == 2);
+        assertTrue(database.getDebtsForUser(p1.getId()).size() == 1);
+        Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 20);
+        assertTrue(debt1.getFee()  == 0);
+        assertTrue(database.getDebtsForUser(v.getId()).size() == 1);
+        debt1 = database.getDebt(database.findDebtID(v.getId(), d1.getID()));
+        debt1.countFee(database);
+        assertTrue(debt1.daysLeft() == 20);
+        assertTrue(debt1.getFee()  == 0);
         database.close();
     }
 }
