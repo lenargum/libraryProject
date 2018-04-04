@@ -392,8 +392,12 @@ public class Librarian extends User {
 
 	private void sendNotificationsForAvailability(int docId, Database database) throws SQLException, ParseException {
 	    List<Request> requests = database.getRequests(docId);
-	    Request temp = requests.get(0);
-	    database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "set available document", new Date());
+	    int i = 0;
+	    while(i < database.getDocument(docId).getNumberOfCopies()) {
+			Request temp = requests.get(i);
+			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "set available document", new Date());
+			i++;
+		}
 	}
 
 }
