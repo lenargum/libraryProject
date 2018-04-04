@@ -30,6 +30,8 @@ The compiled application will be stored in `/app` directory.
 
 **Important note:** To run build shell script on *nix systems please ensure that you allowed `build.sh` and `gradlew` to be executed.
 
+**ATTENTION! If there is NO `jar` file in `/app` directory, run build script again.**
+
 ## Using
 To use application you need to authorize first.
 Please use one of these credentials:
