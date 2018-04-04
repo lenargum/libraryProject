@@ -31,7 +31,7 @@
 				<Font name="Roboto" size="22.0"/>
 			</font>
 		</Text>
-		<JFXButton fx:id="manageDebtsBtn" mnemonicParsing="false" text="Manage debts, outstanding requests"
+		<JFXButton fx:id="manageDebtsBtn" mnemonicParsing="false" text="Manage debts"
 		           AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="245.0"/>
 		<Text layoutX="50.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entities"
 		      AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="300.0">

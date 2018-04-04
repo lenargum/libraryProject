@@ -42,7 +42,7 @@
 		</VBox>
 		<VBox layoutX="381.0" layoutY="79.0" style="-fx-spacing: 10;" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="80.0">
 			<children>
-				<JFXListView fx:id="myLastBooks" prefWidth="335.0" />
+				<JFXListView fx:id="notificationList" prefWidth="335.0" />
 				<JFXButton fx:id="seeMoreBtn" mnemonicParsing="false" text="SEE MORE" textFill="#000000cc">
 					<opaqueInsets>
 						<Insets />
