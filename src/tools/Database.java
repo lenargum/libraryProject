@@ -1059,6 +1059,19 @@ public class Database {
 		executeUpdate("DELETE FROM requests WHERE request_id = " + requestId);
 	}
 
+	public List getRequests(int docID) throws SQLException, ParseException {
+		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID);
+		ArrayList<Request> requests = new ArrayList<>();
+		if (requestsSet.next()) {
+			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+			temp.setRequestId(requestsSet.getInt(1));
+			temp.setRequestId(requestsSet.getInt(1));
+			requests.add(temp);
+		}
+		return requests;
+	}
+
 	/**
 	 * edit request table
 	 *
