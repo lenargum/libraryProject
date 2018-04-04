@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MainTest {
+class OldTest {
 	private Book b1, b2, b3;
 	private AudioVideoMaterial av1, av2;
 	private Patron p1, p2, p3;
