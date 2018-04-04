@@ -278,11 +278,11 @@ public class Patron extends User {
 			Document doc = database.getDocument(idDocument);
 			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (doc.getNumberOfCopies() != 0) &&
-					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
+					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument) && !findInRequests(idDocument, database)) {
 				return true;
 			} else if (doc.isAllowedForStudents() &&
 					doc.getNumberOfCopies() != 0 &&
-					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)) {
+					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument)&& !findInRequests(idDocument, database) ) {
 				return true;
 			} else {
 				if (doc.isReference() && doc.getNumberOfCopies() == 0)
@@ -300,7 +300,10 @@ public class Patron extends User {
 			System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Document with ID="
 					+ idDocument + " may not be registered id database.");
 			return false;
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
+		return false;
 	}
 
 	/**
@@ -406,16 +409,19 @@ public class Patron extends User {
 	public void makeRequest(int idDocument, Database database) throws SQLException {
 		try {
 			Request request = new Request(this, database.getDocument(idDocument), new Date(), false);
-			database.insertRequest(request);
+			if(!findInRequests(idDocument, database))
+				database.insertRequest(request);
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idDocument);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
 
 	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
 		List<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
-			if (i.getIdDocument() == docId) return true;
+			if (i.getIdDocument() == docId && i.getIdPatron() == this.getId()) return true;
 		}
 		return false;
 	}
