@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.reflect.Reflection;
 
 import java.io.IOException;
 
@@ -142,6 +143,7 @@ public class DocSelector {
 				bookThisBtn.setOnAction(event1 -> {
 					api.bookOrRequest(picked.getDocId());
 					bookThisBtn.setDisable(true);
+
 				});
 //				countBadge.setText("5 items");
 //				countBadge.refreshBadge();

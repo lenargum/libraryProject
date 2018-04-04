@@ -7,7 +7,7 @@ Checkout the [Projects](https://github.com/lenargum/libraryProject/projects) tab
 
 Different parts are being developed in different branches.
 
-## Console application in IntelliJ IDEA
+## Desktop application
 
 ### Requirements
 - Java 8
@@ -18,19 +18,29 @@ Different parts are being developed in different branches.
 
 JavaFX 8 is required for desktop application. Please install FX module if you are using OpenJDK, or use **Oracle JDK instead (recommended)**.
 
-This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `Main` class. You may use `javac`, but it was not tested.
-
 **JUnit 5.0** is required for building and running tests.
+
+## Building
+
+This project uses Gradle build system.
+
+To build project please run `build.sh` (`build.bat` for Windows).
+
+The compiled application will be stored in `/app` folder.
+
+**Important note:** To run build shell script on *nix systems please ensure that you allowed `build.sh` and `gradlew` to be executed.
 
 ## Using
 To use application you need to authorize first.
 Please use one of these credentials:
-| Login  | Password  |
-|--------|-----------|
-| `pat1` | `patpass` |
-| `pat2` | `patpass` |
-| `pat3` | `patpass` |
-
+| Login     | Password  |
+|--------   |-----------|
+| `patron1` | `patpass` |
+| `patron2` | `patpass` |
+| `patron3` | `patpass` |
+| `patron4` | `patpass` |
+| `patron5` | `patpass` |
+| `librarian`| `lib-pass`|
 These users are being added to database after running tests.
 
 ## Team contribution
