@@ -7,7 +7,7 @@ Checkout the [Projects](https://github.com/lenargum/libraryProject/projects) tab
 
 Different parts are being developed in different branches.
 
-## Console application in IntelliJ IDEA
+## Desktop application
 
 ### Requirements
 - Java 8
@@ -22,15 +22,18 @@ This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Com
 
 **JUnit 5.0** is required for building and running tests.
 
+
 ## Using
 To use application you need to authorize first.
 Please use one of these credentials:
-| Login  | Password  |
-|--------|-----------|
-| `pat1` | `patpass` |
-| `pat2` | `patpass` |
-| `pat3` | `patpass` |
-
+| Login     | Password  |
+|--------   |-----------|
+| `patron1` | `patpass` |
+| `patron2` | `patpass` |
+| `patron3` | `patpass` |
+| `patron4` | `patpass` |
+| `patron5` | `patpass` |
+| `librarian`| `lib-pass`|
 These users are being added to database after running tests.
 
 ## Team contribution
