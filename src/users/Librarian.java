@@ -395,7 +395,6 @@ public class Librarian extends User {
 	    for(Request temp: requests){
 	        database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "set available document", new Date());
         }
-		//TODO: implement this method
 	}
 
 }
