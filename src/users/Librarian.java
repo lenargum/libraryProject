@@ -10,6 +10,8 @@ import tools.Request;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 /**
@@ -293,7 +295,7 @@ public class Librarian extends User {
 	 *
 	 * @param debtID   - id of debt patron wants to close
 	 * @param database - information storage
-	 * @throws SQLException Something went wrong in database.
+	 * @throws SQLException   Something went wrong in database.
 	 * @throws ParseException Something wrong with input.
 	 */
 	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException {
@@ -364,11 +366,23 @@ public class Librarian extends User {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 
-	public void makeOutstandingRequest(int docID, Database database) throws SQLException, ParseException {
+	public void makeOutstandingRequest(Request request, Database database) throws SQLException, ParseException {
 		//TODO: send notification to patrons from wait list for this document
-        database.deleteRequestsForDocument(docID);
+		sendNotificationsForOutstandingRequest(request,database);
+		database.deleteRequestsForDocument(request.getIdDocument());
+	}
 
+	private void sendNotificationsForOutstandingRequest(Request request, Database db) throws SQLException, ParseException {
+		ArrayList<Request> requesters = db.getRequests(request.getIdDocument());
+		for (Request temp : requesters) {
+			if (temp.getIdPatron() != request.getIdPatron()) {
+				db.insertNotification(temp.getRequestId(), temp.getIdPatron(),"",new Date());
+			}
+		}
+	}
 
+	private void sendNotificationsForAvailability(int docId) {
+		//TODO: implement this method
 	}
 
 }

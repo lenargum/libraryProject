@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 /**
@@ -1059,7 +1060,7 @@ public class Database {
 		executeUpdate("DELETE FROM requests WHERE request_id = " + requestId);
 	}
 
-	public List getRequests(int docID) throws SQLException, ParseException {
+	public ArrayList<Request> getRequests(int docID) throws SQLException, ParseException {
 		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID);
 		ArrayList<Request> requests = new ArrayList<>();
 		if (requestsSet.next()) {
@@ -1146,5 +1147,9 @@ public class Database {
 			notifications.add(temp);
 		}
 		return notifications;
+	}
+
+	public void deleteNotification(int notificationId) throws SQLException {
+		executeUpdate("DELETE FROM notifications WHERE notification_id = " + notificationId);
 	}
 }
