@@ -1,4 +1,3 @@
-**
 # InLibrary Manager
 
 A course project - Library managing system.
