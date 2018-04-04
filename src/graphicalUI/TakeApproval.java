@@ -93,7 +93,7 @@ public class TakeApproval {
 			popup.hide();
 		});
 
-		container.getChildren().addAll(accept, reject);
+		container.getChildren().addAll(accept, reject, outstandingRequest);
 		container.setPadding(new Insets(5));
 		popup.setPopupContent(container);
 		popup.show(listView, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());

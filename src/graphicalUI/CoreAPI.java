@@ -410,7 +410,15 @@ public class CoreAPI {
 	 * @param requestID Request ID.
 	 */
 	public void makeOutstandingRequest(int requestID) {
-
+		db.connect();
+		try {
+			Request request = db.getRequest(requestID);
+			((Librarian) user).makeOutstandingRequest(request, db);
+		} catch (ParseException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
 	}
 
 	/**
