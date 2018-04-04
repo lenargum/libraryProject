@@ -12,13 +12,11 @@ import java.io.IOException;
 public class LibrarianPanel {
 	private AnchorPane layout;
 	private Stage stage;
-	private Scene scene;
 	private TakeApproval takeApproval;
 	private RenewApproval renewApproval;
 	private DebtsManager debtsManager;
 	private UserManager userManager;
 	private DocumentManager documentManager;
-	private CoreAPI api;
 	@FXML
 	private JFXButton takeApprovalBtn;
 	@FXML
@@ -46,8 +44,7 @@ public class LibrarianPanel {
 		manageDocsBtn = (JFXButton) layout.lookup("#manageDocsBtn");
 		manageDebtsBtn = (JFXButton) layout.lookup("#manageDebtsBtn");
 
-		this.api = api;
-		scene = new Scene(layout);
+		Scene scene = new Scene(layout);
 		stage = new Stage();
 		stage.setTitle("Librarian control panel");
 		stage.setScene(scene);

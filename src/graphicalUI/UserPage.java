@@ -33,7 +33,7 @@ public class UserPage {
 	private LibrarianPanel librarianPanel;
 	private Scene mainScene;
 	@FXML
-	private JFXListView<DocListItem> myLastBooks;
+	private JFXListView<DocListItem> notificationList;
 	private JFXPopup detailsPopup;
 	@FXML
 	private JFXButton seeMoreBtn;
@@ -77,7 +77,7 @@ public class UserPage {
 	@FXML
 	public void updateViews() {
 		userDocs = new UserDocs(rootPage.getApi());
-		myLastBooks.getItems().setAll(rootPage.getApi().getRecent());
+		notificationList.getItems().setAll(rootPage.getApi().getRecent());
 	}
 
 	public void show() {
@@ -108,11 +108,11 @@ public class UserPage {
 		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
 		seeMoreBtn.setOnAction(event -> userDocs.show());
 
-		myLastBooks = (JFXListView<DocListItem>) userLayout.lookup("#myLastBooks");
-		myLastBooks.setDepth(2);
-		myLastBooks.getItems().addAll(rootPage.getApi().getRecent());
+		notificationList = (JFXListView<DocListItem>) userLayout.lookup("#notificationList");
+		notificationList.setDepth(2);
+		notificationList.getItems().addAll(rootPage.getApi().getRecent());
 
-		myLastBooks.setOnMouseClicked(this::myLastBooksOnMouseClicked);
+		notificationList.setOnMouseClicked(this::myLastBooksOnMouseClicked);
 
 		nameSurname = (Text) userLayout.lookup("#nameSurname");
 		statusField = (Text) userLayout.lookup("#statusField");
@@ -142,8 +142,8 @@ public class UserPage {
 	}
 
 	private void myLastBooksOnMouseClicked(MouseEvent event) {
-		DocListItem selectedNode = myLastBooks.getSelectionModel().getSelectedItem();
+		DocListItem selectedNode = notificationList.getSelectionModel().getSelectedItem();
 		DocumentPopup popup = new DocumentPopup(selectedNode.getTitle(), "Author", selectedNode.getDocumentId());
-		popup.show(myLastBooks, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 335, event.getY());
+		popup.show(notificationList, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 335, event.getY());
 	}
 }

@@ -10,7 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -56,9 +56,10 @@ public class TakeApproval {
 		if (selected == null) return;
 		int selectedIndex = listView.getSelectionModel().getSelectedIndex();
 		JFXPopup popup = new JFXPopup();
-		HBox container = new HBox();
-		JFXButton accept = new JFXButton("ACCEPT");
-		JFXButton reject = new JFXButton("REJECT");
+		VBox container = new VBox();
+		JFXButton accept = new JFXButton("Accept");
+		JFXButton reject = new JFXButton("Reject");
+		JFXButton outstandingRequest = new JFXButton("Outstanding request");
 		accept.setOnAction(event1 -> {
 			api.acceptBookRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
@@ -69,6 +70,12 @@ public class TakeApproval {
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
 		});
+		outstandingRequest.setOnAction(event1 -> {
+			api.makeOutstandingRequest(selected.getRequestId());
+			listView.getItems().setAll(api.getTakeRequests());
+			popup.hide();
+		});
+
 		container.getChildren().addAll(accept, reject);
 		container.setPadding(new Insets(5));
 		popup.setPopupContent(container);

@@ -22,7 +22,7 @@ public class DebtsManager {
 	private CoreAPI api;
 	private AnchorPane layout;
 	private Stage stage;
-	private Scene scene, previousScene;
+	private Scene scene;
 	@FXML
 	private JFXButton goBackBtn;
 	@FXML
@@ -33,7 +33,6 @@ public class DebtsManager {
 
 	public DebtsManager(Stage stage, Scene previousScene, CoreAPI api) {
 		this.stage = stage;
-		this.previousScene = previousScene;
 		this.api = api;
 		try {
 			layout = FXMLLoader.load(getClass().getResource("DebtsManager.fxml"));

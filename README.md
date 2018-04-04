@@ -24,9 +24,9 @@ JavaFX 8 is required for desktop application. Please install FX module if you ar
 
 This project uses [Gradle build tool](https://gradle.org). All dependencies are being processed automatically.
 
-To build project please run `build.sh` (`build.bat` for Windows).
+To build project please run `build.sh` (`build.bat` for Windows) script.
 
-The compiled application will be stored in `/app` folder.
+The compiled application will be stored in `/app` directory.
 
 **Important note:** To run build shell script on *nix systems please ensure that you allowed `build.sh` and `gradlew` to be executed.
 
@@ -45,7 +45,8 @@ These users are being added to database after running tests.
 
 ## Testing
 
-Testing is being ran on building automatically. Test results will be available after building in `/app/test/index.html`.
+Testing is being ran on building automatically.
+Test results will be available after building in `/app/test/index.html`.
 
 ## Team contribution
 

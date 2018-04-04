@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tools.Database;
 import tools.Debt;
+import tools.Notification;
 import tools.Request;
 import users.Librarian;
 import users.Patron;
@@ -311,6 +312,15 @@ public class CoreAPI {
 		}
 
 		return list;
+	}
+
+	public void makeOutstandingRequest(int requestID) {
+
+	}
+
+	public ObservableList<Notification> getUserNotifications() {
+		// TODO
+		return null;
 	}
 
 	public boolean canTakeDocument(int docID) {
