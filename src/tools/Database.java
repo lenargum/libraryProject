@@ -1089,10 +1089,9 @@ public class Database {
 		throw new NoSuchElementException();
 
 	}
-
-
+	
+	
 	public void deleteRequestsForDocument(int documentId) throws SQLException {
-		//language=SQLite
 		executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
 	}
 }
