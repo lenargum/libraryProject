@@ -11,11 +11,8 @@ import users.User;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Date;
-import java.util.NoSuchElementException;
 
 /**
  * tools.Database API for library system.
@@ -1096,8 +1093,8 @@ public class Database {
 	}
 
 	public String getStatusForDocument(int documentId) throws SQLException {
-		ResultSet resultSet = executeQuery("SELECT type FROM documents WHERE id = "+documentId);
-		if(resultSet.next()) {
+		ResultSet resultSet = executeQuery("SELECT type FROM documents WHERE id = " + documentId);
+		if (resultSet.next()) {
 			return resultSet.getString(1).toLowerCase();
 		}
 		throw new NoSuchElementException();
@@ -1109,17 +1106,17 @@ public class Database {
 		executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
 	}
 
-	public void insertNotification(int requestId,int userId,String description,Date date) throws SQLException {
+	public void insertNotification(int requestId, int userId, String description, Date date) throws SQLException {
 		execute(String.format("INSERT INTO notifications (request_id, user_id, description, date)" +
-				" VALUES (%d,%d,'%s','%s')",requestId,userId,description,(new SimpleDateFormat("yyyy-MM-dd")).format(date)));
+				" VALUES (%d,%d,'%s','%s')", requestId, userId, description, (new SimpleDateFormat("yyyy-MM-dd")).format(date)));
 	}
 
-	public ArrayList<Notification> getNotificationsList () throws SQLException, ParseException {
+	public ArrayList<Notification> getNotificationsList() throws SQLException, ParseException {
 		ResultSet rs = executeQuery("SELECT * FROM notifications");
 		ArrayList<Notification> notifications = new ArrayList<>();
-		while(rs.next()) {
-			Notification temp = new Notification(rs.getInt(2),rs.getInt(3),
-					rs.getString(4),new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+		while (rs.next()) {
+			Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
+					rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
 			temp.setId(rs.getInt(1));
 			notifications.add(temp);
 		}
@@ -1128,9 +1125,9 @@ public class Database {
 
 	public Notification getNotification(int notificationId) throws SQLException, ParseException {
 		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE id = " + notificationId);
-		if(rs.next()) {
-			Notification temp = new Notification(rs.getInt(2),rs.getInt(3),
-					rs.getString(4),new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+		if (rs.next()) {
+			Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
+					rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
 			temp.setId(rs.getInt(1));
 			return temp;
 		}
@@ -1138,11 +1135,11 @@ public class Database {
 	}
 
 	public ArrayList<Notification> getNotificationsForUser(int userId) throws SQLException, ParseException {
-		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE user_id = "+userId);
+		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE user_id = " + userId);
 		ArrayList<Notification> notifications = new ArrayList<>();
-		while(rs.next()) {
-			Notification temp = new Notification(rs.getInt(2),rs.getInt(3),
-					rs.getString(4),new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+		while (rs.next()) {
+			Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
+					rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
 			temp.setId(rs.getInt(1));
 			notifications.add(temp);
 		}

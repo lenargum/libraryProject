@@ -17,6 +17,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Document selection and booking view.
+ *
+ * @author Ruslan Shakirov
+ */
 public class DocSelector {
 	private CoreAPI api;
 	private Stage primaryStage;
@@ -24,6 +29,8 @@ public class DocSelector {
 	private Scene previousScene;
 	private boolean initialized;
 	private AnchorPane selectorLayout;
+
+	// FXML bindings
 	@FXML
 	private JFXButton goBackBtn;
 	@FXML
@@ -46,6 +53,13 @@ public class DocSelector {
 	public DocSelector() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param primaryStage  Main stage.
+	 * @param previousScene Previous scene.
+	 * @param api           Core API.
+	 */
 	public DocSelector(Stage primaryStage, Scene previousScene, CoreAPI api) {
 		this.primaryStage = primaryStage;
 		this.previousScene = previousScene;
@@ -54,6 +68,9 @@ public class DocSelector {
 		initialize();
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		if (!initialized) {
 			initialize();
@@ -62,6 +79,13 @@ public class DocSelector {
 		primaryStage.setScene(selectorScene);
 	}
 
+	/**
+	 * Get selected document.
+	 *
+	 * @param event Mouse event.
+	 * @return Clicked document item.
+	 * @throws NullPointerException If selected not document item.
+	 */
 	private DocItem getSelectedDocItemFromEvent(MouseEvent event) throws NullPointerException {
 		Node x = event.getPickResult().getIntersectedNode();
 		while (!(x instanceof DocItem)) {
@@ -70,6 +94,9 @@ public class DocSelector {
 		return ((DocItem) x).copy();
 	}
 
+	/**
+	 * Initialize components.
+	 */
 	private void initialize() {
 		// Load selector layout
 		try {

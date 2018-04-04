@@ -16,6 +16,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Renew approval window.
+ *
+ * @author Ruslan Shakirov
+ */
 public class RenewApproval {
 	CoreAPI api;
 	AnchorPane layout;
@@ -28,6 +33,13 @@ public class RenewApproval {
 	public RenewApproval() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param mainStage     Main stage.
+	 * @param previousScene Previous scene.
+	 * @param api           Core API.
+	 */
 	public RenewApproval(Stage mainStage, Scene previousScene, CoreAPI api) {
 		this.api = api;
 		stage = mainStage;
@@ -51,6 +63,11 @@ public class RenewApproval {
 		listView.setOnMouseClicked(this::onListClicked);
 	}
 
+	/**
+	 * Action on list clicked.
+	 *
+	 * @param event Mouse event.
+	 */
 	private void onListClicked(MouseEvent event) {
 		ApprovalCell selected = listView.getSelectionModel().getSelectedItem();
 		if (selected == null) return;
@@ -79,6 +96,9 @@ public class RenewApproval {
 		popup.show(listView, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		stage.setScene(scene);
 	}

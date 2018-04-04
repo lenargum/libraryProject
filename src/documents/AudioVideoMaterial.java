@@ -40,7 +40,7 @@ public class AudioVideoMaterial extends Document {
 	}
 
 	@Override
-	public String getType(){
+	public String getType() {
 		return "av";
 	}
 }

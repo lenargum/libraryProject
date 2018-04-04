@@ -15,11 +15,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Document manager window.
+ *
+ * @author Ruslan Shakirov
+ */
 public class DocumentManager {
 	private CoreAPI api;
 	private Stage stage;
-	private Scene scene, previousScene;
+	private Scene scene;
 	private StackPane layout;
+
+	// FXML bindings
 	@FXML
 	private JFXButton goBackBtn;
 	@FXML
@@ -30,9 +37,15 @@ public class DocumentManager {
 	public DocumentManager() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param stage         Main stage.
+	 * @param previousScene Previous scene.
+	 * @param api           Core API.
+	 */
 	public DocumentManager(Stage stage, Scene previousScene, CoreAPI api) {
 		this.stage = stage;
-		this.previousScene = previousScene;
 		this.api = api;
 
 		try {
@@ -52,10 +65,16 @@ public class DocumentManager {
 		initDocTable();
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		stage.setScene(scene);
 	}
 
+	/**
+	 * Initialize table.
+	 */
 	private void initDocTable() {
 		JFXTreeTableColumn<DocCell, String> titles = new JFXTreeTableColumn<>("TITLE");
 		titles.setPrefWidth(200);
@@ -87,6 +106,9 @@ public class DocumentManager {
 		docsTable.setShowRoot(false);
 	}
 
+	/**
+	 * Table cell.
+	 */
 	public static class DocCell extends RecursiveTreeObject<DocCell> {
 		int id;
 		StringProperty title;

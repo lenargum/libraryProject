@@ -15,10 +15,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Welcome page view.
+ *
+ * @author Ruslan Shakirov
+ */
 public class WelcomePage {
 	private MainPage rootPage;
 	private Stage primaryStage;
 	private Scene mainScene;
+
+	// FXML bindings
 	@FXML
 	private StackPane welcomeLayout;
 	@FXML
@@ -33,6 +40,12 @@ public class WelcomePage {
 	public WelcomePage() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param primaryStage Main stage.
+	 * @param rootPage     Roo page.
+	 */
 	public WelcomePage(Stage primaryStage, MainPage rootPage) {
 		this.rootPage = rootPage;
 		this.primaryStage = primaryStage;
@@ -44,6 +57,9 @@ public class WelcomePage {
 		mainScene = new Scene(welcomeLayout);
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
@@ -83,6 +99,9 @@ public class WelcomePage {
 		browseLibBtn.setOnAction(event -> selector.show());
 	}
 
+	/**
+	 * Process login.
+	 */
 	private void processLogin() {
 		Credentials credentials = new Credentials(usernameField.getText(), passwordField.getText());
 		boolean respond = rootPage.getApi().authorize(credentials);

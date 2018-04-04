@@ -6,7 +6,6 @@ import documents.Document;
 import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
-import tools.Notification;
 import tools.Request;
 
 import java.sql.SQLException;
@@ -14,7 +13,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
@@ -370,30 +368,30 @@ public class Librarian extends User {
 	}
 
 	public void makeOutstandingRequest(Request request, Database database) throws SQLException, ParseException {
-		sendNotificationsForOutstandingRequest(request,database);
+		sendNotificationsForOutstandingRequest(request, database);
 		database.deleteRequestsForDocument(request.getIdDocument());
 	}
 
 	public void setAvailability(int docID, Database database) throws SQLException, ParseException {
-	    if(database.getDocument(docID).getNumberOfCopies() > 0){
-            sendNotificationsForAvailability(docID, database);
-        }
+		if (database.getDocument(docID).getNumberOfCopies() > 0) {
+			sendNotificationsForAvailability(docID, database);
+		}
 
-    }
+	}
 
 	private void sendNotificationsForOutstandingRequest(Request request, Database db) throws SQLException, ParseException {
 		ArrayList<Request> requesters = db.getRequests(request.getIdDocument());
 		for (Request temp : requesters) {
 			if (temp.getIdPatron() != request.getIdPatron()) {
-				db.insertNotification(temp.getRequestId(), temp.getIdPatron(),"outstanding request",new Date());
+				db.insertNotification(temp.getRequestId(), temp.getIdPatron(), "outstanding request", new Date());
 			}
 		}
 	}
 
 	private void sendNotificationsForAvailability(int docId, Database database) throws SQLException, ParseException {
-	    List<Request> requests = database.getRequests(docId);
-	    int i = 0;
-	    while(i < database.getDocument(docId).getNumberOfCopies()) {
+		List<Request> requests = database.getRequests(docId);
+		int i = 0;
+		while (i < database.getDocument(docId).getNumberOfCopies()) {
 			Request temp = requests.get(i);
 			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "set available document", new Date());
 			i++;

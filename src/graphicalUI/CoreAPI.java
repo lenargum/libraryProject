@@ -15,20 +15,39 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.*;
 
+/**
+ * Abstraction layer over core.
+ *
+ * @author Ruslan Shakirov
+ */
 public class CoreAPI {
 	private boolean loggedIn;
 	private User user;
 	private Database db;
 
+	/**
+	 * Create new API.
+	 */
 	public CoreAPI() {
 		db = new Database();
 		loggedIn = false;
 	}
 
+	/**
+	 * Get currently authorized user.
+	 *
+	 * @return User.
+	 */
 	public User getUser() {
 		return user;
 	}
 
+	/**
+	 * Get user from database by ID.
+	 *
+	 * @param userID User ID.
+	 * @return User.
+	 */
 	public User getUserByID(int userID) {
 		db.connect();
 		User result = null;
@@ -47,6 +66,11 @@ public class CoreAPI {
 		return result;
 	}
 
+	/**
+	 * Get all books from database.
+	 *
+	 * @return List of all documents.
+	 */
 	public List<DocItem> getAllBooks() {
 		List<DocItem> list = new LinkedList<>();
 		List<Document> documents = new LinkedList<>();
@@ -66,6 +90,11 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Get all users from database.
+	 *
+	 * @return List of all users.
+	 */
 	public ObservableList<UserManager.UserCell> getAllUsers() {
 		ObservableList<UserManager.UserCell> list = FXCollections.observableArrayList();
 
@@ -85,6 +114,11 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Get all documents from database.
+	 *
+	 * @return All documents form database.
+	 */
 	public ObservableList<DocumentManager.DocCell> getAllDocs() {
 		ObservableList<DocumentManager.DocCell> list = FXCollections.observableArrayList();
 
@@ -104,10 +138,21 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Checks if current user logged in.
+	 *
+	 * @return <code>true</code> if logged in, <code>false</code> otherwise.
+	 */
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
 
+	/**
+	 * Authorize in system.
+	 *
+	 * @param credentials User credentials.
+	 * @return <code>true</code> if authorized successfully, <code>false</code> otherwise.
+	 */
 	public boolean authorize(Credentials credentials) {
 		boolean respond = false;
 		db.connect();
@@ -149,12 +194,20 @@ public class CoreAPI {
 		return loggedIn;
 	}
 
+	/**
+	 * Deauthorize current user.
+	 */
 	public void deauthorize() {
 		assert loggedIn;
 		user = null;
 		loggedIn = false;
 	}
 
+	/**
+	 * Get books for user.
+	 *
+	 * @return List of user books.
+	 */
 	public ObservableList<UserDocs.MyDocsView> getUserBooks() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
 		List<Integer> documents = new ArrayList<>();
@@ -182,6 +235,11 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Get recent.
+	 *
+	 * @return List of recent books.
+	 */
 	public ObservableList<DocListItem> getRecent() {
 		ObservableList<DocListItem> recent = FXCollections.observableArrayList();
 		int count = getUserBooks().size() > 5 ? 5 : getUserBooks().size();
@@ -194,6 +252,11 @@ public class CoreAPI {
 		return recent;
 	}
 
+	/**
+	 * Get waitlist for user.
+	 *
+	 * @return Waitlist.
+	 */
 	public ObservableList<UserDocs.WaitlistView> getWaitList() {
 		ObservableList<UserDocs.WaitlistView> waitlist = FXCollections.observableArrayList();
 		List<Request> requests = new ArrayList<>();
@@ -219,6 +282,11 @@ public class CoreAPI {
 		return waitlist;
 	}
 
+	/**
+	 * Get renew requests for user.
+	 *
+	 * @return Renew requests for users.
+	 */
 	public ObservableList<ApprovalCell> getRenewRequests() {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
 
@@ -239,6 +307,11 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Add new user to database.
+	 *
+	 * @param newUser New user.
+	 */
 	public void addNewUser(User newUser) {
 		db.connect();
 
@@ -258,6 +331,13 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Edit user record in database.
+	 *
+	 * @param userID   User ID.
+	 * @param column   Record column.
+	 * @param newValue New value.
+	 */
 	public void editUser(int userID, String column, String newValue) {
 		db.connect();
 
@@ -271,6 +351,11 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Get take requests.
+	 *
+	 * @return Take requests.
+	 */
 	public ObservableList<ApprovalCell> getTakeRequests() {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
 
@@ -291,6 +376,11 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Get debts for current user.
+	 *
+	 * @return List of debts.
+	 */
 	public ObservableList<DebtsManager.DebtCell> getUserDebts() {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
 
@@ -314,10 +404,20 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Make outstanding request.
+	 *
+	 * @param requestID Request ID.
+	 */
 	public void makeOutstandingRequest(int requestID) {
 
 	}
 
+	/**
+	 * Get notifications for current user.
+	 *
+	 * @return List of notifications.
+	 */
 	public ObservableList<Notification> getUserNotifications() {
 		ObservableList<Notification> list = FXCollections.observableArrayList();
 
@@ -333,6 +433,12 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 * Check whether current user can take document.
+	 *
+	 * @param docID Document ID.
+	 * @return <code>true</code> if user can take document, <code>false</code> otherwise.
+	 */
 	public boolean canTakeDocument(int docID) {
 		if (user instanceof Librarian) {
 			return false;
@@ -344,6 +450,11 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Request document.
+	 *
+	 * @param docID Document ID.
+	 */
 	public void bookOrRequest(int docID) {
 		if (canTakeDocument(docID)) {
 			try {
@@ -357,6 +468,11 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Accept booking request.
+	 *
+	 * @param requestID Request ID.
+	 */
 	public void acceptBookRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
@@ -376,6 +492,11 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Reject booking request.
+	 *
+	 * @param requestID Request ID.
+	 */
 	public void rejectBookRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to reject...");
@@ -395,6 +516,11 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Accept renew request.
+	 *
+	 * @param requestID Request ID.
+	 */
 	public void acceptRenewRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
@@ -414,6 +540,11 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Reject renew request.
+	 *
+	 * @param requestID Request ID.
+	 */
 	public void rejectRenewRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
@@ -433,10 +564,21 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Get current user type.
+	 *
+	 * @return Current user type.
+	 */
 	public UserType userType() {
 		return determineUserType(user);
 	}
 
+	/**
+	 * Determines user type.
+	 *
+	 * @param usr User to check.
+	 * @return User type.
+	 */
 	public UserType determineUserType(User usr) {
 		if (usr instanceof Librarian) {
 			return UserType.LIBRARIAN;
@@ -445,6 +587,12 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Determines patron type.
+	 *
+	 * @param patron Patron to check.
+	 * @return Patron type.
+	 */
 	private UserType determinePatronType(Patron patron) {
 		switch (patron.getPriority()) {
 			case 0:
@@ -462,6 +610,9 @@ public class CoreAPI {
 		}
 	}
 
+	/**
+	 * Possible user types.
+	 */
 	public enum UserType {
 		LIBRARIAN, PATRON,
 		STUDENT, INSTRUCTOR, TA, VP, PROFESSOR

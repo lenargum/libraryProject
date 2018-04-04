@@ -5,7 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-
+/**
+ * Approval list view cell.
+ */
 public class ApprovalCell extends HBox {
 	private int id;
 	private int docID, userID;

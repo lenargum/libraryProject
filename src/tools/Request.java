@@ -4,10 +4,8 @@ import documents.Document;
 import users.Patron;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * This class describes the requests of booking system

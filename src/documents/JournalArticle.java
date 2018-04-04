@@ -174,7 +174,7 @@ public class JournalArticle extends Document {
 	}
 
 	@Override
-	public String getType(){
+	public String getType() {
 		return "article";
 	}
 }

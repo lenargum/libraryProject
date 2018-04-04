@@ -9,7 +9,11 @@ import javafx.scene.text.Font;
 
 import java.util.Random;
 
-
+/**
+ * Document item figure.
+ *
+ * @author Ruslan Shakirov
+ */
 public class DocItem extends Pane {
 	private Label title, author;
 	private int id;

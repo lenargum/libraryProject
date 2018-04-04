@@ -17,6 +17,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * User docs and waitlist view.
+ *
+ * @author Ruslan Shakirov
+ */
 public class UserDocs {
 	private CoreAPI api;
 	private Stage stage;
@@ -30,6 +35,11 @@ public class UserDocs {
 	public UserDocs() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param api Core API.
+	 */
 	public UserDocs(CoreAPI api) {
 		this.api = api;
 		try {
@@ -59,10 +69,16 @@ public class UserDocs {
 		stage.setScene(scene);
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		stage.show();
 	}
 
+	/**
+	 * Initialize documents table view.
+	 */
 	private void initMyDocsTable() {
 		JFXTreeTableColumn<MyDocsView, String> docTitles = new JFXTreeTableColumn<>("TITLE");
 		docTitles.setPrefWidth(300);
@@ -78,6 +94,9 @@ public class UserDocs {
 		myDocsTable.setShowRoot(false);
 	}
 
+	/**
+	 * Initialize waitlist table view.
+	 */
 	private void initWaitlistTable() {
 		JFXTreeTableColumn<WaitlistView, String> docTitles = new JFXTreeTableColumn<>("TITLE");
 		docTitles.setPrefWidth(300);
@@ -94,16 +113,29 @@ public class UserDocs {
 
 	}
 
+	/**
+	 * Action on documents table clicked.
+	 *
+	 * @param event Mouse event.
+	 */
 	private void onDocsTableClicked(MouseEvent event) {
 		MyDocsView selected = myDocsTable.getSelectionModel().getSelectedItem().getValue();
 		DocumentPopup popup = new DocumentPopup(selected.docTitle.getValue(), "Author", selected.id);
 		popup.show(myDocsTable, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());
 	}
 
-	private void onWaitlistClicked() {
-
+	/**
+	 * Action on waitlist table clicked.
+	 *
+	 * @param event Mouse event.
+	 */
+	private void onWaitlistClicked(MouseEvent event) {
+		WaitlistView selected = waitlistTable.getSelectionModel().getSelectedItem().getValue();
 	}
 
+	/**
+	 * Waitlist table cell.
+	 */
 	public static class WaitlistView extends RecursiveTreeObject<WaitlistView> {
 		int id;
 		StringProperty docTitle;
@@ -116,6 +148,9 @@ public class UserDocs {
 		}
 	}
 
+	/**
+	 * User documents table cell.
+	 */
 	public static class MyDocsView extends RecursiveTreeObject<MyDocsView> {
 		int id;
 		StringProperty docTitle;

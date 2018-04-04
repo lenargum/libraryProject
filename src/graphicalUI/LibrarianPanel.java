@@ -9,6 +9,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Librarian panel window.
+ *
+ * @author Ruslan Shakirov
+ */
 public class LibrarianPanel {
 	private AnchorPane layout;
 	private Stage stage;
@@ -17,6 +22,8 @@ public class LibrarianPanel {
 	private DebtsManager debtsManager;
 	private UserManager userManager;
 	private DocumentManager documentManager;
+
+	// FXML bindings
 	@FXML
 	private JFXButton takeApprovalBtn;
 	@FXML
@@ -31,6 +38,11 @@ public class LibrarianPanel {
 	public LibrarianPanel() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param api Core API.
+	 */
 	public LibrarianPanel(CoreAPI api) {
 		try {
 			layout = FXMLLoader.load(getClass().getResource("LibrarianPanel.fxml"));
@@ -62,6 +74,9 @@ public class LibrarianPanel {
 		manageDocsBtn.setOnAction(event -> documentManager.show());
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		stage.show();
 	}

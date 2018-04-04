@@ -21,6 +21,11 @@ import users.User;
 
 import java.io.IOException;
 
+/**
+ * User manager window.
+ *
+ * @author Ruslan Shakirov
+ */
 public class UserManager {
 	private CoreAPI api;
 	private Stage stage;
@@ -36,6 +41,13 @@ public class UserManager {
 	public UserManager() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param stage         Main stage.
+	 * @param previousScene Previous scene.
+	 * @param api           Core API.
+	 */
 	public UserManager(Stage stage, Scene previousScene, CoreAPI api) {
 		this.api = api;
 		this.stage = stage;
@@ -58,10 +70,16 @@ public class UserManager {
 		initUserTable();
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		stage.setScene(scene);
 	}
 
+	/**
+	 * Initialize user table.
+	 */
 	private void initUserTable() {
 		JFXTreeTableColumn<UserCell, String> names = new JFXTreeTableColumn<>("NAME");
 		names.setPrefWidth(150);
@@ -91,6 +109,9 @@ public class UserManager {
 		usersTable.setOnMouseClicked(event -> showEditDialog());
 	}
 
+	/**
+	 * Show add dialog.
+	 */
 	private void showAddDialog() {
 		JFXDialog addUserDialog = new JFXDialog();
 
@@ -174,6 +195,9 @@ public class UserManager {
 		addUserDialog.show(layout);
 	}
 
+	/**
+	 * Show edit dialog.
+	 */
 	private void showEditDialog() {
 		UserCell selected = usersTable.getSelectionModel().getSelectedItem().getValue();
 		if (selected == null) return;
@@ -257,6 +281,12 @@ public class UserManager {
 		addUserDialog.show(layout);
 	}
 
+	/**
+	 * Get the right status for system.
+	 *
+	 * @param comboBoxVal Showing value.
+	 * @return System value.
+	 */
 	private String determineStatus(String comboBoxVal) {
 		switch (comboBoxVal) {
 			case "Student":
@@ -274,6 +304,12 @@ public class UserManager {
 		return "Kek";
 	}
 
+	/**
+	 * Get the right status for view.
+	 *
+	 * @param status System value.
+	 * @return Showing value.
+	 */
 	private String determineComboBoxValue(String status) {
 		switch (status) {
 			case "student":
@@ -291,6 +327,9 @@ public class UserManager {
 		return "Eke";
 	}
 
+	/**
+	 * Users table cell.
+	 */
 	public static class UserCell extends RecursiveTreeObject<UserCell> {
 		int id;
 		StringProperty name;

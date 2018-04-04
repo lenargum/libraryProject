@@ -9,7 +9,7 @@ public class Notification {
 	private Date date;
 	private String description;
 
-	public Notification(int requestId,int userId, String description,Date date) {
+	public Notification(int requestId, int userId, String description, Date date) {
 		this.requestId = requestId;
 		this.userId = userId;
 		this.description = description;

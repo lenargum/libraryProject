@@ -5,6 +5,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Application root class.
+ *
+ * @author Ruslan Shakirov.
+ */
 public class MainPage extends Application {
 	private CoreAPI api;
 	private WelcomePage welcomePage;
@@ -15,6 +20,11 @@ public class MainPage extends Application {
 		launch(args);
 	}
 
+	/**
+	 * Change views on login.
+	 *
+	 * @param credentials User credentials.
+	 */
 	public void resolveLoginTransition(Credentials credentials) {
 		Thread authorizeParallel = new Thread(() -> api.authorize(credentials));
 		authorizeParallel.start();
@@ -26,6 +36,9 @@ public class MainPage extends Application {
 		System.gc();
 	}
 
+	/**
+	 * Change views on logout.
+	 */
 	public void resolveLogoutTransition() {
 		api.deauthorize();
 

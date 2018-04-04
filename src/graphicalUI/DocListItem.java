@@ -5,6 +5,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
+/**
+ * Document list view cell.
+ *
+ * @author Ruslan Shakirov
+ */
 public class DocListItem extends HBox {
 	private int id;
 	private int daysLeft;

@@ -21,10 +21,17 @@ import tools.Notification;
 
 import java.io.IOException;
 
+/**
+ * User profile page.
+ *
+ * @author Ruslan Shakirov
+ */
 public class UserPage {
 	private Stage primaryStage;
 	private MainPage rootPage;
 	private AnchorPane userLayout;
+
+	// FXML bindings
 	@FXML
 	private JFXButton controlPanelBtn;
 	@FXML
@@ -54,6 +61,12 @@ public class UserPage {
 	public UserPage() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param primaryStage Main stage.
+	 * @param rootPage     Root page.
+	 */
 	public UserPage(Stage primaryStage, MainPage rootPage) {
 		this.primaryStage = primaryStage;
 		this.rootPage = rootPage;
@@ -77,15 +90,23 @@ public class UserPage {
 		initialize();
 	}
 
-	@FXML
+	/**
+	 * Update data on views.
+	 */
 	public void updateViews() {
 		userDocs = new UserDocs(rootPage.getApi());
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		primaryStage.setScene(mainScene);
 	}
 
+	/**
+	 * Initialize view.
+	 */
 	private void initialize() {
 		accountBtn = (JFXButton) userLayout.lookup("#accountBtn");
 		SVGGlyph accountIcon = Glyphs.ACCOUNT_CIRCLE;
@@ -135,6 +156,11 @@ public class UserPage {
 		notificationList.setItems(notifications);
 	}
 
+	/**
+	 * Action on account button clicked.
+	 *
+	 * @param event Action event.
+	 */
 	private void accountBtnClicked(ActionEvent event) {
 		JFXButton logoutButton = new JFXButton("Log out");
 		logoutButton.setFont(new Font("Roboto", 14));

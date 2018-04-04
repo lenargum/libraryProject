@@ -18,6 +18,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Debts manager window.
+ *
+ * @author Ruslan Shakirov
+ */
 public class DebtsManager {
 	private CoreAPI api;
 	private AnchorPane layout;
@@ -31,6 +36,13 @@ public class DebtsManager {
 	public DebtsManager() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param stage         Main stage.
+	 * @param previousScene Previous scene.
+	 * @param api           Core API.
+	 */
 	public DebtsManager(Stage stage, Scene previousScene, CoreAPI api) {
 		this.stage = stage;
 		this.api = api;
@@ -49,10 +61,16 @@ public class DebtsManager {
 		initDebtsList();
 	}
 
+	/**
+	 * Show view.
+	 */
 	public void show() {
 		stage.setScene(scene);
 	}
 
+	/**
+	 * Initialize table.
+	 */
 	private void initDebtsList() {
 		JFXTreeTableColumn<DebtCell, Integer> ids = new JFXTreeTableColumn<>("ID");
 		ids.setPrefWidth(50);
@@ -82,6 +100,11 @@ public class DebtsManager {
 		debtsTable.setOnMouseClicked(this::onTableClicked);
 	}
 
+	/**
+	 * Action on table clicking.
+	 *
+	 * @param event Mouse event.
+	 */
 	private void onTableClicked(MouseEvent event) {
 		DebtCell selected = debtsTable.getSelectionModel().getSelectedItem().getValue();
 		if (selected == null) return;
@@ -105,6 +128,9 @@ public class DebtsManager {
 		popup.show(debtsTable, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());
 	}
 
+	/**
+	 * Table cell.
+	 */
 	public static class DebtCell extends RecursiveTreeObject<DebtCell> {
 		int userID, docID;
 		IntegerProperty debtID;

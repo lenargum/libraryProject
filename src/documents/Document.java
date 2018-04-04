@@ -160,8 +160,8 @@ public class Document {
 	 */
 	public boolean includesAuthor(String author) {
 		String[] authors = this.getAuthors().split(", ");
-		for(String i: authors){
-			if(i.equals(author))
+		for (String i : authors) {
+			if (i.equals(author))
 				return true;
 		}
 		return false;
@@ -270,8 +270,8 @@ public class Document {
 	 */
 	public boolean includeKeyWord(String keyWord) {
 		String[] keywords = this.getKeyWords().split(", ");
-		for(String i: keywords){
-			if(i.equals(keyWord))
+		for (String i : keywords) {
+			if (i.equals(keyWord))
 				return true;
 		}
 		return false;

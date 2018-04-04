@@ -10,6 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
+/**
+ * Login dialog view.
+ *
+ * @author Ruslan Shakirov
+ */
 public class LoginDialog {
 	@FXML
 	private JFXTextField usernameField;
@@ -23,6 +28,11 @@ public class LoginDialog {
 	public LoginDialog() {
 	}
 
+	/**
+	 * Create new view.
+	 *
+	 * @param loginLayout Main layout to show.
+	 */
 	public LoginDialog(AnchorPane loginLayout) {
 		loginDialog = new JFXDialog();
 		this.loginLayout = loginLayout;
@@ -40,6 +50,11 @@ public class LoginDialog {
 		proceedLoginButton.setOnAction(value);
 	}
 
+	/**
+	 * Show dialog.
+	 *
+	 * @param root Root stack pane.
+	 */
 	public void show(StackPane root) {
 		loginDialog.setContent(loginLayout);
 		loginDialog.show(root);
