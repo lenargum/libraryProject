@@ -315,7 +315,7 @@ public class Patron extends User {
 	public void takeBook(int idBook, Database database) {
 		try {
 
-			this.getListOfDocumentsPatron().add(idBook);
+			this.listOfDocumentsPatron.add(idBook);
 			database.getBook(idBook).deleteCopy();
 			decreaseCountOfCopies(idBook, database);
 			Date dateBook = new Date();
@@ -355,7 +355,7 @@ public class Patron extends User {
 	public void takeAV(int idAV, Database database) {
 		try {
 			if (canRequestAV(idAV, database)) {
-				this.getListOfDocumentsPatron().add(idAV);
+				this.listOfDocumentsPatron.add(idAV);
 				database.getAV(idAV).deleteCopy();
 				decreaseCountOfCopies(idAV, database);
 				Date date = new Date();
@@ -380,7 +380,7 @@ public class Patron extends User {
 	public void takeArticle(int idArticle, Database database) {
 		try {
 			if (canRequestArticle(idArticle, database)) {
-				this.getListOfDocumentsPatron().add(idArticle);
+				this.listOfDocumentsPatron.add(idArticle);
 				database.getArticle(idArticle).deleteCopy();
 				decreaseCountOfCopies(idArticle, database);
 				Date date = new Date();
