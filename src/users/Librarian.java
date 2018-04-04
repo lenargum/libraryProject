@@ -364,4 +364,10 @@ public class Librarian extends User {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 
+	public void makeOutstandingRequest(int docID, Database database) throws SQLException, ParseException {
+		//TODO: connect with database method
+
+
+	}
+
 }
