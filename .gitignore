@@ -24,7 +24,9 @@ hs_err_pid*
 .idea/workspace.xml
 .idea/artifacts/
 
-out/
-.gradle/
+out/**
+.gradle/**
 !gradle/**
-build/
+build/**
+app/**
+app/library.db
