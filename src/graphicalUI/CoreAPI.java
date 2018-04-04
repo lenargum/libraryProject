@@ -319,8 +319,18 @@ public class CoreAPI {
 	}
 
 	public ObservableList<Notification> getUserNotifications() {
-		// TODO
-		return null;
+		ObservableList<Notification> list = FXCollections.observableArrayList();
+
+		db.connect();
+		try {
+			list.addAll(db.getNotificationsForUser(user.getId()));
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
+
+		return list;
 	}
 
 	public boolean canTakeDocument(int docID) {
