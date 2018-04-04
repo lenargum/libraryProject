@@ -76,15 +76,6 @@ public class Request {
 		this.isRenewRequest = isRenewRequest;
 	}
 
-	public boolean documentHasQueue(int idDocument, Database database) throws SQLException, ParseException { //TODO: rewrite
-		List<Request> list = database.getRequests();
-		for(Request i: list){
-			if(i.getIdDocument() == idDocument)
-				return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Approve request (Patron can take this document)
 	 *

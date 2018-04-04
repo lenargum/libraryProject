@@ -55,5 +55,10 @@
 		</VBox>
 		<JFXButton fx:id="browseLibBtn" buttonType="RAISED" layoutX="651.0" layoutY="498.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" ripplerFill="#fffd61" style="-fx-background-color: ffca28; -fx-background-radius: 50;" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
       <JFXButton fx:id="refreshBtn" layoutX="483.0" layoutY="21.0" mnemonicParsing="false" onAction="#updateViews" text="REFRESH" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="20.0" />
+      <Text layoutX="405.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="55.0">
+         <font>
+            <Font name="Roboto" size="16.0" />
+         </font>
+      </Text>
 	</children>
 </AnchorPane>

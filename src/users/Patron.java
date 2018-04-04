@@ -600,10 +600,8 @@ public class Patron extends User {
 			Date date = new Date();
 			Request request = new Request(this, doc, date, true);
 
-			if (!request.documentHasQueue(request.getIdDocument(), database) && debt.canRenew())
+			if (debt.canRenew())
 				database.insertRequest(request);
-			else if (request.documentHasQueue(debt.getDocumentId(), database))
-				System.out.println("You cannot renew this document because of outstanding request");
 			else System.out.println("The document is already renewed, so you need to return it!");
 		} catch (SQLException | ParseException e) {
 			System.out.println("Incorrect id");

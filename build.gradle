@@ -50,10 +50,6 @@ tasks.withType(JavaCompile) {
 	options.incremental = true
 }
 
-task copyRuntimeLibs(type: Copy) {
-	from configurations.runtime
-}
-
 test {
 	useJUnitPlatform()
 }

@@ -4,17 +4,20 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.svg.SVGGlyph;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import tools.Notification;
 
 import java.io.IOException;
 
@@ -33,7 +36,7 @@ public class UserPage {
 	private LibrarianPanel librarianPanel;
 	private Scene mainScene;
 	@FXML
-	private JFXListView<DocListItem> notificationList;
+	private JFXListView<Label> notificationList;
 	private JFXPopup detailsPopup;
 	@FXML
 	private JFXButton seeMoreBtn;
@@ -77,7 +80,6 @@ public class UserPage {
 	@FXML
 	public void updateViews() {
 		userDocs = new UserDocs(rootPage.getApi());
-		notificationList.getItems().setAll(rootPage.getApi().getRecent());
 	}
 
 	public void show() {
@@ -108,11 +110,8 @@ public class UserPage {
 		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
 		seeMoreBtn.setOnAction(event -> userDocs.show());
 
-		notificationList = (JFXListView<DocListItem>) userLayout.lookup("#notificationList");
+		notificationList = (JFXListView<Label>) userLayout.lookup("#notificationList");
 		notificationList.setDepth(2);
-		notificationList.getItems().addAll(rootPage.getApi().getRecent());
-
-		notificationList.setOnMouseClicked(this::myLastBooksOnMouseClicked);
 
 		nameSurname = (Text) userLayout.lookup("#nameSurname");
 		statusField = (Text) userLayout.lookup("#statusField");
@@ -126,6 +125,14 @@ public class UserPage {
 
 		refreshBtn = (JFXButton) userLayout.lookup("#refreshBtn");
 		refreshBtn.setOnAction(event -> updateViews());
+
+		ObservableList<Label> notifications = FXCollections.observableArrayList();
+		for (Notification notification : rootPage.getApi().getUserNotifications()) {
+			Label text = new Label(notification.getDescription());
+			text.setPadding(new Insets(5));
+			notifications.add(text);
+		}
+		notificationList.setItems(notifications);
 	}
 
 	private void accountBtnClicked(ActionEvent event) {
@@ -139,11 +146,5 @@ public class UserPage {
 			System.out.println("Logged out.");
 		});
 		popup.show(accountBtn, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT);
-	}
-
-	private void myLastBooksOnMouseClicked(MouseEvent event) {
-		DocListItem selectedNode = notificationList.getSelectionModel().getSelectedItem();
-		DocumentPopup popup = new DocumentPopup(selectedNode.getTitle(), "Author", selectedNode.getDocumentId());
-		popup.show(notificationList, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 335, event.getY());
 	}
 }
