@@ -10,7 +10,8 @@ repositories() {
 dependencies() {
 	compile 'org.xerial:sqlite-jdbc:3.21.0.1'
 	compile 'com.jfoenix:jfoenix:8.0.3'
-	testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
+	testCompile 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+	testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 }
 
 
@@ -53,11 +54,15 @@ task copyRuntimeLibs(type: Copy) {
 	from configurations.runtime
 }
 
+test {
+	useJUnitPlatform()
+}
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '4.6'
 }
 
-task deploy (type: Copy) {
+task deploy(type: Copy) {
 	copy {
 		from "build/libs"
 		into "app"
@@ -68,5 +73,10 @@ task deploy (type: Copy) {
 		from "/"
 		into "app"
 		include "*.db"
+	}
+
+	copy {
+		from "build/reports/tests"
+		into "app"
 	}
 }

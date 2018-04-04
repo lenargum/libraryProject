@@ -1,1 +1,1 @@
-gradlew.bat clean build
+.\gradlew.bat clean build
