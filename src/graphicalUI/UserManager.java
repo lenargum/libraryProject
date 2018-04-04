@@ -24,7 +24,7 @@ import java.io.IOException;
 public class UserManager {
 	private CoreAPI api;
 	private Stage stage;
-	private Scene scene, previousScene;
+	private Scene scene;
 	private StackPane layout;
 	@FXML
 	private JFXButton goBackBtn;
@@ -39,7 +39,6 @@ public class UserManager {
 	public UserManager(Stage stage, Scene previousScene, CoreAPI api) {
 		this.api = api;
 		this.stage = stage;
-		this.previousScene = previousScene;
 
 		try {
 			layout = FXMLLoader.load(getClass().getResource("UserManager.fxml"));
@@ -136,16 +135,16 @@ public class UserManager {
 				new Label("Professor"), new Label("Librarian"));
 		comboBox.setPromptText("Select status");
 
-		JFXButton saveBtn = new JFXButton("SAVE");
+		JFXButton addBtn = new JFXButton("ADD");
 
 		VBox container = new VBox();
 		container.getChildren().addAll(addUser, loginPassword,
-				nameSurname, phoneField, addressField, comboBox, saveBtn);
+				nameSurname, phoneField, addressField, comboBox, addBtn);
 
 		container.setSpacing(40);
 		container.setPadding(new Insets(20));
 
-		saveBtn.setOnAction(event -> {
+		addBtn.setOnAction(event -> {
 			if (comboBox.getValue() == null) return;
 			User newUser;
 			if (comboBox.getValue().getText().equals("Librarian")) {
@@ -163,7 +162,7 @@ public class UserManager {
 			}
 
 			TreeItem<UserCell> newCell =
-					new TreeItem<UserCell>(new UserCell(newUser.getId(), newUser.getName(),
+					new TreeItem<>(new UserCell(newUser.getId(), newUser.getName(),
 							newUser.getSurname(), newUser.getAddress(),
 							newUser.getPhoneNumber(), api.determineUserType(newUser).name()));
 			usersTable.getRoot().getChildren().add(newCell);
@@ -178,6 +177,7 @@ public class UserManager {
 	private void showEditDialog() {
 		UserCell selected = usersTable.getSelectionModel().getSelectedItem().getValue();
 		if (selected == null) return;
+		int selectedIndex = usersTable.getSelectionModel().getSelectedIndex();
 
 		JFXDialog addUserDialog = new JFXDialog();
 

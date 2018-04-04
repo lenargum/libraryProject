@@ -84,6 +84,25 @@ public class CoreAPI {
 		return list;
 	}
 
+	public ObservableList<DocumentManager.DocCell> getAllDocs() {
+		ObservableList<DocumentManager.DocCell> list = FXCollections.observableArrayList();
+
+		db.connect();
+		try {
+			for (Document doc : db.getDocumentList()) {
+				list.add(new DocumentManager.DocCell(doc.getID(), doc.getTitle(), doc.getAuthors(),
+						doc.getType(), doc.getNumberOfCopies(),
+						doc.isAllowedForStudents(), doc.isReference()));
+			}
+		} catch (SQLException e) {
+			System.out.println("Failed to fetch document list.");
+		} finally {
+			db.close();
+		}
+
+		return list;
+	}
+
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
@@ -162,13 +181,13 @@ public class CoreAPI {
 		return list;
 	}
 
-	public ObservableList<DocCell> getRecent() {
-		ObservableList<DocCell> recent = FXCollections.observableArrayList();
+	public ObservableList<DocListItem> getRecent() {
+		ObservableList<DocListItem> recent = FXCollections.observableArrayList();
 		int count = getUserBooks().size() > 5 ? 5 : getUserBooks().size();
 		ObservableList<UserDocs.MyDocsView> sorted = getUserBooks().sorted(Comparator.comparing(o -> o.daysLeft.getValue()));
 
 		for (int i = 0; i < count; i++) {
-			recent.add(new DocCell(sorted.get(i).docTitle.getValue(), sorted.get(i).daysLeft.intValue(), i));
+			recent.add(new DocListItem(sorted.get(i).docTitle.getValue(), sorted.get(i).daysLeft.intValue(), i));
 		}
 
 		return recent;
