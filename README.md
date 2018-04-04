@@ -18,10 +18,17 @@ Different parts are being developed in different branches.
 
 JavaFX 8 is required for desktop application. Please install FX module if you are using OpenJDK, or use **Oracle JDK instead (recommended)**.
 
-This project was made using [IntelliJ IDEA](http://www.jetbrains.com/idea/). Compile `Main` class. You may use `javac`, but it was not tested.
-
 **JUnit 5.0** is required for building and running tests.
 
+## Building
+
+This project uses Gradle build system.
+
+To build project please run `build.sh` (`build.bat` for Windows).
+
+The compiled application will be stored in `/app` folder.
+
+**Important note:** To run build shell script on *nix systems please ensure that you allowed `build.sh` and `gradlew` to be executed.
 
 ## Using
 To use application you need to authorize first.
