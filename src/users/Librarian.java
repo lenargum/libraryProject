@@ -365,8 +365,8 @@ public class Librarian extends User {
 	}
 
 	public void makeOutstandingRequest(int docID, Database database) throws SQLException, ParseException {
-		//TODO: connect with database method
-
+		//TODO: send notification to patrons from wait list for this document
+        database.deleteRequestsForDocument(docID);
 
 	}
 
