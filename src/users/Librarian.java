@@ -368,6 +368,7 @@ public class Librarian extends User {
 		//TODO: send notification to patrons from wait list for this document
         database.deleteRequestsForDocument(docID);
 
+
 	}
 
 }

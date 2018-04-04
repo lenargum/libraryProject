@@ -1089,9 +1089,49 @@ public class Database {
 		throw new NoSuchElementException();
 
 	}
-	
-	
+
+
 	public void deleteRequestsForDocument(int documentId) throws SQLException {
 		executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
+	}
+
+	public void insertNotification(int requestId,int userId,String description,Date date) throws SQLException {
+		execute(String.format("INSERT INTO notifications (request_id, user_id, description, date)" +
+				" VALUES (%d,%d,'%s','%s')",requestId,userId,description,(new SimpleDateFormat("yyyy-MM-dd")).format(date)));
+	}
+
+	public ArrayList<Notification> getNotificationsList () throws SQLException, ParseException {
+		ResultSet rs = executeQuery("SELECT * FROM notifications");
+		ArrayList<Notification> notifications = new ArrayList<>();
+		while(rs.next()) {
+			Notification temp = new Notification(rs.getInt(2),rs.getInt(3),
+					rs.getString(4),new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+			temp.setId(rs.getInt(1));
+			notifications.add(temp);
+		}
+		return notifications;
+	}
+
+	public Notification getNotification(int notificationId) throws SQLException, ParseException {
+		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE id = " + notificationId);
+		if(rs.next()) {
+			Notification temp = new Notification(rs.getInt(2),rs.getInt(3),
+					rs.getString(4),new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+			temp.setId(rs.getInt(1));
+			return temp;
+		}
+		throw new NoSuchElementException();
+	}
+
+	public ArrayList<Notification> getNotificationsForUser(int userId) throws SQLException, ParseException {
+		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE user_id = "+userId);
+		ArrayList<Notification> notifications = new ArrayList<>();
+		while(rs.next()) {
+			Notification temp = new Notification(rs.getInt(2),rs.getInt(3),
+					rs.getString(4),new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+			temp.setId(rs.getInt(1));
+			notifications.add(temp);
+		}
+		return notifications;
 	}
 }
