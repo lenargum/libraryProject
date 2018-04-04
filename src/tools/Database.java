@@ -1152,8 +1152,4 @@ public class Database {
 	public void deleteNotification(int notificationId) throws SQLException {
 		executeUpdate("DELETE FROM notifications WHERE notification_id = " + notificationId);
 	}
-
-	public boolean isThereOutstandingRequest(int docId){
-		return false;
-	}
 }
