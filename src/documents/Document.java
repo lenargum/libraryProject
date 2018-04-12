@@ -249,7 +249,7 @@ public class Document {
 	 *
 	 * @param isReference New reference status.
 	 */
-	private void setReference(boolean isReference) {
+	public void setReference(boolean isReference) {
 		this.IsReference = isReference;
 	}
 
@@ -312,7 +312,6 @@ public class Document {
 	public void setPrice(double price) {
 		this.Price = price;
 	}
-
 	/**
 	 * Compare two documents.
 	 *
