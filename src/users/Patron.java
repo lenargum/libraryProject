@@ -607,4 +607,8 @@ public class Patron extends User {
 			System.out.println("Incorrect id");
 		}
 	}
+
+	public enum PatronType {
+		STUDENT, INSTRUCTOR, TA, VP, PROFESSOR
+	}
 }
