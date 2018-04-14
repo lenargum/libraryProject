@@ -358,12 +358,12 @@ public class Patron extends User {
 				this.listOfDocumentsPatron.add(idAV);
 				database.getAV(idAV).deleteCopy();
 				decreaseCountOfCopies(idAV, database);
-				Date date = new Date();
-				Date date2 = new Date();
+				Date dateBook = new Date();
+				Date dateReturn = new Date();
 				if (status.toLowerCase().equals("vp"))
-					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
-				else date2.setTime(date2.getTime() + 14 * 24 * 60 * 60 * 1000);
-				Debt debt = new Debt(getId(), idAV, date, date2, 0, true);
+					dateReturn.setTime(dateReturn.getTime() + 7 * 24 * 60 * 60 * 1000);
+				else dateReturn.setTime(dateReturn.getTime() + 14 * 24 * 60 * 60 * 1000);
+				Debt debt = new Debt(getId(), idAV, dateBook, dateReturn, 0, true);
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
@@ -383,12 +383,12 @@ public class Patron extends User {
 				this.listOfDocumentsPatron.add(idArticle);
 				database.getArticle(idArticle).deleteCopy();
 				decreaseCountOfCopies(idArticle, database);
-				Date date = new Date();
-				Date date2 = new Date();
+				Date dateBook = new Date();
+				Date dateReturn = new Date();
 				if (status.toLowerCase().equals("vp"))
-					date2.setTime(date2.getTime() + 7 * 24 * 60 * 60 * 1000);
-				else date2.setTime(date2.getTime() + 14 * 60 * 60 * 1000 * 24);
-				Debt debt = new Debt(getId(), idArticle, date, date2, 0, true);
+					dateReturn.setTime(dateReturn.getTime() + 7 * 24 * 60 * 60 * 1000);
+				else dateReturn.setTime(dateReturn.getTime() + 14 * 60 * 60 * 1000 * 24);
+				Debt debt = new Debt(getId(), idArticle, dateBook, dateReturn, 0, true);
 
 				database.insertDebt(debt);
 			}

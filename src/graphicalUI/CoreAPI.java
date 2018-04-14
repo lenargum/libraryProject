@@ -204,11 +204,11 @@ public class CoreAPI {
 	}
 
 	/**
-	 * Get books for user.
+	 * Get documents for user.
 	 *
-	 * @return List of user books.
+	 * @return List of user documents.
 	 */
-	public ObservableList<UserDocs.MyDocsView> getUserBooks() {
+	public ObservableList<UserDocs.MyDocsView> getUserDocs() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
 		List<Integer> documents = new ArrayList<>();
 		if (user instanceof Patron) {
@@ -242,8 +242,8 @@ public class CoreAPI {
 	 */
 	public ObservableList<DocListItem> getRecent() {
 		ObservableList<DocListItem> recent = FXCollections.observableArrayList();
-		int count = getUserBooks().size() > 5 ? 5 : getUserBooks().size();
-		ObservableList<UserDocs.MyDocsView> sorted = getUserBooks().sorted(Comparator.comparing(o -> o.daysLeft.getValue()));
+		int count = getUserDocs().size() > 5 ? 5 : getUserDocs().size();
+		ObservableList<UserDocs.MyDocsView> sorted = getUserDocs().sorted(Comparator.comparing(o -> o.daysLeft.getValue()));
 
 		for (int i = 0; i < count; i++) {
 			recent.add(new DocListItem(sorted.get(i).docTitle.getValue(), sorted.get(i).daysLeft.intValue(), i));
