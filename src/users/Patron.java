@@ -135,7 +135,7 @@ public class Patron extends User {
 			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (book.getNumberOfCopies() == 0)
-					System.out.println("Not copies");
+					System.out.println("No copies");
 				if (getListOfDocumentsPatron().contains(idBook))
 					System.out.println("You already have copy of this book");
 				if (book.isReference())
@@ -183,7 +183,7 @@ public class Patron extends User {
 			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (article.getNumberOfCopies() == 0)
-					System.out.println("Not copies");
+					System.out.println("No copies");
 				if (getListOfDocumentsPatron().contains(idArticle))
 					System.out.println("You already have copy of this journal article");
 				if (article.isReference())
@@ -232,7 +232,7 @@ public class Patron extends User {
 			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (av.getNumberOfCopies() == 0)
-					System.out.println("Not copies");
+					System.out.println("No copies");
 				if (getListOfDocumentsPatron().contains(idAV))
 					System.out.println("You already have copy of this audio/video");
 
