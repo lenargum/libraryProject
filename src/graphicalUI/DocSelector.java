@@ -29,10 +29,13 @@ public class DocSelector {
 	private Scene previousScene;
 	private boolean initialized;
 	private AnchorPane selectorLayout;
+	private SearchView searchView;
 
 	// FXML bindings
 	@FXML
 	private JFXButton goBackBtn;
+	@FXML
+	private JFXButton searchBtn;
 	@FXML
 	private JFXTabPane tabs;
 	private FlowPane booksFlow, articlesFlow, avFlow;
@@ -119,11 +122,20 @@ public class DocSelector {
 		set its graphic and add action on it
 		*/
 		goBackBtn = (JFXButton) selectorLayout.lookup("#goBackBtn");
-		SVGGlyph arrowBack = Glyphs.ARROW_BACK;
+		SVGGlyph arrowBack = Glyphs.ARROW_BACK();
 		arrowBack.setFill(Paint.valueOf("#fafafa"));
 		arrowBack.setSize(15, 15);
 		goBackBtn.setGraphic(arrowBack);
 		goBackBtn.setOnAction(event -> primaryStage.setScene(previousScene));
+
+		searchView = new SearchView(primaryStage, selectorScene, api);
+
+		searchBtn = (JFXButton) selectorLayout.lookup("#searchBtn");
+		SVGGlyph searchGraphic = Glyphs.SEARCH();
+		searchGraphic.setFill(Paint.valueOf("#fafafa"));
+		searchGraphic.setSize(15);
+		searchBtn.setGraphic(searchGraphic);
+		searchBtn.setOnAction(event -> searchView.show());
 
 		// Find tab pane on layout
 		tabs = (JFXTabPane) selectorLayout.lookup("#tabs");

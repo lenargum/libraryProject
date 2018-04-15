@@ -52,7 +52,7 @@ public class TakeApproval {
 		scene = new Scene(layout);
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
-		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK;
+		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
 		goBackGraphic.setSize(20, 20);
 		goBackBtn.setTextFill(Paint.valueOf("#727272"));
 		goBackBtn.setGraphic(goBackGraphic);

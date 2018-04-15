@@ -109,14 +109,14 @@ public class UserPage {
 	 */
 	private void initialize() {
 		accountBtn = (JFXButton) userLayout.lookup("#accountBtn");
-		SVGGlyph accountIcon = Glyphs.ACCOUNT_CIRCLE;
+		SVGGlyph accountIcon = Glyphs.ACCOUNT_CIRCLE();
 		accountIcon.setSize(20, 20);
 		accountIcon.setFill(Paint.valueOf("#757575"));
 		accountBtn.setGraphic(accountIcon);
 		accountBtn.setOnAction(this::accountBtnClicked);
 
 		browseLibBtn = (JFXButton) userLayout.lookup("#browseLibBtn");
-		SVGGlyph bookIcon = Glyphs.BOOK_BLACK;
+		SVGGlyph bookIcon = Glyphs.BOOK_BLACK();
 		bookIcon.setSize(20, 25);
 		browseLibBtn.setGraphic(bookIcon);
 		browseLibBtn.setOnAction(event -> selector.show());
