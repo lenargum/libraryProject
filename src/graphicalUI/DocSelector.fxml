@@ -31,11 +31,11 @@
 				</tabs>
 			</JFXTabPane>
 		</StackPane>
-		<JFXButton fx:id="goBackBtn" mnemonicParsing="false" prefHeight="0.0" prefWidth="45.0" style="-fx-background-color: #00000000;" textFill="#fafafa" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-5.0">
+		<JFXButton fx:id="goBackBtn" mnemonicParsing="false" prefHeight="0.0" prefWidth="45.0" style="-fx-background-color: #00000000;" textFill="#fafafa" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<font>
 				<Font size="21.0" />
 			</font>
 		</JFXButton>
-      <JFXButton fx:id="searchBtn" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
+      <JFXButton fx:id="searchBtn" prefHeight="0.0" prefWidth="45.0" textFill="WHITE" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="7.0" />
 	</children>
 </AnchorPane>

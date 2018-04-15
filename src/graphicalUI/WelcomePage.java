@@ -67,6 +67,7 @@ public class WelcomePage {
 		Thread initSelector = new Thread(() -> {
 			System.out.print("Loading document selector in parallel thread:\n\t");
 			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
+			System.out.println("Done.");
 		});
 		initSelector.start();
 

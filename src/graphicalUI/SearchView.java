@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import sun.reflect.Reflection;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +25,9 @@ public class SearchView implements Initializable {
 	private JFXChipView<String> keywordChips;
 	@FXML
 	private JFXButton goBackBtn;
+
+	public SearchView() {
+	}
 
 	public SearchView(Stage stage, Scene previousScene, CoreAPI api) {
 		this.api = api;
@@ -46,8 +48,13 @@ public class SearchView implements Initializable {
 		goBackGraphic.setFill(Paint.valueOf("8d8d8d"));
 		goBackBtn.setGraphic(goBackGraphic);
 
-		keywordChips = (JFXChipView) layout.lookup("#keywordChips");
+		keywordChips = (JFXChipView<String>) layout.lookup("#keywordChips");
 		keywordChips.getSuggestions().addAll("book", "article", "audio/video");
+		keywordChips.setOnKeyPressed(event -> {
+			System.out.println(event.getCode());
+		});
+
+		scene = new Scene(layout);
 	}
 
 	public void show() {

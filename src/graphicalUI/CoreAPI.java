@@ -448,6 +448,7 @@ public class CoreAPI {
 	 * @return <code>true</code> if user can take document, <code>false</code> otherwise.
 	 */
 	public boolean canTakeDocument(int docID) {
+		if (user == null) return false;
 		if (user instanceof Librarian) {
 			return false;
 		} else {
