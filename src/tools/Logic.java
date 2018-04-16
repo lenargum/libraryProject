@@ -3,6 +3,7 @@ package tools;
 import documents.Book;
 import documents.Document;
 import users.Patron;
+import users.Student;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -31,7 +32,7 @@ public class Logic {
                 System.out.println("You already request this document");
                 return false;
             }
-            if (true && (doc.getNumberOfCopies() != 0) &&
+            if (!(patron instanceof Student) && (doc.getNumberOfCopies() != 0) &&
                     !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument) && !patron.findInRequests(idDocument, database)) {
                 return true;
             } else if (doc.isAllowedForStudents() &&
