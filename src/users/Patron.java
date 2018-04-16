@@ -114,11 +114,11 @@ public class Patron extends User {
 	/**
 	 * Checks whether patron can take the following book.
 	 *
-	 * @param idBook   documents.Book ID to check.
+	 * @param bookID   documents.Book ID to check.
 	 * @param database tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the book, otherwise {@code false}.
 	 */
-	public boolean canRequestBook(int idBook, Database database) {
+	public boolean canRequestBook(int bookID, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
@@ -126,17 +126,17 @@ public class Patron extends User {
 			return false;
 		}
 		try {
-			Book book = database.getBook(idBook);
+			Book book = database.getBook(bookID);
 			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor")))
 					&& (book.getNumberOfCopies() != 0) &&
-					!book.isReference() && !getListOfDocumentsPatron().contains(idBook)) {
+					!book.isReference() && !getListOfDocumentsPatron().contains(bookID)) {
 				return true;
 			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (book.getNumberOfCopies() == 0)
 					System.out.println("No copies");
-				if (getListOfDocumentsPatron().contains(idBook))
+				if (getListOfDocumentsPatron().contains(bookID))
 					System.out.println("You already have copy of this book");
 				if (book.isReference())
 					System.out.println("You can not borrow reference materials");
@@ -144,18 +144,18 @@ public class Patron extends User {
 			} else {
 				if (book.isReference() && book.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
-				if (getListOfDocumentsPatron().contains(idBook))
+				if (getListOfDocumentsPatron().contains(bookID))
 					System.out.println("You already have copy of this book");
 				if (!book.isAllowedForStudents())
 					System.out.println("This document is not for students");
 				if (book.isReference())
 					System.out.println("You can not borrow reference materials");
 				return book.isAllowedForStudents() && book.getNumberOfCopies() != 0 &&
-						!book.isReference() && !getListOfDocumentsPatron().contains(idBook);
+						!book.isReference() && !getListOfDocumentsPatron().contains(bookID);
 			}
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Book with ID="
-					+ idBook + " may not be registered id database.");
+					+ bookID + " may not be registered id database.");
 			return false;
 		}
 	}
@@ -163,11 +163,11 @@ public class Patron extends User {
 	/**
 	 * Checks whether patron can take the following article.
 	 *
-	 * @param idArticle Article ID to check.
+	 * @param articleID Article ID to check.
 	 * @param database  tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the article, otherwise {@code false}.
 	 */
-	private boolean canRequestArticle(int idArticle, Database database) {
+	private boolean canRequestArticle(int articleID, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
@@ -175,16 +175,16 @@ public class Patron extends User {
 			return false;
 		}
 		try {
-			JournalArticle article = database.getArticle(idArticle);
+			JournalArticle article = database.getArticle(articleID);
 			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (article.getNumberOfCopies() != 0) &&
-					!article.isReference() && !getListOfDocumentsPatron().contains(idArticle)) {
+					!article.isReference() && !getListOfDocumentsPatron().contains(articleID)) {
 				return true;
 			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (article.getNumberOfCopies() == 0)
 					System.out.println("No copies");
-				if (getListOfDocumentsPatron().contains(idArticle))
+				if (getListOfDocumentsPatron().contains(articleID))
 					System.out.println("You already have copy of this journal article");
 				if (article.isReference())
 					System.out.println("You can not borrow reference materials");
@@ -192,7 +192,7 @@ public class Patron extends User {
 			} else {
 				if (article.isReference() && article.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
-				if (getListOfDocumentsPatron().contains(idArticle))
+				if (getListOfDocumentsPatron().contains(articleID))
 					System.out.println("You already have copy of this journal article");
 				if (!article.isAllowedForStudents())
 					System.out.println("This document is not for students");
@@ -200,11 +200,11 @@ public class Patron extends User {
 					System.out.println("You can not borrow reference materials");
 				return article.isAllowedForStudents() &&
 						article.getNumberOfCopies() != 0 &&
-						!article.isReference() && !getListOfDocumentsPatron().contains(idArticle);
+						!article.isReference() && !getListOfDocumentsPatron().contains(articleID);
 			}
 		} catch (SQLException | ParseException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: Incorrect ID. Article with ID="
-					+ idArticle + " may not be registered id database.");
+					+ articleID + " may not be registered id database.");
 			return false;
 		}
 	}
@@ -212,11 +212,11 @@ public class Patron extends User {
 	/**
 	 * Checks whether patron can take the following audio/video.
 	 *
-	 * @param idAV     Audio/video ID to check.
+	 * @param avID     Audio/video ID to check.
 	 * @param database tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the audio/video, otherwise {@code false}.
 	 */
-	private boolean canRequestAV(int idAV, Database database) {
+	private boolean canRequestAV(int avID, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
@@ -224,16 +224,16 @@ public class Patron extends User {
 			return false;
 		}
 		try {
-			AudioVideoMaterial av = database.getAV(idAV);
+			AudioVideoMaterial av = database.getAV(avID);
 			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (av.getNumberOfCopies() != 0) &&
-					!av.isReference() && !getListOfDocumentsPatron().contains(idAV)) {
+					!av.isReference() && !getListOfDocumentsPatron().contains(avID)) {
 				return true;
 			} else if ((this.status.toLowerCase().equals("instructor")) || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) {
 				if (av.getNumberOfCopies() == 0)
 					System.out.println("No copies");
-				if (getListOfDocumentsPatron().contains(idAV))
+				if (getListOfDocumentsPatron().contains(avID))
 					System.out.println("You already have copy of this audio/video");
 
 				if (av.isReference())
@@ -242,7 +242,7 @@ public class Patron extends User {
 			} else {
 				if (av.isReference() && av.getNumberOfCopies() == 0)
 					System.out.println("Not copies");
-				if (getListOfDocumentsPatron().contains(idAV))
+				if (getListOfDocumentsPatron().contains(avID))
 					System.out.println("You already have copy of this audio/video");
 				if (!av.isAllowedForStudents())
 					System.out.println("This document is not for students");
@@ -251,11 +251,11 @@ public class Patron extends User {
 					System.out.println("You can not borrow reference materials");
 				return av.isAllowedForStudents() &&
 						av.getNumberOfCopies() != 0 &&
-						!av.isReference() && !getListOfDocumentsPatron().contains(idAV);
+						!av.isReference() && !getListOfDocumentsPatron().contains(avID);
 			}
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: Incorrect ID. AV with ID="
-					+ idAV + " may not be registered id database.");
+					+ avID + " may not be registered id database.");
 			return false;
 		}
 	}
@@ -263,11 +263,11 @@ public class Patron extends User {
 	/**
 	 * Checks whether patron can take the following document.
 	 *
-	 * @param idDocument documents.Document ID to check.
+	 * @param documentID documents.Document ID to check.
 	 * @param database   tools.Database that stores the information.
 	 * @return {@code true} if this patron can get the document, otherwise {@code false}.
 	 */
-	public boolean canRequestDocument(int idDocument, Database database) {
+	public boolean canRequestDocument(int documentID, Database database) {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
@@ -275,30 +275,30 @@ public class Patron extends User {
 			return false;
 		}
 		try {
-			Document doc = database.getDocument(idDocument);
+			Document doc = database.getDocument(documentID);
 			if ((this.status.toLowerCase().equals("instructor") || (this.status.toLowerCase().equals("ta")) || (this.status.toLowerCase().equals("vp")) ||
 					(this.status.toLowerCase().equals("professor"))) && (doc.getNumberOfCopies() != 0) &&
-					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument) && !findInRequests(idDocument, database)) {
+					!(doc.isReference()) && !getListOfDocumentsPatron().contains(documentID) && !findInRequests(documentID, database)) {
 				return true;
 			} else if (doc.isAllowedForStudents() &&
 					doc.getNumberOfCopies() != 0 &&
-					!(doc.isReference()) && !getListOfDocumentsPatron().contains(idDocument) && !findInRequests(idDocument, database)) {
+					!(doc.isReference()) && !getListOfDocumentsPatron().contains(documentID) && !findInRequests(documentID, database)) {
 				return true;
 			} else {
 				if (doc.isReference() && doc.getNumberOfCopies() == 0)
-					System.out.println("No available copies. Document ID: " + idDocument);
-				if (getListOfDocumentsPatron().contains(idDocument))
+					System.out.println("No available copies. Document ID: " + documentID);
+				if (getListOfDocumentsPatron().contains(documentID))
 					System.out.println("Patron already have a copy of this document. Patron ID: " + getId() +
-							", Document ID: " + idDocument);
+							", Document ID: " + documentID);
 				if (!doc.isAllowedForStudents())
-					System.out.println("This document is not allowed for students. Document ID:" + idDocument);
+					System.out.println("This document is not allowed for students. Document ID:" + documentID);
 				if (doc.isReference())
-					System.out.println("Reference materials are not available for taking. Document ID: " + idDocument);
+					System.out.println("Reference materials are not available for taking. Document ID: " + documentID);
 				return false;
 			}
 		} catch (SQLException | NoSuchElementException e) {
 			System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Document with ID="
-					+ idDocument + " may not be registered id database.");
+					+ documentID + " may not be registered id database.");
 			return false;
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -309,18 +309,18 @@ public class Patron extends User {
 	/**
 	 * Take the following book ang give it to this patron.
 	 *
-	 * @param idBook   documents.Book to take.
+	 * @param bookID   documents.Book to take.
 	 * @param database tools.Database that stores the information.
 	 */
-	public void takeBook(int idBook, Database database) {
+	public void takeBook(int bookID, Database database) {
 		try {
 
-			this.listOfDocumentsPatron.add(idBook);
-			database.getBook(idBook).deleteCopy();
-			decreaseCountOfCopies(idBook, database);
+			this.listOfDocumentsPatron.add(bookID);
+			database.getBook(bookID).deleteCopy();
+			decreaseCountOfCopies(bookID, database);
 			Date dateBook = new Date();
 			Date dateExpire = new Date();
-			if (database.getBook(idBook).isBestseller() && !getStatus().toLowerCase().equals("vp"))
+			if (database.getBook(bookID).isBestseller() && !getStatus().toLowerCase().equals("vp"))
 				dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
 			else {
 				switch (status.toLowerCase()) {
@@ -338,62 +338,62 @@ public class Patron extends User {
 				}
 			}
 
-			Debt debt = new Debt(getId(), idBook, dateBook, dateExpire, 0, true);
+			Debt debt = new Debt(getId(), bookID, dateBook, dateExpire, 0, true);
 			database.insertDebt(debt);
 
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id=" + idBook);
+			System.out.println("Incorrect id=" + bookID);
 		}
 	}
 
 	/**
 	 * Take the following audio/video ang give it to this patron.
 	 *
-	 * @param idAV     Audio/video to take.
+	 * @param avID     Audio/video to take.
 	 * @param database tools.Database that stores the information.
 	 */
-	public void takeAV(int idAV, Database database) {
+	public void takeAV(int avID, Database database) {
 		try {
-			if (canRequestAV(idAV, database)) {
-				this.listOfDocumentsPatron.add(idAV);
-				database.getAV(idAV).deleteCopy();
-				decreaseCountOfCopies(idAV, database);
+			if (canRequestAV(avID, database)) {
+				this.listOfDocumentsPatron.add(avID);
+				database.getAV(avID).deleteCopy();
+				decreaseCountOfCopies(avID, database);
 				Date dateBook = new Date();
 				Date dateReturn = new Date();
 				if (status.toLowerCase().equals("vp"))
 					dateReturn.setTime(dateReturn.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else dateReturn.setTime(dateReturn.getTime() + 14 * 24 * 60 * 60 * 1000);
-				Debt debt = new Debt(getId(), idAV, dateBook, dateReturn, 0, true);
+				Debt debt = new Debt(getId(), avID, dateBook, dateReturn, 0, true);
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id" + idAV);
+			System.out.println("Incorrect id" + avID);
 		}
 	}
 
 	/**
 	 * Take the following article ang give it to this patron.
 	 *
-	 * @param idArticle Article to take.
+	 * @param articleID Article to take.
 	 * @param database  tools.Database that stores the information.
 	 */
-	public void takeArticle(int idArticle, Database database) {
+	public void takeArticle(int articleID, Database database) {
 		try {
-			if (canRequestArticle(idArticle, database)) {
-				this.listOfDocumentsPatron.add(idArticle);
-				database.getArticle(idArticle).deleteCopy();
-				decreaseCountOfCopies(idArticle, database);
+			if (canRequestArticle(articleID, database)) {
+				this.listOfDocumentsPatron.add(articleID);
+				database.getArticle(articleID).deleteCopy();
+				decreaseCountOfCopies(articleID, database);
 				Date dateBook = new Date();
 				Date dateReturn = new Date();
 				if (status.toLowerCase().equals("vp"))
 					dateReturn.setTime(dateReturn.getTime() + 7 * 24 * 60 * 60 * 1000);
 				else dateReturn.setTime(dateReturn.getTime() + 14 * 60 * 60 * 1000 * 24);
-				Debt debt = new Debt(getId(), idArticle, dateBook, dateReturn, 0, true);
+				Debt debt = new Debt(getId(), articleID, dateBook, dateReturn, 0, true);
 
 				database.insertDebt(debt);
 			}
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id" + idArticle);
+			System.out.println("Incorrect id" + articleID);
 		} catch (ParseException e) {
 			System.out.println("Data parsing failed");
 		}
@@ -402,26 +402,26 @@ public class Patron extends User {
 	/**
 	 * Make request the following document
 	 *
-	 * @param idDocument document to request
+	 * @param documentID document to request
 	 * @param database   Database that stores the information
 	 * @throws SQLException something went wrong in database
 	 */
-	public void makeRequest(int idDocument, Database database) throws SQLException {
+	public void makeRequest(int documentID, Database database) throws SQLException {
 		try {
-			Request request = new Request(this, database.getDocument(idDocument), new Date(), false);
-			if (!findInRequests(idDocument, database))
+			Request request = new Request(this, database.getDocument(documentID), new Date(), false);
+			if (!findInRequests(documentID, database))
 				database.insertRequest(request);
 		} catch (NoSuchElementException e) {
-			System.out.println("Incorrect id" + idDocument);
+			System.out.println("Incorrect id" + documentID);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public boolean findInRequests(int docId, Database database) throws SQLException, ParseException {
+	public boolean findInRequests(int documentID, Database database) throws SQLException, ParseException {
 		List<Request> requests = database.getRequestsForPatron(this.getId());
 		for (Request i : requests) {
-			if (i.getIdDocument() == docId && i.getIdPatron() == this.getId()) return true;
+			if (i.getIdDocument() == documentID && i.getIdPatron() == this.getId()) return true;
 		}
 		return false;
 	}
@@ -429,44 +429,44 @@ public class Patron extends User {
 	/**
 	 * Decrease the number of copies of specified document by one.
 	 *
-	 * @param idDocument documents.Document ID.
+	 * @param documentID documents.Document ID.
 	 * @param database   tools.Database that stores the information.
 	 * @throws SQLException If passed the wrong document ID.
 	 */
-	private void decreaseCountOfCopies(int idDocument, Database database) throws SQLException {
-		int count = database.getDocument(idDocument).getNumberOfCopies();
-		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
+	private void decreaseCountOfCopies(int documentID, Database database) throws SQLException {
+		int count = database.getDocument(documentID).getNumberOfCopies();
+		database.editDocumentColumn(documentID, "num_of_copies", Integer.toString(count - 1));
 	}
 
 	/**
 	 * Increase the number of copies of specified document by one.
 	 *
-	 * @param idDocument documents.Document ID.
+	 * @param documentID documents.Document ID.
 	 * @param database   tools.Database that stores the information.
 	 * @throws SQLException If passed the wrong document ID.
 	 */
-	private void increaseCountOfCopies(int idDocument, Database database) throws SQLException {
-		int count = database.getDocument(idDocument).getNumberOfCopies();
-		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count + 1));
+	private void increaseCountOfCopies(int documentID, Database database) throws SQLException {
+		int count = database.getDocument(documentID).getNumberOfCopies();
+		database.editDocumentColumn(documentID, "num_of_copies", Integer.toString(count + 1));
 	}
 
 	/**
 	 * Return the book to the library.
 	 *
-	 * @param idBook   documents.Book ID.
+	 * @param bookID   documents.Book ID.
 	 * @param database tools.Database that stores the information.
 	 */
-	public void returnBook(int idBook, Database database) {
+	public void returnBook(int bookID, Database database) {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
-				if (getListOfDocumentsPatron().get(i).equals(idBook)) {
+				if (getListOfDocumentsPatron().get(i).equals(bookID)) {
 					getListOfDocumentsPatron().remove(i);
 					break;
 				}
 			}
-			database.getBook(idBook).addCopy();
-			increaseCountOfCopies(idBook, database);
-			int debtID = database.findDebtID(this.getId(), idBook);
+			database.getBook(bookID).addCopy();
+			increaseCountOfCopies(bookID, database);
+			int debtID = database.findDebtID(this.getId(), bookID);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -478,20 +478,20 @@ public class Patron extends User {
 	/**
 	 * Return the article to the library.
 	 *
-	 * @param idArticle Article ID.
+	 * @param articleID Article ID.
 	 * @param database  tools.Database that stores the information.
 	 */
-	public void returnArticle(int idArticle, Database database) throws ParseException {
+	public void returnArticle(int articleID, Database database) throws ParseException {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
-				if (getListOfDocumentsPatron().get(i).equals(idArticle)) {
+				if (getListOfDocumentsPatron().get(i).equals(articleID)) {
 					getListOfDocumentsPatron().remove(i);
 					break;
 				}
 			}
-			database.getArticle(idArticle).addCopy();
-			increaseCountOfCopies(idArticle, database);
-			int debtID = database.findDebtID(this.getId(), idArticle);
+			database.getArticle(articleID).addCopy();
+			increaseCountOfCopies(articleID, database);
+			int debtID = database.findDebtID(this.getId(), articleID);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -503,20 +503,20 @@ public class Patron extends User {
 	/**
 	 * Return the audio/video to the library.
 	 *
-	 * @param idAV     Audio/video ID.
+	 * @param avID     Audio/video ID.
 	 * @param database tools.Database that stores the information.
 	 */
-	public void returnAV(int idAV, Database database) {
+	public void returnAV(int avID, Database database) {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
-				if (getListOfDocumentsPatron().get(i).equals(idAV)) {
+				if (getListOfDocumentsPatron().get(i).equals(avID)) {
 					getListOfDocumentsPatron().remove(i);
 					break;
 				}
 			}
-			database.getAV(idAV).addCopy();
-			increaseCountOfCopies(idAV, database);
-			int debtID = database.findDebtID(this.getId(), idAV);
+			database.getAV(avID).addCopy();
+			increaseCountOfCopies(avID, database);
+			int debtID = database.findDebtID(this.getId(), avID);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -528,21 +528,21 @@ public class Patron extends User {
 	/**
 	 * Return the document to the library.
 	 *
-	 * @param idDocument documents.Document ID.
+	 * @param documentID documents.Document ID.
 	 * @param database   tools.Database that stores the information.
 	 */
-	public void returnDocument(int idDocument, Database database) {
+	public void returnDocument(int documentID, Database database) {
 		try {
 			for (int i = 0; i < listOfDocumentsPatron.size(); i++) {
-				if (getListOfDocumentsPatron().get(i).equals(idDocument)) {
+				if (getListOfDocumentsPatron().get(i).equals(documentID)) {
 					getListOfDocumentsPatron().remove(i);
 					break;
 				}
 			}
-			database.getDocument(idDocument).addCopy();
-			increaseCountOfCopies(idDocument, database);
+			database.getDocument(documentID).addCopy();
+			increaseCountOfCopies(documentID, database);
 			System.out.println("Return confirmed!");
-			int debtID = database.findDebtID(this.getId(), idDocument);
+			int debtID = database.findDebtID(this.getId(), documentID);
 			database.deleteDebt(debtID);
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
@@ -564,13 +564,13 @@ public class Patron extends User {
 	/**
 	 * patron renews document after approving
 	 *
-	 * @param docID    documents.Document ID
-	 * @param database tools.Database stores the information
+	 * @param documentID documents.Document ID
+	 * @param database   tools.Database stores the information
 	 */
-	public void renewDocument(int docID, Database database) {
+	public void renewDocument(int documentID, Database database) {
 
 		try {
-			Debt debt = database.getDebt(database.findDebtID(this.getId(), docID));
+			Debt debt = database.getDebt(database.findDebtID(this.getId(), documentID));
 			Date expDate = debt.getExpireDate();
 			expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
 			if (!this.getStatus().equals("vp")) {

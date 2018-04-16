@@ -312,6 +312,7 @@ public class Document {
 	public void setPrice(double price) {
 		this.Price = price;
 	}
+
 	/**
 	 * Compare two documents.
 	 *
