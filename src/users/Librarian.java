@@ -1,7 +1,12 @@
 package users;
 
-import documents.*;
-import tools.*;
+import documents.AudioVideoMaterial;
+import documents.Book;
+import documents.Document;
+import documents.JournalArticle;
+import tools.Database;
+import tools.Debt;
+import tools.Request;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -298,7 +303,8 @@ public class Librarian extends User {
 		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
 		if (debt.getFee() == 0) {
-			Return.returnDocument(debt.getDocumentId(), debt.getPatronId(), database);
+			Patron patron = database.getPatron(debt.getPatronId());
+			patron.returnDocument(debt.getDocumentId(), database);
 		} else {
 			System.out.println("You need to pay for delay");
 		}
@@ -313,7 +319,6 @@ public class Librarian extends User {
 	public void confirmRenew(Request request, Database database) {
 		try {
 			request.approveRenew(database);
-			Renew.renewDocument(request.getIdDocument(), request.getIdPatron(), database);
 			database.deleteRequest(request.getRequestId());
 		} catch (SQLException ignored) {
 
@@ -348,7 +353,6 @@ public class Librarian extends User {
 	 */
 	public void submitRequest(Request request, Database database) throws SQLException {
 		System.out.println("users.Librarian <- submitting request " + request.getRequestId() + " . . .");
-		//do we need to notify patron about request submitting?
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(), database);
 	}
 
@@ -364,15 +368,36 @@ public class Librarian extends User {
 	}
 
 	public void makeOutstandingRequest(Request request, Database database) throws SQLException, ParseException {
-		Notify.sendNotificationsForOutstandingRequest(request, database);
+		sendNotificationsForOutstandingRequest(request, database);
 		database.deleteRequestsForDocument(request.getIdDocument());
 	}
 
 	public void setAvailability(int docID, Database database) throws SQLException, ParseException {
 		if (database.getDocument(docID).getNumberOfCopies() > 0) {
-			Notify.sendNotificationsForAvailability(docID, database);
+			sendNotificationsForAvailability(docID, database);
 		}
 
+	}
+
+	private void sendNotificationsForOutstandingRequest(Request request, Database db) throws SQLException, ParseException {
+		ArrayList<Request> requests = db.getRequests(request.getIdDocument());
+		for (Request temp : requests) {
+			if (temp.getIdPatron() == request.getIdPatron()) {
+				Document doc = db.getDocument(request.getIdDocument());
+				db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
+						"Outstanding request for " + doc.getTitle(), new Date());
+			}
+		}
+	}
+
+	private void sendNotificationsForAvailability(int docId, Database database) throws SQLException, ParseException {
+		List<Request> requests = database.getRequests(docId);
+		int i = 0;
+		while (i < database.getDocument(docId).getNumberOfCopies()) {
+			Request temp = requests.get(i);
+			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "Set available document", new Date());
+			i++;
+		}
 	}
 
 }
