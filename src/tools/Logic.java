@@ -7,6 +7,7 @@ import users.Patron;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
+import java.util.TreeSet;
 
 public class Logic {
     /**
@@ -26,6 +27,10 @@ public class Logic {
         try {
             Patron patron = database.getPatron(patronId);
             Document doc = database.getDocument(idDocument);
+            if(patron.findInRequests(idDocument, database)){
+                System.out.println("You already request this document");
+                return false;
+            }
             if (true && (doc.getNumberOfCopies() != 0) &&
                     !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument) && !patron.findInRequests(idDocument, database)) {
                 return true;
@@ -55,15 +60,26 @@ public class Logic {
         return false;
     }
 
-    public static boolean canRenewDocument(int documentId, int patronId, Database database){
+    public static boolean canRenewDocument(int documentId, int patronId, Database database) throws SQLException, ParseException {
+        Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
+        if(debt.canRenew()) return true;
+        System.out.println("The document is already renewed, so you need to return it!");
         return false;
     }
 
-    public static boolean canReturnDocument(int documentId, int patronId, Database database){
+    public static boolean canReturnDocument(int documentId, int patronId, Database database) throws SQLException, ParseException {
+        Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
+        debt.countFee(database);
+        if(debt.getFee() == 0) return true;
+        //notify patron he has to fine the debt
         return false;
     }
 
-    public static boolean canFine(int documentId, int patronId, Database database){
+    public static boolean canFine(int documentId, int patronId, Database database) throws SQLException, ParseException {
+        Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
+        debt.countFee(database);
+        if(debt.getFee() == 0) return true;
+        System.out.println("The patron with id " + patronId + " does not owe the library anything");
         return false;
     }
 }

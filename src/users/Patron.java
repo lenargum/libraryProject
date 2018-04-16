@@ -405,10 +405,8 @@ public class Patron extends User {
 			Document doc = database.getDocument(debt.getDocumentId());
 			Date date = new Date();
 			Request request = new Request(this, doc, date, true);
-
-			if (debt.canRenew())
+			if (Logic.canRenewDocument(debt.getDocumentId(), debt.getPatronId(), database))
 				database.insertRequest(request);
-			else System.out.println("The document is already renewed, so you need to return it!");
 		} catch (SQLException | ParseException e) {
 			System.out.println("Incorrect id");
 		}
