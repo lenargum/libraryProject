@@ -119,9 +119,13 @@ public class Patron extends User {
 	 */
 	public void makeRequest(int documentID, Database database) throws SQLException {
 		try {
+			if(Booking.canRequestDocument(documentID, this.getId(), database)){
 			Request request = new Request(this, database.getDocument(documentID), new Date(), false);
 			if (!Booking.findInRequests(documentID, getId(), database))
 				database.insertRequest(request);
+		} else {
+			//notify patron he cannot take this document
+		}
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + documentID);
 		} catch (ParseException e) {
