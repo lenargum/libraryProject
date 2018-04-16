@@ -7,6 +7,7 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
 import tools.Request;
+import tools.WrongUserTypeException;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -333,8 +334,8 @@ public class Patron extends User {
 						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
 						break;
 					default:
-						dateExpire.setTime(dateExpire.getTime() + 7 * 24 * 60 * 60 * 1000);
-						break;
+						throw new WrongUserTypeException("Patron <- There is no patron present " +
+								"in system with type " + status);
 				}
 			}
 
