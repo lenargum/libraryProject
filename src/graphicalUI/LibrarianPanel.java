@@ -45,7 +45,7 @@ public class LibrarianPanel {
 	 */
 	public LibrarianPanel(CoreAPI api) {
 		try {
-			layout = FXMLLoader.load(getClass().getResource("LibrarianPanel.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/LibrarianPanel.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

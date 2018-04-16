@@ -43,7 +43,7 @@ public class UserDocs {
 	public UserDocs(CoreAPI api) {
 		this.api = api;
 		try {
-			layout = FXMLLoader.load(getClass().getResource("UserDocs.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/UserDocs.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

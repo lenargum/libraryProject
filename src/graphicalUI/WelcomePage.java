@@ -50,7 +50,7 @@ public class WelcomePage {
 		this.rootPage = rootPage;
 		this.primaryStage = primaryStage;
 		try {
-			welcomeLayout = FXMLLoader.load(getClass().getResource("WelcomePage.fxml"));
+			welcomeLayout = FXMLLoader.load(getClass().getResource("layout/WelcomePage.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,7 +75,7 @@ public class WelcomePage {
 
 		AnchorPane loginLayout = null;
 		try {
-			loginLayout = FXMLLoader.load(getClass().getResource("LoginDialog.fxml"));
+			loginLayout = FXMLLoader.load(getClass().getResource("layout/LoginDialog.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

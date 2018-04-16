@@ -53,7 +53,7 @@ public class UserManager {
 		this.stage = stage;
 
 		try {
-			layout = FXMLLoader.load(getClass().getResource("UserManager.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/UserManager.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

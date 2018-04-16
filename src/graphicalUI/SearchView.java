@@ -36,7 +36,7 @@ public class SearchView implements Initializable {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			layout = loader.load(getClass().getResourceAsStream("SearchView.fxml"));
+			layout = loader.load(getClass().getResourceAsStream("layout/SearchView.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,9 +50,9 @@ public class SearchView implements Initializable {
 
 		keywordChips = (JFXChipView<String>) layout.lookup("#keywordChips");
 		keywordChips.getSuggestions().addAll("book", "article", "audio/video");
-		keywordChips.setOnKeyPressed(event -> {
-			System.out.println(event.getCode());
-		});
+//		keywordChips.setOnKeyPressed(event -> {
+//			System.out.println(event.getCode());
+//		});
 
 		scene = new Scene(layout);
 	}

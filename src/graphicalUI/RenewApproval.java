@@ -45,7 +45,7 @@ public class RenewApproval {
 		stage = mainStage;
 		this.previousScene = previousScene;
 		try {
-			layout = FXMLLoader.load(getClass().getResource("RenewApprovalLayout.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/RenewApprovalLayout.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

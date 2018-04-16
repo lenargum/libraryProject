@@ -47,7 +47,7 @@ public class DebtsManager {
 		this.stage = stage;
 		this.api = api;
 		try {
-			layout = FXMLLoader.load(getClass().getResource("DebtsManager.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/DebtsManager.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

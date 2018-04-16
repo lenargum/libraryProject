@@ -49,7 +49,7 @@ public class DocumentManager {
 		this.api = api;
 
 		try {
-			layout = FXMLLoader.load(getClass().getResource("DocumentManager.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/DocumentManager.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

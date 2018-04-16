@@ -45,7 +45,7 @@ public class TakeApproval {
 		stage = mainStage;
 		this.previousScene = previousScene;
 		try {
-			layout = FXMLLoader.load(getClass().getResource("TakeApprovalLayout.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/TakeApprovalLayout.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

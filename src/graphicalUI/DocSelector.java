@@ -103,7 +103,7 @@ public class DocSelector {
 	private void initialize() {
 		// Load selector layout
 		try {
-			selectorLayout = FXMLLoader.load(getClass().getResource("DocSelector.fxml"));
+			selectorLayout = FXMLLoader.load(getClass().getResource("layout/DocSelector.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -178,7 +178,7 @@ public class DocSelector {
 		detailsDrawer.setOnDrawerClosing(event -> bookThisBtn.setDisable(true));
 
 		try {
-			detailsLayout = FXMLLoader.load(getClass().getResource("DocDetails.fxml"));
+			detailsLayout = FXMLLoader.load(getClass().getResource("layout/DocDetails.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
