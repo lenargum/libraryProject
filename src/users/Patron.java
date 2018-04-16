@@ -122,7 +122,7 @@ public class Patron extends User {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: There is no registered patron with ID=" + getId());
 			return false;
 		}
 		try {
@@ -171,7 +171,7 @@ public class Patron extends User {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: There is no registered patron with ID=" + getId());
 			return false;
 		}
 		try {
@@ -220,7 +220,7 @@ public class Patron extends User {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: There is no registered patron with ID=" + getId());
 			return false;
 		}
 		try {
@@ -271,7 +271,7 @@ public class Patron extends User {
 		try {
 			database.getPatron(getId());
 		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + getId());
+			System.out.println("tools.Database <- users.Patron: There is no registered patron with ID=" + getId());
 			return false;
 		}
 		try {
