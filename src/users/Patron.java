@@ -35,7 +35,7 @@ public abstract class Patron extends User {
 	 * Priority of users.Patron.
 	 * Levels of priority: student, instructor(instructions), TA, VP, professor
 	 */
-	 int priority;
+	private int priority;
 
 	/**
 	 * List of patrons' documents IDs.
@@ -47,7 +47,7 @@ public abstract class Patron extends User {
 	 *
 	 * @param login    Login.
 	 * @param password Password.
-	 *  users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
+	  users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
 	 * @param name     First name.
 	 * @param surname  Last name.
 	 * @param phone    Phone number.
@@ -385,6 +385,7 @@ public abstract class Patron extends User {
 			Request request = new Request(this, doc, date, true);
 			if (Logic.canRenewDocument(debt.getDocumentId(), debt.getPatronId(), database))
 				database.insertRequest(request);
+			else System.out.println("The document is already renewed, so you need to return it!");
 		} catch (SQLException | ParseException e) {
 			System.out.println("Incorrect id");
 		}
