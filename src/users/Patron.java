@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
  * @author Madina Gafarova
  * @see User
  */
-public class Patron extends User {
+public abstract class Patron extends User {
 	/**
 	 * users.Patron type.
 	 * Possible values: {@code "instructor"}, {@code "student"}
@@ -34,7 +34,7 @@ public class Patron extends User {
 	 * Priority of users.Patron.
 	 * Levels of priority: student, instructor(instructions), TA, VP, professor
 	 */
-	private int priority;
+	 int priority;
 
 	/**
 	 * List of patrons' documents IDs.
@@ -46,16 +46,14 @@ public class Patron extends User {
 	 *
 	 * @param login    Login.
 	 * @param password Password.
-	 * @param status   users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
+	 *  users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
 	 * @param name     First name.
 	 * @param surname  Last name.
 	 * @param phone    Phone number.
 	 * @param address  Living address.
 	 */
-	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
+	public Patron(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
-		this.status = status.toLowerCase();
-		this.setPriority(this.status);
 	}
 
 	/**
@@ -89,28 +87,16 @@ public class Patron extends User {
 		return priority;
 	}
 
-	private void setPriority(String status) {
-		switch (status.toLowerCase()) {
-			case "student":
-				priority = 0;
-				break;
-			case "instructor":
-				priority = 1;
-				break;
-			case "ta":
-				priority = 2;
-				break;
-			case "vp":
-				priority = 3;
-				break;
-			case "professor":
-				priority = 4;
-				break;
-			default:
-				priority = -1;
-				break;
-		}
-	}
+	protected abstract void setPriority();
+
+
+
+
+
+
+
+
+
 
 	/**
 	 * Checks whether patron can take the following book.
@@ -608,6 +594,7 @@ public class Patron extends User {
 			System.out.println("Incorrect id");
 		}
 	}
+
 
 	public enum PatronType {
 		STUDENT, INSTRUCTOR, TA, VP, PROFESSOR
