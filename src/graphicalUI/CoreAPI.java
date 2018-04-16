@@ -404,6 +404,29 @@ public class CoreAPI {
 		return list;
 	}
 
+	public ObservableList<DebtsManager.DebtCell> getAllDebts() {
+		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
+
+		db.connect();
+		try {
+			for (Debt debt : db.getDebtsList()) {
+				Patron pat = db.getPatron(debt.getPatronId());
+				Document doc = db.getDocument(debt.getDocumentId());
+				list.add(new DebtsManager.DebtCell(debt.getDebtId(),
+						pat.getName() + " " + pat.getSurname(), pat.getId(),
+						doc.getTitle(), doc.getID(),
+						debt.getBookingDate().toString(),
+						debt.getExpireDate().toString()));
+			}
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
+
+		return list;
+	}
+
 	/**
 	 * Make outstanding request.
 	 *

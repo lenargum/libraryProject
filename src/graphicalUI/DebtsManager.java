@@ -92,7 +92,7 @@ public class DebtsManager {
 		datesReturnes.setPrefWidth(100);
 		datesReturnes.setCellValueFactory(param -> param.getValue().getValue().dateReturn);
 
-		final TreeItem<DebtCell> tableRoot = new RecursiveTreeItem<>(api.getUserDebts(), RecursiveTreeObject::getChildren);
+		final TreeItem<DebtCell> tableRoot = new RecursiveTreeItem<>(api.getAllDebts(), RecursiveTreeObject::getChildren);
 		debtsTable.getColumns().setAll(ids, names, titles, datesTookes, datesReturnes);
 		debtsTable.setRoot(tableRoot);
 		debtsTable.setShowRoot(false);
