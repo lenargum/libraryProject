@@ -17,7 +17,7 @@ public class Return {
      * @param bookID   documents.Book ID.
      * @param database tools.Database that stores the information.
      */
-    public void returnBook(int bookID, int patronId,  Database database) throws SQLException {
+    public static void returnBook(int bookID, int patronId,  Database database) throws SQLException {
         Patron patron = database.getPatron(patronId);
         try {
             for (int i = 0; i < patron.getListOfDocumentsPatron().size(); i++) {
@@ -43,7 +43,7 @@ public class Return {
      * @param articleID Article ID.
      * @param database  tools.Database that stores the information.
      */
-    public void returnArticle(int articleID, int patronId, Database database) throws ParseException {
+    public static void returnArticle(int articleID, int patronId, Database database) throws ParseException {
         try {
             Patron patron = database.getPatron(patronId);
             for (int i = 0; i < patron.getListOfDocumentsPatron().size(); i++) {
@@ -69,7 +69,7 @@ public class Return {
      * @param avID     Audio/video ID.
      * @param database tools.Database that stores the information.
      */
-    public void returnAV(int avID,int patronId,  Database database) {
+    public static void returnAV(int avID,int patronId,  Database database) {
         try {
             Patron patron = database.getPatron(patronId);
             for (int i = 0; i < patron.getListOfDocumentsPatron().size(); i++) {
@@ -95,7 +95,7 @@ public class Return {
      * @param documentID documents.Document ID.
      * @param database   tools.Database that stores the information.
      */
-    public void returnDocument(int documentID, int patronId, Database database) {
+    public static void returnDocument(int documentID, int patronId, Database database) {
         try {
             Patron patron = database.getPatron(patronId);
             for (int i = 0; i < patron.getListOfDocumentsPatron().size(); i++) {
@@ -135,7 +135,7 @@ public class Return {
      * @param database   tools.Database that stores the information.
      * @throws SQLException If passed the wrong document ID.
      */
-    private void increaseCountOfCopies(int documentID, Database database) throws SQLException {
+    private static void increaseCountOfCopies(int documentID, Database database) throws SQLException {
         int count = database.getDocument(documentID).getNumberOfCopies();
         database.editDocumentColumn(documentID, "num_of_copies", Integer.toString(count + 1));
     }

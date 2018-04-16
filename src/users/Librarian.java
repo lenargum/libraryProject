@@ -7,6 +7,7 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Debt;
 import tools.Request;
+import tools.Return;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -303,8 +304,7 @@ public class Librarian extends User {
 		Debt debt = database.getDebt(debtID);
 		debt.countFee(database);
 		if (debt.getFee() == 0) {
-			Patron patron = database.getPatron(debt.getPatronId());
-			patron.returnDocument(debt.getDocumentId(), database);
+			Return.returnDocument(debt.getDocumentId(), debt.getPatronId(), database);
 		} else {
 			System.out.println("You need to pay for delay");
 		}
