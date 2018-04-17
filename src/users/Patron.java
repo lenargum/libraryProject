@@ -35,7 +35,7 @@ public abstract class Patron extends User {
 	 * Priority of users.Patron.
 	 * Levels of priority: student, instructor(instructions), TA, VP, professor
 	 */
-	private int priority;
+	protected int priority;
 
 	/**
 	 * List of patrons' documents IDs.
