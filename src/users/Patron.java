@@ -4,6 +4,14 @@ package users;
 import patron_tools.BookingSystem;
 import patron_tools.ReturningSystem;
 import tools.Database;
+import tools.Debt;
+import tools.Logic;
+import tools.Request;
+import tools.WrongUserTypeException;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +31,7 @@ public class Patron extends User {
 	 * Priority of users.Patron.
 	 * Levels of priority: student, instructor(instructions), TA, VP, professor
 	 */
-	private int priority;
+	protected int priority;
 
 	/**
 	 * List of patrons' documents IDs.
@@ -35,16 +43,14 @@ public class Patron extends User {
 	 *
 	 * @param login    Login.
 	 * @param password Password.
-	 * @param status   users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
+	 *  users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
 	 * @param name     First name.
 	 * @param surname  Last name.
 	 * @param phone    Phone number.
 	 * @param address  Living address.
 	 */
-	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
+	public Patron(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
-		this.status = status.toLowerCase();
-		this.setPriority(this.status);
 	}
 
 	private BookingSystem bookingSystem = new BookingSystem();
@@ -81,27 +87,7 @@ public class Patron extends User {
 		return priority;
 	}
 
-	private void setPriority(String status) {
-		switch (status.toLowerCase()) {
-			case "student":
-				priority = 0;
-				break;
-			case "instructor":
-				priority = 1;
-				break;
-			case "ta":
-				priority = 2;
-				break;
-			case "vp":
-				priority = 3;
-				break;
-			case "professor":
-				priority = 4;
-				break;
-			default:
-				priority = -1;
-				break;
-		}
+	protected void setPriority() {
 	}
 
 	/**

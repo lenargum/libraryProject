@@ -7,7 +7,15 @@ import documents.JournalArticle;
 import librarian_tools.*;
 import tools.Database;
 import tools.Request;
+
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+
 /**
  * This class describes librarian in library system.
  *
@@ -15,19 +23,30 @@ import java.sql.SQLException;
  * @see User
  */
 public class Librarian extends User {
-    /**
-     * Initialize new librarian.
-     *
-     * @param login    Login.
-     * @param password Password.
-     * @param name     First name.
-     * @param surname  Last name.
-     * @param phone    Phone number.
-     * @param address  Living address.
-     */
-    public Librarian(String login, String password, String name, String surname, String phone, String address) {
-        super(login, password, name, surname, phone, address);
 
+	private int privilege;
+	/**
+	 * Initialize new librarian.
+	 *
+	 * @param login    Login.
+	 * @param password Password.
+	 * @param name     First name.
+	 * @param surname  Last name.
+	 * @param phone    Phone number.
+	 * @param address  Living address.
+	 */
+	public Librarian(String login, String password, String name, String surname, String phone, String address) {
+		super(login, password, name, surname, phone, address);
+		setPrivilege(0);
+	}
+
+	public void setPrivilege(int p){
+		this.privilege = p;
+	}
+
+
+    public int getPrivilege(){
+        return privilege;
     }
 
     /**
