@@ -92,11 +92,11 @@ public class Logic {
         return false;
     }
 
-    public static boolean canFine(int documentId, int patronId, Database database) throws SQLException, ParseException {
-        Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
+    public static boolean canFine(int debtId, Database database) throws SQLException, ParseException {
+        Debt debt = database.getDebt(debtId);
         debt.countFee(database);
         if(debt.getFee() == 0) return true;
-        System.out.println("The patron with id " + patronId + " does not owe the library anything");
+        System.out.println("The patron with id " + debt.getPatronId() + " does not owe the library anything");
         return false;
     }
 

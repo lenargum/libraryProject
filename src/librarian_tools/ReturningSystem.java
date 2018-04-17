@@ -2,6 +2,7 @@ package librarian_tools;
 
 import tools.Database;
 import tools.Debt;
+import tools.Logic;
 import tools.Request;
 import users.Patron;
 
@@ -21,12 +22,9 @@ public class ReturningSystem {
     public void confirmReturn(int debtID, Database database)  {
         try {
             Debt debt = database.getDebt(debtID);
-            debt.countFee(database);
-            if (debt.getFee() == 0) {
+            if(Logic.canReturnDocument(debt.getDocumentId(), debt.getPatronId(), database)){
                 Patron patron = database.getPatron(debt.getPatronId());
                 patron.returnDocument(debt.getDocumentId(), database);
-            } else {
-                System.out.println("You need to pay for delay");
             }
         } catch (SQLException e){
             System.out.println("Incorrect id");
@@ -58,9 +56,11 @@ public class ReturningSystem {
      */
     public void getFee(int debtID, Database database)  {
         try {
-            Debt debt = database.getDebt(debtID);
-            debt.setFee(0);
-            System.out.println("Payout confirmed!");
+            if(Logic.canFine(debtID, database)) {
+                Debt debt = database.getDebt(debtID);
+                debt.setFee(0);
+                System.out.println("Payout confirmed!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ParseException e) {
