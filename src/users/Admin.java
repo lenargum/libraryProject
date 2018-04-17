@@ -1,5 +1,7 @@
 package users;
 
+import admin_tools.Modify;
+import admin_tools.ModifyLibrary;
 import documents.Document;
 import tools.Database;
 
@@ -19,93 +21,71 @@ public class Admin {
 		this.password = password;
 	}
 
-	public void addLibrarian(Librarian librarian, Database database) throws SQLException {
-		database.insertLibrarian(librarian);
+	Modify modify = new Modify();
+	ModifyLibrary modifyLibrary = new ModifyLibrary();
+
+	public void addLibrarian(Librarian librarian, Database database) {
+		this.modifyLibrary.addLibrarian(librarian, database);
 	}
 
 	public void editLibrarianName(int idLibrarian, String newName, Database database) throws SQLException {
-		database.editUserColumn(idLibrarian, "firstname", newName);
-		database.getLibrarian(idLibrarian).setName(newName);
+		this.modify.editLibrarianName(idLibrarian, newName, database);
 	}
 
 	public void editLibrarianSurname(int idLibrarian, String newSurname, Database database) throws SQLException {
-		database.editUserColumn(idLibrarian, "lastname", newSurname);
-		database.getLibrarian(idLibrarian).setSurname(newSurname);
+		this.modify.editLibrarianSurname(idLibrarian, newSurname, database);
 	}
 
 	public void editLibrarianAddress(int idLibrarian, String newAddress, Database database) throws SQLException {
-		database.editUserColumn(idLibrarian, "address", newAddress);
-		database.getLibrarian(idLibrarian).setAddress(newAddress);
+		this.editPatronAddress(idLibrarian, newAddress, database);
 	}
 
 	public void editLibrarianPhone(int idLibrarian, String newPhone, Database database) throws SQLException {
-		database.editUserColumn(idLibrarian, "phone", newPhone);
-		database.getLibrarian(idLibrarian).setPhoneNumber(newPhone);
+		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
-	public void deleteLibrarian(int idLibrarian, Database database) throws SQLException {
-		//TODO: This is necessary?
-//        Librarian librarian = database.getLibrarian(idLibrarian);
-//        librarian.setName(null);
-//        librarian.setSurname(null);
-//        librarian.setAddress(null);
-//        librarian.setPhoneNumber(null);
-//        librarian.setLogin(null);
-//        librarian.setPassword(null);
-
-		database.deleteUser(idLibrarian);
+	public void deleteLibrarian(int idLibrarian, Database database) {
+		this.modifyLibrary.deleteLibrarian(idLibrarian, database);
 	}
 
 	public void editPatronName(int idPatron, String newName, Database database) throws SQLException {
-		database.editUserColumn(idPatron, "firstname", newName);
-		database.getPatron(idPatron).setName(newName);
+		this.modify.editPatronName(idPatron, newName, database);
 	}
 
 	public void editPatronSurname(int idPatron, String newSurname, Database database) throws SQLException {
-		database.editUserColumn(idPatron, "lastname", newSurname);
-		database.getPatron(idPatron).setSurname(newSurname);
+		this.modify.editPatronSurname(idPatron, newSurname, database);
 	}
 
 	public void editPatronAddress(int idPatron, String newAddress, Database database) throws SQLException {
-		database.editUserColumn(idPatron, "address", newAddress);
-		database.getPatron(idPatron).setAddress(newAddress);
+		this.modify.editPatronAddress(idPatron, newAddress, database);
 	}
 
 	public void editPatronPhone(int idPatron, String newPhone, Database database) throws SQLException {
-		database.editUserColumn(idPatron, "phone", newPhone);
-		database.getPatron(idPatron).setPhoneNumber(newPhone);
+		this.modify.editPatronPhone(idPatron, newPhone, database);
 	}
 
 	public void editPatronStatus(int idPatron, String newStatus, Database database) throws SQLException {
-		database.editUserColumn(idPatron, "status", newStatus);
-		database.getPatron(idPatron).setStatus(newStatus);
+		this.modify.editPatronStatus(idPatron, newStatus, database);
 	}
 
 	public void deletePatron(int idPatron, Database database) throws SQLException {
-		if (database.getPatron(idPatron).getListOfDocumentsPatron().isEmpty())
-			database.deleteUser(idPatron);
-		else
-			System.out.println("  This user did not return documents!");
+		this.modify.deletePatron(idPatron, database);
 	}
 
 	public void editDocumentNumberOdCopies(int idDocument, int newNumberOfCopies, Database database) throws SQLException {
-		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(newNumberOfCopies));
-		database.getDocument(idDocument).setNumberOfCopies(newNumberOfCopies);
+		this.modify.editDocumentNumberOdCopies(idDocument, newNumberOfCopies, database);
 	}
 
 	public void editDocumentIsAllowedForStudents(int idDocument, boolean isAllowed, Database database) throws SQLException {
-		database.editDocumentColumn(idDocument, "is_allowed_for_students", Boolean.toString(isAllowed));
-		database.getDocument(idDocument).setAllowedForStudents(isAllowed);
+		this.modify.editDocumentIsAllowedForStudents(idDocument, isAllowed, database);
 	}
 
 	public void editDocumentPrice(int idDocument, double newPrice, Database database) throws SQLException {
-		database.editDocumentColumn(idDocument, "price", Double.toString(newPrice));
-		database.getDocument(idDocument).setPrice(newPrice);
+		this.modify.editDocumentPrice(idDocument, newPrice, database);
 	}
 
 	public void editDocumentIsReference(int idDocument, boolean isReference, Database database) throws SQLException {
-		database.editDocumentColumn(idDocument, "is_reference", Boolean.toString(isReference));
-		database.getDocument(idDocument).setReference(isReference);
+		this.modify.editDocumentIsReference(idDocument, isReference, database);
 	}
 
 	public void editBookEdition(int idBook, int newEdition, Database database) throws SQLException {
@@ -114,16 +94,10 @@ public class Admin {
 	}
 
 	public void editBookIsBestseller(int idBook, boolean isBestseller, Database database) throws SQLException {
-		database.editDocumentColumn(idBook, "bestseller", Boolean.toString(isBestseller));
-		database.getBook(idBook).setBestseller(isBestseller);
+		this.modify.editBookIsBestseller(idBook, isBestseller, database);
 	}
 
 	public void deleteDocument(int idDocument, Database database) throws SQLException, ParseException {
-		Document document = database.getDocument(idDocument);
-		//TODO: Notification for all users, who has request this document
-		//TODO: Check if this document in Debts
-
-		database.deleteDocument(idDocument);
-
+		this.modifyLibrary.deleteDocument(idDocument, database);
 	}
 }
