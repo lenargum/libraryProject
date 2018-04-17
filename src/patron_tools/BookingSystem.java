@@ -189,7 +189,7 @@ public class BookingSystem {
         }
     }
 
-    public boolean findInRequests(Patron patron, int docId, Database database) {
+    private boolean findInRequests(Patron patron, int docId, Database database) {
         try {
             List<Request> requests = database.getRequestsForPatron(patron.getId());
             for (Request i : requests) {

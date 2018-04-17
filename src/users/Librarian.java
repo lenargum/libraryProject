@@ -294,7 +294,6 @@ public class Librarian extends User {
 
     public void setAvailability(int docID, Database database) {
         this.outstandingRequest.setAvailability(docID, database);
-
     }
 
 }

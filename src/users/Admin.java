@@ -28,19 +28,19 @@ public class Admin {
 		this.modifyLibrary.addLibrarian(librarian, database);
 	}
 
-	public void editLibrarianName(int idLibrarian, String newName, Database database) throws SQLException {
+	public void editLibrarianName(int idLibrarian, String newName, Database database) {
 		this.modify.editLibrarianName(idLibrarian, newName, database);
 	}
 
-	public void editLibrarianSurname(int idLibrarian, String newSurname, Database database) throws SQLException {
+	public void editLibrarianSurname(int idLibrarian, String newSurname, Database database) {
 		this.modify.editLibrarianSurname(idLibrarian, newSurname, database);
 	}
 
-	public void editLibrarianAddress(int idLibrarian, String newAddress, Database database) throws SQLException {
-		this.editPatronAddress(idLibrarian, newAddress, database);
+	public void editLibrarianAddress(int idLibrarian, String newAddress, Database database) {
+		this.editLibrarianAddress(idLibrarian, newAddress, database);
 	}
 
-	public void editLibrarianPhone(int idLibrarian, String newPhone, Database database) throws SQLException {
+	public void editLibrarianPhone(int idLibrarian, String newPhone, Database database) {
 		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
@@ -48,56 +48,55 @@ public class Admin {
 		this.modifyLibrary.deleteLibrarian(idLibrarian, database);
 	}
 
-	public void editPatronName(int idPatron, String newName, Database database) throws SQLException {
+	public void editPatronName(int idPatron, String newName, Database database) {
 		this.modify.editPatronName(idPatron, newName, database);
 	}
 
-	public void editPatronSurname(int idPatron, String newSurname, Database database) throws SQLException {
+	public void editPatronSurname(int idPatron, String newSurname, Database database) {
 		this.modify.editPatronSurname(idPatron, newSurname, database);
 	}
 
-	public void editPatronAddress(int idPatron, String newAddress, Database database) throws SQLException {
+	public void editPatronAddress(int idPatron, String newAddress, Database database) {
 		this.modify.editPatronAddress(idPatron, newAddress, database);
 	}
 
-	public void editPatronPhone(int idPatron, String newPhone, Database database) throws SQLException {
+	public void editPatronPhone(int idPatron, String newPhone, Database database) {
 		this.modify.editPatronPhone(idPatron, newPhone, database);
 	}
 
-	public void editPatronStatus(int idPatron, String newStatus, Database database) throws SQLException {
+	public void editPatronStatus(int idPatron, String newStatus, Database database) {
 		this.modify.editPatronStatus(idPatron, newStatus, database);
 	}
 
-	public void deletePatron(int idPatron, Database database) throws SQLException {
-		this.modify.deletePatron(idPatron, database);
+	public void deletePatron(int idPatron, Database database) {
+		this.modifyLibrary.deletePatron(idPatron, database);
 	}
 
-	public void editDocumentNumberOdCopies(int idDocument, int newNumberOfCopies, Database database) throws SQLException {
+	public void editDocumentNumberOdCopies(int idDocument, int newNumberOfCopies, Database database) {
 		this.modify.editDocumentNumberOdCopies(idDocument, newNumberOfCopies, database);
 	}
 
-	public void editDocumentIsAllowedForStudents(int idDocument, boolean isAllowed, Database database) throws SQLException {
+	public void editDocumentIsAllowedForStudents(int idDocument, boolean isAllowed, Database database) {
 		this.modify.editDocumentIsAllowedForStudents(idDocument, isAllowed, database);
 	}
 
-	public void editDocumentPrice(int idDocument, double newPrice, Database database) throws SQLException {
+	public void editDocumentPrice(int idDocument, double newPrice, Database database) {
 		this.modify.editDocumentPrice(idDocument, newPrice, database);
 	}
 
-	public void editDocumentIsReference(int idDocument, boolean isReference, Database database) throws SQLException {
+	public void editDocumentIsReference(int idDocument, boolean isReference, Database database) {
 		this.modify.editDocumentIsReference(idDocument, isReference, database);
 	}
 
-	public void editBookEdition(int idBook, int newEdition, Database database) throws SQLException {
-		database.editDocumentColumn(idBook, "edition", Integer.toString(newEdition));
-		database.getBook(idBook).setEdition(newEdition);
+	public void editBookEdition(int idBook, int newEdition, Database database) {
+		this.modify.editBookEdition(idBook, newEdition, database);
 	}
 
-	public void editBookIsBestseller(int idBook, boolean isBestseller, Database database) throws SQLException {
+	public void editBookIsBestseller(int idBook, boolean isBestseller, Database database) {
 		this.modify.editBookIsBestseller(idBook, isBestseller, database);
 	}
 
-	public void deleteDocument(int idDocument, Database database) throws SQLException, ParseException {
+	public void deleteDocument(int idDocument, Database database) {
 		this.modifyLibrary.deleteDocument(idDocument, database);
 	}
 }

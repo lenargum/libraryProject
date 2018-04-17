@@ -31,6 +31,16 @@ public class ModifyLibrary {
         }
     }
 
+    public void deletePatron(int idPatron, Database database) {
+        try {
+            if (database.getPatron(idPatron).getListOfDocumentsPatron().isEmpty())
+                database.deleteUser(idPatron);
+            else
+                System.out.println("  This user did not return documents!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void deleteDocument(int idDocument, Database database) {
         try {
@@ -42,4 +52,6 @@ public class ModifyLibrary {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -92,16 +92,6 @@ public class Modify {
         }
     }
 
-    public void deletePatron(int idPatron, Database database) {
-        try {
-            if (database.getPatron(idPatron).getListOfDocumentsPatron().isEmpty())
-                database.deleteUser(idPatron);
-            else
-                System.out.println("  This user did not return documents!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void editDocumentNumberOdCopies(int idDocument, int newNumberOfCopies, Database database) {
         try {
