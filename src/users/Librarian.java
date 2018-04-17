@@ -6,16 +6,8 @@ import documents.Document;
 import documents.JournalArticle;
 import librarian_tools.*;
 import tools.Database;
-import tools.Debt;
 import tools.Request;
-
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 /**
  * This class describes librarian in library system.
  *
@@ -238,8 +230,6 @@ public class Librarian extends User {
      *
      * @param debtID   - id of debt patron wants to close
      * @param database - information storage
-     * @throws SQLException   Something went wrong in database.
-     * @throws ParseException Something wrong with input.
      */
     public void confirmReturn(int debtID, Database database) {
         this.returningSystem.confirmReturn(debtID, database);
@@ -271,7 +261,6 @@ public class Librarian extends User {
      *
      * @param request  - request librarian confirms
      * @param database - information storage
-     * @throws SQLException Something went wrong in database.
      */
     public void submitRequest(Request request, Database database) {
         this.bookingSystem.submitRequest(request, database);
@@ -282,7 +271,6 @@ public class Librarian extends User {
      *
      * @param request  - request the librarian refuses
      * @param database - information storage
-     * @throws SQLException Something went wrong in database.
      */
     public void deleteRequest(Request request, Database database) {
         this.bookingSystem.deleteRequest(request, database);

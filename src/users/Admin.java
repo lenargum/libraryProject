@@ -2,13 +2,10 @@ package users;
 
 import admin_tools.Modify;
 import admin_tools.ModifyLibrary;
-import documents.Document;
 import tools.Database;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-
 public class Admin {
+
 	private String name;
 	private String surname;
 	private String login;
@@ -21,8 +18,8 @@ public class Admin {
 		this.password = password;
 	}
 
-	Modify modify = new Modify();
-	ModifyLibrary modifyLibrary = new ModifyLibrary();
+	private Modify modify = new Modify();
+	private ModifyLibrary modifyLibrary = new ModifyLibrary();
 
 	public void addLibrarian(Librarian librarian, Database database) {
 		this.modifyLibrary.addLibrarian(librarian, database);
@@ -37,7 +34,7 @@ public class Admin {
 	}
 
 	public void editLibrarianAddress(int idLibrarian, String newAddress, Database database) {
-		this.editLibrarianAddress(idLibrarian, newAddress, database);
+		this.modify.editLibrarianAddress(idLibrarian, newAddress, database);
 	}
 
 	public void editLibrarianPhone(int idLibrarian, String newPhone, Database database) {
@@ -98,5 +95,37 @@ public class Admin {
 
 	public void deleteDocument(int idDocument, Database database) {
 		this.modifyLibrary.deleteDocument(idDocument, database);
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
