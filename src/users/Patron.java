@@ -98,7 +98,7 @@ public class Patron extends User {
 	 * @return {@code true} if this patron can get the document, otherwise {@code false}.
 	 */
 	public boolean canRequestDocument(int documentID, Database database) {
-		return this.bookingSystem.canRequestDocument(this, documentID, database);
+		return Logic.canRequestDocument(documentID, getId(), database);
 	}
 
 	/**
