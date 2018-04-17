@@ -1,14 +1,11 @@
 package tools;
 
-import documents.Book;
 import documents.Document;
-import users.Patron;
-import users.Student;
+import users.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
 
 public class Logic {
     /**
@@ -83,4 +80,17 @@ public class Logic {
         System.out.println("The patron with id " + patronId + " does not owe the library anything");
         return false;
     }
+
+    public static boolean canModify(int privilege){
+        return privilege > 0;
+    }
+
+    public static boolean canAdd(int privilege){
+        return privilege > 1;
+    }
+
+    public static boolean canDelete(int privilege){
+        return privilege == 3;
+    }
+
 }

@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
 /**
  * This class describes librarian in library system.
  *
@@ -22,6 +23,8 @@ import java.util.NoSuchElementException;
  * @see User
  */
 public class Librarian extends User {
+
+	private int privilege;
 	/**
 	 * Initialize new librarian.
 	 *
@@ -34,6 +37,15 @@ public class Librarian extends User {
 	 */
 	public Librarian(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
+		setPrivilege(0);
+	}
+
+	public void setPrivilege(int p){
+		this.privilege = p;
+	}
+
+	public int getPrivilege(){
+		return privilege;
 	}
 
 	/**
