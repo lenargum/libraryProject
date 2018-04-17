@@ -1,13 +1,19 @@
 package tools;
 
+import documents.AudioVideoMaterial;
+import documents.Book;
 import documents.Document;
+import documents.JournalArticle;
 import users.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 public class Logic {
+
+    //CHECKING POSSIBILITIES OF PATRONS
     /**
      * Checks whether patron can take the following book.
      *
@@ -81,16 +87,118 @@ public class Logic {
         return false;
     }
 
-    public static boolean canModify(int privilege){
-        return privilege > 0;
+    //CHECKING POSSIBILITIES OF LIBRARIANS
+
+    public static boolean canModify(int librarianId, Database database) throws SQLException {
+        return database.getLibrarian(librarianId).getPrivilege() > 0;
     }
 
-    public static boolean canAdd(int privilege){
-        return privilege > 1;
+    public static boolean canAdd(int librarianId, Database database) throws SQLException {
+        return database.getLibrarian(librarianId).getPrivilege() > 1;
     }
 
-    public static boolean canDelete(int privilege){
-        return privilege == 3;
+    public static boolean canDelete(int librarianId, Database database) throws SQLException{
+        return database.getLibrarian(librarianId).getPrivilege() == 3;
+    }
+
+    //LOGIC OF SETTING DATES
+
+    public static Date expireDate(int patronId, int docId, Database database) throws SQLException {
+        Document document = database.getDocument(docId);
+        Date date;
+        if(document instanceof Book){
+            date = dateForBooks(patronId, docId, database);
+        } else if(document instanceof JournalArticle || document instanceof AudioVideoMaterial){
+            date = dateForArticlesAndAVs(patronId, database);
+        } else {
+            throw new NoSuchElementException();
+        }
+
+        return date;
+    }
+
+    private static Date dateForBooks(int patronId, int bookId, Database database) throws SQLException {
+        Book book = database.getBook(bookId);
+        Patron patron = database.getPatron(patronId);
+        Date date ;
+        if(patron instanceof Student){
+            if(book.isBestseller()) date = Constants.setTwoWeeks();
+            else date = Constants.setThreeWeeks();
+        } else if (patron instanceof VisitingProfessor){
+            date = Constants.setWeek();
+        } else if(patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent){
+            if(book.isBestseller()) date = Constants.setTwoWeeks();
+            else date = Constants.setFourWeeks();
+        } else {
+            throw new WrongUserTypeException();
+        }
+
+        return date;
+    }
+
+    private static Date dateForArticlesAndAVs(int patronId, Database database) throws SQLException {
+        Patron patron = database.getPatron(patronId);
+        Date date;
+        if(patron instanceof Student){
+            date = Constants.setTwoWeeks();
+        } else if (patron instanceof VisitingProfessor){
+            date = Constants.setWeek();
+        } else if(patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent){
+            date = Constants.setTwoWeeks();
+        } else {
+            throw new WrongUserTypeException();
+        }
+
+        return date;
+
+    }
+
+    public static Date renewExpireDate(int debtId, Database database) throws SQLException, ParseException {
+        Debt debt = database.getDebt(debtId);
+        Document document = database.getDocument(debt.getDocumentId());
+        if(document instanceof  Book){
+
+            return renewDateBooks(debt, database);
+        } else if(document instanceof JournalArticle || document instanceof AudioVideoMaterial){
+
+            return renewDateArticlesAndAVs(debt, database);
+        } else {
+            throw new NoSuchElementException();
+        }
+
+    }
+
+    private static Date renewDateBooks(Debt debt, Database database) throws SQLException {
+        Book book = database.getBook(debt.getDocumentId());
+        Patron patron = database.getPatron(debt.getPatronId());
+        if(patron instanceof Student){
+            if(book.isBestseller()){
+                return Constants.setTwoWeeks(debt.getExpireDate());
+            } else {
+                return Constants.setThreeWeeks(debt.getExpireDate());
+            }
+        } else if (patron instanceof VisitingProfessor){
+            return Constants.setWeek(debt.getExpireDate());
+        } else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent){
+            if(book.isBestseller()){
+                return Constants.setTwoWeeks(debt.getExpireDate());
+            } else {
+                return Constants.setFourWeeks(debt.getExpireDate());
+            }
+        } else {
+            throw new WrongUserTypeException();
+        }
+    }
+
+    private static Date renewDateArticlesAndAVs(Debt debt, Database database) throws SQLException {
+        Patron patron= database.getPatron(debt.getPatronId());
+        if(patron instanceof VisitingProfessor){
+            return Constants.setWeek(debt.getExpireDate());
+        } else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent || patron instanceof Student){
+            return Constants.setTwoWeeks(debt.getExpireDate());
+        } else {
+            throw new WrongUserTypeException();
+        }
     }
 
 }
