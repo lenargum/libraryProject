@@ -103,25 +103,7 @@ public abstract class Patron extends User {
 			database.getBook(bookID).deleteCopy();
 			decreaseCountOfCopies(bookID, database);
 			Date dateBook = new Date();
-			Date dateExpire = new Date();
-			if (database.getBook(bookID).isBestseller() && !getStatus().toLowerCase().equals("vp"))
-				dateExpire.setTime(dateExpire.getTime() + 14 * 24 * 60 * 60 * 1000);
-			else {
-				switch (status.toLowerCase()) {
-					case "student":
-						dateExpire.setTime(dateExpire.getTime() + 21 * 24 * 60 * 60 * 1000);
-						break;
-					case "instructor":
-					case "ta":
-					case "professor":
-						dateExpire.setTime(dateExpire.getTime() + 28L * 24 * 60 * 60 * 1000);
-						break;
-					default:
-						throw new WrongUserTypeException("Patron <- There is no patron present " +
-								"in system with type " + status);
-				}
-			}
-
+			Date dateExpire = Logic.expireDate(getId(), bookID, database);
 			Debt debt = new Debt(getId(), bookID, dateBook, dateExpire, 0, true);
 			database.insertDebt(debt);
 
@@ -143,10 +125,7 @@ public abstract class Patron extends User {
 				database.getAV(avID).deleteCopy();
 				decreaseCountOfCopies(avID, database);
 				Date dateBook = new Date();
-				Date dateReturn = new Date();
-				if (status.toLowerCase().equals("vp"))
-					dateReturn.setTime(dateReturn.getTime() + 7 * 24 * 60 * 60 * 1000);
-				else dateReturn.setTime(dateReturn.getTime() + 14 * 24 * 60 * 60 * 1000);
+				Date dateReturn = Logic.expireDate(getId(), avID, database);
 				Debt debt = new Debt(getId(), avID, dateBook, dateReturn, 0, true);
 				database.insertDebt(debt);
 			}
@@ -168,10 +147,7 @@ public abstract class Patron extends User {
 				database.getArticle(articleID).deleteCopy();
 				decreaseCountOfCopies(articleID, database);
 				Date dateBook = new Date();
-				Date dateReturn = new Date();
-				if (status.toLowerCase().equals("vp"))
-					dateReturn.setTime(dateReturn.getTime() + 7 * 24 * 60 * 60 * 1000);
-				else dateReturn.setTime(dateReturn.getTime() + 14 * 60 * 60 * 1000 * 24);
+				Date dateReturn = Logic.expireDate(getId(), articleID, database);
 				Debt debt = new Debt(getId(), articleID, dateBook, dateReturn, 0, true);
 
 				database.insertDebt(debt);
@@ -355,8 +331,7 @@ public abstract class Patron extends User {
 
 		try {
 			Debt debt = database.getDebt(database.findDebtID(this.getId(), documentID));
-			Date expDate = debt.getExpireDate();
-			expDate.setTime(expDate.getTime() + 7 * 60 * 60 * 24 * 1000);
+			Date expDate = Logic.renewExpireDate(debt.getDebtId(), database);
 			if (!this.getStatus().equals("vp")) {
 				database.editDebtColumn(debt.getDebtId(), "can_renew", "false");
 			}
