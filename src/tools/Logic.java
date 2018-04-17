@@ -9,6 +9,7 @@ import users.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Logic {
@@ -31,16 +32,16 @@ public class Logic {
         try {
             Patron patron = database.getPatron(patronId);
             Document doc = database.getDocument(idDocument);
-            if(patron.findInRequests(idDocument, database)){
+            if(findInRequests(patron, idDocument, database)){
                 System.out.println("You already request this document");
                 return false;
             }
             if (!(patron instanceof Student) && (doc.getNumberOfCopies() != 0) &&
-                    !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument) && !patron.findInRequests(idDocument, database)) {
+                    !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument)) {
                 return true;
             } else if (doc.isAllowedForStudents() &&
                     doc.getNumberOfCopies() != 0 &&
-                    !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument) && !patron.findInRequests(idDocument, database)) {
+                    !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument)) {
                 return true;
             } else {
                 if (doc.isReference() && doc.getNumberOfCopies() == 0)
@@ -58,6 +59,18 @@ public class Logic {
             System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Document with ID="
                     + idDocument + " may not be registered id database.");
             return false;
+        }
+    }
+
+    private static boolean findInRequests(Patron patron, int docId, Database database) {
+        try {
+            List<Request> requests = database.getRequestsForPatron(patron.getId());
+            for (Request i : requests) {
+                if (i.getIdDocument() == docId && i.getIdPatron() == patron.getId()) return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
