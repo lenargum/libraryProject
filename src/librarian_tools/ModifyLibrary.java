@@ -17,11 +17,8 @@ public class ModifyLibrary {
      * @param database tools.Database that stores the information.
      */
     public void addBook(Book book, Database database) {
-        try {
             database.insertBook(book);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
@@ -31,12 +28,8 @@ public class ModifyLibrary {
      * @param database tools.Database that stores the information.
      */
     public void addAV(AudioVideoMaterial AV, Database database)  {
-
-        try {
             database.insertAV(AV);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
@@ -48,13 +41,10 @@ public class ModifyLibrary {
      */
     public void addArticle(JournalArticle journalArticle, Database database)  {
 
-        try {
             database.insertArticle(journalArticle);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-    }
+
 
     /**
      * Add new patron to the database.
@@ -64,11 +54,7 @@ public class ModifyLibrary {
      */
     public void registerPatron(Patron patron, Database database)  {
 
-        try {
             database.insertPatron(patron);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -80,11 +66,7 @@ public class ModifyLibrary {
      */
     public void deleteDocument(int idDocument, Database database)  {
 
-        try {
             database.deleteDocument(idDocument);
-        } catch (SQLException e) {e.printStackTrace();
-            e.printStackTrace();
-        }
 
     }
 
@@ -96,11 +78,8 @@ public class ModifyLibrary {
      */
     public void deletePatron(int idPatron, Database database)  {
 
-        try {
             database.deleteUser(idPatron);
-        } catch (SQLException e) {
 
-        }
 
     }
 
