@@ -1,7 +1,7 @@
 package users;
 
-import admin_tools.Modify;
-import admin_tools.ModifyLibrary;
+import adminTools.Modify;
+import adminTools.ModifyLibrary;
 import tools.Database;
 
 public class Admin {

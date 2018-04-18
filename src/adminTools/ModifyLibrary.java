@@ -1,10 +1,7 @@
-package admin_tools;
+package adminTools;
 
-import documents.Document;
 import tools.Database;
 import users.Librarian;
-
-import java.sql.SQLException;
 
 public class ModifyLibrary {
     public void addLibrarian(Librarian librarian, Database database)  {

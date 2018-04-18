@@ -1,4 +1,4 @@
-package patron_tools;
+package patronTools;
 
 import documents.Document;
 import tools.Database;
@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class BookingSystem {

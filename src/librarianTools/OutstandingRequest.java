@@ -1,11 +1,9 @@
-package librarian_tools;
+package librarianTools;
 
 import documents.Document;
 import tools.Database;
 import tools.Request;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

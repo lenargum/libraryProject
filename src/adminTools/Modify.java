@@ -1,10 +1,6 @@
-package admin_tools;
+package adminTools;
 
-import documents.Document;
 import tools.Database;
-
-
-import java.sql.SQLException;
 
 public class Modify {
 

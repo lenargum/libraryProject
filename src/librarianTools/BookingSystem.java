@@ -1,4 +1,4 @@
-package librarian_tools;
+package librarianTools;
 
 import tools.Database;
 import tools.Request;
