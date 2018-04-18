@@ -31,7 +31,7 @@ public class ModifyLibrary {
             if (database.getPatron(idPatron).getListOfDocumentsPatron().isEmpty())
                 database.deleteUser(idPatron);
             else
-                System.out.println("  This user did not return documents!");
+                System.out.println("This user did not return documents!");
         }
 
 

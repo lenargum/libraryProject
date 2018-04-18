@@ -4,14 +4,7 @@ package users;
 import patron_tools.BookingSystem;
 import patron_tools.ReturningSystem;
 import tools.Database;
-import tools.Debt;
 import tools.Logic;
-import tools.Request;
-import tools.WrongUserTypeException;
-
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**

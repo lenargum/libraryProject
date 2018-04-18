@@ -1,13 +1,6 @@
 package librarian_tools;
 
-import documents.AudioVideoMaterial;
-import documents.Book;
-
-import documents.JournalArticle;
 import tools.Database;
-import users.Patron;
-
-import java.sql.SQLException;
 
 public class Modify {
 
@@ -32,13 +25,8 @@ public class Modify {
      * @param edition  New edition year.
      */
     public void modifyBookEdition(int idBook, Database database, int edition)  {
-
-
             database.getBook(idBook).setEdition(edition);
             database.editDocumentColumn(idBook, "edition", Integer.toString(edition));
-
-
-
     }
 
 

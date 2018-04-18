@@ -8,12 +8,6 @@ import librarian_tools.*;
 import tools.Database;
 import tools.Request;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 
 /**
@@ -223,9 +217,8 @@ public class Librarian extends User {
      *
      * @param database tools.Database that stores the information.
      * @return Count of all copies.
-     * @throws SQLException If database is busy.
      */
-    public int getNumberOfDocument(Database database) throws SQLException {
+    public int getNumberOfDocument(Database database) {
         int n = 0;
         for (Document i : database.getDocumentList()) {
             n += i.getNumberOfCopies();

@@ -82,7 +82,7 @@ public class Request {
 	 * @param database   Database
 	 * @throws SQLException something in database went wrong
 	 */
-	public void approveRequest(int idPatron, int idDocument, Database database) throws SQLException {
+	public void approveRequest(int idPatron, int idDocument, Database database) {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
 				" with document " + idDocument);
 		Patron temp = database.getPatron(idPatron);
@@ -110,7 +110,7 @@ public class Request {
 	 * @param database   Database
 	 * @throws SQLException something in database went wrong
 	 */
-	public void refuseRequest(int idPatron, int idDocument, Database database) throws SQLException {
+	public void refuseRequest(int idPatron, int idDocument, Database database) {
 //        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
 //            //queue.remove(database.getPatron(idPatron));
 //	        System.out.println("Not for this patron");
@@ -124,7 +124,7 @@ public class Request {
 	 * @param database Database
 	 * @throws SQLException by deafult
 	 */
-	public void approveRenew(Database database) throws SQLException {
+	public void approveRenew(Database database) {
 		database.getPatron(idPatron).renewDocument(idDocument, database);
 	}
 

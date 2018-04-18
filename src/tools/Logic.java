@@ -5,9 +5,6 @@ import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
 import users.*;
-
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -70,22 +67,21 @@ public class Logic {
             return false;
     }
 
-    public static boolean canRenewDocument(int documentId, int patronId, Database database) throws SQLException, ParseException {
+    public static boolean canRenewDocument(int documentId, int patronId, Database database) {
         Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
         if(debt.canRenew()) return true;
         System.out.println("The document is already renewed, so you need to return it!");
         return false;
     }
 
-    public static boolean canReturnDocument(int documentId, int patronId, Database database) throws SQLException, ParseException {
+    public static boolean canReturnDocument(int documentId, int patronId, Database database) {
         Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
         debt.countFee(database);
-        if(debt.getFee() == 0) return true;
+        return debt.getFee() == 0;
         //notify patron he has to fine the debt
-        return false;
     }
 
-    public static boolean canFine(int debtId, Database database) throws SQLException, ParseException {
+    public static boolean canFine(int debtId, Database database) {
         Debt debt = database.getDebt(debtId);
         debt.countFee(database);
         if(debt.getFee() == 0) return true;
@@ -95,21 +91,21 @@ public class Logic {
 
     //CHECKING POSSIBILITIES OF LIBRARIANS
 
-    public static boolean canModify(int librarianId, Database database) throws SQLException {
+    public static boolean canModify(int librarianId, Database database) {
         return database.getLibrarian(librarianId).getPrivilege() > 0;
     }
 
-    public static boolean canAdd(int librarianId, Database database) throws SQLException {
+    public static boolean canAdd(int librarianId, Database database) {
         return database.getLibrarian(librarianId).getPrivilege() > 1;
     }
 
-    public static boolean canDelete(int librarianId, Database database) throws SQLException{
+    public static boolean canDelete(int librarianId, Database database) {
         return database.getLibrarian(librarianId).getPrivilege() == 3;
     }
 
     //LOGIC OF SETTING DATES
 
-    public static Date expireDate(int patronId, int docId, Database database) throws SQLException {
+    public static Date expireDate(int patronId, int docId, Database database) {
         Document document = database.getDocument(docId);
         Date date;
         if(document instanceof Book){
@@ -123,7 +119,7 @@ public class Logic {
         return date;
     }
 
-    private static Date dateForBooks(int patronId, int bookId, Database database) throws SQLException {
+    private static Date dateForBooks(int patronId, int bookId, Database database) {
         Book book = database.getBook(bookId);
         Patron patron = database.getPatron(patronId);
         Date date ;
@@ -142,7 +138,7 @@ public class Logic {
         return date;
     }
 
-    private static Date dateForArticlesAndAVs(int patronId, Database database) throws SQLException {
+    private static Date dateForArticlesAndAVs(int patronId, Database database) {
         Patron patron = database.getPatron(patronId);
         Date date;
         if(patron instanceof Student){
@@ -159,7 +155,7 @@ public class Logic {
 
     }
 
-    public static Date renewExpireDate(int debtId, Database database) throws SQLException, ParseException {
+    public static Date renewExpireDate(int debtId, Database database) {
         Debt debt = database.getDebt(debtId);
         Document document = database.getDocument(debt.getDocumentId());
         if(document instanceof  Book){
@@ -174,7 +170,7 @@ public class Logic {
 
     }
 
-    private static Date renewDateBooks(Debt debt, Database database) throws SQLException {
+    private static Date renewDateBooks(Debt debt, Database database) {
         Book book = database.getBook(debt.getDocumentId());
         Patron patron = database.getPatron(debt.getPatronId());
         if(patron instanceof Student){
@@ -196,7 +192,7 @@ public class Logic {
         }
     }
 
-    private static Date renewDateArticlesAndAVs(Debt debt, Database database) throws SQLException {
+    private static Date renewDateArticlesAndAVs(Debt debt, Database database) {
         Patron patron= database.getPatron(debt.getPatronId());
         if(patron instanceof VisitingProfessor){
             return Constants.setWeek(debt.getExpireDate());
