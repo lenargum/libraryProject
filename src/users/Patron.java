@@ -46,6 +46,7 @@ public class Patron extends User {
 	public Patron(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 	}
+
 	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		this.setStatus(status);

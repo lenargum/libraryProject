@@ -340,15 +340,8 @@ public class CoreAPI {
 	 */
 	public void editUser(int userID, String column, String newValue) {
 		db.connect();
-
-		try {
-			db.editUserColumn(userID, column, newValue);
-		} catch (SQLException e) {
-			System.out.println("Unable to mdify user. User ID: " + userID);
-			e.printStackTrace();
-		} finally {
-			db.close();
-		}
+		db.editUserColumn(userID, column, newValue);
+		db.close();
 	}
 
 	/**
@@ -360,16 +353,12 @@ public class CoreAPI {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			for (Request request : db.getRequests()) {
-				Document doc = db.getDocument(request.getIdDocument());
-				Patron pat = db.getPatron(request.getIdPatron());
-				list.add(new ApprovalCell(request.getRequestId(),
-						doc.getTitle(), doc.getID(),
-						pat.getName() + " " + pat.getSurname(), pat.getId()));
-			}
-		} catch (ParseException | SQLException e) {
-			e.printStackTrace();
+		for (Request request : db.getRequests()) {
+			Document doc = db.getDocument(request.getIdDocument());
+			Patron pat = db.getPatron(request.getIdPatron());
+			list.add(new ApprovalCell(request.getRequestId(),
+					doc.getTitle(), doc.getID(),
+					pat.getName() + " " + pat.getSurname(), pat.getId()));
 		}
 		db.close();
 
@@ -385,21 +374,16 @@ public class CoreAPI {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			for (Debt debt : db.getDebtsForUser(user.getId())) {
-				Patron pat = db.getPatron(debt.getPatronId());
-				Document doc = db.getDocument(debt.getDocumentId());
-				list.add(new DebtsManager.DebtCell(debt.getDebtId(),
-						pat.getName() + " " + pat.getSurname(), pat.getId(),
-						doc.getTitle(), doc.getID(),
-						debt.getBookingDate().toString(),
-						debt.getExpireDate().toString()));
-			}
-		} catch (SQLException | ParseException e) {
-			e.printStackTrace();
-		} finally {
-			db.close();
+		for (Debt debt : db.getDebtsForUser(user.getId())) {
+			Patron pat = db.getPatron(debt.getPatronId());
+			Document doc = db.getDocument(debt.getDocumentId());
+			list.add(new DebtsManager.DebtCell(debt.getDebtId(),
+					pat.getName() + " " + pat.getSurname(), pat.getId(),
+					doc.getTitle(), doc.getID(),
+					debt.getBookingDate().toString(),
+					debt.getExpireDate().toString()));
 		}
+		db.close();
 
 		return list;
 	}
