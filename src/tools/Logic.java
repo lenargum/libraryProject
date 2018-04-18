@@ -23,11 +23,11 @@ public class Logic {
      * @return {@code true} if this patron can get the book, otherwise {@code false}.
      */
     public static boolean canRequestDocument(int idDocument, int patronId, Database database) {
-        try {
+        try{
             database.getPatron(patronId);
-        } catch (NoSuchElementException e) {
-            System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + patronId);
-            return false;
+        } catch (NoSuchElementException e){
+            System.out.println("tools.Database <- users.Patron: Incorrect ID. users.Patron with ID="
+                    + patronId + " may not be registered id database.");
         }
         try {
             Patron patron = database.getPatron(patronId);
@@ -36,25 +36,25 @@ public class Logic {
                 System.out.println("You already request this document");
                 return false;
             }
-            if (!(patron instanceof Student) && (doc.getNumberOfCopies() != 0) &&
-                    !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument)) {
-                return true;
-            } else if (doc.isAllowedForStudents() &&
-                    doc.getNumberOfCopies() != 0 &&
-                    !(doc.isReference()) && !patron.getListOfDocumentsPatron().contains(idDocument)) {
-                return true;
-            } else {
-                if (doc.isReference() && doc.getNumberOfCopies() == 0)
-                    System.out.println("No available copies. Document ID: " + idDocument);
-                if (patron.getListOfDocumentsPatron().contains(idDocument))
-                    System.out.println("Patron already have a copy of this document. Patron ID: " + patronId +
-                            ", Document ID: " + idDocument);
-                if (!doc.isAllowedForStudents())
-                    System.out.println("This document is not allowed for students. Document ID:" + idDocument);
-                if (doc.isReference())
-                    System.out.println("Reference materials are not available for taking. Document ID: " + idDocument);
+            if(doc.getNumberOfCopies() == 0){
+                System.out.println("No available copies. Document ID: " + idDocument);
                 return false;
             }
+            if(doc.isReference()){
+                System.out.println("Reference materials are not available for taking. Document ID: " + idDocument);
+                return false;
+            }
+            if (patron.getListOfDocumentsPatron().contains(idDocument)) {
+                System.out.println("Patron already have a copy of this document. Patron ID: " + patronId +
+                        ", Document ID: " + idDocument);
+                return false;
+            }
+            if(patron instanceof Student && !doc.isAllowedForStudents()){
+                System.out.println("This document is not allowed for students. Document ID:" + idDocument);
+                return false;
+            }
+
+            return true;
         } catch ( NoSuchElementException e) {
             System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Document with ID="
                     + idDocument + " may not be registered id database.");
