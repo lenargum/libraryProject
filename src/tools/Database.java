@@ -140,26 +140,32 @@ public class Database {
 	 * Insert provided patron into database.
 	 *
 	 * @param patron users.Patron to insert.
-	 * @throws SQLException user with such login exists.
 	 * @see Patron
 	 */
-	public void insertPatron(Patron patron) throws SQLException {
+	public void insertPatron(Patron patron) {
 		String status = "STUDENT";
 		if (!patron.getStatus().toLowerCase().equals("librarian")) {
 			status = patron.getStatus().toUpperCase();
 		}
-		insertUser(patron.getLogin(), patron.getPassword(), status, patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
+		try {
+			insertUser(patron.getLogin(), patron.getPassword(), status, patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
+		} catch (SQLException e) {
+			System.err.println("tools.Database: User with such login already exists");
+		}
 	}
 
 	/**
 	 * Insert provided librarian into database.
 	 *
 	 * @param librarian users.Librarian to insert.
-	 * @throws SQLException user with such login exists.
 	 * @see Librarian
 	 */
-	public void insertLibrarian(Librarian librarian) throws SQLException {
-		insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress());
+	public void insertLibrarian(Librarian librarian) {
+		try {
+			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress());
+		} catch (SQLException e) {
+			System.err.println("tools.Database: User with such login already exists");
+		}
 	}
 
 	/**
@@ -200,85 +206,117 @@ public class Database {
 	 * Insert provided book into database.
 	 *
 	 * @param book documents.Book to insert.
-	 * @throws SQLException By default.
 	 * @see Book
 	 */
-	public void insertBook(Book book) throws SQLException {
-		String type = "BOOK";
-		insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
-				book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
-				book.isBestseller(), "-", "-", "-", "NULL");
-		book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(),
-				book.getNumberOfCopies(), book.isReference(), book.getPrice(), book.getKeyWords())));
+	public void insertBook(Book book) {
+		try {
+			String type = "BOOK";
+
+			insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
+					book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
+					book.isBestseller(), "-", "-", "-", "NULL");
+			book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(),
+					book.getNumberOfCopies(), book.isReference(), book.getPrice(), book.getKeyWords())));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
+		}
 	}
 
 	/**
 	 * Insert provided Audio/Video into database.
 	 *
 	 * @param av Audio/Video to insert.
-	 * @throws SQLException By default.
 	 * @see AudioVideoMaterial
 	 */
-	public void insertAV(AudioVideoMaterial av) throws SQLException {
-		insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
-				av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
-				"-", "-", "-", "NULL");
-		av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
-				av.isReference(), av.getPrice(), av.getKeyWords())));
+	public void insertAV(AudioVideoMaterial av) {
+		try {
+			insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
+					av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
+					"-", "-", "-", "NULL");
+			av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
+					av.isReference(), av.getPrice(), av.getKeyWords())));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
+		}
 	}
 
 	/**
 	 * Insert provided article into database.
 	 *
 	 * @param article Article to insert.
-	 * @throws SQLException By default.
 	 * @see JournalArticle
 	 */
-	public void insertArticle(JournalArticle article) throws SQLException {
-		insertDocument(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
-				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
-				"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
-				article.getIssue(), article.getEditor(),
-				(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
-		article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
-				article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
+	public void insertArticle(JournalArticle article) {
+		try {
+			insertDocument(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
+					article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
+					"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
+					article.getIssue(), article.getEditor(),
+					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
+			article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
+					article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
+		}
 	}
 
 	/**
 	 * Insert provided debt into database.
 	 *
 	 * @param debt tools.Debt to insert.
-	 * @throws SQLException By default.
 	 * @see Debt
 	 */
-	public void insertDebt(Debt debt) throws SQLException {
-		execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
-				+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
-				+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
-				+ debt.canRenew() + "\')");
-		debt.setDebtId(this.findDebtID(debt.getPatronId(), debt.getDocumentId()));
+	public void insertDebt(Debt debt) {
+		try {
+			execute("INSERT INTO debts(patron_id, document_id, booking_date, expire_date, fee, can_renew)"
+					+ " VALUES(" + debt.getPatronId() + ", " + debt.getDocumentId() + ", \'"
+					+ (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getBookingDate()) + "\', \'" + (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()) + "\', " + debt.getFee() + ", \'"
+					+ debt.canRenew() + "\')");
+			debt.setDebtId(this.findDebtID(debt.getPatronId(), debt.getDocumentId()));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: One of fields is empty or null");
+		}
+	}
+
+	/**
+	 * Inserts Request to the database.
+	 *
+	 * @param request Request object which will be inserted.
+	 */
+	public void insertRequest(Request request) {
+		try {
+			this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
+							"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
+					request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
+					(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()), request.isRenewRequest()));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: One of fields (patron_id, document_id, priority, date, is_renew_request) is empty or null");
+		}
 	}
 
 	/**
 	 * Get the patrons list from database.
 	 *
 	 * @return List of patrons stored in database.
-	 * @throws SQLException By default.
 	 * @see List
 	 * @see Patron
 	 */
-	public ArrayList<Patron> getPatronList() throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN'");
-		ArrayList<Patron> patronList = new ArrayList<>();
-		while (patronSet.next()) {
-			Patron temp = new Patron(patronSet.getString(2),
-					patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
-					patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
-			temp.setId(patronSet.getInt(1));
-			patronList.add(temp);
-		}
-		if (patronList.size() != 0) {
-			return patronList;
+	public ArrayList<Patron> getPatronList() {
+		try {
+			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN'");
+			ArrayList<Patron> patronList = new ArrayList<>();
+			while (patronSet.next()) {
+				Patron temp = new Patron(patronSet.getString(2),
+						patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
+						patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
+				temp.setId(patronSet.getInt(1));
+				patronList.add(temp);
+			}
+			if (patronList.size() != 0) {
+				return patronList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -287,22 +325,25 @@ public class Database {
 	 * Get the librarians list from database.
 	 *
 	 * @return List of librarians stored in database.
-	 * @throws SQLException By default.
 	 * @see List
 	 * @see Librarian
 	 */
-	public ArrayList<Librarian> getLibrarianList() throws SQLException {
-		ResultSet librarianSet = executeQuery("SELECT * FROM users where status = 'LIBRARIAN'");
-		ArrayList<Librarian> librarianList = new ArrayList<>();
-		while (librarianSet.next()) {
-			Librarian temp = new Librarian(librarianSet.getString(2),
-					librarianSet.getString(3), librarianSet.getString(5),
-					librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
-			temp.setId(librarianSet.getInt(1));
-			librarianList.add(temp);
-		}
-		if (librarianList.size() != 0) {
-			return librarianList;
+	public ArrayList<Librarian> getLibrarianList() {
+		try {
+			ResultSet librarianSet = executeQuery("SELECT * FROM users where status = 'LIBRARIAN'");
+			ArrayList<Librarian> librarianList = new ArrayList<>();
+			while (librarianSet.next()) {
+				Librarian temp = new Librarian(librarianSet.getString(2),
+						librarianSet.getString(3), librarianSet.getString(5),
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
+				temp.setId(librarianSet.getInt(1));
+				librarianList.add(temp);
+			}
+			if (librarianList.size() != 0) {
+				return librarianList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -311,23 +352,26 @@ public class Database {
 	 * Get the documents list from database.
 	 *
 	 * @return List of documents stored in database.
-	 * @throws SQLException By default.
 	 * @see List
 	 * @see Document
 	 */
-	public ArrayList<Document> getDocumentList() throws SQLException {
-		ResultSet documentSet = executeQuery("SELECT * FROM documents");
-		ArrayList<Document> documentList = new ArrayList<>();
-		while (documentSet.next()) {
-			Document temp = new Document(documentSet.getString(2),
-					documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
-					documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
-					documentSet.getDouble(7), documentSet.getString(8));
-			temp.setID(documentSet.getInt(1));
-			documentList.add(temp);
-		}
-		if (documentList.size() != 0) {
-			return documentList;
+	public ArrayList<Document> getDocumentList() {
+		try {
+			ResultSet documentSet = executeQuery("SELECT * FROM documents");
+			ArrayList<Document> documentList = new ArrayList<>();
+			while (documentSet.next()) {
+				Document temp = new Document(documentSet.getString(2),
+						documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
+						documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
+						documentSet.getDouble(7), documentSet.getString(8));
+				temp.setID(documentSet.getInt(1));
+				documentList.add(temp);
+			}
+			if (documentList.size() != 0) {
+				return documentList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -336,20 +380,23 @@ public class Database {
 	 * Get the documents descriptions from database.
 	 *
 	 * @return List of descriptions of documents stored in database.
-	 * @throws SQLException By default.
 	 * @see List
 	 * @see String
 	 * @see Document
 	 */
-	public ArrayList<String> getDocumentStringList() throws SQLException {
-		ResultSet documentSet = executeQuery("SELECT * FROM documents");
-		ArrayList<String> documentsTitleList = new ArrayList<>();
-		while (documentSet.next()) {
-			documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" "
-					+ documentSet.getString(3) + " (" + documentSet.getString(4) + ") ");
-		}
-		if (documentsTitleList.size() != 0) {
-			return documentsTitleList;
+	public ArrayList<String> getDocumentStringList() {
+		try {
+			ResultSet documentSet = executeQuery("SELECT * FROM documents");
+			ArrayList<String> documentsTitleList = new ArrayList<>();
+			while (documentSet.next()) {
+				documentsTitleList.add(documentSet.getInt(1) + " \"" + documentSet.getString(2) + "\" "
+						+ documentSet.getString(3) + " (" + documentSet.getString(4) + ") ");
+			}
+			if (documentsTitleList.size() != 0) {
+				return documentsTitleList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -358,23 +405,26 @@ public class Database {
 	 * Get the book list from database.
 	 *
 	 * @return List of books stored in database.
-	 * @throws SQLException By default.
 	 * @see List
 	 * @see Book
 	 */
-	public ArrayList<Book> getBookList() throws SQLException {
-		ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\';");
-		ArrayList<Book> bookList = new ArrayList<>();
-		while (bookSet.next()) {
-			Book temp = new Book(bookSet.getString(2),
-					bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
-					Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
-					bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
-			temp.setID(bookSet.getInt(1));
-			bookList.add(temp);
-		}
-		if (bookList.size() != 0) {
-			return bookList;
+	public ArrayList<Book> getBookList() {
+		try {
+			ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\';");
+			ArrayList<Book> bookList = new ArrayList<>();
+			while (bookSet.next()) {
+				Book temp = new Book(bookSet.getString(2),
+						bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
+						Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
+						bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
+				temp.setID(bookSet.getInt(1));
+				bookList.add(temp);
+			}
+			if (bookList.size() != 0) {
+				return bookList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -383,23 +433,26 @@ public class Database {
 	 * Get the audio/video list from database.
 	 *
 	 * @return List of audios/videos stored in database.
-	 * @throws SQLException By default.
 	 * @see List
 	 * @see AudioVideoMaterial
 	 */
-	public ArrayList<AudioVideoMaterial> getAVList() throws SQLException {
-		ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
-		ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
+	public ArrayList<AudioVideoMaterial> getAVList() {
+		try {
+			ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\'");
+			ArrayList<AudioVideoMaterial> AVList = new ArrayList<>();
 
-		while (AVSet.next()) {
-			AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
-					AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
-					Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
-			temp.setID(AVSet.getInt(1));
-			AVList.add(temp);
-		}
-		if (AVList.size() != 0) {
-			return AVList;
+			while (AVSet.next()) {
+				AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
+						AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
+						Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
+				temp.setID(AVSet.getInt(1));
+				AVList.add(temp);
+			}
+			if (AVList.size() != 0) {
+				return AVList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -408,27 +461,32 @@ public class Database {
 	 * Get the article list from database.
 	 *
 	 * @return List of articles stored in database.
-	 * @throws SQLException   By default.
-	 * @throws ParseException Incorrect data format.
 	 * @see List
 	 * @see JournalArticle
 	 */
-	public ArrayList<JournalArticle> getArticleList() throws SQLException, ParseException {
-		ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\'");
-		ArrayList<JournalArticle> articleList = new ArrayList<>();
-		while (articleSet.next()) {
-			JournalArticle temp = new JournalArticle(articleSet.getString(2),
-					articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
-					articleSet.getInt(5), Boolean.parseBoolean(articleSet.getString(6)),
-					articleSet.getDouble(7), articleSet.getString(8),
-					articleSet.getString(13), articleSet.getString(10),
-					articleSet.getString(14), articleSet.getString(15),
-					new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
-			temp.setID(articleSet.getInt(1));
-			articleList.add(temp);
-		}
-		if (articleList.size() != 0) {
-			return articleList;
+	public ArrayList<JournalArticle> getArticleList() {
+		try {
+			ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\'");
+			ArrayList<JournalArticle> articleList = new ArrayList<>();
+			while (articleSet.next()) {
+				JournalArticle temp = new JournalArticle(articleSet.getString(2),
+						articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
+						articleSet.getInt(5), Boolean.parseBoolean(articleSet.getString(6)),
+						articleSet.getDouble(7), articleSet.getString(8),
+						articleSet.getString(13), articleSet.getString(10),
+						articleSet.getString(14), articleSet.getString(15),
+						new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
+				temp.setID(articleSet.getInt(1));
+				articleList.add(temp);
+			}
+			if (articleList.size() != 0) {
+				return articleList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		throw new NoSuchElementException();
 
@@ -439,25 +497,30 @@ public class Database {
 	 * Get the debts list from database.
 	 *
 	 * @return List of debts stored in database.
-	 * @throws SQLException   By default.
-	 * @throws ParseException Incorrect data format.
 	 * @see List
 	 * @see Debt
 	 */
-	public ArrayList<Debt> getDebtsList() throws SQLException, ParseException {
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts");
-		ArrayList<Debt> debtsList = new ArrayList<>();
-		while (debtsSet.next()) {
-			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
-					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-					debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
-			temp.setDebtId(debtsSet.getInt(1));
-			debtsList.add(temp);
-		}
+	public ArrayList<Debt> getDebtsList() {
+		try {
+			ResultSet debtsSet = executeQuery("SELECT * FROM debts");
+			ArrayList<Debt> debtsList = new ArrayList<>();
+			while (debtsSet.next()) {
+				Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+						debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
+				temp.setDebtId(debtsSet.getInt(1));
+				debtsList.add(temp);
+			}
 
-		if (debtsList.size() != 0) {
-			return debtsList;
+			if (debtsList.size() != 0) {
+				return debtsList;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		throw new NoSuchElementException();
 
@@ -468,29 +531,43 @@ public class Database {
 	 *
 	 * @param ID Patrons' ID stored in database.
 	 * @return users.Patron with following ID.
-	 * @throws SQLException By default.
 	 * @see Patron
 	 */
-	public Patron getPatron(int ID) throws SQLException {
-		ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' and id = " + ID);
-		if (patronSet.next()) {
-			Patron temp = new Patron(patronSet.getString(2),
-					patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
-					patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
-			temp.setId(patronSet.getInt(1));
-			return temp;
+	public Patron getPatron(int ID) {
+		try {
+			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' and id = " + ID);
+			if (patronSet.next()) {
+				Patron temp = new Patron(patronSet.getString(2),
+						patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
+						patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
+				temp.setId(patronSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
 
-	public User authorise(String login, String password) throws SQLException {
-		ResultSet userSet = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
-		if (userSet.next()) {
-			Patron temp = new Patron(userSet.getString(2),
-					userSet.getString(3), userSet.getString(4), userSet.getString(5),
-					userSet.getString(6), userSet.getString(7), userSet.getString(8));
-			temp.setId(userSet.getInt(1));
-			return temp;
+	/**
+	 * User authorisation with these login and password
+	 *
+	 * @param login    User login
+	 * @param password User password
+	 * @return User with such login and password if it exists
+	 */
+	public User authorise(String login, String password) {
+		try {
+			ResultSet userSet = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
+			if (userSet.next()) {
+				Patron temp = new Patron(userSet.getString(2),
+						userSet.getString(3), userSet.getString(4), userSet.getString(5),
+						userSet.getString(6), userSet.getString(7), userSet.getString(8));
+				temp.setId(userSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -500,19 +577,21 @@ public class Database {
 	 *
 	 * @param ID Librarians' ID stored in database.
 	 * @return users.Librarian with following ID.
-	 * @throws SQLException By default.
 	 * @see Librarian
 	 */
-	public Librarian getLibrarian(int ID) throws SQLException {
-		ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + ID);
-		if (librarianSet.next()) {
-			Librarian temp = new Librarian(librarianSet.getString(2),
-					librarianSet.getString(3), librarianSet.getString(5),
-					librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
-			temp.setId(librarianSet.getInt(1));
-			return temp;
+	public Librarian getLibrarian(int ID) {
+		try {
+			ResultSet librarianSet = executeQuery("SELECT * FROM users where (status = 'LIBRARIAN') and id = " + ID);
+			if (librarianSet.next()) {
+				Librarian temp = new Librarian(librarianSet.getString(2),
+						librarianSet.getString(3), librarianSet.getString(5),
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
+				temp.setId(librarianSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-
 		throw new NoSuchElementException();
 	}
 
@@ -521,18 +600,21 @@ public class Database {
 	 *
 	 * @param ID documents.Document ID stored in database.
 	 * @return documents.Document with following ID.
-	 * @throws SQLException By default.
 	 * @see Document
 	 */
-	public Document getDocument(int ID) throws SQLException {
-		ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + ID);
-		if (documentSet.next()) {
-			Document temp = new Document(documentSet.getString(2),
-					documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
-					documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
-					documentSet.getDouble(7), documentSet.getString(8));
-			temp.setID(documentSet.getInt(1));
-			return temp;
+	public Document getDocument(int ID) {
+		try {
+			ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + ID);
+			if (documentSet.next()) {
+				Document temp = new Document(documentSet.getString(2),
+						documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
+						documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
+						documentSet.getDouble(7), documentSet.getString(8));
+				temp.setID(documentSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -542,19 +624,22 @@ public class Database {
 	 *
 	 * @param ID documents.Book ID stored in database.
 	 * @return documents.Book with following ID.
-	 * @throws SQLException By default.
 	 * @see Book
 	 */
-	public Book getBook(int ID) throws SQLException {
-		//language=SQLite
-		ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id =" + ID);
-		if (bookSet.next()) {
-			Book temp = new Book(bookSet.getString(2),
-					bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
-					Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
-					bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
-			temp.setID(bookSet.getInt(1));
-			return temp;
+	public Book getBook(int ID) {
+		try {
+			//language=SQLite
+			ResultSet bookSet = executeQuery("SELECT * FROM documents where type = \'BOOK\' and id =" + ID);
+			if (bookSet.next()) {
+				Book temp = new Book(bookSet.getString(2),
+						bookSet.getString(3), Boolean.parseBoolean(bookSet.getString(4)), bookSet.getInt(5),
+						Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
+						bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
+				temp.setID(bookSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -564,18 +649,21 @@ public class Database {
 	 *
 	 * @param ID Audio/video ID stored in database.
 	 * @return Audio/video with following ID.
-	 * @throws SQLException By default.
 	 * @see AudioVideoMaterial
 	 */
-	public AudioVideoMaterial getAV(int ID) throws SQLException {
-		//language=SQLite
-		ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = " + ID);
-		if (AVSet.next()) {
-			AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
-					AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
-					Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
-			temp.setID(AVSet.getInt(1));
-			return temp;
+	public AudioVideoMaterial getAV(int ID) {
+		try {
+			//language=SQLite
+			ResultSet AVSet = executeQuery("SELECT * FROM documents where type = \'AV\' and id = " + ID);
+			if (AVSet.next()) {
+				AudioVideoMaterial temp = new AudioVideoMaterial(AVSet.getString(2),
+						AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
+						Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
+				temp.setID(AVSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -585,23 +673,28 @@ public class Database {
 	 *
 	 * @param ID Article ID stored in database.
 	 * @return Article with following ID.
-	 * @throws SQLException   By default.
-	 * @throws ParseException Incorrect data format.
 	 * @see JournalArticle
 	 */
-	public JournalArticle getArticle(int ID) throws SQLException, ParseException {
-		//language=SQLite
-		ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + ID);
-		if (articleSet.next()) {
-			JournalArticle temp = new JournalArticle(articleSet.getString(2),
-					articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
-					articleSet.getInt(5), Boolean.parseBoolean(articleSet.getString(6)),
-					articleSet.getDouble(7), articleSet.getString(8),
-					articleSet.getString(13), articleSet.getString(10),
-					articleSet.getString(14), articleSet.getString(15),
-					new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
-			temp.setID(articleSet.getInt(1));
-			return temp;
+	public JournalArticle getArticle(int ID) {
+		try {
+			//language=SQLite
+			ResultSet articleSet = executeQuery("SELECT * FROM documents where type = \'ARTICLE\' and id = " + ID);
+			if (articleSet.next()) {
+				JournalArticle temp = new JournalArticle(articleSet.getString(2),
+						articleSet.getString(3), Boolean.parseBoolean(articleSet.getString(4)),
+						articleSet.getInt(5), Boolean.parseBoolean(articleSet.getString(6)),
+						articleSet.getDouble(7), articleSet.getString(8),
+						articleSet.getString(13), articleSet.getString(10),
+						articleSet.getString(14), articleSet.getString(15),
+						new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
+				temp.setID(articleSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		throw new NoSuchElementException();
 	}
@@ -611,20 +704,25 @@ public class Database {
 	 *
 	 * @param ID tools.Debt ID stored in database.
 	 * @return tools.Debt with following ID.
-	 * @throws SQLException   By default.
-	 * @throws ParseException Incorrect data format.
 	 * @see Debt
 	 */
-	public Debt getDebt(int ID) throws SQLException, ParseException {
-		//language=SQLite
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE debt_id = " + ID); // Fixed warning, may produce bug. RS
-		if (debtsSet.next()) {
-			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
-					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-					debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
-			temp.setDebtId(debtsSet.getInt(1));
-			return temp;
+	public Debt getDebt(int ID) {
+		try {
+			//language=SQLite
+			ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE debt_id = " + ID); // Fixed warning, may produce bug. RS
+			if (debtsSet.next()) {
+				Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+						debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
+				temp.setDebtId(debtsSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		throw new NoSuchElementException();
 	}
@@ -634,26 +732,30 @@ public class Database {
 	 *
 	 * @param userID Users' ID.
 	 * @return List of debts for following user stored in database.
-	 * @throws SQLException   By default.
-	 * @throws ParseException Incorrect data format.
 	 * @see List
 	 * @see Debt
 	 */
-	public List<Debt> getDebtsForUser(int userID) throws SQLException, ParseException {
-		//language=SQLite
-		ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
-		LinkedList<Debt> debts = new LinkedList<>();
+	public ArrayList<Debt> getDebtsForUser(int userID) {
+		ArrayList<Debt> debts = new ArrayList<>();
+		try {
+			//language=SQLite
+			ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 
-		while (debtsSet.next()) {
-			Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
-					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
-					debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
-			temp.setDebtId(debtsSet.getInt(1));
+			while (debtsSet.next()) {
+				Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+						debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
+				temp.setDebtId(debtsSet.getInt(1));
 
-			debts.add(temp);
+				debts.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
-
 		return debts;
 	}
 
@@ -661,27 +763,31 @@ public class Database {
 	 * Get array list of users
 	 *
 	 * @return array list of users
-	 * @throws SQLException something went wrong in database
 	 */
-	public ArrayList<User> getUsers() throws SQLException {
-		ResultSet usersSet = executeQuery("SELECT * FROM users");
+	public ArrayList<User> getUsers() {
 		ArrayList<User> usersList = new ArrayList<>();
-		while (usersSet.next()) {
-			String status = usersSet.getString(4).toLowerCase();
-			if (status.equals("librarian")) {
-				Librarian tempLib = new Librarian(usersSet.getString(2), usersSet.getString(3),
-						usersSet.getString(5), usersSet.getString(6),
-						usersSet.getString(7), usersSet.getString(8));
-				tempLib.setId(usersSet.getInt(1));
-				usersList.add(tempLib);
-			} else {
-				Patron tempPat = new Patron(usersSet.getString(2), usersSet.getString(3), status,
-						usersSet.getString(5), usersSet.getString(6),
-						usersSet.getString(7), usersSet.getString(8));
-				tempPat.setId(usersSet.getInt(1));
-				usersList.add(tempPat);
-			}
+		try {
+			ResultSet usersSet = executeQuery("SELECT * FROM users");
 
+			while (usersSet.next()) {
+				String status = usersSet.getString(4).toLowerCase();
+				if (status.equals("librarian")) {
+					Librarian tempLib = new Librarian(usersSet.getString(2), usersSet.getString(3),
+							usersSet.getString(5), usersSet.getString(6),
+							usersSet.getString(7), usersSet.getString(8));
+					tempLib.setId(usersSet.getInt(1));
+					usersList.add(tempLib);
+				} else {
+					Patron tempPat = new Patron(usersSet.getString(2), usersSet.getString(3), status,
+							usersSet.getString(5), usersSet.getString(6),
+							usersSet.getString(7), usersSet.getString(8));
+					tempPat.setId(usersSet.getInt(1));
+					usersList.add(tempPat);
+				}
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return usersList;
 	}
@@ -690,32 +796,41 @@ public class Database {
 	 * Delete user with following ID from database.
 	 *
 	 * @param userID Users' ID.
-	 * @throws SQLException By default.
 	 */
-	public void deleteUser(int userID) throws SQLException {
-		this.executeUpdate("DELETE FROM users WHERE id=" + userID);
+	public void deleteUser(int userID) {
+		try {
+			this.executeUpdate("DELETE FROM users WHERE id=" + userID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Delete document with following ID from database.
 	 *
 	 * @param documentID documents.Document ID.
-	 * @throws SQLException By default.
 	 */
-	public void deleteDocument(int documentID) throws SQLException {
-		//language=SQLite
-		this.executeUpdate("DELETE FROM documents WHERE id=" + documentID);
+	public void deleteDocument(int documentID) {
+		try {
+			//language=SQLite
+			this.executeUpdate("DELETE FROM documents WHERE id=" + documentID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Delete debt with following ID from database.
 	 *
 	 * @param debtID tools.Debt ID.
-	 * @throws SQLException By default.
 	 */
-	public void deleteDebt(int debtID) throws SQLException {
-		//language=SQLite
-		this.executeUpdate("DELETE FROM debts WHERE debt_id=" + debtID);
+	public void deleteDebt(int debtID) {
+		try {
+			//language=SQLite
+			this.executeUpdate("DELETE FROM debts WHERE debt_id=" + debtID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -732,22 +847,33 @@ public class Database {
 	 *               <br>"password" to edit password</br>
 	 *               <br></br>
 	 * @param value  New value.
-	 * @throws SQLException Incorrect column name or value.
+	 * @throws NoSuchElementException Throws when there is no User with such id.
+	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
-	public void editUserColumn(int userID, String column, String value) throws SQLException {
-		String quotes1 = "";
-		String quotes2 = "";
+	public void editUserColumn(int userID, String column, String value) {
+
+		if (!hasUser(userID)) {
+			throw new NoSuchElementException("tools.Database: There is no such User with " + userID + " id");
+		}
 
 		try {
-			//noinspection ResultOfMethodCallIgnored
-			Integer.parseInt(value); // Removed unused variable, may produce bug. RS
-		} catch (NumberFormatException e) {
-			quotes1 = "\'";
-			quotes2 = "\'";
+			String quotes1 = "";
+			String quotes2 = "";
+
+			try {
+				//noinspection ResultOfMethodCallIgnored
+				Integer.parseInt(value); // Removed unused variable, may produce bug. RS
+			} catch (NumberFormatException e) {
+				quotes1 = "\'";
+				quotes2 = "\'";
+			}
+			//language=SQLite
+			this.executeUpdate("UPDATE users " +
+					"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + userID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new InputMismatchException("tools.Database: Incorrect column name or value.");
 		}
-		//language=SQLite
-		this.executeUpdate("UPDATE users " +
-				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + userID);
 	}
 
 	/**
@@ -762,52 +888,78 @@ public class Database {
 	 *                   <br>"price" to edit price</br>
 	 *                   <br></br>
 	 * @param value      New value.
-	 * @throws SQLException Incorrect column name or value.
+	 * @throws NoSuchElementException Throws when there is no Document with such id.
+	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
-	public void editDocumentColumn(int documentID, String column, String value) throws SQLException {
-		String quotes1 = "";
-		String quotes2 = "";
-		try {
-			//noinspection ResultOfMethodCallIgnored
-			Double.parseDouble(value);
-		} catch (NumberFormatException e) {
-			quotes1 = "\'";
-			quotes2 = "\'";
+	public void editDocumentColumn(int documentID, String column, String value) {
+		if (!hasUser(documentID)) {
+			throw new NoSuchElementException("tools.Database: There is no such Document with " + documentID + " id");
 		}
-		//language=SQLite
-		this.executeUpdate("UPDATE documents " +
-				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + documentID);
+
+
+		try {
+			String quotes1 = "";
+			String quotes2 = "";
+			try {
+				//noinspection ResultOfMethodCallIgnored
+				Double.parseDouble(value);
+			} catch (NumberFormatException e) {
+				quotes1 = "\'";
+				quotes2 = "\'";
+			}
+			//language=SQLite
+			this.executeUpdate("UPDATE documents " +
+					"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE id = " + documentID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new InputMismatchException("tools.Database: Incorrect column name or value.");
+		}
 	}
 
 	/**
 	 * Modifies the user data in database.
 	 *
 	 * @param debtID tools.Debt ID.
-	 * @param column Column to edit.
+	 * @param column Column to edit. Available options:
+	 *               <br>"patron_id" to edit patron ID</br>
+	 *               <br>"document_id" to edit document ID</br>
+	 *               <br>"booking_date" to edit booking date</br>
+	 *               <br>"expire_date" to edit expire date</br>
+	 *               <br>"fee" to edit fee</br>
+	 *               <br>"can_renew" to edit possibility of renewing document</br>
+	 *               <br></br>
 	 * @param value  New value.
-	 * @throws SQLException Incorrect column name or value.
+	 * @throws NoSuchElementException Throws when there is no Debt with such id.
+	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
-	public void editDebtColumn(int debtID, String column, String value) throws SQLException {
-		String quotes1 = "";
-		String quotes2 = "";
-		try {
-			//noinspection ResultOfMethodCallIgnored
-			Double.parseDouble(value);
-		} catch (NumberFormatException e) {
-			quotes1 = "\'";
-			quotes2 = "\'";
+	public void editDebtColumn(int debtID, String column, String value) {
+		if (hasUser(debtID)) {
+			throw new NoSuchElementException("tools.Database: There is no such Debt with " + debtID + " id");
 		}
-		//language=SQLite
-		this.executeUpdate("UPDATE debts " +
-				"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtID);
+		try {
+			String quotes1 = "";
+			String quotes2 = "";
+			try {
+				//noinspection ResultOfMethodCallIgnored
+				Double.parseDouble(value);
+			} catch (NumberFormatException e) {
+				quotes1 = "\'";
+				quotes2 = "\'";
+			}
+			//language=SQLite
+			this.executeUpdate("UPDATE debts " +
+					"SET " + column + " = " + quotes1 + value + quotes2 + " WHERE debt_id = " + debtID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			throw new InputMismatchException("tools.Database: Incorrect column name or value.");
+		}
 	}
 
 	/**
 	 * Erases all records in database and resets the indices.
-	 *
-	 * @throws SQLException If database is busy or something went incorrect.
 	 */
-	public void clear() throws SQLException {
+	public void clear() {
 		try {
 			this.execute("DELETE FROM users");
 			this.execute("DELETE FROM documents");
@@ -819,7 +971,7 @@ public class Database {
 			System.out.println("tools.Database: Indices reset.");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new SQLException("tools.Database: Clearing failed.");
+			System.err.println("tools.Database: Database is busy");
 		}
 	}
 
@@ -829,12 +981,17 @@ public class Database {
 	 * @param login    users.User login.
 	 * @param password users.User password.
 	 * @return {@code true} if user with following credentials found in database, {@code false} otherwise.
-	 * @throws SQLException By default.
 	 */
-	public boolean login(String login, String password) throws SQLException {
-		//language=SQLite
-		ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
-		return answer.next();
+	public boolean login(String login, String password) {
+		try {
+			//language=SQLite
+			ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
+			return answer.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Login error occurred.");
+			return false;
+		}
 	}
 
 	/**
@@ -843,29 +1000,17 @@ public class Database {
 	 * @param login    users.User login.
 	 * @param password users.User password.
 	 * @return users.User's ID.
-	 * @throws SQLException By default.
+	 * @throws NoSuchElementException Throws when there is no User with such login and password.
 	 */
-	public int loginId(String login, String password) throws SQLException {
-		//language=SQLite
-		ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\';");
-		if (answer.next()) {
-			return answer.getInt(1);
-		}
-		throw new NoSuchElementException();
-	}
-
-	/**
-	 * Returns user's status by ID.
-	 *
-	 * @param ID users.User's ID.
-	 * @return users.User's status.
-	 * @throws SQLException By default.
-	 */
-	public String loginStatus(int ID) throws SQLException {
-		//language=SQLite
-		ResultSet answer = executeQuery("SELECT status FROM users WHERE id = " + ID);
-		if (answer.next()) {
-			return answer.getString(1);
+	public int loginId(String login, String password) {
+		try {
+			//language=SQLite
+			ResultSet answer = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\';");
+			if (answer.next()) {
+				return answer.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -876,12 +1021,17 @@ public class Database {
 	 * @param patronID users.Patron ID.
 	 * @param docID    documents.Document ID.
 	 * @return ID for found debt.
-	 * @throws SQLException By default.
+	 * @throws NoSuchElementException Throws when there is no Debt with such ID.
 	 */
-	public int findDebtID(int patronID, int docID) throws SQLException {
-		ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = " + patronID + " AND document_id = " + docID);
-		if (debt.next()) {
-			return debt.getInt(1);
+	public int findDebtID(int patronID, int docID) {
+		try {
+			//language=SQLite
+			ResultSet debt = executeQuery("SELECT debt_id FROM debts WHERE patron_id = " + patronID + " AND document_id = " + docID);
+			if (debt.next()) {
+				return debt.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
@@ -891,13 +1041,13 @@ public class Database {
 	 *
 	 * @param document documents.Document to find.
 	 * @return ID for found document.
-	 * @throws SQLException By default.
+	 * @throws NoSuchElementException Throws when there is no Document with such ID in database.
 	 */
-	public int getDocumentID(Document document) throws SQLException {
+	public int getDocumentID(Document document) {
 		for (Document i : getDocumentList()) {
 			if (i.compare(document)) return i.getID();
 		}
-		return -1;
+		throw new NoSuchElementException("tools.Database: Document \"" + document.getTitle() + "\" is not registered yet.");
 	}
 
 	/**
@@ -905,13 +1055,13 @@ public class Database {
 	 *
 	 * @param patron users.Patron to find.
 	 * @return ID for found patron.
-	 * @throws SQLException By default.
+	 * @throws NoSuchElementException Throws when there is no Patron with such ID in database.
 	 */
-	public int getPatronID(Patron patron) throws SQLException {
+	public int getPatronID(Patron patron) {
 		for (Patron i : getPatronList()) {
 			if (i.compare(patron)) return i.getId();
 		}
-		return -1;
+		throw new NoSuchElementException("tools.Database: Patron \"" + patron.getSurname() + " " + patron.getName() + "\" is not registered yet.");
 	}
 
 	/**
@@ -919,234 +1069,451 @@ public class Database {
 	 *
 	 * @param librarian users.Librarian to find.
 	 * @return ID for found librarian.
-	 * @throws SQLException By default.
+	 * @throws NoSuchElementException Throws when there is no Librarian with such ID in database.
 	 */
-	public int getLibrarianID(Librarian librarian) throws SQLException {
+	public int getLibrarianID(Librarian librarian) {
 		for (Librarian i : getLibrarianList()) {
 			if (i.compare(librarian)) return i.getId();
 		}
-		return -1;
+		throw new NoSuchElementException("tools.Database: Patron \"" + librarian.getSurname() + " " + librarian.getName() + "\" is not registered yet.");
 	}
 
 	/**
-	 * inserts request to the library
+	 * Returns list of Requests.
 	 *
-	 * @param request request object which will be inserted
-	 * @throws SQLException something went wrong in database
-	 */
-	public void insertRequest(Request request) throws SQLException {
-		this.execute(String.format("INSERT INTO requests(patron_id,patron_name,patron_surname,document_id,priority, date,is_renew_request)" +
-						"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
-				request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
-				(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()), request.isRenewRequest()));
-	}
-
-	/**
 	 * @return list of all the unclosed requests from the database
-	 * @throws SQLException   something went wrong in database
-	 * @throws ParseException date parsing failed
 	 */
-	public List<Request> getRequests() throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'false' ORDER BY priority, date");
-		LinkedList<Request> requests = new LinkedList<>();
-		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			requests.add(temp);
-		}
-		return requests;
-	}
-
-	/**
-	 * @return list of all the unclosed requests from the database
-	 * @throws SQLException   something went wrong in database
-	 * @throws ParseException date parsing failed
-	 */
-	public List<Request> getRenewRequests() throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'true' ORDER BY priority, date");
-		LinkedList<Request> requests = new LinkedList<>();
-		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			requests.add(temp);
-		}
-		return requests;
-	}
-
-
-	public List<Request> getRequestsForPatron(int patronID) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'false' ORDER BY priority, date");
+	public ArrayList<Request> getRequests() {
 		ArrayList<Request> requests = new ArrayList<>();
-		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			requests.add(temp);
-		}
-		return requests;
-	}
-
-	public List<Request> getRenewRequestsForPatron(int patronID) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'true'");
-		LinkedList<Request> requests = new LinkedList<>();
-		while (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			requests.add(temp);
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'false' ORDER BY priority, date");
+			while (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				requests.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		return requests;
 	}
 
 	/**
-	 * @param patronId patron's id
-	 * @param docId    document's id
-	 * @return request from database with id = patronId
-	 * @throws SQLException   something went wrong in database
-	 * @throws ParseException date parsing failed
+	 * Returns list of renew requests.
+	 *
+	 * @return List of all the unclosed requests from the database.
 	 */
-	public Request getRequest(int patronId, int docId) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronId + " and document_id = " + docId);
-		if (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			return temp;
-		}
+	public ArrayList<Request> getRenewRequests() {
+		ArrayList<Request> requests = new ArrayList<>();
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE is_renew_request = 'true' ORDER BY priority, date");
 
-		throw new NoSuchElementException();
+			while (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				requests.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		return requests;
 	}
 
 	/**
-	 * @param id - id of request we want to return
-	 * @return request from the database
-	 * @throws SQLException   something went wrong in database
-	 * @throws ParseException date parsing failed
+	 * Method for getting all Requests for certain Patron.
+	 *
+	 * @param patronID certain Patron ID.
+	 * @return ArrayList of Patron's Requests
 	 */
-	public Request getRequest(int id) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = " + id);
-		if (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			return temp;
+	public ArrayList<Request> getRequestsForPatron(int patronID) {
+		ArrayList<Request> requests = new ArrayList<>();
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'false' ORDER BY priority, date");
+			while (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				requests.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		return requests;
+	}
+
+	/**
+	 * Method for getting all renew Requests for certain Patron.
+	 *
+	 * @param patronID certain Patron's ID.
+	 * @return ArrayList of Paton's renew Requests.
+	 */
+	public ArrayList<Request> getRenewRequestsForPatron(int patronID) {
+		ArrayList<Request> requests = new ArrayList<>();
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronID + " and is_renew_request = 'true'");
+
+			while (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				requests.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		return requests;
+	}
+
+
+
+	/**
+	 * Method for searching Request with such patron ID and document ID.
+	 *
+	 * @param patronId Patron's ID.
+	 * @param docId    Document's ID.
+	 * @return Request from the database with such patron ID and document ID.
+	 * @throws NoSuchElementException Throws when there is no Request with such patron ID and such document ID
+	 */
+	public Request getRequest(int patronId, int docId) {
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE patron_id = " + patronId + " and document_id = " + docId);
+			if (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		throw new NoSuchElementException();
 	}
 
+
 	/**
-	 * deletes request from the database by patron and document ids
+	 * Method for searching Request with such Request ID.
+	 *
+	 * @param id - ID of Request.
+	 * @return Request from the database with such ID.
+	 * @throws NoSuchElementException Throws when there is no Request with such ID.
+	 */
+	public Request getRequest(int id) {
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE request_id = " + id);
+			if (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		throw new NoSuchElementException();
+	}
+
+
+
+	/**
+	 * Deletes request from the database by patron and document ids
 	 *
 	 * @param patronId   - id of patron whose request was closed
 	 * @param documentId - id of document patron wanted to take
-	 * @throws SQLException something went wrong in database
 	 */
-	public void deleteRequest(int patronId, int documentId) throws SQLException {
-		executeUpdate("DELETE FROM requests WHERE patron_id = " + patronId + " AND document_id = " + documentId);
+	public void deleteRequest(int patronId, int documentId) {
+		try {
+			executeUpdate("DELETE FROM requests WHERE patron_id = " + patronId + " AND document_id = " + documentId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * deletes request from the database by request id
+	 * Deletes request from the database by request ID.
 	 *
-	 * @param requestId request id in datbase
-	 * @throws SQLException something went wrond in database
+	 * @param requestId request id in database
 	 */
-	public void deleteRequest(int requestId) throws SQLException {
-		executeUpdate("DELETE FROM requests WHERE request_id = " + requestId);
+	public void deleteRequest(int requestId) {
+		try {
+			executeUpdate("DELETE FROM requests WHERE request_id = " + requestId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public ArrayList<Request> getRequests(int docID) throws SQLException, ParseException {
-		ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID + " ORDER BY priority, date");
+	/**
+	 * Method for getting all requests for certain Document.
+	 *
+	 * @param docID certain Document's ID.
+	 * @return ArrayList of Requests for Document.
+	 */
+	public ArrayList<Request> getRequestsForDocument(int docID) {
 		ArrayList<Request> requests = new ArrayList<>();
-		if (requestsSet.next()) {
-			Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
-					new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
-			temp.setRequestId(requestsSet.getInt(1));
-			temp.setRequestId(requestsSet.getInt(1));
-			requests.add(temp);
+		try {
+			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID + " ORDER BY priority, date");
+
+			if (requestsSet.next()) {
+				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
+				temp.setRequestId(requestsSet.getInt(1));
+				temp.setRequestId(requestsSet.getInt(1));
+				requests.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		return requests;
 	}
 
 	/**
-	 * edit request table
+	 * Edit request table
 	 *
 	 * @param requestId id of request we want to edit
-	 * @param column    - column to edit.
-	 * @param value     - new value
-	 * @throws SQLException something went wrong in database
+	 * @param column    Column to edit. Available options:
+	 *                  <br>"patron_id" to edit patron ID</br>
+	 *                  <br>"patron_name" to edit patron's name</br>
+	 *                  <br>"patron_surname" to edit patron's surname</br>
+	 *                  <br>"document_id" to edit ID of requested document</br>
+	 *                  <br>"priority" to edit priority level</br>
+	 *                  <br>"date" to edit date of request creation</br>
+	 *                  <br></br>
+	 * @param value     New value.
+	 * @throws NoSuchElementException Throws when there is no Request with such id.
+	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
-	public void editRequest(int requestId, String column, String value) throws SQLException {
-		String quotes1 = "";
-		String quotes2 = "";
+	public void editRequest(int requestId, String column, String value) {
+		if (!hasRequest(requestId)) {
+			throw new NoSuchElementException("tools.Database: There is no such Request with " + requestId + " id");
 
+		}
 		try {
-			//noinspection ResultOfMethodCallIgnored
-			Double.parseDouble(value); // Removed unused variable, may produce bug. RS
-		} catch (NumberFormatException e) {
-			quotes1 = "\'";
-			quotes2 = "\'";
+			String quotes1 = "";
+			String quotes2 = "";
+
+			try {
+				//noinspection ResultOfMethodCallIgnored
+				Double.parseDouble(value); // Removed unused variable, may produce bug. RS
+			} catch (NumberFormatException e) {
+				quotes1 = "\'";
+				quotes2 = "\'";
+			}
+			executeUpdate(String.format("UPDATE requests SET %s = %s" + value + "%s WHERE request_id = %d", column, quotes1, quotes2, requestId));
+		} catch (SQLException e) {
+			throw new InputMismatchException("tools.Database: Incorrect column name or value.");
 		}
-		executeUpdate(String.format("UPDATE requests SET %s = %s" + value + "%s WHERE request_id = %d", column, quotes1, quotes2, requestId));
 	}
 
-	public String getStatusForDocument(int documentId) throws SQLException {
-		ResultSet resultSet = executeQuery("SELECT type FROM documents WHERE id = " + documentId);
-		if (resultSet.next()) {
-			return resultSet.getString(1).toLowerCase();
-		}
-		throw new NoSuchElementException();
-
-	}
-
-
-	public void deleteRequestsForDocument(int documentId) throws SQLException {
-		executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
-	}
-
-	public void insertNotification(int requestId, int userId, String description, Date date) throws SQLException {
-		execute(String.format("INSERT INTO notifications (request_id, user_id, description, date)" +
-				" VALUES (%d,%d,'%s','%s')", requestId, userId, description, (new SimpleDateFormat("yyyy-MM-dd")).format(date)));
-	}
-
-	public ArrayList<Notification> getNotificationsList() throws SQLException, ParseException {
-		ResultSet rs = executeQuery("SELECT * FROM notifications");
-		ArrayList<Notification> notifications = new ArrayList<>();
-		while (rs.next()) {
-			Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
-					rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
-			temp.setId(rs.getInt(1));
-			notifications.add(temp);
-		}
-		return notifications;
-	}
-
-	public Notification getNotification(int notificationId) throws SQLException, ParseException {
-		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE id = " + notificationId);
-		if (rs.next()) {
-			Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
-					rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
-			temp.setId(rs.getInt(1));
-			return temp;
+	/**
+	 * Method for determination of Document's status.
+	 *
+	 * @param documentId Document's ID.
+	 * @return Document's status.
+	 * @throws NoSuchElementException Throws when there is no Document with such ID.
+	 */
+	public String getStatusForDocument(int documentId) {
+		try {
+			ResultSet resultSet = executeQuery("SELECT type FROM documents WHERE id = " + documentId);
+			if (resultSet.next()) {
+				return resultSet.getString(1).toLowerCase();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		throw new NoSuchElementException();
 	}
 
-	public ArrayList<Notification> getNotificationsForUser(int userId) throws SQLException, ParseException {
-		ResultSet rs = executeQuery("SELECT * FROM notifications WHERE user_id = " + userId);
+
+	/**
+	 * Method for removing all Requests for certain Document.
+	 *
+	 * @param documentId Document's ID.
+	 */
+	public void deleteRequestsForDocument(int documentId) {
+		try {
+			executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method for inserting Notification into database.
+	 *
+	 * @param requestId Request's ID.
+	 * @param userId User's ID.
+	 * @param description Description of Notification.
+	 * @param date Date of Notification.
+	 */
+	public void insertNotification(int requestId, int userId, String description, Date date) {
+		try {
+			execute(String.format("INSERT INTO notifications (request_id, user_id, description, date)" +
+					" VALUES (%d,%d,'%s','%s')", requestId, userId, description, (new SimpleDateFormat("yyyy-MM-dd")).format(date)));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method for getting all Notifications from database.
+	 *
+	 * @return ArrayList of Notifications.
+	 */
+	public ArrayList<Notification> getNotificationsList() {
 		ArrayList<Notification> notifications = new ArrayList<>();
-		while (rs.next()) {
-			Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
-					rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
-			temp.setId(rs.getInt(1));
-			notifications.add(temp);
+		try {
+			ResultSet rs = executeQuery("SELECT * FROM notifications");
+			while (rs.next()) {
+				Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
+						rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+				temp.setId(rs.getInt(1));
+				notifications.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
 		return notifications;
 	}
 
-	public void deleteNotification(int notificationId) throws SQLException {
-		executeUpdate("DELETE FROM notifications WHERE notification_id = " + notificationId);
+	/**
+	 * Method for getting certain Notification.
+	 *
+	 * @param notificationId Notification's ID.
+	 * @return Notification object with such ID.
+	 * @throws NoSuchElementException Throws when there is no Notification with such ID.
+	 */
+	public Notification getNotification(int notificationId) {
+		try {
+			ResultSet rs = executeQuery("SELECT * FROM notifications WHERE id = " + notificationId);
+			if (rs.next()) {
+				Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
+						rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+				temp.setId(rs.getInt(1));
+				return temp;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		throw new NoSuchElementException();
+	}
+
+	/**
+	 * Method for getting all Notifications for certain User.
+	 *
+	 * @param userId User's ID.
+	 * @return ArrayList of Notifications for certain User.
+	 */
+	public ArrayList<Notification> getNotificationsForUser(int userId) {
+		ArrayList<Notification> notifications = new ArrayList<>();
+		try {
+			ResultSet rs = executeQuery("SELECT * FROM notifications WHERE user_id = " + userId);
+			while (rs.next()) {
+				Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
+						rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+				temp.setId(rs.getInt(1));
+				notifications.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		return notifications;
+	}
+
+	/**
+	 * Method for removing Notification from database.
+	 *
+	 * @param notificationId Notification's ID.
+	 */
+	public void deleteNotification(int notificationId) {
+		try {
+			executeUpdate("DELETE FROM notifications WHERE notification_id = " + notificationId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method for checking existence of such User in database.
+	 *
+	 * @param id User's ID.
+	 * @return Is such User exist?
+	 */
+	private boolean hasUser(int id) {
+		try {
+			//language=SQLite
+			return executeQuery("SELECT * FROM users WHERE id = " + id).next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Method for checking existence of such Document in database.
+	 *
+	 * @param id Document's ID.
+	 * @return Is such Document exist?
+	 */
+	private boolean hasDocument(int id) {
+		try {
+			//language=SQLite
+			return executeQuery("SELECT * FROM documents WHERE id = " + id).next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Method for checking existence of Debt in database.
+	 *
+	 * @param id Debt's ID.
+	 * @return Is such Debt exist?
+	 */
+	private boolean hasDebt(int id) {
+		try {
+			//language=SQLite
+			return executeQuery("SELECT * FROM debts WHERE debt_id = " + id).next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Method for checking existence of Request in database.
+	 *
+	 * @param id Request's ID.
+	 * @return Is such Request exist?
+	 */
+	private boolean hasRequest(int id) {
+		try {
+			//language=SQLite
+			return executeQuery("SELECT * FROM requests WHERE request_id = " + id).next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
