@@ -25,7 +25,7 @@ public class Logic {
     public static boolean canRequestDocument(int idDocument, int patronId, Database database) {
         try {
             database.getPatron(patronId);
-        } catch (SQLException | NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.out.println("tools.Database <- users.Patron: No patron registered with ID=" + patronId);
             return false;
         }
@@ -55,7 +55,7 @@ public class Logic {
                     System.out.println("Reference materials are not available for taking. Document ID: " + idDocument);
                 return false;
             }
-        } catch (SQLException | NoSuchElementException e) {
+        } catch ( NoSuchElementException e) {
             System.out.println("tools.Database <- users.Patron: Incorrect ID. documents.Document with ID="
                     + idDocument + " may not be registered id database.");
             return false;
@@ -63,18 +63,11 @@ public class Logic {
     }
 
     private static boolean findInRequests(Patron patron, int docId, Database database) {
-        try {
             List<Request> requests = database.getRequestsForPatron(patron.getId());
             for (Request i : requests) {
                 if (i.getIdDocument() == docId && i.getIdPatron() == patron.getId()) return true;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
+            return false;
     }
 
     public static boolean canRenewDocument(int documentId, int patronId, Database database) throws SQLException, ParseException {
