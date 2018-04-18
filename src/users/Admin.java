@@ -12,6 +12,7 @@ public class Admin {
 	private String password;
 	private Modify modify = new Modify();
 	private ModifyLibrary modifyLibrary = new ModifyLibrary();
+
 	private Admin(String name, String surname, String login, String password) {
 		this.name = name;
 		this.surname = surname;

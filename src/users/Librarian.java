@@ -28,6 +28,7 @@ public class Librarian extends User {
 	private ModifyLibrary modifyLibrary = new ModifyLibrary();
 	private OutstandingRequest outstandingRequest = new OutstandingRequest();
 	private ReturningSystem returningSystem = new ReturningSystem();
+
 	/**
 	 * Initialize new librarian.
 	 *
