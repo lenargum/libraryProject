@@ -78,8 +78,6 @@ public class BookingSystem {
                 database.insertDebt(debt);
         } catch (SQLException | NoSuchElementException e) {
             System.out.println("Incorrect id" + idArticle);
-        } catch (ParseException e) {
-            System.out.println("Data parsing failed");
         }
     }
 
@@ -91,12 +89,9 @@ public class BookingSystem {
      * @throws SQLException If passed the wrong document ID.
      */
     private void decreaseCountOfCopies(int idDocument, Database database) {
-        try {
             int count = database.getDocument(idDocument).getNumberOfCopies();
             database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(count - 1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
@@ -116,8 +111,6 @@ public class BookingSystem {
             }
         } catch (NoSuchElementException e) {
             System.out.println("Incorrect id" + idDocument);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
