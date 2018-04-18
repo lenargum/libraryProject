@@ -10,16 +10,14 @@ public class Admin {
 	private String surname;
 	private String login;
 	private String password;
-
+	private Modify modify = new Modify();
+	private ModifyLibrary modifyLibrary = new ModifyLibrary();
 	private Admin(String name, String surname, String login, String password) {
 		this.name = name;
 		this.surname = surname;
 		this.login = login;
 		this.password = password;
 	}
-
-	private Modify modify = new Modify();
-	private ModifyLibrary modifyLibrary = new ModifyLibrary();
 
 	public void addLibrarian(Librarian librarian, Database database) {
 		this.modifyLibrary.addLibrarian(librarian, database);

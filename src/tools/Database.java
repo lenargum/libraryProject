@@ -738,7 +738,6 @@ public class Database {
 	public ArrayList<Debt> getDebtsForUser(int userID) {
 		ArrayList<Debt> debts = new ArrayList<>();
 		try {
-			//language=SQLite
 			ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
 
 			while (debtsSet.next()) {
@@ -1175,7 +1174,6 @@ public class Database {
 	}
 
 
-
 	/**
 	 * Method for searching Request with such patron ID and document ID.
 	 *
@@ -1225,7 +1223,6 @@ public class Database {
 		}
 		throw new NoSuchElementException();
 	}
-
 
 
 	/**
@@ -1355,10 +1352,10 @@ public class Database {
 	/**
 	 * Method for inserting Notification into database.
 	 *
-	 * @param requestId Request's ID.
-	 * @param userId User's ID.
+	 * @param requestId   Request's ID.
+	 * @param userId      User's ID.
 	 * @param description Description of Notification.
-	 * @param date Date of Notification.
+	 * @param date        Date of Notification.
 	 */
 	public void insertNotification(int requestId, int userId, String description, Date date) {
 		try {
