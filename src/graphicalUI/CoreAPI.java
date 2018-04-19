@@ -155,6 +155,28 @@ public class CoreAPI {
 		loggedIn = false;
 	}
 
+	ObservableList<DocItem> search(List<String> keywords) {
+		HashSet<Document> searchResult = new HashSet<>();
+
+		db.connect();
+		for (Document doc : db.getDocumentList()) {
+			for (String keyword : keywords) {
+				if (doc.getKeyWords().contains(keyword)) {
+					searchResult.add(doc);
+				}
+			}
+		}
+		db.close();
+
+		ObservableList<DocItem> resultItems = FXCollections.observableArrayList();
+
+		for (Document doc : searchResult) {
+			resultItems.add(new DocItem(doc.getTitle(), doc.getAuthors(), doc.getID()));
+		}
+
+		return resultItems;
+	}
+
 	/**
 	 * Get documents for user.
 	 *

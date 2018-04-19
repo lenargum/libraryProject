@@ -3,16 +3,20 @@ package graphicalUI;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXChipView;
 import com.jfoenix.svg.SVGGlyph;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SearchView implements Initializable {
@@ -50,9 +54,16 @@ public class SearchView implements Initializable {
 
 		keywordChips = (JFXChipView<String>) layout.lookup("#keywordChips");
 		keywordChips.getSuggestions().addAll("book", "article", "audio/video");
-//		keywordChips.setOnKeyPressed(event -> {
-//			System.out.println(event.getCode());
-//		});
+		keywordChips.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER) {
+				new Thread(() -> {
+					List<String> keywords = new LinkedList<>();
+					keywords.addAll(keywordChips.getChips());
+
+					ObservableList<DocItem> searchResult = api.search(keywords);
+				}).start();
+			}
+		});
 
 		scene = new Scene(layout);
 	}
