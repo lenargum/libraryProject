@@ -41,6 +41,10 @@ public class Admin {
 		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
+	public void editLibrarianPrivilege(int idLibrarian, int newPrivilege, Database database){
+	    this.modify.editLibrarianPrivilege(idLibrarian, newPrivilege, database);
+    }
+
 	public void deleteLibrarian(int idLibrarian, Database database) {
 		this.modifyLibrary.deleteLibrarian(idLibrarian, database);
 	}

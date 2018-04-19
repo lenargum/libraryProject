@@ -31,6 +31,10 @@ public class Modify {
             database.getLibrarian(idLibrarian).setPhoneNumber(newPhone);
     }
 
+    public void editLibrarianPrivilege(int idLibrarian, int newPrivilege, Database database){
+        database.getLibrarian(idLibrarian).setPrivilege(newPrivilege);
+    }
+
     public void editPatronName(int idPatron, String newName, Database database)  {
             database.editUserColumn(idPatron, "firstname", newName);
             database.getPatron(idPatron).setName(newName);
