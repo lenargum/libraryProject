@@ -60,7 +60,7 @@ public class Librarian extends User {
      * @param database tools.Database that stores the information.
      */
     public void addBook(Book book, Database database) {
-        this.modifyLibrary.addBook(book, database);
+        this.modifyLibrary.addBook(this.getId(), book, database);
     }
 
     /**
@@ -70,7 +70,7 @@ public class Librarian extends User {
      * @param database tools.Database that stores the information.
      */
     public void addAV(AudioVideoMaterial AV, Database database) {
-        this.modifyLibrary.addAV(AV, database);
+        this.modifyLibrary.addAV(this.getId(), AV, database);
     }
 
     /**
@@ -80,7 +80,7 @@ public class Librarian extends User {
      * @param database       tools.Database that stores the information.
      */
     public void addArticle(JournalArticle journalArticle, Database database) {
-        this.modifyLibrary.addArticle(journalArticle, database);
+        this.modifyLibrary.addArticle(this.getId(), journalArticle, database);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Librarian extends User {
      * @param database tools.Database that stores the information.
      */
     public void registerPatron(Patron patron, Database database) {
-        this.modifyLibrary.registerPatron(patron, database);
+        this.modifyLibrary.registerPatron(this.getId(), patron, database);
     }
 
     /**
@@ -100,7 +100,7 @@ public class Librarian extends User {
      * @param database   tools.Database that stores the information.
      */
     public void deleteDocument(int idDocument, Database database) {
-        this.modifyLibrary.deleteDocument(idDocument, database);
+        this.modifyLibrary.deleteDocument(this.getId(), idDocument, database);
     }
 
     /**
@@ -110,7 +110,7 @@ public class Librarian extends User {
      * @param database tools.Database that stores the information.
      */
     public void deletePatron(int idPatron, Database database) {
-        this.modifyLibrary.deletePatron(idPatron, database);
+        this.modifyLibrary.deletePatron(this.getId(), idPatron, database);
     }
 
     /**
@@ -121,7 +121,7 @@ public class Librarian extends User {
      * @param price      New price.
      */
     public void modifyDocumentPrice(int idDocument, Database database, double price) {
-        this.modify.modifyDocumentPrice(idDocument, database, price);
+        this.modify.modifyDocumentPrice(this.getId(), idDocument, database, price);
     }
 
     /**
@@ -132,7 +132,7 @@ public class Librarian extends User {
      * @param edition  New edition year.
      */
     public void modifyBookEdition(int idBook, Database database, int edition) {
-        this.modify.modifyBookEdition(idBook, database, edition);
+        this.modify.modifyBookEdition(this.getId(), idBook, database, edition);
     }
 
     /**
@@ -143,7 +143,7 @@ public class Librarian extends User {
      * @param isAllowedForStudents New status.
      */
     public void modifyDocumentAllowance(int idDocument, Database database, boolean isAllowedForStudents) {
-        this.modify.modifyDocumentAllowance(idDocument, database, isAllowedForStudents);
+        this.modify.modifyDocumentAllowance(this.getId(), idDocument, database, isAllowedForStudents);
     }
 
     /**
@@ -154,7 +154,7 @@ public class Librarian extends User {
      * @param countOfCopies New number.
      */
     public void modifyDocumentCopies(int idDocument, Database database, int countOfCopies) {
-        this.modify.modifyDocumentCopies(idDocument, database, countOfCopies);
+        this.modify.modifyDocumentCopies(this.getId(), idDocument, database, countOfCopies);
     }
 
     /**
@@ -165,7 +165,7 @@ public class Librarian extends User {
      * @param bestseller New status.
      */
     public void modifyBookBestseller(int idBook, Database database, boolean bestseller) {
-        this.modify.modifyBookBestseller(idBook, database, bestseller);
+        this.modify.modifyBookBestseller(this.getId(), idBook, database, bestseller);
     }
 
     /**
@@ -176,7 +176,7 @@ public class Librarian extends User {
      * @param surname  New last name.
      */
     public void modifyPatronSurname(int idPatron, Database database, String surname) {
-        this.modify.modifyPatronSurname(idPatron, database, surname);
+        this.modify.modifyPatronSurname(this.getId(), idPatron, database, surname);
     }
 
     /**
@@ -187,7 +187,7 @@ public class Librarian extends User {
      * @param address  New living address.
      */
     public void modifyPatronAddress(int idPatron, Database database, String address) {
-        this.modify.modifyPatronAddress(idPatron, database, address);
+        this.modify.modifyPatronAddress(this.getId(), idPatron, database, address);
     }
 
     /**
@@ -198,7 +198,7 @@ public class Librarian extends User {
      * @param phoneNumber New phone number.
      */
     public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
-        this.modify.modifyPatronPhoneNumber(idPatron, database, phoneNumber);
+        this.modify.modifyPatronPhoneNumber(this.getId(), idPatron, database, phoneNumber);
     }
 
     /**
@@ -210,7 +210,7 @@ public class Librarian extends User {
      * @param status   New status.
      */
     public void modifyPatronStatus(int idPatron, Database database, String status) {
-        this.modify.modifyPatronStatus(idPatron, database, status);
+        this.modify.modifyPatronStatus(this.getId(), idPatron, database, status);
     }
 
     /**
@@ -290,7 +290,7 @@ public class Librarian extends User {
     }
 
     public void makeOutstandingRequest(Request request, Database database) {
-        this.outstandingRequest.makeOutstandingRequest(request, database);
+        this.outstandingRequest.makeOutstandingRequest(this.getId(), request, database);
     }
 
     public void setAvailability(int docID, Database database) {

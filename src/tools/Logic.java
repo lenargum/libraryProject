@@ -103,6 +103,10 @@ public class Logic {
         return database.getLibrarian(librarianId).getPrivilege() == Constants.deletePrivilege;
     }
 
+    public static boolean canSetRequest(int librarianId, Database database){
+        return  database.getLibrarian(librarianId).getPrivilege() >= Constants.addPrivilege;
+    }
+
     //LOGIC OF SETTING DATES
 
     public static Date expireDate(int patronId, int docId, Database database) {

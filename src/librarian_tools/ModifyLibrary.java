@@ -4,6 +4,7 @@ import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.JournalArticle;
 import tools.Database;
+import tools.Logic;
 import users.Patron;
 
 import java.sql.SQLException;
@@ -16,9 +17,12 @@ public class ModifyLibrary {
      * @param book     documents.Book to add.
      * @param database tools.Database that stores the information.
      */
-    public void addBook(Book book, Database database) {
+    public void addBook(int librarianId, Book book, Database database) {
+        if(Logic.canAdd(librarianId, database)) {
             database.insertBook(book);
+        } else {
 
+        }
     }
 
     /**
@@ -27,10 +31,12 @@ public class ModifyLibrary {
      * @param AV       Audio/video to add.
      * @param database tools.Database that stores the information.
      */
-    public void addAV(AudioVideoMaterial AV, Database database)  {
+    public void addAV(int librarianId, AudioVideoMaterial AV, Database database)  {
+        if(Logic.canAdd(librarianId, database)) {
             database.insertAV(AV);
+        } else {
 
-
+        }
     }
 
     /**
@@ -39,10 +45,13 @@ public class ModifyLibrary {
      * @param journalArticle Article to add.
      * @param database       tools.Database that stores the information.
      */
-    public void addArticle(JournalArticle journalArticle, Database database)  {
-
+    public void addArticle(int librarianId, JournalArticle journalArticle, Database database)  {
+        if(Logic.canAdd(librarianId, database)) {
             database.insertArticle(journalArticle);
+        } else {
+
         }
+    }
 
 
 
@@ -52,10 +61,12 @@ public class ModifyLibrary {
      * @param patron   users.Patron to add.
      * @param database tools.Database that stores the information.
      */
-    public void registerPatron(Patron patron, Database database)  {
-
+    public void registerPatron(int librarianId, Patron patron, Database database)  {
+        if(Logic.canAdd(librarianId, database)) {
             database.insertPatron(patron);
+        } else {
 
+        }
     }
 
     /**
@@ -64,10 +75,12 @@ public class ModifyLibrary {
      * @param idDocument ID of document which is going to be deleted.
      * @param database   tools.Database that stores the information.
      */
-    public void deleteDocument(int idDocument, Database database)  {
-
+    public void deleteDocument(int librarianId, int idDocument, Database database)  {
+        if(Logic.canDelete(librarianId, database)) {
             database.deleteDocument(idDocument);
+        } else {
 
+        }
     }
 
     /**
@@ -76,11 +89,12 @@ public class ModifyLibrary {
      * @param idPatron ID of patron which is going to be deleted.
      * @param database tools.Database that stores the information.
      */
-    public void deletePatron(int idPatron, Database database)  {
-
+    public void deletePatron(int librarianId, int idPatron, Database database)  {
+        if(Logic.canDelete(librarianId, database)) {
             database.deleteUser(idPatron);
+        } else {
 
-
+        }
     }
 
 }

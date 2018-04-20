@@ -2,6 +2,7 @@ package librarian_tools;
 
 import documents.Document;
 import tools.Database;
+import tools.Logic;
 import tools.Request;
 
 import java.sql.SQLException;
@@ -11,10 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 public class OutstandingRequest {
-    public void makeOutstandingRequest(Request request, Database database) {
-
+    public void makeOutstandingRequest(int librarianId, Request request, Database database) {
+        if(Logic.canSetRequest(librarianId, database)) {
             sendNotificationsForOutstandingRequest(request, database);
             database.deleteRequestsForDocument(request.getIdDocument());
+        } else {
+
+        }
 
     }
 
