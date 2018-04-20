@@ -143,12 +143,9 @@ public class Database {
 	 * @see Patron
 	 */
 	public void insertPatron(Patron patron) {
-		String status = "STUDENT";
-		if (!patron.getStatus().toLowerCase().equals("librarian")) {
-			status = patron.getStatus().toUpperCase();
-		}
 		try {
-			insertUser(patron.getLogin(), patron.getPassword(), status, patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
+			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
+			patron.setId(this.getPatronID(patron));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: User with such login already exists");
 		}
@@ -163,6 +160,7 @@ public class Database {
 	public void insertLibrarian(Librarian librarian) {
 		try {
 			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress());
+			librarian.setId(this.getLibrarianID(librarian));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: User with such login already exists");
 		}
@@ -215,8 +213,7 @@ public class Database {
 			insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
 					book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
 					book.isBestseller(), "-", "-", "-", "NULL");
-			book.setID(this.getDocumentID(new Document(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(),
-					book.getNumberOfCopies(), book.isReference(), book.getPrice(), book.getKeyWords())));
+			book.setID(this.getDocumentID(book));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
 		}
@@ -233,8 +230,7 @@ public class Database {
 			insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
 					av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
 					"-", "-", "-", "NULL");
-			av.setID(this.getDocumentID(new Document(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
-					av.isReference(), av.getPrice(), av.getKeyWords())));
+			av.setID(this.getDocumentID(av));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
 		}
@@ -253,8 +249,7 @@ public class Database {
 					"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 					article.getIssue(), article.getEditor(),
 					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
-			article.setID(this.getDocumentID(new Document(article.getTitle(), article.getAuthors(), article.isAllowedForStudents(),
-					article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords())));
+			article.setID(this.getDocumentID(article));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
 		}
@@ -289,6 +284,7 @@ public class Database {
 							"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
 					request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
 					(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()), request.isRenewRequest()));
+			request.setRequestId(this.getRequest(request.getIdPatron(),request.getIdDocument()).getRequestId());
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of fields (patron_id, document_id, priority, date, is_renew_request) is empty or null");
 		}
@@ -739,6 +735,36 @@ public class Database {
 		ArrayList<Debt> debts = new ArrayList<>();
 		try {
 			ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE patron_id =" + userID);
+
+			while (debtsSet.next()) {
+				Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
+						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(5)),
+						debtsSet.getDouble(6), Boolean.parseBoolean(debtsSet.getString(7)));
+				temp.setDebtId(debtsSet.getInt(1));
+
+				debts.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+		}
+		return debts;
+	}
+
+	/**
+	 * Method for searching Debts for certain Document.
+	 *
+	 * @param documentId Document's ID.
+	 * @return ArrayList of Debts for certain Document.
+	 */
+	public ArrayList<Debt> getDebtsForDocument(int documentId) {
+		ArrayList<Debt> debts = new ArrayList<>();
+		try {
+			//language=SQLite
+			ResultSet debtsSet = executeQuery("SELECT * FROM debts WHERE document_id =" + documentId);
 
 			while (debtsSet.next()) {
 				Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
