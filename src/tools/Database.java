@@ -497,9 +497,9 @@ public class Database {
 	 * @see Debt
 	 */
 	public ArrayList<Debt> getDebtsList() {
+		ArrayList<Debt> debtsList = new ArrayList<>();
 		try {
 			ResultSet debtsSet = executeQuery("SELECT * FROM debts");
-			ArrayList<Debt> debtsList = new ArrayList<>();
 			while (debtsSet.next()) {
 				Debt temp = new Debt(debtsSet.getInt(2), debtsSet.getInt(3),
 						new SimpleDateFormat("yyyy-MM-dd").parse(debtsSet.getString(4)),
@@ -508,18 +508,13 @@ public class Database {
 				temp.setDebtId(debtsSet.getInt(1));
 				debtsList.add(temp);
 			}
-
-			if (debtsList.size() != 0) {
-				return debtsList;
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
 			System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
 		}
-		throw new NoSuchElementException();
-
+		return debtsList;
 	}
 
 	/**
