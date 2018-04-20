@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import tools.Notification;
+import users.Librarian;
 
 import java.io.IOException;
 
@@ -81,7 +82,10 @@ public class UserPage {
 		mainScene = new Scene(userLayout);
 
 		userDocs = new UserDocs(rootPage.getApi());
-		librarianPanel = new LibrarianPanel(rootPage.getApi());
+
+		if (rootPage.getApi().getUser() instanceof Librarian) {
+			librarianPanel = new LibrarianPanel(rootPage.getApi());
+		}
 
 		Thread initSelector = new Thread(() -> {
 			System.out.print("Loading document selector in parallel thread:\n\t");

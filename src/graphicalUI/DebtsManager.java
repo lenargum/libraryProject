@@ -113,7 +113,7 @@ public class DebtsManager {
 		JFXButton delete = new JFXButton("Delete");
 		JFXPopup popup = new JFXPopup();
 		outstanding.setOnAction(event1 -> {
-
+			//api.makeOutstandingRequest();
 			popup.hide();
 		});
 		delete.setOnAction(event1 -> {

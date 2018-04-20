@@ -2,7 +2,9 @@ package graphicalUI;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXChipView;
+import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.svg.SVGGlyph;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,8 @@ public class SearchView implements Initializable {
 	private JFXChipView<String> keywordChips;
 	@FXML
 	private JFXButton goBackBtn;
+	@FXML
+	private JFXMasonryPane docsPane;
 
 	public SearchView() {
 	}
@@ -52,16 +56,26 @@ public class SearchView implements Initializable {
 		goBackGraphic.setFill(Paint.valueOf("8d8d8d"));
 		goBackBtn.setGraphic(goBackGraphic);
 
+		docsPane = (JFXMasonryPane) layout.lookup("#docsPane");
+
 		keywordChips = (JFXChipView<String>) layout.lookup("#keywordChips");
 		keywordChips.getSuggestions().addAll("book", "article", "audio/video");
 		keywordChips.setOnKeyReleased(event -> {
 			if (event.getCode() == KeyCode.ENTER) {
-				new Thread(() -> {
+				ObservableList<DocItem> searchResult = FXCollections.observableArrayList();
+				Thread performSearch = new Thread(() -> {
 					List<String> keywords = new LinkedList<>();
 					keywords.addAll(keywordChips.getChips());
-
-					ObservableList<DocItem> searchResult = api.search(keywords);
-				}).start();
+					searchResult.addAll(api.search(keywords));
+				});
+				performSearch.start();
+				try {
+					performSearch.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					docsPane.getChildren().setAll(searchResult);
+				}
 			}
 		});
 

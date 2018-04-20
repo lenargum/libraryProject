@@ -10,7 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -74,7 +74,7 @@ public class RenewApproval {
 		int selectedIndex = listView.getSelectionModel().getSelectedIndex();
 
 		JFXPopup popup = new JFXPopup();
-		HBox container = new HBox();
+		VBox container = new VBox();
 		JFXButton accept = new JFXButton("ACCEPT");
 		JFXButton reject = new JFXButton("REJECT");
 
@@ -84,7 +84,7 @@ public class RenewApproval {
 			popup.hide();
 		});
 		reject.setOnAction(event1 -> {
-			// do smth
+			api.rejectRenewRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
 		});

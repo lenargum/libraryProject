@@ -161,7 +161,9 @@ public class CoreAPI {
 		db.connect();
 		for (Document doc : db.getDocumentList()) {
 			for (String keyword : keywords) {
-				if (doc.getKeyWords().contains(keyword)) {
+				String docKeywords = (doc.getKeyWords() +
+						doc.getTitle() + doc.getAuthors()).toLowerCase();
+				if (docKeywords.contains(keyword.toLowerCase())) {
 					searchResult.add(doc);
 				}
 			}
@@ -337,6 +339,10 @@ public class CoreAPI {
 		return list;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	ObservableList<DebtsManager.DebtCell> getAllDebts() {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
 
