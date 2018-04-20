@@ -1,6 +1,7 @@
 package admin_tools;
 
 import documents.Document;
+import tools.Constants;
 import tools.Database;
 
 
@@ -31,8 +32,16 @@ public class Modify {
             database.getLibrarian(idLibrarian).setPhoneNumber(newPhone);
     }
 
-    public void editLibrarianPrivilege(int idLibrarian, int newPrivilege, Database database){
-        database.getLibrarian(idLibrarian).setPrivilege(newPrivilege);
+    public void setModifyPrivilegeLibrarian(int idLibrarian, Database database){
+        database.getLibrarian(idLibrarian).setPrivilege(Constants.modifyPrivilege);
+    }
+
+    public void setAddPrivilegeLibrarian(int idLibrarian, Database database){
+        database.getLibrarian(idLibrarian).setPrivilege(Constants.addPrivilege);
+    }
+
+    public void setDeletePrivilegeLibrarian(int idLibrarian, Database database){
+        database.getLibrarian(idLibrarian).setPrivilege(Constants.deletePrivilege);
     }
 
     public void editPatronName(int idPatron, String newName, Database database)  {

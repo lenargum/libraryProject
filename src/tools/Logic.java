@@ -92,15 +92,15 @@ public class Logic {
     //CHECKING POSSIBILITIES OF LIBRARIANS
 
     public static boolean canModify(int librarianId, Database database) {
-        return database.getLibrarian(librarianId).getPrivilege() > 0;
+        return database.getLibrarian(librarianId).getPrivilege() >= Constants.modifyPrivilege;
     }
 
     public static boolean canAdd(int librarianId, Database database) {
-        return database.getLibrarian(librarianId).getPrivilege() > 1;
+        return database.getLibrarian(librarianId).getPrivilege() >= Constants.addPrivilege;
     }
 
     public static boolean canDelete(int librarianId, Database database) {
-        return database.getLibrarian(librarianId).getPrivilege() == 3;
+        return database.getLibrarian(librarianId).getPrivilege() == Constants.deletePrivilege;
     }
 
     //LOGIC OF SETTING DATES

@@ -4,6 +4,12 @@ import java.util.Date;
 
 public class Constants {
 
+    public final static int basicPrivilege = 0;
+    public final static int modifyPrivilege = 1;
+    public final static int addPrivilege = 2;
+    public final static int deletePrivilege = 3;
+
+
     public static Date setWeek(){
         Date date = new Date();
         date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);

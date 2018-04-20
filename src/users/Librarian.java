@@ -5,6 +5,7 @@ import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
 import librarian_tools.*;
+import tools.Constants;
 import tools.Database;
 import tools.Request;
 
@@ -31,7 +32,7 @@ public class Librarian extends User {
 	 */
 	public Librarian(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
-		setPrivilege(0);
+		setPrivilege(Constants.basicPrivilege);
 	}
 
 	public void setPrivilege(int p){
