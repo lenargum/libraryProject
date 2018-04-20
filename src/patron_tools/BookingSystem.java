@@ -35,7 +35,7 @@ public class BookingSystem {
             Debt debt = new Debt(patron.getId(), idBook, dateBook, dateExpire, 0, true);
             database.insertDebt(debt);
 
-        } catch (SQLException | NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.out.println("Incorrect id=" + idBook);
         }
     }
@@ -55,7 +55,7 @@ public class BookingSystem {
                 Date date2 = Logic.expireDate(patron.getId(), idAV, database);
                 Debt debt = new Debt(patron.getId(), idAV, date, date2, 0, true);
                 database.insertDebt(debt);
-        } catch (SQLException | NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.out.println("Incorrect id" + idAV);
         }
     }
@@ -76,7 +76,7 @@ public class BookingSystem {
                 Debt debt = new Debt(patron.getId(), idArticle, date, date2, 0, true);
 
                 database.insertDebt(debt);
-        } catch (SQLException | NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.out.println("Incorrect id" + idArticle);
         }
     }
@@ -134,10 +134,8 @@ public class BookingSystem {
             database.editDebtColumn(debt.getDebtId(), "expire_date",
                     (new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()));
 
-        } catch (NoSuchElementException | SQLException e) {
+        } catch (NoSuchElementException e) {
             System.out.println("Incorrect id");
-        } catch (ParseException e) {
-            System.out.println("Incorrect data parsing");
         }
     }
 
@@ -148,7 +146,6 @@ public class BookingSystem {
      * @param database - information storage
      */
     public void sendRenewRequest(Patron patron, int debtId, Database database) {
-        try {
             Debt debt = database.getDebt(debtId);
             if(Logic.canRenewDocument(debt.getDocumentId(), patron.getId(), database)) {
 
@@ -157,9 +154,7 @@ public class BookingSystem {
                 Request request = new Request(patron, doc, date, true);
                 database.insertRequest(request);
             }
-        } catch (SQLException | ParseException e) {
-            System.out.println("Incorrect id");
-        }
+
     }
 
 }
