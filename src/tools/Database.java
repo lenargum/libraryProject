@@ -4,9 +4,7 @@ import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
-import users.Librarian;
-import users.Patron;
-import users.User;
+import users.*;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -284,7 +282,7 @@ public class Database {
 							"VALUES(%d, '%s', '%s', %d, %d,'%s','%b')", request.getIdPatron(), request.getNamePatron(),
 					request.getSurnamePatron(), request.getIdDocument(), request.getPriority(),
 					(new SimpleDateFormat("yyyy-MM-dd")).format(request.getDate()), request.isRenewRequest()));
-			request.setRequestId(this.getRequest(request.getIdPatron(),request.getIdDocument()).getRequestId());
+			request.setRequestId(this.getRequest(request.getIdPatron(), request.getIdDocument()).getRequestId());
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of fields (patron_id, document_id, priority, date, is_renew_request) is empty or null");
 		}
@@ -551,9 +549,50 @@ public class Database {
 		try {
 			ResultSet userSet = executeQuery("SELECT * FROM users WHERE login = \'" + login + "\' and password = \'" + password + "\'");
 			if (userSet.next()) {
-				Patron temp = new Patron(userSet.getString(2),
-						userSet.getString(3), userSet.getString(4), userSet.getString(5),
-						userSet.getString(6), userSet.getString(7), userSet.getString(8));
+				User temp;
+
+				switch (userSet.getString(4)) {
+					case "LIBRARIAN":
+						temp = new Librarian(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
+					case "STUDENT":
+						temp = new Student(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
+					case "PROFESSOR":
+						temp = new Professor(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
+					case "INSTRUCTOR":
+						temp = new Instructor(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
+					case "TA":
+						temp = new TeachingAssistant(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
+					case "VP":
+						temp = new VisitingProfessor(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
+					default:
+						throw new WrongUserTypeException("System does not support type " +
+								userSet.getString(4));
+				}
+
 				temp.setId(userSet.getInt(1));
 				return temp;
 			}

@@ -1,7 +1,7 @@
 package users;
 
-public class TeachingAsistent extends Patron {
-	public TeachingAsistent(String login, String password, String name, String surname, String phone, String address) {
+public class TeachingAssistant extends Patron {
+	public TeachingAssistant(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		this.setPriority();
 		this.setStatus("TA");

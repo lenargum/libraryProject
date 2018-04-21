@@ -106,8 +106,12 @@ public class DebtsManager {
 	 * @param event Mouse event.
 	 */
 	private void onTableClicked(MouseEvent event) {
-		DebtCell selected = debtsTable.getSelectionModel().getSelectedItem().getValue();
-		if (selected == null) return;
+		DebtCell selected;
+		try {
+			selected = debtsTable.getSelectionModel().getSelectedItem().getValue();
+		} catch (NullPointerException e) {
+			return;
+		}
 		int selectedIndex = debtsTable.getSelectionModel().getSelectedIndex();
 		JFXButton outstanding = new JFXButton("Outstanding request");
 		JFXButton delete = new JFXButton("Delete");

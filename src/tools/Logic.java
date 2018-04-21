@@ -132,7 +132,7 @@ public class Logic {
             else date = Constants.setThreeWeeks();
         } else if (patron instanceof VisitingProfessor){
             date = Constants.setWeek();
-        } else if(patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent){
+        } else if(patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAssistant){
             if(book.isBestseller()) date = Constants.setTwoWeeks();
             else date = Constants.setFourWeeks();
         } else {
@@ -149,7 +149,7 @@ public class Logic {
             date = Constants.setTwoWeeks();
         } else if (patron instanceof VisitingProfessor){
             date = Constants.setWeek();
-        } else if(patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent){
+        } else if(patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAssistant){
             date = Constants.setTwoWeeks();
         } else {
             throw new WrongUserTypeException();
@@ -185,7 +185,7 @@ public class Logic {
             }
         } else if (patron instanceof VisitingProfessor){
             return Constants.setWeek(debt.getExpireDate());
-        } else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent){
+        } else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAssistant){
             if(book.isBestseller()){
                 return Constants.setTwoWeeks(debt.getExpireDate());
             } else {
@@ -200,7 +200,7 @@ public class Logic {
         Patron patron= database.getPatron(debt.getPatronId());
         if(patron instanceof VisitingProfessor){
             return Constants.setWeek(debt.getExpireDate());
-        } else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAsistent || patron instanceof Student){
+        } else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAssistant || patron instanceof Student){
             return Constants.setTwoWeeks(debt.getExpireDate());
         } else {
             throw new WrongUserTypeException();
