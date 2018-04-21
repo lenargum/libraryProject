@@ -40,9 +40,22 @@ public class Admin {
 		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
+    public void setModifyPrivilegeLibrarian(int idLibrarian, Database database){
+        this.modify.setModifyPrivilegeLibrarian(idLibrarian, database);
+    }
+
+    public void setAddPrivilegeLibrarian(int idLibrarian, Database database){
+        this.modify.setAddPrivilegeLibrarian(idLibrarian, database);
+    }
+
+    public void setDeletePrivilegeLibrarian(int idLibrarian, Database database){
+        this.modify.setDeletePrivilegeLibrarian(idLibrarian, database);
+    }
+
 	public void deleteLibrarian(int idLibrarian, Database database) {
 		this.modifyLibrary.deleteLibrarian(idLibrarian, database);
 	}
+
 
 	public void editPatronName(int idPatron, String newName, Database database) {
 		this.modify.editPatronName(idPatron, newName, database);

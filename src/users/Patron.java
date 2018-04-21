@@ -5,7 +5,6 @@ import patronTools.BookingSystem;
 import patronTools.ReturningSystem;
 import tools.Database;
 import tools.Logic;
-
 import java.util.ArrayList;
 
 /**
@@ -16,28 +15,28 @@ import java.util.ArrayList;
  */
 public class Patron extends User {
 	/**
-	 * Priority of users.Patron.
-	 * Levels of priority: student, instructor(instructions), TA, VP, professor
-	 */
-	protected int priority;
-	/**
 	 * users.Patron type.
 	 * Possible values: {@code "instructor"}, {@code "student"}
 	 */
 	private String status;
+
+	/**
+	 * Priority of users.Patron.
+	 * Levels of priority: student, instructor(instructions), TA, VP, professor
+	 */
+	protected int priority;
+
 	/**
 	 * List of patrons' documents IDs.
 	 */
 	private ArrayList<Integer> listOfDocumentsPatron = new ArrayList<>();
-	private BookingSystem bookingSystem = new BookingSystem();
-	private ReturningSystem returningSystem = new ReturningSystem();
 
 	/**
 	 * Initialize new user.
 	 *
 	 * @param login    Login.
 	 * @param password Password.
-	 *                 users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
+	 *  users.Patron type. Possible values: {@code "instructor"}, {@code "student"}
 	 * @param name     First name.
 	 * @param surname  Last name.
 	 * @param phone    Phone number.
@@ -47,10 +46,13 @@ public class Patron extends User {
 		super(login, password, name, surname, phone, address);
 	}
 
-	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
+	public Patron(String login, String password, String status, String name, String surname, String phone, String address){
 		super(login, password, name, surname, phone, address);
 		this.setStatus(status);
 	}
+
+	private BookingSystem bookingSystem = new BookingSystem();
+	private ReturningSystem returningSystem = new ReturningSystem();
 
 	/**
 	 * Get the patrons' documents IDs.
