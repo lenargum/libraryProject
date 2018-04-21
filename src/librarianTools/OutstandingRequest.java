@@ -1,4 +1,4 @@
-package librarian_tools;
+package librarianTools;
 
 import documents.Document;
 import tools.Database;
