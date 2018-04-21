@@ -588,6 +588,12 @@ public class Database {
 								userSet.getString(6), userSet.getString(7),
 								userSet.getString(8));
 						break;
+					case "ADMIN":
+						temp = new Admin(userSet.getString(2),
+								userSet.getString(3), userSet.getString(5),
+								userSet.getString(6), userSet.getString(7),
+								userSet.getString(8));
+						break;
 					default:
 						throw new WrongUserTypeException("System does not support type " +
 								userSet.getString(4));

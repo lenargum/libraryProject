@@ -340,7 +340,6 @@ public class CoreAPI {
 	}
 
 	/**
-	 *
 	 * @return
 	 */
 	ObservableList<DebtsManager.DebtCell> getAllDebts() {
