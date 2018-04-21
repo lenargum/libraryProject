@@ -1,9 +1,7 @@
-package librarian_tools;
+package librarianTools;
 
-import sun.rmi.runtime.Log;
 import tools.Database;
 import tools.Logic;
-import users.Librarian;
 
 public class Modify {
 

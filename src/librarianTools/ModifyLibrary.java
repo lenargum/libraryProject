@@ -1,4 +1,4 @@
-package librarian_tools;
+package librarianTools;
 
 import documents.AudioVideoMaterial;
 import documents.Book;
@@ -6,8 +6,6 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Logic;
 import users.Patron;
-
-import java.sql.SQLException;
 
 
 public class ModifyLibrary {
