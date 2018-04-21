@@ -4,22 +4,13 @@ import adminTools.Modify;
 import adminTools.ModifyLibrary;
 import tools.Database;
 
-public class Admin {
-
-	private String name;
-	private String surname;
-	private String login;
-	private String password;
-
-	private Admin(String name, String surname, String login, String password) {
-		this.name = name;
-		this.surname = surname;
-		this.login = login;
-		this.password = password;
-	}
-
+public class Admin extends User {
 	private Modify modify = new Modify();
 	private ModifyLibrary modifyLibrary = new ModifyLibrary();
+
+	public Admin(String login, String password, String name, String surname, String phone, String address) {
+		super(login, password, name, surname, "", "");
+	}
 
 	public void addLibrarian(Librarian librarian, Database database) {
 		this.modifyLibrary.addLibrarian(librarian, database);
@@ -41,17 +32,17 @@ public class Admin {
 		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
-    public void setModifyPrivilegeLibrarian(int idLibrarian, Database database){
-        this.modify.setModifyPrivilegeLibrarian(idLibrarian, database);
-    }
+	public void setModifyPrivilegeLibrarian(int idLibrarian, Database database) {
+		this.modify.setModifyPrivilegeLibrarian(idLibrarian, database);
+	}
 
-    public void setAddPrivilegeLibrarian(int idLibrarian, Database database){
-        this.modify.setAddPrivilegeLibrarian(idLibrarian, database);
-    }
+	public void setAddPrivilegeLibrarian(int idLibrarian, Database database) {
+		this.modify.setAddPrivilegeLibrarian(idLibrarian, database);
+	}
 
-    public void setDeletePrivilegeLibrarian(int idLibrarian, Database database){
-        this.modify.setDeletePrivilegeLibrarian(idLibrarian, database);
-    }
+	public void setDeletePrivilegeLibrarian(int idLibrarian, Database database) {
+		this.modify.setDeletePrivilegeLibrarian(idLibrarian, database);
+	}
 
 	public void deleteLibrarian(int idLibrarian, Database database) {
 		this.modifyLibrary.deleteLibrarian(idLibrarian, database);
@@ -108,37 +99,5 @@ public class Admin {
 
 	public void deleteDocument(int idDocument, Database database) {
 		this.modifyLibrary.deleteDocument(idDocument, database);
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }

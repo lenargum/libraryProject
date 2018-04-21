@@ -114,7 +114,7 @@ public class WelcomePage {
 		} else {
 			usernameField.setUnFocusColor(Paint.valueOf("#e53935"));
 			passwordField.setUnFocusColor(Paint.valueOf("#e53935"));
-			System.out.println("Faild to log in.");
+			System.err.println("Failed to log in.");
 		}
 	}
 }

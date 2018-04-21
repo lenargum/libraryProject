@@ -92,7 +92,7 @@ public class DebtsManager {
 		datesReturnes.setPrefWidth(100);
 		datesReturnes.setCellValueFactory(param -> param.getValue().getValue().dateReturn);
 
-		final TreeItem<DebtCell> tableRoot = new RecursiveTreeItem<>(api.getUserDebts(), RecursiveTreeObject::getChildren);
+		final TreeItem<DebtCell> tableRoot = new RecursiveTreeItem<>(api.getAllDebts(), RecursiveTreeObject::getChildren);
 		debtsTable.getColumns().setAll(ids, names, titles, datesTookes, datesReturnes);
 		debtsTable.setRoot(tableRoot);
 		debtsTable.setShowRoot(false);
@@ -106,14 +106,18 @@ public class DebtsManager {
 	 * @param event Mouse event.
 	 */
 	private void onTableClicked(MouseEvent event) {
-		DebtCell selected = debtsTable.getSelectionModel().getSelectedItem().getValue();
-		if (selected == null) return;
+		DebtCell selected;
+		try {
+			selected = debtsTable.getSelectionModel().getSelectedItem().getValue();
+		} catch (NullPointerException e) {
+			return;
+		}
 		int selectedIndex = debtsTable.getSelectionModel().getSelectedIndex();
 		JFXButton outstanding = new JFXButton("Outstanding request");
 		JFXButton delete = new JFXButton("Delete");
 		JFXPopup popup = new JFXPopup();
 		outstanding.setOnAction(event1 -> {
-
+			//api.makeOutstandingRequest();
 			popup.hide();
 		});
 		delete.setOnAction(event1 -> {

@@ -5,12 +5,10 @@ import documents.Book;
 import documents.JournalArticle;
 import tools.Database;
 import tools.Logic;
-import tools.*;
 import users.Patron;
 
 
 public class ModifyLibrary {
-    private OutstandingRequest deletionRequest = new OutstandingRequest();
     /**
      * Add new book to the database.
      *
@@ -21,6 +19,7 @@ public class ModifyLibrary {
         if(Logic.canAdd(librarianId, database)) {
             database.insertBook(book);
         } else {
+
         }
     }
 
@@ -77,7 +76,6 @@ public class ModifyLibrary {
     public void deleteDocument(int librarianId, int idDocument, Database database)  {
         if(Logic.canDelete(librarianId, database)) {
             database.deleteDocument(idDocument);
-            deletionRequest.makeDeletionNotification(idDocument, database);
         } else {
 
         }

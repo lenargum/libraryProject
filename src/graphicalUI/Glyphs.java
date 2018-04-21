@@ -3,7 +3,7 @@ package graphicalUI;
 import com.jfoenix.svg.SVGGlyph;
 
 /**
- * SVG glyphs used in user interface.
+ * SVG glyphs used in graphical interface.
  */
 public final class Glyphs {
 	public static SVGGlyph BOOK_BLACK() {

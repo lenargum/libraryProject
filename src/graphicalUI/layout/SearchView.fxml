@@ -2,13 +2,21 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXChipView?>
+<?import com.jfoenix.controls.JFXMasonryPane?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/8.0.141" fx:controller="graphicalUI.SearchView">
 	<children>
-		<JFXChipView fx:id="keywordChips" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0"
-		             AnchorPane.topAnchor="15.0"/>
+		<JFXChipView fx:id="keywordChips" style="-fx-background-color: #fafafa;" AnchorPane.leftAnchor="70.0"
+		             AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="15.0">
+			<effect>
+				<DropShadow blurType="GAUSSIAN" height="10.0" offsetY="1.0" radius="4.5" width="10.0"/>
+			</effect>
+		</JFXChipView>
 		<JFXButton fx:id="goBackBtn" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="15.0"
 		           AnchorPane.topAnchor="15.0"/>
+		<JFXMasonryPane fx:id="docsPane" HSpacing="1.0" VSpacing="1.0" cellHeight="50.0" cellWidth="30.0"
+		                AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="150.0"/>
 	</children>
 </AnchorPane>
