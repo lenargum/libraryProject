@@ -11,8 +11,6 @@ import users.Librarian;
 import users.Patron;
 import users.User;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -48,17 +46,13 @@ public class CoreAPI {
 	 * @param userID User ID.
 	 * @return User.
 	 */
-	public User getUserByID(int userID) {
+	User getUserByID(int userID) {
 		db.connect();
-		User result = null;
+		User result;
 		try {
 			result = db.getLibrarian(userID);
-		} catch (SQLException | NoSuchElementException e) {
-			try {
-				result = db.getPatron(userID);
-			} catch (SQLException e1) {
-				System.out.println("Cannot find exact user. User ID: " + userID);
-			}
+		} catch (NoSuchElementException e) {
+			result = db.getPatron(userID);
 		} finally {
 			db.close();
 		}
@@ -71,17 +65,13 @@ public class CoreAPI {
 	 *
 	 * @return List of all documents.
 	 */
-	public List<DocItem> getAllBooks() {
+	List<DocItem> getAllBooks() {
 		List<DocItem> list = new LinkedList<>();
-		List<Document> documents = new LinkedList<>();
-		try {
-			db.connect();
-			documents = db.getDocumentList();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			db.close();
-		}
+		List<Document> documents;
+
+		db.connect();
+		documents = db.getDocumentList();
+		db.close();
 
 		for (Document doc : documents) {
 			list.add(new DocItem(doc.getTitle(), doc.getAuthors(), doc.getID()));
@@ -95,21 +85,15 @@ public class CoreAPI {
 	 *
 	 * @return List of all users.
 	 */
-	public ObservableList<UserManager.UserCell> getAllUsers() {
+	ObservableList<UserManager.UserCell> getAllUsers() {
 		ObservableList<UserManager.UserCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-
-		try {
-			for (User usr : db.getUsers()) {
-				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
-						usr.getAddress(), usr.getPhoneNumber(), determineUserType(usr).name()));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			db.close();
+		for (User usr : db.getUsers()) {
+			list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
+					usr.getAddress(), usr.getPhoneNumber(), determineUserType(usr).name()));
 		}
+		db.close();
 
 		return list;
 	}
@@ -119,21 +103,16 @@ public class CoreAPI {
 	 *
 	 * @return All documents form database.
 	 */
-	public ObservableList<DocumentManager.DocCell> getAllDocs() {
+	ObservableList<DocumentManager.DocCell> getAllDocs() {
 		ObservableList<DocumentManager.DocCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			for (Document doc : db.getDocumentList()) {
-				list.add(new DocumentManager.DocCell(doc.getID(), doc.getTitle(), doc.getAuthors(),
-						doc.getType(), doc.getNumberOfCopies(),
-						doc.isAllowedForStudents(), doc.isReference()));
-			}
-		} catch (SQLException e) {
-			System.out.println("Failed to fetch document list.");
-		} finally {
-			db.close();
+		for (Document doc : db.getDocumentList()) {
+			list.add(new DocumentManager.DocCell(doc.getID(), doc.getTitle(), doc.getAuthors(),
+					doc.getType(), doc.getNumberOfCopies(),
+					doc.isAllowedForStudents(), doc.isReference()));
 		}
+		db.close();
 
 		return list;
 	}
@@ -153,42 +132,15 @@ public class CoreAPI {
 	 * @param credentials User credentials.
 	 * @return <code>true</code> if authorized successfully, <code>false</code> otherwise.
 	 */
-	public boolean authorize(Credentials credentials) {
-		boolean respond = false;
+	boolean authorize(Credentials credentials) {
 		db.connect();
-
 		try {
-			respond = db.login(credentials.getLogin(), credentials.getPassword());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		if (respond) {
-			try {
-				for (Librarian librarian : db.getLibrarianList()) {
-					if (librarian.getLogin().equals(credentials.getLogin())) {
-						user = librarian;
-						db.close();
-						break;
-					}
-				}
-
-				if (user == null) {
-					for (Patron patron : db.getPatronList()) {
-						if (patron.getLogin().equals(credentials.getLogin())) {
-							user = patron;
-							db.close();
-							break;
-						}
-					}
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (user != null) {
+			user = db.authorise(credentials.getLogin(), credentials.getPassword());
 			loggedIn = true;
+		} catch (NoSuchElementException e) {
+			loggedIn = false;
+		} finally {
+			db.close();
 		}
 
 		return loggedIn;
@@ -197,18 +149,42 @@ public class CoreAPI {
 	/**
 	 * Deauthorize current user.
 	 */
-	public void deauthorize() {
+	void deauthorize() {
 		assert loggedIn;
 		user = null;
 		loggedIn = false;
 	}
 
+	ObservableList<DocItem> search(List<String> keywords) {
+		HashSet<Document> searchResult = new HashSet<>();
+
+		db.connect();
+		for (Document doc : db.getDocumentList()) {
+			for (String keyword : keywords) {
+				String docKeywords = (doc.getKeyWords() +
+						doc.getTitle() + doc.getAuthors()).toLowerCase();
+				if (docKeywords.contains(keyword.toLowerCase())) {
+					searchResult.add(doc);
+				}
+			}
+		}
+		db.close();
+
+		ObservableList<DocItem> resultItems = FXCollections.observableArrayList();
+
+		for (Document doc : searchResult) {
+			resultItems.add(new DocItem(doc.getTitle(), doc.getAuthors(), doc.getID()));
+		}
+
+		return resultItems;
+	}
+
 	/**
-	 * Get books for user.
+	 * Get documents for user.
 	 *
-	 * @return List of user books.
+	 * @return List of user documents.
 	 */
-	public ObservableList<UserDocs.MyDocsView> getUserBooks() {
+	ObservableList<UserDocs.MyDocsView> getUserDocs() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
 		List<Integer> documents = new ArrayList<>();
 		if (user instanceof Patron) {
@@ -217,14 +193,10 @@ public class CoreAPI {
 
 		db.connect();
 		for (Integer id : documents) {
-			Document doc = null;
-			Debt debt = null;
-			try {
-				doc = db.getDocument(id);
-				debt = db.getDebt(db.findDebtID(user.getId(), id));
-			} catch (SQLException | ParseException e) {
-				e.printStackTrace();
-			}
+			Document doc;
+			Debt debt;
+			doc = db.getDocument(id);
+			debt = db.getDebt(db.findDebtID(user.getId(), id));
 
 			assert doc != null;
 			assert debt != null;
@@ -242,8 +214,8 @@ public class CoreAPI {
 	 */
 	public ObservableList<DocListItem> getRecent() {
 		ObservableList<DocListItem> recent = FXCollections.observableArrayList();
-		int count = getUserBooks().size() > 5 ? 5 : getUserBooks().size();
-		ObservableList<UserDocs.MyDocsView> sorted = getUserBooks().sorted(Comparator.comparing(o -> o.daysLeft.getValue()));
+		int count = getUserDocs().size() > 5 ? 5 : getUserDocs().size();
+		ObservableList<UserDocs.MyDocsView> sorted = getUserDocs().sorted(Comparator.comparing(o -> o.daysLeft.getValue()));
 
 		for (int i = 0; i < count; i++) {
 			recent.add(new DocListItem(sorted.get(i).docTitle.getValue(), sorted.get(i).daysLeft.intValue(), i));
@@ -257,25 +229,15 @@ public class CoreAPI {
 	 *
 	 * @return Waitlist.
 	 */
-	public ObservableList<UserDocs.WaitlistView> getWaitList() {
+	ObservableList<UserDocs.WaitlistView> getWaitList() {
 		ObservableList<UserDocs.WaitlistView> waitlist = FXCollections.observableArrayList();
-		List<Request> requests = new ArrayList<>();
+		List<Request> requests;
 		db.connect();
-		try {
-			requests = db.getRequestsForPatron(user.getId());
-		} catch (SQLException | ParseException e) {
-			e.printStackTrace();
-		}
-
+		requests = db.getRequestsForPatron(user.getId());
 		for (Request request : requests) {
-			try {
-				Document doc = db.getDocument(request.getIdDocument());
-				waitlist.add(new UserDocs.WaitlistView(doc.getTitle(), 0,
-						request.getRequestId()));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
+			Document doc = db.getDocument(request.getIdDocument());
+			waitlist.add(new UserDocs.WaitlistView(doc.getTitle(), 0,
+					request.getRequestId()));
 		}
 		db.close();
 
@@ -287,20 +249,16 @@ public class CoreAPI {
 	 *
 	 * @return Renew requests for users.
 	 */
-	public ObservableList<ApprovalCell> getRenewRequests() {
+	ObservableList<ApprovalCell> getRenewRequests() {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			for (Request request : db.getRenewRequests()) {
-				Document doc = db.getDocument(request.getIdDocument());
-				Patron pat = db.getPatron(request.getIdPatron());
-				list.add(new ApprovalCell(request.getRequestId(),
-						doc.getTitle(), doc.getID(),
-						pat.getName() + " " + pat.getSurname(), pat.getId()));
-			}
-		} catch (ParseException | SQLException e) {
-			e.printStackTrace();
+		for (Request request : db.getRenewRequests()) {
+			Document doc = db.getDocument(request.getIdDocument());
+			Patron pat = db.getPatron(request.getIdPatron());
+			list.add(new ApprovalCell(request.getRequestId(),
+					doc.getTitle(), doc.getID(),
+					pat.getName() + " " + pat.getSurname(), pat.getId()));
 		}
 		db.close();
 
@@ -312,23 +270,16 @@ public class CoreAPI {
 	 *
 	 * @param newUser New user.
 	 */
-	public void addNewUser(User newUser) {
+	void addNewUser(User newUser) {
 		db.connect();
-
-		try {
-			if (newUser instanceof Librarian) {
-				db.insertLibrarian((Librarian) newUser);
-				newUser.setId(db.getLibrarianID((Librarian) newUser));
-			} else {
-				db.insertPatron((Patron) newUser);
-				newUser.setId(db.getPatronID((Patron) newUser));
-			}
-		} catch (SQLException e) {
-			System.out.println("Cannot add user to database.");
-			e.printStackTrace();
-		} finally {
-			db.close();
+		if (newUser instanceof Librarian) {
+			db.insertLibrarian((Librarian) newUser);
+			newUser.setId(db.getLibrarianID((Librarian) newUser));
+		} else {
+			db.insertPatron((Patron) newUser);
+			newUser.setId(db.getPatronID((Patron) newUser));
 		}
+		db.close();
 	}
 
 	/**
@@ -338,17 +289,10 @@ public class CoreAPI {
 	 * @param column   Record column.
 	 * @param newValue New value.
 	 */
-	public void editUser(int userID, String column, String newValue) {
+	void editUser(int userID, String column, String newValue) {
 		db.connect();
-
-		try {
-			db.editUserColumn(userID, column, newValue);
-		} catch (SQLException e) {
-			System.out.println("Unable to mdify user. User ID: " + userID);
-			e.printStackTrace();
-		} finally {
-			db.close();
-		}
+		db.editUserColumn(userID, column, newValue);
+		db.close();
 	}
 
 	/**
@@ -356,20 +300,16 @@ public class CoreAPI {
 	 *
 	 * @return Take requests.
 	 */
-	public ObservableList<ApprovalCell> getTakeRequests() {
+	ObservableList<ApprovalCell> getTakeRequests() {
 		ObservableList<ApprovalCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			for (Request request : db.getRequests()) {
-				Document doc = db.getDocument(request.getIdDocument());
-				Patron pat = db.getPatron(request.getIdPatron());
-				list.add(new ApprovalCell(request.getRequestId(),
-						doc.getTitle(), doc.getID(),
-						pat.getName() + " " + pat.getSurname(), pat.getId()));
-			}
-		} catch (ParseException | SQLException e) {
-			e.printStackTrace();
+		for (Request request : db.getRequests()) {
+			Document doc = db.getDocument(request.getIdDocument());
+			Patron pat = db.getPatron(request.getIdPatron());
+			list.add(new ApprovalCell(request.getRequestId(),
+					doc.getTitle(), doc.getID(),
+					pat.getName() + " " + pat.getSurname(), pat.getId()));
 		}
 		db.close();
 
@@ -385,21 +325,37 @@ public class CoreAPI {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			for (Debt debt : db.getDebtsForUser(user.getId())) {
-				Patron pat = db.getPatron(debt.getPatronId());
-				Document doc = db.getDocument(debt.getDocumentId());
-				list.add(new DebtsManager.DebtCell(debt.getDebtId(),
-						pat.getName() + " " + pat.getSurname(), pat.getId(),
-						doc.getTitle(), doc.getID(),
-						debt.getBookingDate().toString(),
-						debt.getExpireDate().toString()));
-			}
-		} catch (SQLException | ParseException e) {
-			e.printStackTrace();
-		} finally {
-			db.close();
+		for (Debt debt : db.getDebtsForUser(user.getId())) {
+			Patron pat = db.getPatron(debt.getPatronId());
+			Document doc = db.getDocument(debt.getDocumentId());
+			list.add(new DebtsManager.DebtCell(debt.getDebtId(),
+					pat.getName() + " " + pat.getSurname(), pat.getId(),
+					doc.getTitle(), doc.getID(),
+					debt.getBookingDate().toString(),
+					debt.getExpireDate().toString()));
 		}
+		db.close();
+
+		return list;
+	}
+
+	/**
+	 * @return
+	 */
+	ObservableList<DebtsManager.DebtCell> getAllDebts() {
+		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
+
+		db.connect();
+		for (Debt debt : db.getDebtsList()) {
+			Patron pat = db.getPatron(debt.getPatronId());
+			Document doc = db.getDocument(debt.getDocumentId());
+			list.add(new DebtsManager.DebtCell(debt.getDebtId(),
+					pat.getName() + " " + pat.getSurname(), pat.getId(),
+					doc.getTitle(), doc.getID(),
+					debt.getBookingDate().toString(),
+					debt.getExpireDate().toString()));
+		}
+		db.close();
 
 		return list;
 	}
@@ -409,16 +365,11 @@ public class CoreAPI {
 	 *
 	 * @param requestID Request ID.
 	 */
-	public void makeOutstandingRequest(int requestID) {
+	void makeOutstandingRequest(int requestID) {
 		db.connect();
-		try {
-			Request request = db.getRequest(requestID);
-			((Librarian) user).makeOutstandingRequest(request, db);
-		} catch (ParseException | SQLException e) {
-			e.printStackTrace();
-		} finally {
-			db.close();
-		}
+		Request request = db.getRequest(requestID);
+		((Librarian) user).makeOutstandingRequest(request, db);
+		db.close();
 	}
 
 	/**
@@ -426,17 +377,12 @@ public class CoreAPI {
 	 *
 	 * @return List of notifications.
 	 */
-	public ObservableList<Notification> getUserNotifications() {
+	ObservableList<Notification> getUserNotifications() {
 		ObservableList<Notification> list = FXCollections.observableArrayList();
 
 		db.connect();
-		try {
-			list.addAll(db.getNotificationsForUser(user.getId()));
-		} catch (SQLException | ParseException e) {
-			e.printStackTrace();
-		} finally {
-			db.close();
-		}
+		list.addAll(db.getNotificationsForUser(user.getId()));
+		db.close();
 
 		return list;
 	}
@@ -447,7 +393,8 @@ public class CoreAPI {
 	 * @param docID Document ID.
 	 * @return <code>true</code> if user can take document, <code>false</code> otherwise.
 	 */
-	public boolean canTakeDocument(int docID) {
+	boolean canTakeDocument(int docID) {
+		if (user == null) return false;
 		if (user instanceof Librarian) {
 			return false;
 		} else {
@@ -463,16 +410,11 @@ public class CoreAPI {
 	 *
 	 * @param docID Document ID.
 	 */
-	public void bookOrRequest(int docID) {
+	void bookOrRequest(int docID) {
 		if (canTakeDocument(docID)) {
-			try {
-				db.connect();
-				((Patron) user).makeRequest(docID, db);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				db.close();
-			}
+			db.connect();
+			((Patron) user).makeRequest(docID, db);
+			db.close();
 		}
 	}
 
@@ -481,20 +423,14 @@ public class CoreAPI {
 	 *
 	 * @param requestID Request ID.
 	 */
-	public void acceptBookRequest(int requestID) {
+	void acceptBookRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
 			db.connect();
-
-			try {
-				Request request = db.getRequest(requestID);
-				System.out.println("Submitting request " + request.getRequestId());
-				((Librarian) user).submitRequest(request, db);
-			} catch (SQLException | ParseException e) {
-				e.printStackTrace();
-			} finally {
-				db.close();
-			}
+			Request request = db.getRequest(requestID);
+			System.out.println("Submitting request " + request.getRequestId());
+			((Librarian) user).submitRequest(request, db);
+			db.close();
 		} else {
 			System.out.println("Current user is not librarian.");
 		}
@@ -505,20 +441,14 @@ public class CoreAPI {
 	 *
 	 * @param requestID Request ID.
 	 */
-	public void rejectBookRequest(int requestID) {
+	void rejectBookRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to reject...");
 			db.connect();
-
-			try {
-				Request request = db.getRequest(requestID);
-				System.out.println("Deleting request " + request.getRequestId());
-				((Librarian) user).deleteRequest(request, db);
-			} catch (SQLException | ParseException e) {
-				e.printStackTrace();
-			} finally {
-				db.close();
-			}
+			Request request = db.getRequest(requestID);
+			System.out.println("Deleting request " + request.getRequestId());
+			((Librarian) user).deleteRequest(request, db);
+			db.close();
 		} else {
 			System.out.println("Current user is not a librarian.");
 		}
@@ -529,20 +459,14 @@ public class CoreAPI {
 	 *
 	 * @param requestID Request ID.
 	 */
-	public void acceptRenewRequest(int requestID) {
+	void acceptRenewRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
 			db.connect();
-
-			try {
-				Request request = db.getRequest(requestID);
-				System.out.println("Submitting request " + request.getRequestId());
-				((Librarian) user).confirmRenew(request, db);
-			} catch (SQLException | ParseException e) {
-				e.printStackTrace();
-			} finally {
-				db.close();
-			}
+			Request request = db.getRequest(requestID);
+			System.out.println("Submitting request " + request.getRequestId());
+			((Librarian) user).confirmRenew(request, db);
+			db.close();
 		} else {
 			System.out.println("Current user is not librarian.");
 		}
@@ -557,16 +481,9 @@ public class CoreAPI {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
 			db.connect();
-
-			try {
-				Request request = db.getRequest(requestID);
-				System.out.println("Submitting request " + request.getRequestId());
-
-			} catch (SQLException | ParseException e) {
-				e.printStackTrace();
-			} finally {
-				db.close();
-			}
+			Request request = db.getRequest(requestID);
+			System.out.println("Submitting request " + request.getRequestId());
+			db.close();
 		} else {
 			System.out.println("Current user is not librarian.");
 		}
@@ -577,7 +494,7 @@ public class CoreAPI {
 	 *
 	 * @return Current user type.
 	 */
-	public UserType userType() {
+	UserType userType() {
 		return determineUserType(user);
 	}
 
@@ -587,7 +504,7 @@ public class CoreAPI {
 	 * @param usr User to check.
 	 * @return User type.
 	 */
-	public UserType determineUserType(User usr) {
+	UserType determineUserType(User usr) {
 		if (usr instanceof Librarian) {
 			return UserType.LIBRARIAN;
 		} else {

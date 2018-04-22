@@ -50,7 +50,7 @@ public class WelcomePage {
 		this.rootPage = rootPage;
 		this.primaryStage = primaryStage;
 		try {
-			welcomeLayout = FXMLLoader.load(getClass().getResource("WelcomePage.fxml"));
+			welcomeLayout = FXMLLoader.load(getClass().getResource("layout/WelcomePage.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,6 +67,7 @@ public class WelcomePage {
 		Thread initSelector = new Thread(() -> {
 			System.out.print("Loading document selector in parallel thread:\n\t");
 			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
+			System.out.println("Done.");
 		});
 		initSelector.start();
 
@@ -74,7 +75,7 @@ public class WelcomePage {
 
 		AnchorPane loginLayout = null;
 		try {
-			loginLayout = FXMLLoader.load(getClass().getResource("LoginDialog.fxml"));
+			loginLayout = FXMLLoader.load(getClass().getResource("layout/LoginDialog.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -113,7 +114,7 @@ public class WelcomePage {
 		} else {
 			usernameField.setUnFocusColor(Paint.valueOf("#e53935"));
 			passwordField.setUnFocusColor(Paint.valueOf("#e53935"));
-			System.out.println("Faild to log in.");
+			System.err.println("Failed to log in.");
 		}
 	}
 }

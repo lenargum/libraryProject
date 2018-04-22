@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="600.0" minWidth="800.0"
-            xmlns="http://javafx.com/javafx/8.0.121" fx:controller="graphicalUI.DocSelector">
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="graphicalUI.DocSelector">
 	<children>
 		<StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 		           AnchorPane.topAnchor="0.0">
 			<JFXTabPane fx:id="tabs" layoutX="97.0" layoutY="117.0" minHeight="200.0" prefHeight="100.0"
-			            tabClosingPolicy="UNAVAILABLE" tabMaxHeight="60.0" tabMaxWidth="200.0">
+			            tabClosingPolicy="UNAVAILABLE" tabMaxHeight="60.0" tabMaxWidth="200.0" tabMinHeight="45.0">
 				<tabs>
 					<Tab disable="true" text="      ">
 						<content>
@@ -34,10 +34,12 @@
 		</StackPane>
 		<JFXButton fx:id="goBackBtn" mnemonicParsing="false" prefHeight="0.0" prefWidth="45.0"
 		           style="-fx-background-color: #00000000;" textFill="#fafafa" AnchorPane.leftAnchor="0.0"
-		           AnchorPane.topAnchor="-5.0">
+		           AnchorPane.topAnchor="0.0">
 			<font>
 				<Font size="21.0"/>
 			</font>
 		</JFXButton>
+		<JFXButton fx:id="searchBtn" prefHeight="0.0" prefWidth="45.0" textFill="WHITE" AnchorPane.rightAnchor="5.0"
+		           AnchorPane.topAnchor="7.0"/>
 	</children>
 </AnchorPane>

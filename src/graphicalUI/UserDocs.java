@@ -43,7 +43,7 @@ public class UserDocs {
 	public UserDocs(CoreAPI api) {
 		this.api = api;
 		try {
-			layout = FXMLLoader.load(getClass().getResource("UserDocs.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/UserDocs.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,7 +88,7 @@ public class UserDocs {
 		daysLeft.setPrefWidth(200);
 		daysLeft.setCellValueFactory(param -> param.getValue().getValue().daysLeft.asObject());
 
-		final TreeItem<MyDocsView> tableRoot = new RecursiveTreeItem<>(api.getUserBooks(), RecursiveTreeObject::getChildren);
+		final TreeItem<MyDocsView> tableRoot = new RecursiveTreeItem<>(api.getUserDocs(), RecursiveTreeObject::getChildren);
 		myDocsTable.getColumns().setAll(docTitles, daysLeft);
 		myDocsTable.setRoot(tableRoot);
 		myDocsTable.setShowRoot(false);

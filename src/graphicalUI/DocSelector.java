@@ -29,10 +29,13 @@ public class DocSelector {
 	private Scene previousScene;
 	private boolean initialized;
 	private AnchorPane selectorLayout;
+	private SearchView searchView;
 
 	// FXML bindings
 	@FXML
 	private JFXButton goBackBtn;
+	@FXML
+	private JFXButton searchBtn;
 	@FXML
 	private JFXTabPane tabs;
 	private FlowPane booksFlow, articlesFlow, avFlow;
@@ -100,7 +103,7 @@ public class DocSelector {
 	private void initialize() {
 		// Load selector layout
 		try {
-			selectorLayout = FXMLLoader.load(getClass().getResource("DocSelector.fxml"));
+			selectorLayout = FXMLLoader.load(getClass().getResource("layout/DocSelector.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -119,11 +122,25 @@ public class DocSelector {
 		set its graphic and add action on it
 		*/
 		goBackBtn = (JFXButton) selectorLayout.lookup("#goBackBtn");
-		SVGGlyph arrowBack = Glyphs.ARROW_BACK;
+		SVGGlyph arrowBack = Glyphs.ARROW_BACK();
 		arrowBack.setFill(Paint.valueOf("#fafafa"));
-		arrowBack.setSize(15, 15);
+		arrowBack.setSize(15);
 		goBackBtn.setGraphic(arrowBack);
 		goBackBtn.setOnAction(event -> primaryStage.setScene(previousScene));
+
+		Thread initSearch = new Thread(() -> {
+			System.out.println("Loading search view in parallel thread:\n\t");
+			searchView = new SearchView(primaryStage, selectorScene, api);
+			System.out.println("Done.");
+		});
+		initSearch.start();
+
+		searchBtn = (JFXButton) selectorLayout.lookup("#searchBtn");
+		SVGGlyph searchGraphic = Glyphs.SEARCH();
+		searchGraphic.setFill(Paint.valueOf("#fafafa"));
+		searchGraphic.setSize(15);
+		searchBtn.setGraphic(searchGraphic);
+		searchBtn.setOnAction(event -> searchView.show());
 
 		// Find tab pane on layout
 		tabs = (JFXTabPane) selectorLayout.lookup("#tabs");
@@ -154,6 +171,23 @@ public class DocSelector {
 		// Add AVs to the view
 		tabs.getTabs().get(3).setContent(avScroll);
 
+		detailsDrawer = new JFXDrawer();
+		detailsDrawer.setDirection(JFXDrawer.DrawerDirection.RIGHT);
+		detailsDrawer.setDefaultDrawerSize(350);
+
+		detailsDrawer.setOnDrawerClosing(event -> bookThisBtn.setDisable(true));
+
+		try {
+			detailsLayout = FXMLLoader.load(getClass().getResource("layout/DocDetails.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		coverContainer = (Pane) detailsLayout.lookup("#coverContainer");
+		docTitle = (Text) detailsLayout.lookup("#docTitle");
+		docAuthors = (Text) detailsLayout.lookup("#docAuthors");
+		bookThisBtn = (JFXButton) detailsLayout.lookup("#bookThisBtn");
+		countBadge = (JFXBadge) detailsLayout.lookup("#countBadge");
+
 		// Pick clicked item and show menu
 		booksFlow.setOnMouseClicked(event -> {
 			try {
@@ -177,23 +211,6 @@ public class DocSelector {
 			} catch (NullPointerException ignored) {
 			}
 		});
-
-		detailsDrawer = new JFXDrawer();
-		detailsDrawer.setDirection(JFXDrawer.DrawerDirection.RIGHT);
-		detailsDrawer.setDefaultDrawerSize(350);
-
-		detailsDrawer.setOnDrawerClosing(event -> bookThisBtn.setDisable(true));
-
-		try {
-			detailsLayout = FXMLLoader.load(getClass().getResource("DocDetails.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		coverContainer = (Pane) detailsLayout.lookup("#coverContainer");
-		docTitle = (Text) detailsLayout.lookup("#docTitle");
-		docAuthors = (Text) detailsLayout.lookup("#docAuthors");
-		bookThisBtn = (JFXButton) detailsLayout.lookup("#bookThisBtn");
-		countBadge = (JFXBadge) detailsLayout.lookup("#countBadge");
 
 		System.out.println("Book view initialized.");
 		initialized = true;

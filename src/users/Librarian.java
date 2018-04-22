@@ -4,16 +4,12 @@ import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
+import librarianTools.*;
+import tools.Constants;
 import tools.Database;
-import tools.Debt;
+import tools.OutstandingRequest;
 import tools.Request;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * This class describes librarian in library system.
@@ -22,6 +18,16 @@ import java.util.NoSuchElementException;
  * @see User
  */
 public class Librarian extends User {
+
+	private int privilege;
+	/**
+	 * Tools for Librarian
+	 */
+	private BookingSystem bookingSystem;
+	private Modify modify;
+	private ModifyLibrary modifyLibrary;
+	private OutstandingRequest outstandingRequest;
+	private ReturningSystem returningSystem;
 	/**
 	 * Initialize new librarian.
 	 *
@@ -34,6 +40,20 @@ public class Librarian extends User {
 	 */
 	public Librarian(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
+		setPrivilege(Constants.basicPrivilege);
+		bookingSystem = new BookingSystem();
+		modify = new Modify();
+		modifyLibrary = new ModifyLibrary();
+		outstandingRequest = new OutstandingRequest();
+		returningSystem = new ReturningSystem();
+	}
+
+	public int getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(int p) {
+		this.privilege = p;
 	}
 
 	/**
@@ -43,11 +63,7 @@ public class Librarian extends User {
 	 * @param database tools.Database that stores the information.
 	 */
 	public void addBook(Book book, Database database) {
-		try {
-			database.insertBook(book);
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modifyLibrary.addBook(this.getId(), book, database);
 	}
 
 	/**
@@ -57,11 +73,7 @@ public class Librarian extends User {
 	 * @param database tools.Database that stores the information.
 	 */
 	public void addAV(AudioVideoMaterial AV, Database database) {
-		try {
-			database.insertAV(AV);
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect document");
-		}
+		this.modifyLibrary.addAV(this.getId(), AV, database);
 	}
 
 	/**
@@ -71,11 +83,7 @@ public class Librarian extends User {
 	 * @param database       tools.Database that stores the information.
 	 */
 	public void addArticle(JournalArticle journalArticle, Database database) {
-		try {
-			database.insertArticle(journalArticle);
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect document");
-		}
+		this.modifyLibrary.addArticle(this.getId(), journalArticle, database);
 	}
 
 	/**
@@ -85,11 +93,7 @@ public class Librarian extends User {
 	 * @param database tools.Database that stores the information.
 	 */
 	public void registerPatron(Patron patron, Database database) {
-		try {
-			database.insertPatron(patron);
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modifyLibrary.registerPatron(this.getId(), patron, database);
 	}
 
 	/**
@@ -99,11 +103,7 @@ public class Librarian extends User {
 	 * @param database   tools.Database that stores the information.
 	 */
 	public void deleteDocument(int idDocument, Database database) {
-		try {
-			database.deleteDocument(idDocument);
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modifyLibrary.deleteDocument(this.getId(), idDocument, database);
 	}
 
 	/**
@@ -113,11 +113,7 @@ public class Librarian extends User {
 	 * @param database tools.Database that stores the information.
 	 */
 	public void deletePatron(int idPatron, Database database) {
-		try {
-			database.deleteUser(idPatron);
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modifyLibrary.deletePatron(this.getId(), idPatron, database);
 	}
 
 	/**
@@ -128,12 +124,7 @@ public class Librarian extends User {
 	 * @param price      New price.
 	 */
 	public void modifyDocumentPrice(int idDocument, Database database, double price) {
-		try {
-			database.getDocument(idDocument).setPrice(price);
-			database.editDocumentColumn(idDocument, "price", Double.toString(price));
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyDocumentPrice(this.getId(), idDocument, database, price);
 	}
 
 	/**
@@ -144,12 +135,7 @@ public class Librarian extends User {
 	 * @param edition  New edition year.
 	 */
 	public void modifyBookEdition(int idBook, Database database, int edition) {
-		try {
-			database.getBook(idBook).setEdition(edition);
-			database.editDocumentColumn(idBook, "edition", Integer.toString(edition));
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyBookEdition(this.getId(), idBook, database, edition);
 	}
 
 	/**
@@ -160,12 +146,7 @@ public class Librarian extends User {
 	 * @param isAllowedForStudents New status.
 	 */
 	public void modifyDocumentAllowance(int idDocument, Database database, boolean isAllowedForStudents) {
-		try {
-			database.getDocument(idDocument).setAllowedForStudents(isAllowedForStudents);
-			database.editDocumentColumn(idDocument, "is_allowed_for_students", Boolean.toString(isAllowedForStudents));
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyDocumentAllowance(this.getId(), idDocument, database, isAllowedForStudents);
 	}
 
 	/**
@@ -176,12 +157,7 @@ public class Librarian extends User {
 	 * @param countOfCopies New number.
 	 */
 	public void modifyDocumentCopies(int idDocument, Database database, int countOfCopies) {
-		try {
-			database.getDocument(idDocument).setNumberOfCopies(countOfCopies);
-			database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(countOfCopies));
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
-		}
+		this.modify.modifyDocumentCopies(this.getId(), idDocument, database, countOfCopies);
 	}
 
 	/**
@@ -192,12 +168,7 @@ public class Librarian extends User {
 	 * @param bestseller New status.
 	 */
 	public void modifyBookBestseller(int idBook, Database database, boolean bestseller) {
-		try {
-			database.getBook(idBook).setBestseller(bestseller);
-			database.editDocumentColumn(idBook, "bestseller", Boolean.toString(bestseller));
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyBookBestseller(this.getId(), idBook, database, bestseller);
 	}
 
 	/**
@@ -208,12 +179,7 @@ public class Librarian extends User {
 	 * @param surname  New last name.
 	 */
 	public void modifyPatronSurname(int idPatron, Database database, String surname) {
-		try {
-			database.getPatron(idPatron).setSurname(surname);
-			database.editUserColumn(idPatron, "lastname", surname);
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyPatronSurname(this.getId(), idPatron, database, surname);
 	}
 
 	/**
@@ -224,12 +190,7 @@ public class Librarian extends User {
 	 * @param address  New living address.
 	 */
 	public void modifyPatronAddress(int idPatron, Database database, String address) {
-		try {
-			database.getPatron(idPatron).setAddress(address);
-			database.editUserColumn(idPatron, "address", address);
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyPatronAddress(this.getId(), idPatron, database, address);
 	}
 
 	/**
@@ -240,12 +201,7 @@ public class Librarian extends User {
 	 * @param phoneNumber New phone number.
 	 */
 	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
-		try {
-			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
-			database.editUserColumn(idPatron, "phone", phoneNumber);
-		} catch (NoSuchElementException | SQLException e) {
-			System.out.println("Incorrect input");
-		}
+		this.modify.modifyPatronPhoneNumber(this.getId(), idPatron, database, phoneNumber);
 	}
 
 	/**
@@ -257,12 +213,7 @@ public class Librarian extends User {
 	 * @param status   New status.
 	 */
 	public void modifyPatronStatus(int idPatron, Database database, String status) {
-		try {
-			database.getPatron(idPatron).setStatus(status);
-			database.editDocumentColumn(idPatron, "status", status);
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect id");
-		}
+		this.modify.modifyPatronStatus(this.getId(), idPatron, database, status);
 	}
 
 	/**
@@ -270,9 +221,8 @@ public class Librarian extends User {
 	 *
 	 * @param database tools.Database that stores the information.
 	 * @return Count of all copies.
-	 * @throws SQLException If database is busy.
 	 */
-	public int getNumberOfDocument(Database database) throws SQLException {
+	public int getNumberOfDocument(Database database) {
 		int n = 0;
 		for (Document i : database.getDocumentList()) {
 			n += i.getNumberOfCopies();
@@ -296,18 +246,9 @@ public class Librarian extends User {
 	 *
 	 * @param debtID   - id of debt patron wants to close
 	 * @param database - information storage
-	 * @throws SQLException   Something went wrong in database.
-	 * @throws ParseException Something wrong with input.
 	 */
-	public void confirmReturn(int debtID, Database database) throws SQLException, ParseException {
-		Debt debt = database.getDebt(debtID);
-		debt.countFee(database);
-		if (debt.getFee() == 0) {
-			Patron patron = database.getPatron(debt.getPatronId());
-			patron.returnDocument(debt.getDocumentId(), database);
-		} else {
-			System.out.println("You need to pay for delay");
-		}
+	public void confirmReturn(int debtID, Database database) {
+		this.returningSystem.confirmReturn(debtID, database);
 	}
 
 	/**
@@ -317,12 +258,7 @@ public class Librarian extends User {
 	 * @param database - information storage
 	 */
 	public void confirmRenew(Request request, Database database) {
-		try {
-			request.approveRenew(database);
-			database.deleteRequest(request.getRequestId());
-		} catch (SQLException ignored) {
-
-		}
+		this.returningSystem.confirmRenew(request, database);
 	}
 
 
@@ -333,15 +269,7 @@ public class Librarian extends User {
 	 * @param database - information storage
 	 */
 	public void getFee(int debtID, Database database) {
-		try {
-			Debt debt = database.getDebt(debtID);
-			debt.setFee(0);
-			System.out.println("Payout confirmed!");
-		} catch (SQLException | NoSuchElementException e) {
-			System.out.println("Incorrect ID");
-		} catch (ParseException e) {
-			System.out.println("By default");
-		}
+		this.returningSystem.getFee(debtID, database);
 	}
 
 	/**
@@ -349,11 +277,9 @@ public class Librarian extends User {
 	 *
 	 * @param request  - request librarian confirms
 	 * @param database - information storage
-	 * @throws SQLException Something went wrong in database.
 	 */
-	public void submitRequest(Request request, Database database) throws SQLException {
-		System.out.println("users.Librarian <- submitting request " + request.getRequestId() + " . . .");
-		request.approveRequest(request.getIdPatron(), request.getIdDocument(), database);
+	public void submitRequest(Request request, Database database) {
+		this.bookingSystem.submitRequest(request, database);
 	}
 
 	/**
@@ -361,43 +287,17 @@ public class Librarian extends User {
 	 *
 	 * @param request  - request the librarian refuses
 	 * @param database - information storage
-	 * @throws SQLException Something went wrong in database.
 	 */
-	public void deleteRequest(Request request, Database database) throws SQLException {
-		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
+	public void deleteRequest(Request request, Database database) {
+		this.bookingSystem.deleteRequest(request, database);
 	}
 
-	public void makeOutstandingRequest(Request request, Database database) throws SQLException, ParseException {
-		sendNotificationsForOutstandingRequest(request, database);
-		database.deleteRequestsForDocument(request.getIdDocument());
+	public void makeOutstandingRequest(Request request, Database database) {
+		this.outstandingRequest.makeOutstandingRequest(this.getId(), request, database);
 	}
 
-	public void setAvailability(int docID, Database database) throws SQLException, ParseException {
-		if (database.getDocument(docID).getNumberOfCopies() > 0) {
-			sendNotificationsForAvailability(docID, database);
-		}
-
-	}
-
-	private void sendNotificationsForOutstandingRequest(Request request, Database db) throws SQLException, ParseException {
-		ArrayList<Request> requests = db.getRequests(request.getIdDocument());
-		for (Request temp : requests) {
-			if (temp.getIdPatron() == request.getIdPatron()) {
-				Document doc = db.getDocument(request.getIdDocument());
-				db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
-						"Outstanding request for " + doc.getTitle(), new Date());
-			}
-		}
-	}
-
-	private void sendNotificationsForAvailability(int docId, Database database) throws SQLException, ParseException {
-		List<Request> requests = database.getRequests(docId);
-		int i = 0;
-		while (i < database.getDocument(docId).getNumberOfCopies()) {
-			Request temp = requests.get(i);
-			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "Set available document", new Date());
-			i++;
-		}
+	public void setAvailability(int docID, Database database) {
+		this.outstandingRequest.setAvailability(docID, database);
 	}
 
 }

@@ -21,12 +21,10 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-.idea/workspace.xml
-.idea/artifacts/
+.idea/**
 
 out/**
 .gradle/**
 !gradle/**
 build/**
 app/**
-app/library.db

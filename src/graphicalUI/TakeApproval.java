@@ -45,14 +45,14 @@ public class TakeApproval {
 		stage = mainStage;
 		this.previousScene = previousScene;
 		try {
-			layout = FXMLLoader.load(getClass().getResource("TakeApprovalLayout.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/TakeApprovalLayout.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		scene = new Scene(layout);
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
-		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK;
+		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
 		goBackGraphic.setSize(20, 20);
 		goBackBtn.setTextFill(Paint.valueOf("#727272"));
 		goBackBtn.setGraphic(goBackGraphic);
