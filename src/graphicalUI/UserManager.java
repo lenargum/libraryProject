@@ -15,9 +15,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import users.Librarian;
-import users.Patron;
-import users.User;
+import tools.WrongUserTypeException;
+import users.*;
 
 import java.io.IOException;
 
@@ -150,10 +149,13 @@ public class UserManager {
 		addressField.setPromptText("Address");
 		addressField.setLabelFloat(true);
 
-		JFXComboBox<Label> comboBox = new JFXComboBox<>();
-		comboBox.getItems().addAll(new Label("Student"), new Label("Instructor"),
-				new Label("Teaching assistant"), new Label("Visiting professor"),
-				new Label("Professor"), new Label("Librarian"));
+		JFXComboBox<String> comboBox = new JFXComboBox<>();
+		comboBox.getItems().addAll("Student", "Instructor",
+				"Teaching assistant", "Visiting professor",
+				"Professor", "Librarian");
+		if (api.getUser() instanceof Admin) {
+			comboBox.getItems().add("Librarian");
+		}
 		comboBox.setPromptText("Select status");
 
 		JFXButton addBtn = new JFXButton("ADD");
@@ -167,25 +169,24 @@ public class UserManager {
 
 		addBtn.setOnAction(event -> {
 			if (comboBox.getValue() == null) return;
+
 			User newUser;
-			if (comboBox.getValue().getText().equals("Librarian")) {
+			if (comboBox.getValue().equals("Librarian")) {
 				newUser = new Librarian(loginField.getText(), passwordField.getText(),
 						nameField.getText(), surnameField.getText(),
 						phoneField.getText(), addressField.getText());
-				api.addNewUser(newUser);
 			} else {
-				System.out.println(comboBox.getValue().getText());
-				newUser = new Patron(loginField.getText(), passwordField.getText(),
-						determineStatus(comboBox.getValue().getText()),
+				newUser = makePatronWithParameters(loginField.getText(), passwordField.getText(),
+						comboBox.getValue(),
 						nameField.getText(), surnameField.getText(),
 						phoneField.getText(), addressField.getText());
-				api.addNewUser(newUser);
 			}
+			api.addNewUser(newUser);
 
 			TreeItem<UserCell> newCell =
 					new TreeItem<>(new UserCell(newUser.getId(), newUser.getName(),
 							newUser.getSurname(), newUser.getAddress(),
-							newUser.getPhoneNumber(), api.determineUserType(newUser).name()));
+							newUser.getPhoneNumber(), newUser.getClass().getSimpleName()));
 			usersTable.getRoot().getChildren().add(newCell);
 
 			addUserDialog.close();
@@ -240,10 +241,13 @@ public class UserManager {
 		addressField.setPromptText("Address");
 		addressField.setLabelFloat(true);
 
-		JFXComboBox<Label> comboBox = new JFXComboBox<>();
-		comboBox.getItems().addAll(new Label("Student"), new Label("Instructor"),
-				new Label("Teaching assistant"), new Label("Visiting professor"),
-				new Label("Professor"), new Label("Librarian"));
+		JFXComboBox<String> comboBox = new JFXComboBox<>();
+		comboBox.getItems().addAll("Student", "Instructor",
+				"Teaching assistant", "Visiting professor",
+				"Professor", "Librarian");
+		if (api.getUser() instanceof Admin) {
+			comboBox.getItems().add("Librarian");
+		}
 		comboBox.setPromptText("Select status");
 
 		JFXButton saveBtn = new JFXButton("SAVE");
@@ -263,7 +267,7 @@ public class UserManager {
 		surnameField.setText(selected.surname.getValue());
 		phoneField.setText(selected.phone.getValue());
 		addressField.setText(selected.address.getValue());
-		comboBox.setValue(new Label(determineComboBoxValue(selected.status.toString().toLowerCase())));
+		comboBox.setValue(determineComboBoxValue(selected.status.toString().toLowerCase()));
 
 		saveBtn.setOnAction(event -> {
 			api.editUser(selected.id, "login", loginField.getText());
@@ -279,6 +283,31 @@ public class UserManager {
 
 		addUserDialog.setContent(container);
 		addUserDialog.show(layout);
+	}
+
+	private User makePatronWithParameters(String login, String password,
+	                                      String comboBoxStatus,
+	                                      String name, String surname,
+	                                      String phone, String address) {
+		switch (determineStatus(comboBoxStatus)) {
+			case "student":
+				return new Student(login, password,
+						name, surname, phone, address);
+			case "instructor":
+				return new Instructor(login, password,
+						name, surname, phone, address);
+			case "ta":
+				return new TeachingAssistant(login, password,
+						name, surname, phone, address);
+			case "vp":
+				return new VisitingProfessor(login, password,
+						name, surname, phone, address);
+			case "professor":
+				return new Professor(login, password,
+						name, surname, phone, address);
+			default:
+				throw new WrongUserTypeException();
+		}
 	}
 
 	/**

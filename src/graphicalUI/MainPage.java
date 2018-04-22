@@ -32,6 +32,8 @@ public class MainPage extends Application {
 		userPage = new UserPage(primaryStage, this);
 		userPage.show();
 
+		primaryStage.setTitle("InLibrary Manager (" + api.getUser().getName() + ")");
+
 		welcomePage = null;
 		System.gc();
 	}
@@ -44,6 +46,8 @@ public class MainPage extends Application {
 
 		welcomePage = new WelcomePage(primaryStage, this);
 		welcomePage.show();
+
+		primaryStage.setTitle("InLibrary Manager");
 
 		userPage = null;
 		System.gc();

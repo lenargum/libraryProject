@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import users.Admin;
 
 import java.io.IOException;
 
@@ -14,7 +16,7 @@ import java.io.IOException;
  *
  * @author Ruslan Shakirov
  */
-public class LibrarianPanel {
+public class ControlPanel {
 	private AnchorPane layout;
 	private Stage stage;
 	private TakeApproval takeApproval;
@@ -34,8 +36,12 @@ public class LibrarianPanel {
 	private JFXButton manageDocsBtn;
 	@FXML
 	private JFXButton manageDebtsBtn;
+	@FXML
+	private JFXButton viewLogsBtn;
+	@FXML
+	private Text logsLabel;
 
-	public LibrarianPanel() {
+	public ControlPanel() {
 	}
 
 	/**
@@ -43,9 +49,9 @@ public class LibrarianPanel {
 	 *
 	 * @param api Core API.
 	 */
-	public LibrarianPanel(CoreAPI api) {
+	public ControlPanel(CoreAPI api) {
 		try {
-			layout = FXMLLoader.load(getClass().getResource("layout/LibrarianPanel.fxml"));
+			layout = FXMLLoader.load(getClass().getResource("layout/ControlPanel.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,10 +61,13 @@ public class LibrarianPanel {
 		manageUsersBtn = (JFXButton) layout.lookup("#manageUsersBtn");
 		manageDocsBtn = (JFXButton) layout.lookup("#manageDocsBtn");
 		manageDebtsBtn = (JFXButton) layout.lookup("#manageDebtsBtn");
+		viewLogsBtn = (JFXButton) layout.lookup("#viewLogsBtn");
+		logsLabel = (Text) layout.lookup("#logsLabel");
 
 		Scene scene = new Scene(layout);
 		stage = new Stage();
-		stage.setTitle("Librarian control panel");
+		stage.setTitle("Control panel ― InLibrary Manager ("
+				+ api.getUser().getName() + ")");
 		stage.setScene(scene);
 
 		takeApproval = new TakeApproval(stage, scene, api);
@@ -72,6 +81,14 @@ public class LibrarianPanel {
 		manageDebtsBtn.setOnAction(event -> debtsManager.show());
 		manageUsersBtn.setOnAction(event -> userManager.show());
 		manageDocsBtn.setOnAction(event -> documentManager.show());
+
+		if (api.getUser() instanceof Admin) {
+			viewLogsBtn.setOnAction(event -> {
+			});
+			viewLogsBtn.setVisible(true);
+			viewLogsBtn.setDisable(false);
+			logsLabel.setVisible(true);
+		}
 	}
 
 	/**

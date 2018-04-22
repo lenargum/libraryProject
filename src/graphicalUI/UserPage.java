@@ -38,14 +38,12 @@ public class UserPage {
 	@FXML
 	private JFXButton controlPanelBtn;
 	@FXML
-	private JFXButton adminPanelBtn;
-	@FXML
 	private JFXButton accountBtn;
 	@FXML
 	private JFXButton browseLibBtn;
 	private DocSelector selector;
 	private UserDocs userDocs;
-	private LibrarianPanel librarianPanel;
+	private ControlPanel controlPanel;
 	private Scene mainScene;
 	@FXML
 	private JFXListView<Label> notificationList;
@@ -86,15 +84,15 @@ public class UserPage {
 
 		userDocs = new UserDocs(rootPage.getApi());
 
-		if (rootPage.getApi().getUser() instanceof Librarian) {
-			librarianPanel = new LibrarianPanel(rootPage.getApi());
+		if (rootPage.getApi().getUser() instanceof Librarian ||
+				rootPage.getApi().getUser() instanceof Admin) {
+			controlPanel = new ControlPanel(rootPage.getApi());
 		}
 
 		Thread initSelector = new Thread(() -> {
 			System.out.print("Loading document selector in parallel thread:\n\t");
 			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
 		});
-
 		initSelector.start();
 
 		initialize();
@@ -136,15 +134,7 @@ public class UserPage {
 			controlPanelBtn.setDisable(false);
 			controlPanelBtn.setVisible(true);
 		}
-		controlPanelBtn.setOnAction(event -> librarianPanel.show());
-
-		adminPanelBtn = (JFXButton) userLayout.lookup("#adminPanelBtn");
-		if (rootPage.getApi().getUser() instanceof Admin) {
-			adminPanelBtn.setDisable(false);
-			adminPanelBtn.setVisible(true);
-		}
-		adminPanelBtn.setOnAction(event -> { // TODO
-		});
+		controlPanelBtn.setOnAction(event -> controlPanel.show());
 
 		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
 		seeMoreBtn.setOnAction(event -> userDocs.show());
@@ -159,7 +149,7 @@ public class UserPage {
 		phoneField = (Label) userLayout.lookup("#phoneField");
 
 		nameSurname.setText(rootPage.getApi().getUser().getName() + " " + rootPage.getApi().getUser().getSurname());
-		statusField.setText(rootPage.getApi().userType().name());
+		statusField.setText(rootPage.getApi().getUser().getClass().getSimpleName());
 		addressField.setText(rootPage.getApi().getUser().getAddress());
 		phoneField.setText(rootPage.getApi().getUser().getPhoneNumber());
 

@@ -91,7 +91,7 @@ public class CoreAPI {
 		db.connect();
 		for (User usr : db.getUsers()) {
 			list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
-					usr.getAddress(), usr.getPhoneNumber(), determineUserType(usr).name()));
+					usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
 		}
 		db.close();
 
@@ -490,20 +490,12 @@ public class CoreAPI {
 	}
 
 	/**
-	 * Get current user type.
-	 *
-	 * @return Current user type.
-	 */
-	UserType userType() {
-		return determineUserType(user);
-	}
-
-	/**
 	 * Determines user type.
 	 *
 	 * @param usr User to check.
 	 * @return User type.
 	 */
+	@Deprecated
 	UserType determineUserType(User usr) {
 		if (usr instanceof Librarian) {
 			return UserType.LIBRARIAN;
@@ -518,6 +510,7 @@ public class CoreAPI {
 	 * @param patron Patron to check.
 	 * @return Patron type.
 	 */
+	@Deprecated
 	private UserType determinePatronType(Patron patron) {
 		switch (patron.getPriority()) {
 			case 0:
@@ -538,6 +531,7 @@ public class CoreAPI {
 	/**
 	 * Possible user types.
 	 */
+	@Deprecated
 	public enum UserType {
 		LIBRARIAN, PATRON,
 		STUDENT, INSTRUCTOR, TA, VP, PROFESSOR
