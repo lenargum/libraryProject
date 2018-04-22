@@ -187,7 +187,7 @@ public class Database {
 	private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
 	                            boolean isReference, double price, String keywords, String type, String publisher,
 	                            int edition, boolean bestseller, String journalName, String issue, String editor,
-	                            String publicationDate) throws SQLException {
+	                            String publicationDate)  throws SQLException {
 		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
 				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
 				" journal_name, issue, editor, publication_date)" +
@@ -835,21 +835,58 @@ public class Database {
 			ResultSet usersSet = executeQuery("SELECT * FROM users");
 
 			while (usersSet.next()) {
-				String status = usersSet.getString(4).toLowerCase();
-				if (status.equals("librarian")) {
-					Librarian tempLib = new Librarian(usersSet.getString(2), usersSet.getString(3),
-							usersSet.getString(5), usersSet.getString(6),
-							usersSet.getString(7), usersSet.getString(8));
-					tempLib.setId(usersSet.getInt(1));
-					usersList.add(tempLib);
-				} else {
-					Patron tempPat = new Patron(usersSet.getString(2), usersSet.getString(3), status,
-							usersSet.getString(5), usersSet.getString(6),
-							usersSet.getString(7), usersSet.getString(8));
-					tempPat.setId(usersSet.getInt(1));
-					usersList.add(tempPat);
+				User temp;
+
+				switch (usersSet.getString(4)) {
+					case "LIBRARIAN":
+						temp = new Librarian(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "STUDENT":
+						temp = new Student(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "PROFESSOR":
+						temp = new Professor(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "INSTRUCTOR":
+						temp = new Instructor(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "TA":
+						temp = new TeachingAssistant(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "VP":
+						temp = new VisitingProfessor(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "ADMIN":
+						temp = new Admin(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					default:
+						throw new WrongUserTypeException("System does not support type " +
+								usersSet.getString(4));
 				}
 
+				temp.setId(usersSet.getInt(1));
+				usersList.add(temp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1578,5 +1615,29 @@ public class Database {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public void log(String log) {
+		try {
+			String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
+			//language=SQLite
+			executeUpdate("INSERT INTO log (log) VALUES (\'["+time+"]: "+log+"\')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<String> getLog() {
+		ArrayList<String> logs = new ArrayList<>();
+		try {
+			//language=SQLite
+			ResultSet temp = executeQuery("SELECT * FROM log");
+			while(temp.next()) {
+				logs.add(temp.getString(0));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return logs;
 	}
 }

@@ -1,5 +1,6 @@
 package adminTools;
 
+import tools.OutstandingRequest;
 import tools.Database;
 import users.Librarian;
 
@@ -34,10 +35,10 @@ public class ModifyLibrary {
 
 	public void deleteDocument(int idDocument, Database database) {
 
-		//TODO: Notification for all users, who has request this document
-		//TODO: Check if this document in Debts
-
+		OutstandingRequest deletionDocument = new OutstandingRequest();
+		deletionDocument.makeDeletionRequest(idDocument, database);
 		database.deleteDocument(idDocument);
+
 	}
 
 
