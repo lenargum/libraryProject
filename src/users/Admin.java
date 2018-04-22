@@ -5,11 +5,13 @@ import adminTools.ModifyLibrary;
 import tools.Database;
 
 public class Admin extends User {
-	private Modify modify = new Modify();
-	private ModifyLibrary modifyLibrary = new ModifyLibrary();
+	private Modify modify;
+	private ModifyLibrary modifyLibrary;
 
 	public Admin(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, "", "");
+		modify = new Modify();
+		modifyLibrary = new ModifyLibrary();
 	}
 
 	public void addLibrarian(Librarian librarian, Database database) {
@@ -32,16 +34,16 @@ public class Admin extends User {
 		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
-	public void setModifyPrivilegeLibrarian(int idLibrarian, Database database) {
-		this.modify.setModifyPrivilegeLibrarian(idLibrarian, database);
+	public void setModifyPrivilegeLibrarian(Librarian librarian) {
+		this.modify.setModifyPrivilegeLibrarian(librarian);
 	}
 
-	public void setAddPrivilegeLibrarian(int idLibrarian, Database database) {
-		this.modify.setAddPrivilegeLibrarian(idLibrarian, database);
+	public void setAddPrivilegeLibrarian(Librarian librarian) {
+		this.modify.setAddPrivilegeLibrarian(librarian);
 	}
 
-	public void setDeletePrivilegeLibrarian(int idLibrarian, Database database) {
-		this.modify.setDeletePrivilegeLibrarian(idLibrarian, database);
+	public void setDeletePrivilegeLibrarian(Librarian librarian) {
+		this.modify.setDeletePrivilegeLibrarian(librarian);
 	}
 
 	public void deleteLibrarian(int idLibrarian, Database database) {

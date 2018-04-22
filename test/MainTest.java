@@ -19,6 +19,7 @@ class MainTest {
 	private Admin admin;
 	private Database database = new Database();
 
+	@Test
 	void initialState()  {
 		database.connect();
 		database.clear();
@@ -34,23 +35,27 @@ class MainTest {
 		v = new VisitingProfessor("patron5", "patpass", "Veronika", "Rama", "30005", "Stret Atocha, 27");
 
 		admin.addLibrarian(librarian, database);
-		admin.setDeletePrivilegeLibrarian(librarian.getId(), database);
-		database.insertBook(d1);
-		database.insertBook(d2);
-		database.insertAV(d3);
-		database.insertPatron(p1);
-		database.insertPatron(p2);
-		database.insertPatron(p3);
-		database.insertPatron(s);
-		database.insertPatron(v);
-		//librarian.addBook(d1, database);
-		//librarian.addBook(d2, database);
-		//librarian.addAV(d3, database);
-		//librarian.registerPatron(p1, database);
-		//librarian.registerPatron(p2, database);
-		//librarian.registerPatron(p3, database);
-		//librarian.registerPatron(s, database);
-		//librarian.registerPatron(v, database);
+		admin.setDeletePrivilegeLibrarian(librarian);
+
+
+		librarian.addBook(d1, database);
+		librarian.addBook(d2, database);
+		librarian.addAV(d3, database);
+		librarian.registerPatron(p1, database);
+		librarian.registerPatron(p2, database);
+		librarian.registerPatron(p3, database);
+		librarian.registerPatron(s, database);
+		librarian.registerPatron(v, database);
+
+		System.out.println(d1.getID());
+		System.out.println(d2.getID());
+		System.out.println(d3.getID());
+		System.out.println(p1.getId());
+		System.out.println(p2.getId());
+		System.out.println(p3.getId());
+		System.out.println(s.getId());
+		System.out.println(v.getId());
+
 		database.close();
 	}
 

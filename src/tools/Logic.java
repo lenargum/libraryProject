@@ -141,6 +141,7 @@ public class Logic {
      * @return
      */
     public static boolean canAdd(int librarianId, Database database) {
+        System.out.println(database.getLibrarian(librarianId).getPrivilege());
         return database.getLibrarian(librarianId).getPrivilege() >= Constants.addPrivilege;
     }
 

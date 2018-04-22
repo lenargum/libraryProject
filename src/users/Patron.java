@@ -28,9 +28,9 @@ public class Patron extends User {
 	/**
 	 * List of patrons' documents IDs.
 	 */
-	private ArrayList<Integer> listOfDocumentsPatron = new ArrayList<>();
-	private BookingSystem bookingSystem = new BookingSystem();
-	private ReturningSystem returningSystem = new ReturningSystem();
+	private ArrayList<Integer> listOfDocumentsPatron;
+	private BookingSystem bookingSystem;
+	private ReturningSystem returningSystem;
 
 	/**
 	 * Initialize new user.
@@ -45,10 +45,16 @@ public class Patron extends User {
 	 */
 	public Patron(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
+		listOfDocumentsPatron = new ArrayList<>();
+		bookingSystem = new BookingSystem();
+		returningSystem = new ReturningSystem();
 	}
 	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		this.setStatus(status);
+		listOfDocumentsPatron = new ArrayList<>();
+		bookingSystem = new BookingSystem();
+		returningSystem = new ReturningSystem();
 	}
 
 	/**

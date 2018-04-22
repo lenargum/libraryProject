@@ -22,11 +22,11 @@ public class Librarian extends User {
 	/**
 	 * Tools for Librarian
 	 */
-	private BookingSystem bookingSystem = new BookingSystem();
-	private Modify modify = new Modify();
-	private ModifyLibrary modifyLibrary = new ModifyLibrary();
-	private OutstandingRequest outstandingRequest = new OutstandingRequest();
-	private ReturningSystem returningSystem = new ReturningSystem();
+	private BookingSystem bookingSystem;
+	private Modify modify;
+	private ModifyLibrary modifyLibrary;
+	private OutstandingRequest outstandingRequest;
+	private ReturningSystem returningSystem;
 	/**
 	 * Initialize new librarian.
 	 *
@@ -40,6 +40,11 @@ public class Librarian extends User {
 	public Librarian(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		setPrivilege(Constants.basicPrivilege);
+		bookingSystem = new BookingSystem();
+		modify = new Modify();
+		modifyLibrary = new ModifyLibrary();
+		outstandingRequest = new OutstandingRequest();
+		returningSystem = new ReturningSystem();
 	}
 
 	public int getPrivilege() {
