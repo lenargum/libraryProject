@@ -17,7 +17,7 @@ public class Modify {
 			database.getDocument(idDocument).setPrice(price);
 			database.editDocumentColumn(idDocument, "price", Double.toString(price));
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -34,7 +34,7 @@ public class Modify {
 			database.getBook(idBook).setEdition(edition);
 			database.editDocumentColumn(idBook, "edition", Integer.toString(edition));
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -51,7 +51,7 @@ public class Modify {
 			database.getDocument(idDocument).setAllowedForStudents(isAllowedForStudents);
 			database.editDocumentColumn(idDocument, "is_allowed_for_students", Boolean.toString(isAllowedForStudents));
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -67,7 +67,7 @@ public class Modify {
 			database.getDocument(idDocument).setNumberOfCopies(countOfCopies);
 			database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(countOfCopies));
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -83,7 +83,7 @@ public class Modify {
 			database.getBook(idBook).setBestseller(bestseller);
 			database.editDocumentColumn(idBook, "bestseller", Boolean.toString(bestseller));
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -99,7 +99,7 @@ public class Modify {
 			database.getPatron(idPatron).setSurname(surname);
 			database.editUserColumn(idPatron, "lastname", surname);
 		} else {
-
+			//TODO: Log
 		}
 
 	}
@@ -116,7 +116,7 @@ public class Modify {
 			database.getPatron(idPatron).setAddress(address);
 			database.editUserColumn(idPatron, "address", address);
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -132,7 +132,7 @@ public class Modify {
 			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
 			database.editUserColumn(idPatron, "phone", phoneNumber);
 		} else {
-
+			//TODO: Log
 		}
 	}
 
@@ -149,7 +149,7 @@ public class Modify {
 			database.getPatron(idPatron).setStatus(status);
 			database.editDocumentColumn(idPatron, "status", status);
 		} else {
-
+			//TODO: Log
 		}
 	}
 }

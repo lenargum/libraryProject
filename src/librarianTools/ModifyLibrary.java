@@ -20,7 +20,7 @@ public class ModifyLibrary {
         if(Logic.canAdd(librarianId, database)) {
             database.insertBook(book);
         } else {
-
+            //TODO: Log
         }
     }
 

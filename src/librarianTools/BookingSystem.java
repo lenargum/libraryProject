@@ -15,7 +15,6 @@ public class BookingSystem {
 	public void submitRequest(Request request, Database database) {
 		System.out.println("users.Librarian <- submitting request " + request.getRequestId() + " . . .");
 		request.approveRequest(request.getIdPatron(), request.getIdDocument(), database);
-
 	}
 
 	/**
@@ -26,7 +25,6 @@ public class BookingSystem {
 	 */
 	public void deleteRequest(Request request, Database database) {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);
-
 	}
 
 

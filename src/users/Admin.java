@@ -5,11 +5,13 @@ import adminTools.ModifyLibrary;
 import tools.Database;
 
 public class Admin extends User {
-	private Modify modify = new Modify();
-	private ModifyLibrary modifyLibrary = new ModifyLibrary();
+	private Modify modify;
+	private ModifyLibrary modifyLibrary;
 
 	public Admin(String login, String password, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, "", "");
+		modify = new Modify();
+		modifyLibrary = new ModifyLibrary();
 	}
 
 	public void addLibrarian(Librarian librarian, Database database) {
