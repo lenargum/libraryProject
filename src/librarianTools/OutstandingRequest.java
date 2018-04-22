@@ -17,7 +17,10 @@ public class OutstandingRequest {
 		} else {
 
 		}
+	}
 
+	public void makeDeletionRequest(int documentId, Database database){
+		sendNotificationDeletionDocument(documentId, database);
 	}
 
 	public void setAvailability(int docID, Database database) {
@@ -50,4 +53,15 @@ public class OutstandingRequest {
 			i++;
 		}
 	}
+
+	private void sendNotificationDeletionDocument(int docaumentId, Database database){
+		List<Request> requests = database.getRequestsForDocument(docaumentId);
+		int i = 0;
+		int n = database.getRequestsForDocument(docaumentId).size();
+		while (i < n){
+			Request temp = requests.get(i);
+			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "This document is deleted", new Date());
+		}
+	}
+
 }
