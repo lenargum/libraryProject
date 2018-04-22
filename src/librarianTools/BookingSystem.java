@@ -11,7 +11,6 @@ public class BookingSystem {
 	 *
 	 * @param request  - request librarian confirms
 	 * @param database - information storage
-	 * @throws SQLException Something went wrong in database.
 	 */
 	public void submitRequest(Request request, Database database) {
 		System.out.println("users.Librarian <- submitting request " + request.getRequestId() + " . . .");
@@ -24,7 +23,6 @@ public class BookingSystem {
 	 *
 	 * @param request  - request the librarian refuses
 	 * @param database - information storage
-	 * @throws SQLException Something went wrong in database.
 	 */
 	public void deleteRequest(Request request, Database database) {
 		request.refuseRequest(request.getIdPatron(), request.getIdDocument(), database);

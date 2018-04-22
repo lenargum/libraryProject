@@ -7,6 +7,7 @@ import documents.JournalArticle;
 import librarianTools.*;
 import tools.Constants;
 import tools.Database;
+import tools.OutstandingRequest;
 import tools.Request;
 
 

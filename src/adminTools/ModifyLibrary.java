@@ -1,6 +1,6 @@
 package adminTools;
 
-import librarianTools.OutstandingRequest;
+import tools.OutstandingRequest;
 import tools.Database;
 import users.Librarian;
 
