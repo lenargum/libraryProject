@@ -6,8 +6,6 @@ import tools.Logic;
 import tools.Request;
 import users.Patron;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 
 public class ReturningSystem {
 
@@ -16,8 +14,6 @@ public class ReturningSystem {
 	 *
 	 * @param debtID   - id of debt patron wants to close
 	 * @param database - information storage
-	 * @throws SQLException   Something went wrong in database.
-	 * @throws ParseException Something wrong with input.
 	 */
 	public void confirmReturn(int debtID, Database database) {
 		Debt debt = database.getDebt(debtID);
@@ -36,7 +32,6 @@ public class ReturningSystem {
 	public void confirmRenew(Request request, Database database) {
 		request.approveRenew(database);
 		database.deleteRequest(request.getRequestId());
-
 	}
 
 	/**
@@ -50,7 +45,6 @@ public class ReturningSystem {
 			Debt debt = database.getDebt(debtID);
 			debt.setFee(0);
 			System.out.println("Payout confirmed!");
-
 		}
 	}
 }

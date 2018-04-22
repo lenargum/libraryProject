@@ -1,9 +1,6 @@
-package librarianTools;
+package tools;
 
 import documents.Document;
-import tools.Database;
-import tools.Logic;
-import tools.Request;
 
 import java.util.ArrayList;
 import java.util.Date;

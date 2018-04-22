@@ -111,13 +111,8 @@ public class Request {
 	 * @param idPatron   Associated patron's ID.
 	 * @param idDocument Associated document's ID.
 	 * @param database   Database
-	 * @throws SQLException something in database went wrong
 	 */
 	public void refuseRequest(int idPatron, int idDocument, Database database) {
-//        if (!database.getPatron(idPatron).canRequestDocument(idDocument, database)){
-//            //queue.remove(database.getPatron(idPatron));
-//	        System.out.println("Not for this patron");
-//    }
 		database.deleteRequest(idPatron, idDocument);
 	}
 

@@ -5,6 +5,7 @@ import documents.Book;
 import documents.JournalArticle;
 import tools.Database;
 import tools.Logic;
+import tools.OutstandingRequest;
 import users.Patron;
 
 
@@ -19,7 +20,7 @@ public class ModifyLibrary {
         if(Logic.canAdd(librarianId, database)) {
             database.insertBook(book);
         } else {
-
+            //TODO: Log
         }
     }
 
@@ -33,7 +34,7 @@ public class ModifyLibrary {
         if(Logic.canAdd(librarianId, database)) {
             database.insertAV(AV);
         } else {
-
+            //TODO: Log
         }
     }
 
@@ -47,7 +48,7 @@ public class ModifyLibrary {
         if(Logic.canAdd(librarianId, database)) {
             database.insertArticle(journalArticle);
         } else {
-
+            //TODO: Log
         }
     }
 
@@ -63,7 +64,7 @@ public class ModifyLibrary {
         if(Logic.canAdd(librarianId, database)) {
             database.insertPatron(patron);
         } else {
-
+            //TODO: Log
         }
     }
 
@@ -79,7 +80,7 @@ public class ModifyLibrary {
             deletionNotification.makeDeletionRequest(idDocument, database);
             database.deleteDocument(idDocument);
         } else {
-
+            //TODO: Log
         }
     }
 
@@ -93,7 +94,7 @@ public class ModifyLibrary {
         if(Logic.canDelete(librarianId, database)) {
             database.deleteUser(idPatron);
         } else {
-
+            //TODO: Log
         }
     }
 

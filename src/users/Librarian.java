@@ -7,6 +7,7 @@ import documents.JournalArticle;
 import librarianTools.*;
 import tools.Constants;
 import tools.Database;
+import tools.OutstandingRequest;
 import tools.Request;
 
 
@@ -45,6 +46,7 @@ public class Librarian extends User {
 		modifyLibrary = new ModifyLibrary();
 		outstandingRequest = new OutstandingRequest();
 		returningSystem = new ReturningSystem();
+		//
 	}
 
 	public int getPrivilege() {
