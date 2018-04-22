@@ -189,7 +189,7 @@ public class Database {
 	private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
 	                            boolean isReference, double price, String keywords, String type, String publisher,
 	                            int edition, boolean bestseller, String journalName, String issue, String editor,
-	                            String publicationDate) throws SQLException {
+	                            String publicationDate)  throws SQLException {
 		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
 				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
 				" journal_name, issue, editor, publication_date)" +
@@ -1536,5 +1536,29 @@ public class Database {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public void log(String log) {
+		try {
+			String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
+			//language=SQLite
+			executeUpdate("INSERT INTO log (log) VALUES (\'["+time+"]: "+log+"\')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<String> getLog() {
+		ArrayList<String> logs = new ArrayList<>();
+		try {
+			//language=SQLite
+			ResultSet temp = executeQuery("SELECT * FROM log");
+			while(temp.next()) {
+				logs.add(temp.getString(0));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return logs;
 	}
 }
