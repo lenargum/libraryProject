@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.AdminPanel">
+   <children>
+      <Text layoutX="48.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello, admin" AnchorPane.leftAnchor="50.0">
+         <font>
+            <Font name="Roboto" size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="98.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Librarians" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
+         <font>
+            <Font name="Roboto" size="22.0" />
+         </font>
+      </Text>
+      <VBox alignment="CENTER_LEFT" layoutX="98.0" layoutY="202.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="135.0">
+         <children>
+            <JFXButton fx:id="manageLibrariansBtn" mnemonicParsing="false" text="Manage librarians" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

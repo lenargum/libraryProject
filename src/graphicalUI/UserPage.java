@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import tools.Notification;
+import users.Admin;
 import users.Librarian;
 
 import java.io.IOException;
@@ -36,6 +37,8 @@ public class UserPage {
 	// FXML bindings
 	@FXML
 	private JFXButton controlPanelBtn;
+	@FXML
+	private JFXButton adminPanelBtn;
 	@FXML
 	private JFXButton accountBtn;
 	@FXML
@@ -129,11 +132,19 @@ public class UserPage {
 		browseLibBtn.setOnAction(event -> selector.show());
 
 		controlPanelBtn = (JFXButton) userLayout.lookup("#controlPanelBtn");
-		if (rootPage.getApi().userType() == CoreAPI.UserType.LIBRARIAN) {
+		if (rootPage.getApi().getUser() instanceof Librarian) {
 			controlPanelBtn.setDisable(false);
 			controlPanelBtn.setVisible(true);
 		}
 		controlPanelBtn.setOnAction(event -> librarianPanel.show());
+
+		adminPanelBtn = (JFXButton) userLayout.lookup("#adminPanelBtn");
+		if (rootPage.getApi().getUser() instanceof Admin) {
+			adminPanelBtn.setDisable(false);
+			adminPanelBtn.setVisible(true);
+		}
+		adminPanelBtn.setOnAction(event -> { // TODO
+		});
 
 		seeMoreBtn = (JFXButton) userLayout.lookup("#seeMoreBtn");
 		seeMoreBtn.setOnAction(event -> userDocs.show());
