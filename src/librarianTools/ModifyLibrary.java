@@ -19,6 +19,7 @@ public class ModifyLibrary {
     public void addBook(int librarianId, Book book, Database database) {
         if(Logic.canAdd(librarianId, database)) {
             database.insertBook(book);
+            book.setID(database.getDocumentID(book));
         } else {
             //TODO: Log
         }
@@ -33,6 +34,7 @@ public class ModifyLibrary {
     public void addAV(int librarianId, AudioVideoMaterial AV, Database database)  {
         if(Logic.canAdd(librarianId, database)) {
             database.insertAV(AV);
+            AV.setID(database.getDocumentID(AV));
         } else {
             //TODO: Log
         }
@@ -47,6 +49,7 @@ public class ModifyLibrary {
     public void addArticle(int librarianId, JournalArticle journalArticle, Database database)  {
         if(Logic.canAdd(librarianId, database)) {
             database.insertArticle(journalArticle);
+            journalArticle.setID(database.getDocumentID(journalArticle));
         } else {
             //TODO: Log
         }
