@@ -127,41 +127,11 @@ public class Database {
 	 * @throws SQLException user with such login already exists or inserted user with incorrect type.
 	 */
 	private void insertUser(String login, String password, String status,
-	                        String firstName, String lastName, String phone, String address) throws SQLException {
-		this.execute("INSERT INTO users(login, password, status, firstname, lastname, phone, address)" +
+	                        String firstName, String lastName, String phone, String address,int privileges) throws SQLException {
+		this.execute("INSERT INTO users(login, password, status, firstname, lastname, phone, address, privileges)" +
 				" VALUES('" + login + "','" + password + "','"
 				+ status + "','" + firstName + "','" + lastName + "','" +
-				phone + "','" + address + "')");
-	}
-
-	/**
-	 * Insert provided patron into database.
-	 *
-	 * @param patron users.Patron to insert.
-	 * @see Patron
-	 */
-	public void insertPatron(Patron patron) {
-		try {
-			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress());
-			patron.setId(this.getPatronID(patron));
-		} catch (SQLException e) {
-			System.err.println("tools.Database: User with such login already exists");
-		}
-	}
-
-	/**
-	 * Insert provided librarian into database.
-	 *
-	 * @param librarian users.Librarian to insert.
-	 * @see Librarian
-	 */
-	public void insertLibrarian(Librarian librarian) {
-		try {
-			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress());
-			librarian.setId(this.getLibrarianID(librarian));
-		} catch (SQLException e) {
-			System.err.println("tools.Database: User with such login already exists");
-		}
+				phone + "','" + address + "', "+privileges+")");
 	}
 
 	/**
@@ -197,6 +167,38 @@ public class Database {
 				+ editor + "','" + publicationDate + "')");
 
 	}
+
+	/**
+	 * Insert provided patron into database.
+	 *
+	 * @param patron users.Patron to insert.
+	 * @see Patron
+	 */
+	public void insertPatron(Patron patron) {
+		try {
+			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress(),-1);
+			patron.setId(this.getPatronID(patron));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: User with such login already exists");
+		}
+	}
+
+	/**
+	 * Insert provided librarian into database.
+	 *
+	 * @param librarian users.Librarian to insert.
+	 * @see Librarian
+	 */
+	public void insertLibrarian(Librarian librarian) {
+		try {
+			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress(),librarian.getPrivilege());
+			librarian.setId(this.getLibrarianID(librarian));
+		} catch (SQLException e) {
+			System.err.println("tools.Database: User with such login already exists");
+		}
+	}
+
+
 
 	/**
 	 * Insert provided book into database.
@@ -297,7 +299,7 @@ public class Database {
 	 */
 	public ArrayList<Patron> getPatronList() {
 		try {
-			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN'");
+			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' AND status != 'ADMIN'");
 			ArrayList<Patron> patronList = new ArrayList<>();
 			while (patronSet.next()) {
 				Patron temp = new Patron(patronSet.getString(2),
@@ -329,7 +331,7 @@ public class Database {
 			while (librarianSet.next()) {
 				Librarian temp = new Librarian(librarianSet.getString(2),
 						librarianSet.getString(3), librarianSet.getString(5),
-						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
 				librarianList.add(temp);
 			}
@@ -524,7 +526,7 @@ public class Database {
 	 */
 	public Patron getPatron(int ID) {
 		try {
-			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' and id = " + ID);
+			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' and status != 'ADMIN' and id = " + ID);
 			if (patronSet.next()) {
 				Patron temp = new Patron(patronSet.getString(2),
 						patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
@@ -556,7 +558,7 @@ public class Database {
 						temp = new Librarian(userSet.getString(2),
 								userSet.getString(3), userSet.getString(5),
 								userSet.getString(6), userSet.getString(7),
-								userSet.getString(8));
+								userSet.getString(8),userSet.getInt(9));
 						break;
 					case "STUDENT":
 						temp = new Student(userSet.getString(2),
@@ -621,7 +623,7 @@ public class Database {
 			if (librarianSet.next()) {
 				Librarian temp = new Librarian(librarianSet.getString(2),
 						librarianSet.getString(3), librarianSet.getString(5),
-						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8));
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
 				return temp;
 			}
@@ -642,12 +644,44 @@ public class Database {
 		try {
 			ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + ID);
 			if (documentSet.next()) {
-				Document temp = new Document(documentSet.getString(2),
-						documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
-						documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
-						documentSet.getDouble(7), documentSet.getString(8));
-				temp.setID(documentSet.getInt(1));
-				return temp;
+				Document temp;
+				switch (documentSet.getString("9")) {
+					case "BOOK":
+						temp = new Book(documentSet.getString(2),
+								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)), documentSet.getInt(5),
+								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8),
+								documentSet.getString(10), documentSet.getInt(11), Boolean.parseBoolean(documentSet.getString(12)));
+						temp.setID(documentSet.getInt(1));
+						return temp;
+
+					case "AV":
+						temp = new AudioVideoMaterial(documentSet.getString(2),
+								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)), documentSet.getInt(5),
+								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8));
+						temp.setID(documentSet.getInt(1));
+						return temp;
+
+					case "ARTICLE":
+						try {
+							temp = new JournalArticle(documentSet.getString(2),
+									documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
+									documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
+									documentSet.getDouble(7), documentSet.getString(8),
+									documentSet.getString(13), documentSet.getString(10),
+									documentSet.getString(14), documentSet.getString(15),
+									new SimpleDateFormat("yyyy-MM-dd").parse(documentSet.getString(16)));
+							temp.setID(documentSet.getInt(1));
+							return temp;
+						} catch (ParseException e) {
+							e.printStackTrace();
+							System.err.println("tools.Database: Parsing failed. One of element's date in database's table has incorrect format(not as \"yyyy-MM-dd\").");
+						}
+						break;
+
+					default:
+						throw new WrongUserTypeException("System does not support type " +
+								documentSet.getString(4));
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -835,21 +869,58 @@ public class Database {
 			ResultSet usersSet = executeQuery("SELECT * FROM users");
 
 			while (usersSet.next()) {
-				String status = usersSet.getString(4).toLowerCase();
-				if (status.equals("librarian")) {
-					Librarian tempLib = new Librarian(usersSet.getString(2), usersSet.getString(3),
-							usersSet.getString(5), usersSet.getString(6),
-							usersSet.getString(7), usersSet.getString(8));
-					tempLib.setId(usersSet.getInt(1));
-					usersList.add(tempLib);
-				} else {
-					Patron tempPat = new Patron(usersSet.getString(2), usersSet.getString(3), status,
-							usersSet.getString(5), usersSet.getString(6),
-							usersSet.getString(7), usersSet.getString(8));
-					tempPat.setId(usersSet.getInt(1));
-					usersList.add(tempPat);
+				User temp;
+
+				switch (usersSet.getString(4)) {
+					case "LIBRARIAN":
+						temp = new Librarian(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8), usersSet.getInt(9));
+						break;
+					case "STUDENT":
+						temp = new Student(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "PROFESSOR":
+						temp = new Professor(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "INSTRUCTOR":
+						temp = new Instructor(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "TA":
+						temp = new TeachingAssistant(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "VP":
+						temp = new VisitingProfessor(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					case "ADMIN":
+						temp = new Admin(usersSet.getString(2),
+								usersSet.getString(3), usersSet.getString(5),
+								usersSet.getString(6), usersSet.getString(7),
+								usersSet.getString(8));
+						break;
+					default:
+						throw new WrongUserTypeException("System does not support type " +
+								usersSet.getString(4));
 				}
 
+				temp.setId(usersSet.getInt(1));
+				usersList.add(temp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1517,6 +1588,48 @@ public class Database {
 	}
 
 	/**
+	 * Insertion Admin in Database.
+	 *
+	 * @param admin Inserting Admin.
+	 */
+	public void insertAdmin(Admin admin) {
+
+		try{
+			getAdmin();
+			System.err.println("tools.Database: One admin is already exist!");
+		} catch (NoSuchElementException e) {
+			try {
+				insertUser(admin.getLogin(),admin.getPassword(),"ADMIN", admin.getName(),admin.getSurname(),admin.getPhoneNumber(),admin.getAddress(),-1);
+				admin.setId(getAdmin().getId());
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Method for getting Admin from Database.
+	 *
+	 * @return Admin from Database.
+	 * @throws NoSuchElementException Throws when there is no Admin in Database.
+	 */
+	public Admin getAdmin() {
+		try{
+			//language=SQLite
+			ResultSet rs = executeQuery("SELECT * FROM users WHERE status = 'ADMIN'");
+			if(rs.next()) {
+				return new Admin(rs.getString(2),
+						rs.getString(3), rs.getString(5),
+						rs.getString(6), rs.getString(7),
+						rs.getString(8));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		throw new NoSuchElementException();
+	}
+
+	/**
 	 * Method for checking existence of such User in database.
 	 *
 	 * @param id User's ID.
@@ -1578,5 +1691,39 @@ public class Database {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	/**
+	 * Method for logging your actions.
+	 *
+	 * @param log Line for log
+	 */
+	public void log(String log) {
+		try {
+			String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
+			//language=SQLite
+			executeUpdate("INSERT INTO log (log) VALUES (\'[" + time + "]: " + log + "\')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method for returning logs
+	 *
+	 * @return logs
+	 */
+	public ArrayList<String> getLog() {
+		ArrayList<String> logs = new ArrayList<>();
+		try {
+			//language=SQLite
+			ResultSet temp = executeQuery("SELECT * FROM log");
+			while (temp.next()) {
+				logs.add(temp.getString(0));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return logs;
 	}
 }

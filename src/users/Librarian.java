@@ -28,6 +28,7 @@ public class Librarian extends User {
 	private ModifyLibrary modifyLibrary;
 	private OutstandingRequest outstandingRequest;
 	private ReturningSystem returningSystem;
+
 	/**
 	 * Initialize new librarian.
 	 *
@@ -46,8 +47,29 @@ public class Librarian extends User {
 		modifyLibrary = new ModifyLibrary();
 		outstandingRequest = new OutstandingRequest();
 		returningSystem = new ReturningSystem();
-		//
 	}
+
+	/**
+	 * Initialize new librarian.
+	 *
+	 * @param login    Login.
+	 * @param password Password.
+	 * @param name     First name.
+	 * @param surname  Last name.
+	 * @param phone    Phone number.
+	 * @param address  Living address.
+	 * @param privilege Privilege level
+	 */
+	public Librarian(String login, String password, String name, String surname, String phone, String address, int privilege) {
+		super(login, password, name, surname, phone, address);
+		setPrivilege(privilege);
+		bookingSystem = new BookingSystem();
+		modify = new Modify();
+		modifyLibrary = new ModifyLibrary();
+		outstandingRequest = new OutstandingRequest();
+		returningSystem = new ReturningSystem();
+	}
+
 
 	public int getPrivilege() {
 		return privilege;
