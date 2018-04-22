@@ -75,6 +75,8 @@ public class ModifyLibrary {
      */
     public void deleteDocument(int librarianId, int idDocument, Database database)  {
         if(Logic.canDelete(librarianId, database)) {
+            OutstandingRequest deletionNotification = new OutstandingRequest();
+            deletionNotification.makeDeletionRequest(idDocument, database);
             database.deleteDocument(idDocument);
         } else {
 
