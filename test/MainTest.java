@@ -3,8 +3,7 @@ import documents.Book;
 import org.junit.jupiter.api.Test;
 import tools.Database;
 import tools.Debt;
-import users.Librarian;
-import users.Patron;
+import users.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -17,53 +16,45 @@ class MainTest {
 	private AudioVideoMaterial av1, av2, d3;
 	private Patron p1, p2, p3, s, v;
 	private Librarian librarian;
+	private Admin admin;
 	private Database database = new Database();
 
-	void initialState() throws SQLException {
+	void initialState()  {
 		database.connect();
 		database.clear();
+		admin = new Admin("admin", "admin-pass", "Ledina", "Minakirova", "12334567788", "Imaginarium");
 		librarian = new Librarian("librarian", "lib-pass", "Maria", "Nikolaeva", "81234567890", "Universitetskaya street, 1");
 		d1 = new Book("Introduction to Algorithms", "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein", true, 3, false, 5000, "algorithms, programming", "MIT Press", 3, true);
 		d2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm", true, 3, false, 1700, "OOP, programming", "Addison-Wesley Professional", 1, true);
 		d3 = new AudioVideoMaterial("Null References: The Billion Dollar Mistake", "Tony Hoare", true, 2, false, 700, "programming");
-		p1 = new Patron("patron1", "patpass", "professor", "Sergey", "Afonso", "30001", "Via Margutta, 3");
-		p2 = new Patron("patron2", "patpass", "professor", "Nadia", "Teixeira", "30002", "Via Scara, 13");
-		p3 = new Patron("patron3", "patpass", "professor", "Elvira", "Espindola", "30003", "Via del Corso, 22");
-		s = new Patron("patron4", "patpass", "student", "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
-		v = new Patron("patron5", "patpass", "vp", "Veronika", "Rama", "30005", "Stret Atocha, 27");
+		p1 = new Professor("patron1", "patpass",  "Sergey", "Afonso", "30001", "Via Margutta, 3");
+		p2 = new Professor("patron2", "patpass", "Nadia", "Teixeira", "30002", "Via Scara, 13");
+		p3 = new Professor("patron3", "patpass", "Elvira", "Espindola", "30003", "Via del Corso, 22");
+		s = new Student("patron4", "patpass",  "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
+		v = new VisitingProfessor("patron5", "patpass", "Veronika", "Rama", "30005", "Stret Atocha, 27");
 
-		database.insertLibrarian(librarian);
-		librarian.setId(database.getLibrarianID(librarian));
-
-		database.insertAV(d3);
-		d3.setID(database.getDocumentID(d3));
-
+		admin.addLibrarian(librarian, database);
+		admin.setDeletePrivilegeLibrarian(librarian.getId(), database);
 		database.insertBook(d1);
-		d1.setID(database.getDocumentID(d1));
-
 		database.insertBook(d2);
-		d2.setID(database.getDocumentID(d2));
-
+		database.insertAV(d3);
 		database.insertPatron(p1);
-		p1.setId(database.getPatronID(p1));
-
 		database.insertPatron(p2);
-		p2.setId(database.getPatronID(p2));
-
 		database.insertPatron(p3);
-		p3.setId(database.getPatronID(p3));
-
 		database.insertPatron(s);
-		s.setId(database.getPatronID(s));
-
 		database.insertPatron(v);
-		v.setId(database.getPatronID(v));
-
-
+		//librarian.addBook(d1, database);
+		//librarian.addBook(d2, database);
+		//librarian.addAV(d3, database);
+		//librarian.registerPatron(p1, database);
+		//librarian.registerPatron(p2, database);
+		//librarian.registerPatron(p3, database);
+		//librarian.registerPatron(s, database);
+		//librarian.registerPatron(v, database);
 		database.close();
 	}
 
-	void initialStateTC1() throws SQLException, ParseException {
+	void initialStateTC1() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -72,7 +63,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC2() throws SQLException, ParseException {
+	void initialStateTC2() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -92,7 +83,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC34() throws SQLException, ParseException {
+	void initialStateTC34()  {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -105,7 +96,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC10() throws SQLException, ParseException {
+	void initialStateTC10(){
 		database.connect();
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
@@ -122,13 +113,15 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase01() throws SQLException, ParseException {
+	void TestCase01() {
 		System.out.println("Test Case 1");
 		initialState();
 		initialStateTC1();
 		database.connect();
 
+
 		int debtId = database.findDebtID(p1.getId(), d2.getID());
+
 		librarian.confirmReturn(debtId, database);
 
 		debtId = database.findDebtID(p1.getId(), d1.getID());
@@ -145,7 +138,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase02() throws SQLException, ParseException {
+	void TestCase02()  {
 		System.out.println("Test Case 2");
 		initialState();
 		initialStateTC2();
