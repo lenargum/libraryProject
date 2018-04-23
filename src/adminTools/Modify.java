@@ -70,7 +70,7 @@ public class Modify {
 	}
 
 
-	public void editDocumentNumberOdCopies(int idDocument, int newNumberOfCopies, Database database) {
+	public void editDocumentNumberOfCopies(int idDocument, int newNumberOfCopies, Database database) {
 		database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(newNumberOfCopies));
 		database.getDocument(idDocument).setNumberOfCopies(newNumberOfCopies);
 
