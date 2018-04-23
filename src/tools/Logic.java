@@ -75,6 +75,7 @@ public class Logic {
             return false;
     }
 
+
     /**
      * checks if patron can request the document
      *
@@ -300,8 +301,5 @@ public class Logic {
             throw new WrongUserTypeException();
         }
     }
-
-
-    //TODO: Logic for outstanding requests - check if exists outstanding request while trying to take!
 
 }

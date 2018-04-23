@@ -345,7 +345,8 @@ class MainTest {
 		database.connect();
 
 		librarian.makeOutstandingRequest(database.getRequest(s.getId(), d3.getID()), database);
-		System.out.println(database.getRequestsForDocument(d3.getID()).size());
+		assertEquals(database.getRequestsForDocument(d3.getID()).size(), 0);
+
 
 		database.close();
 	}
