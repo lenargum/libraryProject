@@ -86,9 +86,7 @@ public class Request {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
 				" with document " + idDocument);
 		Patron temp = database.getPatron(idPatron);
-		String status = database.getStatusForDocument(idDocument);
-
-		switch (status) {
+		switch (database.getStatusForDocument(idDocument)) {
 			case "book":
 				temp.takeBook(idDocument, database);
 

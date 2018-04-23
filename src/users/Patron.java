@@ -28,9 +28,9 @@ public class Patron extends User {
 	/**
 	 * List of patrons' documents IDs.
 	 */
-	private ArrayList<Integer> listOfDocumentsPatron;
-	private BookingSystem bookingSystem;
-	private ReturningSystem returningSystem;
+	private ArrayList<Integer> listOfDocumentsPatron = new ArrayList<>();
+	private BookingSystem bookingSystem = new BookingSystem();
+	private ReturningSystem returningSystem = new ReturningSystem();
 
 	/**
 	 * Initialize new user.

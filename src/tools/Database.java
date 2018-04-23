@@ -625,6 +625,7 @@ public class Database {
 						librarianSet.getString(3), librarianSet.getString(5),
 						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
+				temp.setPrivilege(librarianSet.getInt(9));
 				return temp;
 			}
 		} catch (SQLException e) {
