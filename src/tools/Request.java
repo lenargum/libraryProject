@@ -89,6 +89,7 @@ public class Request {
 		switch (database.getStatusForDocument(idDocument)) {
 			case "book":
 				temp.takeBook(idDocument, database);
+
 				break;
 			case "av":
 				temp.takeAV(idDocument, database);

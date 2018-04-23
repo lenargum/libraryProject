@@ -34,16 +34,16 @@ public class Admin extends User {
 		this.modify.editLibrarianPhone(idLibrarian, newPhone, database);
 	}
 
-	public void setModifyPrivilegeLibrarian(int idLibrarian, Database database) {
-		this.modify.setModifyPrivilegeLibrarian(idLibrarian, database);
+	public void setModifyPrivilegeLibrarian(Librarian librarian, Database database) {
+		this.modify.setModifyPrivilegeLibrarian(librarian, database);
 	}
 
-	public void setAddPrivilegeLibrarian(int idLibrarian, Database database) {
-		this.modify.setAddPrivilegeLibrarian(idLibrarian, database);
+	public void setAddPrivilegeLibrarian(Librarian librarian, Database database) {
+		this.modify.setAddPrivilegeLibrarian(librarian, database);
 	}
 
-	public void setDeletePrivilegeLibrarian(int idLibrarian, Database database) {
-		this.modify.setDeletePrivilegeLibrarian(idLibrarian, database);
+	public void setDeletePrivilegeLibrarian(Librarian librarian, Database database) {
+		this.modify.setDeletePrivilegeLibrarian(librarian, database);
 	}
 
 	public void deleteLibrarian(int idLibrarian, Database database) {

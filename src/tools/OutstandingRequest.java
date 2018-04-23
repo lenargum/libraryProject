@@ -31,7 +31,7 @@ public class OutstandingRequest {
 		ArrayList<Request> requests = null;
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
-			if (temp.getIdPatron() == request.getIdPatron()) {
+			if (temp.getIdPatron() != request.getIdPatron()) {
 				Document doc = db.getDocument(request.getIdDocument());
 				db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
 						"Outstanding request for " + doc.getTitle(), new Date());

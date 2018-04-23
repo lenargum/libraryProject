@@ -75,6 +75,7 @@ public class Logic {
             return false;
     }
 
+
     /**
      * checks if patron can request the document
      *

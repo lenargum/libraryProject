@@ -3,11 +3,13 @@ import documents.Book;
 import org.junit.jupiter.api.Test;
 import tools.Database;
 import tools.Debt;
-import users.Librarian;
-import users.Patron;
+import tools.OutstandingRequest;
+import tools.Request;
+import users.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,53 +19,54 @@ class MainTest {
 	private AudioVideoMaterial av1, av2, d3;
 	private Patron p1, p2, p3, s, v;
 	private Librarian librarian;
+	private Admin admin;
 	private Database database = new Database();
 
-	void initialState() throws SQLException {
+
+	void initialState()  {
 		database.connect();
 		database.clear();
+		admin = new Admin("admin", "admin-pass", "Ledina", "Minakirova", "12334567788", "Imaginarium");
 		librarian = new Librarian("librarian", "lib-pass", "Maria", "Nikolaeva", "81234567890", "Universitetskaya street, 1");
 		d1 = new Book("Introduction to Algorithms", "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein", true, 3, false, 5000, "algorithms, programming", "MIT Press", 3, true);
 		d2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm", true, 3, false, 1700, "OOP, programming", "Addison-Wesley Professional", 1, true);
 		d3 = new AudioVideoMaterial("Null References: The Billion Dollar Mistake", "Tony Hoare", true, 2, false, 700, "programming");
-		p1 = new Patron("patron1", "patpass", "professor", "Sergey", "Afonso", "30001", "Via Margutta, 3");
-		p2 = new Patron("patron2", "patpass", "professor", "Nadia", "Teixeira", "30002", "Via Scara, 13");
-		p3 = new Patron("patron3", "patpass", "professor", "Elvira", "Espindola", "30003", "Via del Corso, 22");
-		s = new Patron("patron4", "patpass", "student", "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
-		v = new Patron("patron5", "patpass", "vp", "Veronika", "Rama", "30005", "Stret Atocha, 27");
+		p1 = new Professor("patron1", "patpass",  "Sergey", "Afonso", "30001", "Via Margutta, 3");
+		p2 = new Professor("patron2", "patpass", "Nadia", "Teixeira", "30002", "Via Scara, 13");
+		p3 = new Professor("patron3", "patpass", "Elvira", "Espindola", "30003", "Via del Corso, 22");
+		s = new Student("patron4", "patpass",  "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
+		v = new VisitingProfessor("patron5", "patpass", "Veronika", "Rama", "30005", "Stret Atocha, 27");
 
-		database.insertLibrarian(librarian);
-		librarian.setId(database.getLibrarianID(librarian));
+        database.insertAdmin(admin);
 
-		database.insertAV(d3);
-		d3.setID(database.getDocumentID(d3));
+		admin.addLibrarian(librarian, database);
+		admin.setDeletePrivilegeLibrarian(librarian, database);
 
-		database.insertBook(d1);
-		d1.setID(database.getDocumentID(d1));
 
-		database.insertBook(d2);
-		d2.setID(database.getDocumentID(d2));
+		//System.out.println(librarian.getPrivilege());
+		librarian.addBook(d1, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.addBook(d2, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.addAV(d3, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.registerPatron(p1, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.registerPatron(p2, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.registerPatron(p3, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.registerPatron(s, database);
+		//System.out.println(librarian.getPrivilege());
+		librarian.registerPatron(v, database);
+		//System.out.println(librarian.getPrivilege());
 
-		database.insertPatron(p1);
-		p1.setId(database.getPatronID(p1));
-
-		database.insertPatron(p2);
-		p2.setId(database.getPatronID(p2));
-
-		database.insertPatron(p3);
-		p3.setId(database.getPatronID(p3));
-
-		database.insertPatron(s);
-		s.setId(database.getPatronID(s));
-
-		database.insertPatron(v);
-		v.setId(database.getPatronID(v));
 
 
 		database.close();
 	}
 
-	void initialStateTC1() throws SQLException, ParseException {
+	void initialStateTC1() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -72,7 +75,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC2() throws SQLException, ParseException {
+	void initialStateTC2() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -92,7 +95,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC34() throws SQLException, ParseException {
+	void initialStateTC34()  {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -105,7 +108,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC10() throws SQLException, ParseException {
+	void initialStateTC10(){
 		database.connect();
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
@@ -122,13 +125,15 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase01() throws SQLException, ParseException {
+	void TestCase01() {
 		System.out.println("Test Case 1");
 		initialState();
 		initialStateTC1();
 		database.connect();
 
+
 		int debtId = database.findDebtID(p1.getId(), d2.getID());
+
 		librarian.confirmReturn(debtId, database);
 
 		debtId = database.findDebtID(p1.getId(), d1.getID());
@@ -139,13 +144,13 @@ class MainTest {
 
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size()); //we check that p1 has only one document
 		assertTrue(debt.daysLeft() > 0);//we check if there is no overdue
-		assertEquals(0, debt.getFee(), 0.0);  //so patron don't need to pay
+		assertEquals(0, debt.getFee());  //so patron don't need to pay
 
 		database.close();
 	}
 
 	@Test
-	void TestCase02() throws SQLException, ParseException {
+	void TestCase02()  {
 		System.out.println("Test Case 2");
 		initialState();
 		initialStateTC2();
@@ -159,8 +164,8 @@ class MainTest {
 		debt2.countFee(database);
 		assertEquals(13, debt1.daysLeft());
 		assertEquals(13, debt2.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
-		assertEquals(0, debt2.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
+		assertEquals(0, debt2.getFee());
 
 
 		assertEquals(2, database.getDebtsForUser(s.getId()).size());
@@ -170,8 +175,8 @@ class MainTest {
 		debt2.countFee(database);
 		assertEquals(13, debt1.daysLeft());
 		assertEquals(13, debt2.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
-		assertEquals(0, debt2.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
+		assertEquals(0, debt2.getFee());
 
 
 		assertEquals(2, database.getDebtsForUser(v.getId()).size());
@@ -181,8 +186,8 @@ class MainTest {
 		debt2.countFee(database);
 		assertEquals(6, debt1.daysLeft());
 		assertEquals(6, debt2.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
-		assertEquals(0, debt2.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
+		assertEquals(0, debt2.getFee());
 
 		database.close();
 	}
@@ -207,22 +212,22 @@ class MainTest {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(20, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(13, debt1.daysLeft());
+		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
 		assertEquals(1, database.getDebtsForUser(s.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
 		debt1.countFee(database);
-		assertEquals(20, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(13, debt1.daysLeft());
+		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(v.getId()));
 		assertEquals(1, database.getDebtsForUser(v.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(v.getId(), d3.getID()));
 		debt1.countFee(database);
-		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(6, debt1.daysLeft());
+		assertEquals(0, debt1.getFee());
 
 
 		database.close();
@@ -247,22 +252,22 @@ class MainTest {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(20, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(13, debt1.daysLeft());
+		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
 		assertEquals(1, database.getDebtsForUser(s.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(v.getId()));
 		assertEquals(1, database.getDebtsForUser(v.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(v.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(6, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 
 		database.close();
 	}
@@ -285,14 +290,14 @@ class MainTest {
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
 		assertEquals(1, database.getDebtsForUser(s.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(v.getId()));
 		assertEquals(0, database.getDebtsForUser(v.getId()).size());
@@ -322,12 +327,12 @@ class MainTest {
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 		assertEquals(1, database.getDebtsForUser(p2.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(p2.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 
 		database.close();
 	}
@@ -339,7 +344,8 @@ class MainTest {
 		TestCase06();
 		database.connect();
 
-		//we still have no notifications
+		librarian.makeOutstandingRequest(database.getRequest(s.getId(), d3.getID()), database);
+		assertEquals(database.getRequestsForDocument(d3.getID()).size(), 0);
 
 
 		database.close();
@@ -359,7 +365,7 @@ class MainTest {
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 		assertEquals(0, database.getDebtsForUser(p2.getId()).size());
 
 		database.close();
@@ -379,12 +385,12 @@ class MainTest {
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 		assertEquals(1, database.getDebtsForUser(p2.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(p2.getId(), d3.getID()));
 		debt1.countFee(database);
 		assertEquals(13, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(0, debt1.getFee());
 		database.close();
 	}
 
@@ -403,13 +409,13 @@ class MainTest {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(20, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(13, debt1.daysLeft());
+		assertEquals(0, debt1.getFee());
 		assertEquals(1, database.getDebtsForUser(v.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(v.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(20, debt1.daysLeft());
-		assertEquals(0, debt1.getFee(), 0.0);
+		assertEquals(6, debt1.daysLeft());
+		assertEquals(0, debt1.getFee());
 		database.close();
 	}
 }

@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class Constants {
 
-	public final static int basicPrivilege = 0;
-	public final static int modifyPrivilege = 1;
-	public final static int addPrivilege = 2;
-	public final static int deletePrivilege = 3;
+	public static int basicPrivilege = 0;
+	public static int modifyPrivilege = 1;
+	public static int addPrivilege = 2;
+	public static int deletePrivilege = 3;
 
 
 	public static Date setWeek() {

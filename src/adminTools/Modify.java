@@ -2,6 +2,9 @@ package adminTools;
 
 import tools.Constants;
 import tools.Database;
+import users.Librarian;
+
+import javax.xml.crypto.Data;
 
 public class Modify {
 
@@ -28,16 +31,24 @@ public class Modify {
 		database.getLibrarian(idLibrarian).setPhoneNumber(newPhone);
 	}
 
-	public void setModifyPrivilegeLibrarian(int idLibrarian, Database database) {
-		database.getLibrarian(idLibrarian).setPrivilege(Constants.modifyPrivilege);
+	public void setModifyPrivilegeLibrarian(Librarian librarian, Database database) {
+		librarian.setPrivilege(Constants.modifyPrivilege);
+		editPrivilegeLibrarian(librarian, Constants.modifyPrivilege, database);
 	}
 
-	public void setAddPrivilegeLibrarian(int idLibrarian, Database database) {
-		database.getLibrarian(idLibrarian).setPrivilege(Constants.addPrivilege);
+	public void setAddPrivilegeLibrarian(Librarian librarian, Database database) {
+		librarian.setPrivilege(Constants.addPrivilege);
+		editPrivilegeLibrarian(librarian, Constants.addPrivilege, database);
 	}
 
-	public void setDeletePrivilegeLibrarian(int idLibrarian, Database database) {
-		database.getLibrarian(idLibrarian).setPrivilege(Constants.deletePrivilege);
+	public void setDeletePrivilegeLibrarian(Librarian librarian, Database database) {
+		librarian.setPrivilege(Constants.deletePrivilege);
+		editPrivilegeLibrarian(librarian, Constants.deletePrivilege, database);
+
+	}
+
+	private void editPrivilegeLibrarian(Librarian librarian, int newPrivilege, Database database){
+		database.editUserColumn(librarian.getId(), "privileges", Integer.toString(newPrivilege));
 	}
 
 	public void editPatronName(int idPatron, String newName, Database database) {
