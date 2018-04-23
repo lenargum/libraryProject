@@ -19,7 +19,7 @@ class MainTest {
 	private Admin admin;
 	private Database database = new Database();
 
-	@Test
+
 	void initialState()  {
 		database.connect();
 		database.clear();
@@ -40,23 +40,23 @@ class MainTest {
 		admin.setDeletePrivilegeLibrarian(librarian, database);
 
 
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.addBook(d1, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.addBook(d2, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.addAV(d3, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.registerPatron(p1, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.registerPatron(p2, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.registerPatron(p3, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.registerPatron(s, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 		librarian.registerPatron(v, database);
-		System.out.println(librarian.getPrivilege());
+		//System.out.println(librarian.getPrivilege());
 
 
 
@@ -141,7 +141,7 @@ class MainTest {
 
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size()); //we check that p1 has only one document
 		assertTrue(debt.daysLeft() > 0);//we check if there is no overdue
-		assertEquals(0, debt.getFee(), 0.0);  //so patron don't need to pay
+		assertEquals(0, debt.getFee());  //so patron don't need to pay
 
 		database.close();
 	}

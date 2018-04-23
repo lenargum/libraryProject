@@ -528,9 +528,43 @@ public class Database {
 		try {
 			ResultSet patronSet = executeQuery("SELECT * FROM users where status != 'LIBRARIAN' and status != 'ADMIN' and id = " + ID);
 			if (patronSet.next()) {
-				Patron temp = new Patron(patronSet.getString(2),
-						patronSet.getString(3), patronSet.getString(4), patronSet.getString(5),
-						patronSet.getString(6), patronSet.getString(7), patronSet.getString(8));
+				Patron temp;
+				switch (patronSet.getString(4)) {
+					case "STUDENT":
+						temp = new Student(patronSet.getString(2),
+								patronSet.getString(3), patronSet.getString(5),
+								patronSet.getString(6), patronSet.getString(7),
+								patronSet.getString(8));
+						break;
+					case "PROFESSOR":
+						temp = new Professor(patronSet.getString(2),
+								patronSet.getString(3), patronSet.getString(5),
+								patronSet.getString(6), patronSet.getString(7),
+								patronSet.getString(8));
+						break;
+					case "INSTRUCTOR":
+						temp = new Instructor(patronSet.getString(2),
+								patronSet.getString(3), patronSet.getString(5),
+								patronSet.getString(6), patronSet.getString(7),
+								patronSet.getString(8));
+						break;
+					case "TA":
+						temp = new TeachingAssistant(patronSet.getString(2),
+								patronSet.getString(3), patronSet.getString(5),
+								patronSet.getString(6), patronSet.getString(7),
+								patronSet.getString(8));
+						break;
+					case "VP":
+						temp = new VisitingProfessor(patronSet.getString(2),
+								patronSet.getString(3), patronSet.getString(5),
+								patronSet.getString(6), patronSet.getString(7),
+								patronSet.getString(8));
+						break;
+					default:
+						throw new WrongUserTypeException("System does not support type " +
+								patronSet.getString(4));
+				}
+
 				temp.setId(patronSet.getInt(1));
 				return temp;
 			}
@@ -646,7 +680,7 @@ public class Database {
 			ResultSet documentSet = executeQuery("SELECT * FROM documents where id = " + ID);
 			if (documentSet.next()) {
 				Document temp;
-				switch (documentSet.getString("9")) {
+				switch (documentSet.getString("type")) {
 					case "BOOK":
 						temp = new Book(documentSet.getString(2),
 								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)), documentSet.getInt(5),
