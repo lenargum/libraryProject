@@ -139,6 +139,15 @@ public class DocumentManager {
 		docsTable.getColumns().setAll(titles, authors, types, numbersCopies, allowances, areReferences);
 		docsTable.setRoot(tableRoot);
 		docsTable.setShowRoot(false);
+
+		docsTable.setOnMouseClicked(event -> {
+			DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
+			if (selected == null) return;
+
+			if (selected.type.toString().equals("Book")) {
+				showEditBookDialog();
+			}
+		});
 	}
 
 	private void showAddBookDialog() {

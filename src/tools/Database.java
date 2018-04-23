@@ -187,7 +187,7 @@ public class Database {
 	private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
 	                            boolean isReference, double price, String keywords, String type, String publisher,
 	                            int edition, boolean bestseller, String journalName, String issue, String editor,
-	                            String publicationDate)  throws SQLException {
+	                            String publicationDate) throws SQLException {
 		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
 				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
 				" journal_name, issue, editor, publication_date)" +
@@ -349,25 +349,52 @@ public class Database {
 	 * @see List
 	 * @see Document
 	 */
-	public ArrayList<Document> getDocumentList() {
+	public List<Document> getDocumentList() {
+		ArrayList<Document> documentList = new ArrayList<>();
 		try {
 			ResultSet documentSet = executeQuery("SELECT * FROM documents");
-			ArrayList<Document> documentList = new ArrayList<>();
 			while (documentSet.next()) {
-				Document temp = new Document(documentSet.getString(2),
-						documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
-						documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
-						documentSet.getDouble(7), documentSet.getString(8));
+				Document temp;
+
+				switch (documentSet.getString(9)) {
+					case "BOOK":
+						temp = new Book(documentSet.getString(2),
+								documentSet.getString(3),
+								Boolean.parseBoolean(documentSet.getString(4)),
+								documentSet.getInt(5),
+								Boolean.parseBoolean(documentSet.getString(6)),
+								documentSet.getDouble(7),
+								documentSet.getString(8),
+								documentSet.getString(10),
+								documentSet.getInt(11),
+								Boolean.parseBoolean(documentSet.getString(12)));
+						break;
+					case "ARTICLE":
+						temp = new JournalArticle(documentSet.getString(2),
+								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)),
+								documentSet.getInt(5), Boolean.parseBoolean(documentSet.getString(6)),
+								documentSet.getDouble(7), documentSet.getString(8),
+								documentSet.getString(13), documentSet.getString(10),
+								documentSet.getString(14), documentSet.getString(15),
+								new SimpleDateFormat("yyyy-MM-dd").parse(documentSet.getString(16)));
+						break;
+					case "AV":
+						temp = new AudioVideoMaterial(documentSet.getString(2),
+								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)), documentSet.getInt(5),
+								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8));
+						break;
+					default:
+						throw new WrongDocumentTypeException();
+				}
+
 				temp.setID(documentSet.getInt(1));
 				documentList.add(temp);
 			}
-			if (documentList.size() != 0) {
-				return documentList;
-			}
-		} catch (SQLException e) {
+		} catch (SQLException | ParseException e) {
 			e.printStackTrace();
 		}
-		throw new NoSuchElementException();
+
+		return documentList;
 	}
 
 	/**
@@ -1621,7 +1648,7 @@ public class Database {
 		try {
 			String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
 			//language=SQLite
-			executeUpdate("INSERT INTO log (log) VALUES (\'["+time+"]: "+log+"\')");
+			executeUpdate("INSERT INTO log (log) VALUES (\'[" + time + "]: " + log + "\')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1632,10 +1659,10 @@ public class Database {
 		try {
 			//language=SQLite
 			ResultSet temp = executeQuery("SELECT * FROM log");
-			while(temp.next()) {
+			while (temp.next()) {
 				logs.add(temp.getString(0));
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return logs;

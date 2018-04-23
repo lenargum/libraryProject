@@ -135,7 +135,7 @@ public class CoreAPI {
 		db.connect();
 		for (Document doc : db.getDocumentList()) {
 			list.add(new DocumentManager.DocCell(doc.getID(), doc.getTitle(), doc.getAuthors(),
-					doc.getType(), doc.getNumberOfCopies(),
+					doc.getClass().getSimpleName(), doc.getNumberOfCopies(),
 					doc.isAllowedForStudents(), doc.isReference()));
 		}
 		db.close();
