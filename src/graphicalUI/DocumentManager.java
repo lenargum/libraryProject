@@ -2,6 +2,7 @@ package graphicalUI;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.JournalArticle;
 import javafx.beans.property.*;
@@ -82,6 +83,11 @@ public class DocumentManager {
 		});
 
 		JFXButton addAVBtn = new JFXButton("Add audio/video");
+		addAVBtn.setOnAction(event -> {
+			addDocPopup.hide();
+			showAddAVDialog();
+		});
+
 		popupContainer.getChildren().addAll(addBookBtn, addArticleBtn, addAVBtn);
 		addDocPopup.setPopupContent(popupContainer);
 		popupContainer.setSpacing(5);
@@ -294,6 +300,64 @@ public class DocumentManager {
 				checkboxes, countNPrice, addBtn);
 		addArticleDialog.setContent(dialogContainer);
 		addArticleDialog.show(layout);
+	}
+
+	private void showAddAVDialog() {
+		JFXDialog addBookDialog = new JFXDialog();
+		VBox dialogContainer = new VBox();
+		dialogContainer.setSpacing(20);
+		dialogContainer.setPadding(new Insets(20));
+
+		Label addAV = new Label("Add audio/video");
+		addAV.setFont(new Font("Roboto", 26));
+
+		JFXTextField titleField = new JFXTextField();
+		titleField.setPromptText("Title");
+		titleField.setLabelFloat(true);
+
+		JFXTextField authorsField = new JFXTextField();
+		authorsField.setPromptText("Authors");
+		authorsField.setLabelFloat(true);
+
+		JFXTextField keywordsField = new JFXTextField();
+		keywordsField.setPromptText("Keywords");
+		keywordsField.setLabelFloat(true);
+
+		JFXTextField countField = new JFXTextField();
+		countField.setPromptText("Count");
+		countField.setLabelFloat(true);
+
+		JFXTextField priceField = new JFXTextField();
+		priceField.setPromptText("Price");
+		priceField.setLabelFloat(true);
+
+		HBox countNPrice = new HBox();
+		countNPrice.setSpacing(20);
+		countNPrice.getChildren().addAll(countField, priceField);
+
+		JFXCheckBox allowedForStudents = new JFXCheckBox("Allowed for students");
+		JFXCheckBox isReference = new JFXCheckBox("Reference");
+		HBox checkboxes = new HBox();
+		checkboxes.setSpacing(20);
+		checkboxes.getChildren().addAll(allowedForStudents, isReference);
+
+		JFXButton addBtn = new JFXButton("ADD");
+		addBtn.setFont(new Font("Roboto Bold", 16));
+
+		addBtn.setOnAction(event -> {
+			AudioVideoMaterial newAv = new AudioVideoMaterial(titleField.getText(),
+					authorsField.getText(), allowedForStudents.isSelected(),
+					Integer.parseInt(countField.getText()), isReference.isSelected(),
+					Double.parseDouble(priceField.getText()), keywordsField.getText());
+			api.addNewDocument(newAv);
+			addBookDialog.close();
+			initDocTable();
+		});
+
+		dialogContainer.getChildren().addAll(addAV, titleField, authorsField,
+				keywordsField, checkboxes, countNPrice, addBtn);
+		addBookDialog.setContent(dialogContainer);
+		addBookDialog.show(layout);
 	}
 
 	/**

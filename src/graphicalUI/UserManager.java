@@ -13,6 +13,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import tools.WrongUserTypeException;
@@ -159,6 +160,7 @@ public class UserManager {
 		comboBox.setPromptText("Select status");
 
 		JFXButton addBtn = new JFXButton("ADD");
+		addBtn.setFont(new Font("Roboto Bold", 16));
 
 		VBox container = new VBox();
 		container.getChildren().addAll(addUser, loginPassword,
@@ -251,6 +253,7 @@ public class UserManager {
 		comboBox.setPromptText("Select status");
 
 		JFXButton saveBtn = new JFXButton("SAVE");
+		saveBtn.setFont(new Font("Roboto Bold", 16));
 
 		VBox container = new VBox();
 		container.getChildren().addAll(editUser, loginPassword,
@@ -270,16 +273,21 @@ public class UserManager {
 		comboBox.setValue(determineComboBoxValue(selected.status.toString().toLowerCase()));
 
 		saveBtn.setOnAction(event -> {
+			try {
+				api.editUser(selected.id, "status", determineStatus(comboBox.getValue()).toUpperCase());
+			} catch (WrongUserTypeException e) {
+				comboBox.setUnFocusColor(Paint.valueOf("#e53935"));
+				return;
+			}
 			api.editUser(selected.id, "login", loginField.getText());
 			api.editUser(selected.id, "password", passwordField.getText());
 			api.editUser(selected.id, "firstname", nameField.getText());
 			api.editUser(selected.id, "lastname", surnameField.getText());
 			api.editUser(selected.id, "phone", phoneField.getText());
 			api.editUser(selected.id, "address", addressField.getText());
+			initUserTable();
 			addUserDialog.close();
 		});
-
-		//TODO change table row
 
 		addUserDialog.setContent(container);
 		addUserDialog.show(layout);
@@ -328,9 +336,9 @@ public class UserManager {
 				return "vp";
 			case "Professor":
 				return "professor";
+			default:
+				throw new WrongUserTypeException();
 		}
-
-		return "Kek";
 	}
 
 	/**

@@ -10,6 +10,7 @@ import tools.Database;
 import tools.Debt;
 import tools.Notification;
 import tools.Request;
+import users.Admin;
 import users.Librarian;
 import users.Patron;
 import users.User;
@@ -92,9 +93,18 @@ public class CoreAPI {
 		ObservableList<UserManager.UserCell> list = FXCollections.observableArrayList();
 
 		db.connect();
-		for (User usr : db.getUsers()) {
-			list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
-					usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
+		if (user instanceof Admin) {
+			for (User usr : db.getUsers()) {
+				if (usr instanceof Admin) continue;
+				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
+						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
+			}
+		} else {
+			for (User usr : db.getUsers()) {
+				if (usr instanceof Librarian || usr instanceof Admin) continue;
+				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
+						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
+			}
 		}
 		db.close();
 
