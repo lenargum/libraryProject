@@ -153,7 +153,7 @@ public class UserManager {
 		JFXComboBox<String> comboBox = new JFXComboBox<>();
 		comboBox.getItems().addAll("Student", "Instructor",
 				"Teaching assistant", "Visiting professor",
-				"Professor", "Librarian");
+				"Professor");
 		if (api.getUser() instanceof Admin) {
 			comboBox.getItems().add("Librarian");
 		}
@@ -270,7 +270,7 @@ public class UserManager {
 		surnameField.setText(selected.surname.getValue());
 		phoneField.setText(selected.phone.getValue());
 		addressField.setText(selected.address.getValue());
-		comboBox.setValue(determineComboBoxValue(selected.status.toString().toLowerCase()));
+		comboBox.setValue(determineComboBoxValue(selected.status.getValue().toLowerCase()));
 
 		saveBtn.setOnAction(event -> {
 			try {
@@ -336,6 +336,8 @@ public class UserManager {
 				return "vp";
 			case "Professor":
 				return "professor";
+			case "Librarian":
+				return "librarian";
 			default:
 				throw new WrongUserTypeException();
 		}
@@ -348,20 +350,23 @@ public class UserManager {
 	 * @return Showing value.
 	 */
 	private String determineComboBoxValue(String status) {
+		System.out.println(status);
 		switch (status) {
 			case "student":
 				return "Student";
 			case "instructor":
 				return "Instructor";
-			case "ta":
+			case "teachingassistant":
 				return "Teaching assistant";
-			case "vp":
+			case "visitingprofessor":
 				return "Visiting professor";
 			case "professor":
 				return "Professor";
+			case "librarian":
+				return "Librarian";
+			default:
+				throw new WrongUserTypeException();
 		}
-
-		return "Eke";
 	}
 
 	/**
