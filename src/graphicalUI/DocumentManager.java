@@ -1,19 +1,25 @@
 package graphicalUI;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import documents.Book;
+import documents.JournalArticle;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * Document manager window.
@@ -60,6 +66,29 @@ public class DocumentManager {
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
 		addDocBtn = (JFXButton) layout.lookup("#addDocBtn");
+		JFXPopup addDocPopup = new JFXPopup();
+		VBox popupContainer = new VBox();
+
+		JFXButton addBookBtn = new JFXButton("Add book");
+		addBookBtn.setOnAction(event -> {
+			addDocPopup.hide();
+			showAddBookDialog();
+		});
+
+		JFXButton addArticleBtn = new JFXButton("Add article");
+		addArticleBtn.setOnAction(event -> {
+			addDocPopup.hide();
+			showAddArticleDialog();
+		});
+
+		JFXButton addAVBtn = new JFXButton("Add audio/video");
+		popupContainer.getChildren().addAll(addBookBtn, addArticleBtn, addAVBtn);
+		addDocPopup.setPopupContent(popupContainer);
+		popupContainer.setSpacing(5);
+		popupContainer.setPadding(new Insets(5));
+		addDocBtn.setOnAction(event -> {
+			addDocPopup.show(addDocBtn);
+		});
 
 		docsTable = (JFXTreeTableView<DocCell>) layout.lookup("#docsTable");
 		initDocTable();
@@ -104,6 +133,167 @@ public class DocumentManager {
 		docsTable.getColumns().setAll(titles, authors, types, numbersCopies, allowances, areReferences);
 		docsTable.setRoot(tableRoot);
 		docsTable.setShowRoot(false);
+	}
+
+	private void showAddBookDialog() {
+		JFXDialog addBookDialog = new JFXDialog();
+		VBox dialogContainer = new VBox();
+		dialogContainer.setSpacing(20);
+		dialogContainer.setPadding(new Insets(20));
+
+		Label addBook = new Label("Add book");
+		addBook.setFont(new Font("Roboto", 26));
+
+		JFXTextField titleField = new JFXTextField();
+		titleField.setPromptText("Title");
+		titleField.setLabelFloat(true);
+
+		JFXTextField authorsField = new JFXTextField();
+		authorsField.setPromptText("Authors");
+		authorsField.setLabelFloat(true);
+
+		JFXTextField publisherField = new JFXTextField();
+		publisherField.setPromptText("Publisher");
+		publisherField.setMinWidth(200);
+		publisherField.setLabelFloat(true);
+
+		JFXTextField editionField = new JFXTextField();
+		editionField.setPromptText("Edition year");
+		editionField.setLabelFloat(true);
+
+		HBox publisherEdition = new HBox();
+		publisherEdition.setSpacing(20);
+		publisherEdition.getChildren().addAll(publisherField, editionField);
+
+		JFXTextField keywordsField = new JFXTextField();
+		keywordsField.setPromptText("Keywords");
+		keywordsField.setLabelFloat(true);
+
+		JFXCheckBox allowedForStudents = new JFXCheckBox("Allowed for students");
+		JFXCheckBox isBestseller = new JFXCheckBox("Bestseller");
+		JFXCheckBox isReference = new JFXCheckBox("Reference");
+
+		JFXTextField countField = new JFXTextField();
+		countField.setPromptText("Count");
+		countField.setLabelFloat(true);
+
+		JFXTextField priceField = new JFXTextField();
+		priceField.setPromptText("Price");
+		priceField.setLabelFloat(true);
+
+		HBox countNPrice = new HBox();
+		countNPrice.setSpacing(20);
+		countNPrice.getChildren().addAll(countField, priceField);
+
+		JFXButton addBtn = new JFXButton("ADD");
+		addBtn.setFont(new Font("Roboto Bold", 16));
+
+		addBtn.setOnAction(event -> {
+			Book newBook = new Book(titleField.getText(), authorsField.getText(),
+					allowedForStudents.isSelected(), Integer.parseInt(countField.getText()),
+					isReference.isSelected(), Double.parseDouble(priceField.getText()),
+					keywordsField.getText(), publisherField.getText(),
+					Integer.parseInt(editionField.getText()), isBestseller.isSelected());
+			api.addNewDocument(newBook);
+			addBookDialog.close();
+			initDocTable();
+		});
+
+		dialogContainer.getChildren().addAll(addBook,
+				titleField, authorsField,
+				publisherEdition, keywordsField,
+				allowedForStudents, isBestseller, isReference,
+				countNPrice, addBtn);
+
+		addBookDialog.setContent(dialogContainer);
+		addBookDialog.show(layout);
+	}
+
+	private void showAddArticleDialog() {
+		JFXDialog addArticleDialog = new JFXDialog();
+		VBox dialogContainer = new VBox();
+		dialogContainer.setSpacing(20);
+		dialogContainer.setPadding(new Insets(20));
+
+		Label addArticle = new Label("Add article");
+		addArticle.setFont(new Font("Roboto", 26));
+
+		JFXTextField titleField = new JFXTextField();
+		titleField.setPromptText("Title");
+		titleField.setLabelFloat(true);
+
+		JFXTextField authorsField = new JFXTextField();
+		authorsField.setPromptText("Authors");
+		authorsField.setLabelFloat(true);
+
+		JFXTextField countField = new JFXTextField();
+		countField.setPromptText("Count");
+		countField.setLabelFloat(true);
+
+		JFXTextField priceField = new JFXTextField();
+		priceField.setPromptText("Price");
+		priceField.setLabelFloat(true);
+
+		JFXCheckBox allowedForStudents = new JFXCheckBox("Allowed for students");
+		JFXCheckBox isReference = new JFXCheckBox("Reference");
+		HBox checkboxes = new HBox();
+		checkboxes.setSpacing(20);
+		checkboxes.getChildren().addAll(allowedForStudents, isReference);
+
+		HBox countNPrice = new HBox();
+		countNPrice.setSpacing(20);
+		countNPrice.getChildren().addAll(countField, priceField);
+
+		JFXTextField keywordsField = new JFXTextField();
+		keywordsField.setPromptText("Keywords");
+		keywordsField.setLabelFloat(true);
+
+		JFXTextField journalField = new JFXTextField();
+		journalField.setPromptText("Journal");
+		journalField.setLabelFloat(true);
+
+		JFXTextField publisherField = new JFXTextField();
+		publisherField.setPromptText("Publisher");
+		publisherField.setMinWidth(200);
+		publisherField.setLabelFloat(true);
+
+		JFXTextField issueField = new JFXTextField();
+		issueField.setPromptText("Issue");
+		issueField.setLabelFloat(true);
+
+		JFXTextField editorField = new JFXTextField();
+		editorField.setPromptText("Editor");
+		editorField.setLabelFloat(true);
+
+		HBox issueEditor = new HBox();
+		issueEditor.setSpacing(20);
+		issueEditor.getChildren().addAll(issueField, editorField);
+
+		JFXDatePicker dateField = new JFXDatePicker();
+
+		JFXButton addBtn = new JFXButton("ADD");
+		addBtn.setFont(new Font("Roboto Bold", 16));
+
+		addBtn.setOnAction(event -> {
+			Date date = Date.from(dateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			JournalArticle article = new JournalArticle(titleField.getText(), authorsField.getText(),
+					allowedForStudents.isSelected(), Integer.parseInt(countField.getText()),
+					isReference.isSelected(), Double.parseDouble(priceField.getText()),
+					keywordsField.getText(), journalField.getText(),
+					publisherField.getText(), issueField.getText(),
+					editorField.getText(), date);
+			initDocTable();
+			api.addNewDocument(article);
+			addArticleDialog.close();
+			initDocTable();
+		});
+
+		dialogContainer.getChildren().addAll(addArticle, titleField,
+				authorsField, journalField, publisherField,
+				issueEditor, dateField, keywordsField,
+				checkboxes, countNPrice, addBtn);
+		addArticleDialog.setContent(dialogContainer);
+		addArticleDialog.show(layout);
 	}
 
 	/**

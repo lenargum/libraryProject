@@ -1,6 +1,9 @@
 package graphicalUI;
 
+import documents.AudioVideoMaterial;
+import documents.Book;
 import documents.Document;
+import documents.JournalArticle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tools.Database;
@@ -278,6 +281,25 @@ public class CoreAPI {
 		} else {
 			db.insertPatron((Patron) newUser);
 			newUser.setId(db.getPatronID((Patron) newUser));
+		}
+		db.close();
+	}
+
+	/**
+	 * Add new document to database.
+	 *
+	 * @param document New document.
+	 */
+	void addNewDocument(Document document) {
+		db.connect();
+		if (document instanceof Book) {
+			db.insertBook((Book) document);
+		}
+		if (document instanceof JournalArticle) {
+			db.insertArticle((JournalArticle) document);
+		}
+		if (document instanceof AudioVideoMaterial) {
+			db.insertAV((AudioVideoMaterial) document);
 		}
 		db.close();
 	}
