@@ -65,6 +65,19 @@ public class CoreAPI {
 	}
 
 	/**
+	 * Get document from database by ID.
+	 *
+	 * @param docID Document ID.
+	 * @return Document.
+	 */
+	Document getDocumentByID(int docID) {
+		db.connect();
+		Document result = db.getDocument(docID);
+		db.close();
+		return result;
+	}
+
+	/**
 	 * Get all books from database.
 	 *
 	 * @return List of all documents.
@@ -324,6 +337,19 @@ public class CoreAPI {
 	void editUser(int userID, String column, String newValue) {
 		db.connect();
 		db.editUserColumn(userID, column, newValue);
+		db.close();
+	}
+
+	/**
+	 * Edit document record in database.
+	 *
+	 * @param docID    Document ID.
+	 * @param column   Record column.
+	 * @param newValue New value.
+	 */
+	void editDocument(int docID, String column, String newValue) {
+		db.connect();
+		db.editDocumentColumn(docID, column, newValue);
 		db.close();
 	}
 

@@ -360,6 +360,92 @@ public class DocumentManager {
 		addBookDialog.show(layout);
 	}
 
+	private void showEditBookDialog() {
+		DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
+		if (selected == null) return;
+
+		JFXDialog editBookDialog = new JFXDialog();
+		VBox dialogContainer = new VBox();
+		dialogContainer.setSpacing(20);
+		dialogContainer.setPadding(new Insets(20));
+
+		Label editBook = new Label("Edit book");
+		editBook.setFont(new Font("Roboto", 26));
+
+		JFXTextField titleField = new JFXTextField();
+		titleField.setPromptText("Title");
+		titleField.setLabelFloat(true);
+
+		JFXTextField authorsField = new JFXTextField();
+		authorsField.setPromptText("Authors");
+		authorsField.setLabelFloat(true);
+
+		JFXTextField publisherField = new JFXTextField();
+		publisherField.setPromptText("Publisher");
+		publisherField.setMinWidth(200);
+		publisherField.setLabelFloat(true);
+
+		JFXTextField editionField = new JFXTextField();
+		editionField.setPromptText("Edition year");
+		editionField.setLabelFloat(true);
+
+		HBox publisherEdition = new HBox();
+		publisherEdition.setSpacing(20);
+		publisherEdition.getChildren().addAll(publisherField, editionField);
+
+		JFXTextField keywordsField = new JFXTextField();
+		keywordsField.setPromptText("Keywords");
+		keywordsField.setLabelFloat(true);
+
+		JFXCheckBox allowedForStudents = new JFXCheckBox("Allowed for students");
+		JFXCheckBox isBestseller = new JFXCheckBox("Bestseller");
+		JFXCheckBox isReference = new JFXCheckBox("Reference");
+
+		JFXTextField countField = new JFXTextField();
+		countField.setPromptText("Count");
+		countField.setLabelFloat(true);
+
+		JFXTextField priceField = new JFXTextField();
+		priceField.setPromptText("Price");
+		priceField.setLabelFloat(true);
+
+		HBox countNPrice = new HBox();
+		countNPrice.setSpacing(20);
+		countNPrice.getChildren().addAll(countField, priceField);
+
+		JFXButton saveBtn = new JFXButton("SAVE");
+		saveBtn.setFont(new Font("Roboto Bold", 16));
+		saveBtn.setOnAction(event -> {
+			api.editDocument(selected.id, "name", titleField.getText());
+			api.editDocument(selected.id, "authors", authorsField.getText());
+			api.editDocument(selected.id, "publisher", publisherField.getText());
+			api.editDocument(selected.id, "edition", editionField.getText());
+			api.editDocument(selected.id, "keywords", keywordsField.getText());
+			api.editDocument(selected.id, "is_allowed_for_students",
+					allowedForStudents.isSelected() ? "true" : "false");
+			api.editDocument(selected.id, "bestseller",
+					isBestseller.isSelected() ? "true" : "false");
+			api.editDocument(selected.id, "is_referense",
+					isReference.isSelected() ? "true" : "false");
+			api.editDocument(selected.id, "num_of_copies",
+					countField.getText());
+			api.editDocument(selected.id, "price",
+					priceField.getText());
+		});
+
+		Book found = (Book) api.getDocumentByID(selected.id);
+		titleField.setText(found.getTitle());
+		authorsField.setText(found.getAuthors());
+		publisherField.setText(found.getPublisher());
+		editionField.setText(String.valueOf(found.getEdition()));
+		keywordsField.setText(found.getKeyWords());
+		allowedForStudents.setSelected(found.isAllowedForStudents());
+		isBestseller.setSelected(found.isBestseller());
+		isReference.setSelected(found.isReference());
+		countField.setText(String.valueOf(found.getNumberOfCopies()));
+		priceField.setText(String.valueOf(found.getPrice()));
+	}
+
 	/**
 	 * Table cell.
 	 */
