@@ -8,6 +8,7 @@ public class ModifyLibrary {
 	public void addLibrarian(Librarian librarian, Database database) {
 
 		database.insertLibrarian(librarian);
+		librarian.setId(database.getLibrarianID(librarian));
 
 	}
 
@@ -34,11 +35,9 @@ public class ModifyLibrary {
 
 
 	public void deleteDocument(int idDocument, Database database) {
-
 		OutstandingRequest deletionDocument = new OutstandingRequest();
 		deletionDocument.makeDeletionRequest(idDocument, database);
 		database.deleteDocument(idDocument);
-
 	}
 
 
