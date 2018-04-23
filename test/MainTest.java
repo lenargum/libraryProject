@@ -3,10 +3,13 @@ import documents.Book;
 import org.junit.jupiter.api.Test;
 import tools.Database;
 import tools.Debt;
+import tools.OutstandingRequest;
+import tools.Request;
 import users.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -341,8 +344,8 @@ class MainTest {
 		TestCase06();
 		database.connect();
 
-		//we still have no notifications
-
+		librarian.makeOutstandingRequest(database.getRequest(s.getId(), d3.getID()), database);
+		System.out.println(database.getRequestsForDocument(d3.getID()).size());
 
 		database.close();
 	}
