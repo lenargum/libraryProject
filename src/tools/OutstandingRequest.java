@@ -51,10 +51,10 @@ public class OutstandingRequest {
 		}
 	}
 
-	private void sendNotificationDeletionDocument(int docaumentId, Database database){
-		List<Request> requests = database.getRequestsForDocument(docaumentId);
+	private void sendNotificationDeletionDocument(int documentId, Database database){
+		List<Request> requests = database.getRequestsForDocument(documentId);
 		int i = 0;
-		int n = database.getRequestsForDocument(docaumentId).size();
+		int n = database.getRequestsForDocument(documentId).size();
 		while (i < n){
 			Request temp = requests.get(i);
 			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "This document is deleted", new Date());
