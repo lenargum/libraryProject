@@ -1588,6 +1588,13 @@ public class Database {
 		return notifications;
 	}
 
+//	public boolean foundInNotifications(int patronId, int requestId, String information){
+//		List l = getNotificationsList();
+//		for(Notification i: l){
+//			if(i.getUserId() == patronId )
+//		}
+//	}
+
 	/**
 	 * Method for getting certain Notification.
 	 *
@@ -1621,11 +1628,11 @@ public class Database {
 	public ArrayList<Notification> getNotificationsForUser(int userId) {
 		ArrayList<Notification> notifications = new ArrayList<>();
 		try {
-			ResultSet rs = executeQuery("SELECT * FROM notifications WHERE user_id = " + userId);
-			while (rs.next()) {
-				Notification temp = new Notification(rs.getInt(2), rs.getInt(3),
-						rs.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
-				temp.setId(rs.getInt(1));
+			ResultSet notificationSet = executeQuery("SELECT * FROM notifications WHERE user_id = " + userId);
+			while (notificationSet.next()) {
+				Notification temp = new Notification(notificationSet.getInt(2), notificationSet.getInt(3),
+						notificationSet.getString(4), new SimpleDateFormat("yyyy-MM-dd").parse(notificationSet.getString(5)));
+				temp.setId(notificationSet.getInt(1));
 				notifications.add(temp);
 			}
 		} catch (SQLException e) {

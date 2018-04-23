@@ -35,11 +35,16 @@ public class ModifyLibrary {
 
 
 	public void deleteDocument(int idDocument, Database database) {
-
 		OutstandingRequest deletionDocument = new OutstandingRequest();
-		deletionDocument.makeDeletionRequest(idDocument, database);
-		database.deleteDocument(idDocument);
-
+		if (database.getDebtsForDocument(idDocument).size() == 0) {
+			//deletionDocument.makeDeletionRequest(idDocument, database);
+			if (database.getRequestsForDocument(idDocument).size() !=0)
+				database.deleteRequestsForDocument(idDocument);
+			else
+				database.deleteDocument(idDocument);
+		} else {
+			//deletionDocument.makeDeletionRequest(idDocument, database);
+		}
 	}
 
 

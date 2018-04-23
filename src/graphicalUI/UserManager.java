@@ -246,7 +246,7 @@ public class UserManager {
 		JFXComboBox<String> comboBox = new JFXComboBox<>();
 		comboBox.getItems().addAll("Student", "Instructor",
 				"Teaching assistant", "Visiting professor",
-				"Professor", "Librarian");
+				"Professor");
 		if (api.getUser() instanceof Admin) {
 			comboBox.getItems().add("Librarian");
 		}

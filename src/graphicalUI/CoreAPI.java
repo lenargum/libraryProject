@@ -353,6 +353,12 @@ public class CoreAPI {
 		db.close();
 	}
 
+	void deleteDocument(int docID) {
+		db.connect();
+		((Librarian) user).deleteDocument(docID, db);
+		db.close();
+	}
+
 	/**
 	 * Get take requests.
 	 *

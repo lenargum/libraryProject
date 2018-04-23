@@ -50,9 +50,9 @@ tasks.withType(JavaCompile) {
 	options.incremental = true
 }
 
-//test { // tests disabled temporarily
-//	useJUnitPlatform()
-//}
+test { // tests disabled temporarily
+	useJUnitPlatform()
+}
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '4.6'

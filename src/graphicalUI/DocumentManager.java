@@ -15,6 +15,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -144,7 +145,7 @@ public class DocumentManager {
 			DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
 			if (selected == null) return;
 
-			if (selected.type.toString().equals("Book")) {
+			if (selected.type.getValue().equals("Book")) {
 				showEditBookDialog();
 			}
 		});
@@ -442,6 +443,19 @@ public class DocumentManager {
 					priceField.getText());
 		});
 
+		JFXButton deleteButton = new JFXButton("DELETE");
+		deleteButton.setFont(new Font("Roboto Bold", 16));
+		deleteButton.setTextFill(Paint.valueOf("#e53935"));
+		deleteButton.setOnAction(event -> {
+			api.deleteDocument(selected.id);
+			initDocTable();
+			editBookDialog.close();
+		});
+
+		HBox buttons = new HBox();
+		buttons.getChildren().addAll(saveBtn, deleteButton);
+		buttons.setSpacing(20);
+
 		Book found = (Book) api.getDocumentByID(selected.id);
 		titleField.setText(found.getTitle());
 		authorsField.setText(found.getAuthors());
@@ -453,6 +467,15 @@ public class DocumentManager {
 		isReference.setSelected(found.isReference());
 		countField.setText(String.valueOf(found.getNumberOfCopies()));
 		priceField.setText(String.valueOf(found.getPrice()));
+
+		dialogContainer.getChildren().addAll(editBook,
+				titleField, authorsField,
+				publisherEdition, keywordsField,
+				allowedForStudents, isBestseller,
+				isReference, buttons);
+
+		editBookDialog.setContent(dialogContainer);
+		editBookDialog.show(layout);
 	}
 
 	/**

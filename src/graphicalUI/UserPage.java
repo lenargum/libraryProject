@@ -130,7 +130,8 @@ public class UserPage {
 		browseLibBtn.setOnAction(event -> selector.show());
 
 		controlPanelBtn = (JFXButton) userLayout.lookup("#controlPanelBtn");
-		if (rootPage.getApi().getUser() instanceof Librarian) {
+		if (rootPage.getApi().getUser() instanceof Librarian ||
+				rootPage.getApi().getUser() instanceof Admin) {
 			controlPanelBtn.setDisable(false);
 			controlPanelBtn.setVisible(true);
 		}
@@ -140,7 +141,7 @@ public class UserPage {
 		seeMoreBtn.setOnAction(event -> userDocs.show());
 
 		notificationList = (JFXListView<Label>) userLayout.lookup("#notificationList");
-		notificationList.setDepth(2);
+		notificationList.setDepth(3);
 
 		profileContainer = (VBox) userLayout.lookup("#profileContainer");
 		nameSurname = (Text) userLayout.lookup("#nameSurname");

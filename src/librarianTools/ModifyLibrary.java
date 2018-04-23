@@ -75,12 +75,16 @@ public class ModifyLibrary {
      * @param database   tools.Database that stores the information.
      */
     public void deleteDocument(int librarianId, int idDocument, Database database)  {
-        if(Logic.canDelete(librarianId, database)) {
-            OutstandingRequest deletionNotification = new OutstandingRequest();
-            deletionNotification.makeDeletionRequest(idDocument, database);
-            database.deleteDocument(idDocument);
+        OutstandingRequest deletionNotification = new OutstandingRequest();
+        if(Logic.canDelete(librarianId, database) && database.getDebtsForDocument(idDocument).size() == 0) {
+            //deletionNotification.makeDeletionRequest(idDocument, database);
+            if (database.getRequestsForDocument(idDocument).size() != 0)
+                database.deleteRequestsForDocument(idDocument);
+            else
+                database.deleteDocument(idDocument);
         } else {
             //TODO: Log
+            //deletionNotification.makeDeletionRequest(idDocument, database);
         }
     }
 
