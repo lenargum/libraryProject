@@ -2,6 +2,7 @@ package tools;
 
 import documents.Document;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,11 @@ public class OutstandingRequest {
 						"Outstanding request for " + doc.getTitle(), new Date());
 			//}
 		}
-
+		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
+		Document doc = db.getDocument(request.getIdDocument());
+		for(Debt temp: debts){
+			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Outstanding request for " + doc.getTitle(), new Date());
+		}
 	}
 
 	private void sendNotificationsForAvailability(int docId, Database database) {
