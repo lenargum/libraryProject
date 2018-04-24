@@ -51,7 +51,7 @@ Test results will be available after building in `/app/test/index.html`.
 
 ## Team contribution
 
-[_See CONTRIBUTION.md_](https://github.com/lenargum/libraryProject/blob/master/CONTRIBUTION.md)
+_See_ [_CONTRIBUTION.md_](https://github.com/lenargum/libraryProject/blob/master/CONTRIBUTION.md)
 
 - [Lenar Gumerov](https://github.com/lenargum) – tools.Database routines and its API
 - [Anastasia Minakova](https://github.com/stalem9) – Core, Document entities
