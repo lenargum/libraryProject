@@ -63,7 +63,7 @@ public class Modify {
 	 * @param countOfCopies New number.
 	 */
 	public void modifyDocumentCopies(int librarianId, int idDocument, Database database, int countOfCopies) {
-		if (Logic.canModify(librarianId, database)) {
+		if (Logic.canAdd(librarianId, database)) {
 			database.getDocument(idDocument).setNumberOfCopies(countOfCopies);
 			database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(countOfCopies));
 		} else {
