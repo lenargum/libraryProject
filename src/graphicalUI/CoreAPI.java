@@ -315,14 +315,26 @@ public class CoreAPI {
 	 */
 	void addNewDocument(Document document) {
 		db.connect();
-		if (document instanceof Book) {
-			db.insertBook((Book) document);
-		}
-		if (document instanceof JournalArticle) {
-			db.insertArticle((JournalArticle) document);
-		}
-		if (document instanceof AudioVideoMaterial) {
-			db.insertAV((AudioVideoMaterial) document);
+		if (user instanceof Librarian) {
+			if (document instanceof Book) {
+				((Librarian) user).addBook((Book) document, db);
+			}
+			if (document instanceof JournalArticle) {
+				((Librarian) user).addArticle((JournalArticle) document, db);
+			}
+			if (document instanceof AudioVideoMaterial) {
+				((Librarian) user).addAV((AudioVideoMaterial) document, db);
+			}
+		} else if (user instanceof Admin) {
+			if (document instanceof Book) {
+				((Admin) user).addBook((Book) document, db);
+			}
+			if (document instanceof JournalArticle) {
+				((Admin) user).addArticle((JournalArticle) document, db);
+			}
+			if (document instanceof AudioVideoMaterial) {
+				((Admin) user).addAV((AudioVideoMaterial) document, db);
+			}
 		}
 		db.close();
 	}
@@ -355,7 +367,12 @@ public class CoreAPI {
 
 	void deleteDocument(int docID) {
 		db.connect();
-		((Librarian) user).deleteDocument(docID, db);
+		if (user instanceof Librarian) {
+			((Librarian) user).deleteDocument(docID, db);
+		}
+		if (user instanceof Admin) {
+			((Admin) user).deleteDocument(docID, db);
+		}
 		db.close();
 	}
 

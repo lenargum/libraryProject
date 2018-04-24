@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import sun.reflect.Reflection;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -95,6 +96,7 @@ public class DocumentManager {
 		popupContainer.setPadding(new Insets(5));
 		addDocBtn.setOnAction(event -> {
 			addDocPopup.show(addDocBtn);
+
 		});
 
 		docsTable = (JFXTreeTableView<DocCell>) layout.lookup("#docsTable");
@@ -142,11 +144,14 @@ public class DocumentManager {
 		docsTable.setShowRoot(false);
 
 		docsTable.setOnMouseClicked(event -> {
-			DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
-			if (selected == null) return;
+			try {
+				DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
+				if (selected == null) return;
 
-			if (selected.type.getValue().equals("Book")) {
-				showEditBookDialog();
+				if (selected.type.getValue().equals("Book")) {
+					showEditBookDialog(selected);
+				}
+			} catch (NullPointerException ignored) {
 			}
 		});
 	}
@@ -370,10 +375,7 @@ public class DocumentManager {
 		addBookDialog.show(layout);
 	}
 
-	private void showEditBookDialog() {
-		DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
-		if (selected == null) return;
-
+	private void showEditBookDialog(DocCell selected) {
 		JFXDialog editBookDialog = new JFXDialog();
 		VBox dialogContainer = new VBox();
 		dialogContainer.setSpacing(20);
@@ -476,6 +478,105 @@ public class DocumentManager {
 
 		editBookDialog.setContent(dialogContainer);
 		editBookDialog.show(layout);
+	}
+
+	private void showEditArticleDialog(DocCell selected) {
+		JFXDialog editArticleDialog = new JFXDialog();
+		VBox dialogContainer = new VBox();
+		dialogContainer.setSpacing(20);
+		dialogContainer.setPadding(new Insets(20));
+
+		Label editArticle = new Label("Edit article");
+		editArticle.setFont(new Font("Roboto", 26));
+
+		JFXTextField titleField = new JFXTextField();
+		titleField.setPromptText("Title");
+		titleField.setLabelFloat(true);
+
+		JFXTextField authorsField = new JFXTextField();
+		authorsField.setPromptText("Authors");
+		authorsField.setLabelFloat(true);
+
+		JFXTextField countField = new JFXTextField();
+		countField.setPromptText("Count");
+		countField.setLabelFloat(true);
+
+		JFXTextField priceField = new JFXTextField();
+		priceField.setPromptText("Price");
+		priceField.setLabelFloat(true);
+
+		HBox countNPrice = new HBox();
+		countNPrice.setSpacing(20);
+		countNPrice.getChildren().addAll(countField, priceField);
+
+		JFXCheckBox allowedForStudents = new JFXCheckBox("Allowed for students");
+		JFXCheckBox isReference = new JFXCheckBox("Reference");
+		HBox checkboxes = new HBox();
+		checkboxes.setSpacing(20);
+		checkboxes.getChildren().addAll(allowedForStudents, isReference);
+
+		JFXTextField keywordsField = new JFXTextField();
+		keywordsField.setPromptText("Keywords");
+		keywordsField.setLabelFloat(true);
+
+		JFXTextField journalField = new JFXTextField();
+		journalField.setPromptText("Journal");
+		journalField.setLabelFloat(true);
+
+		JFXTextField publisherField = new JFXTextField();
+		publisherField.setPromptText("Publisher");
+		publisherField.setMinWidth(200);
+		publisherField.setLabelFloat(true);
+
+		JFXTextField issueField = new JFXTextField();
+		issueField.setPromptText("Issue");
+		issueField.setLabelFloat(true);
+
+		JFXTextField editorField = new JFXTextField();
+		editorField.setPromptText("Editor");
+		editorField.setLabelFloat(true);
+
+		HBox issueEditor = new HBox();
+		issueEditor.setSpacing(20);
+		issueEditor.getChildren().addAll(issueField, editorField);
+
+		JFXDatePicker dateField = new JFXDatePicker();
+
+		JournalArticle found = (JournalArticle) api.getDocumentByID(selected.id);
+		titleField.setText(found.getTitle());
+		authorsField.setText(found.getAuthors());
+		countField.setText(String.valueOf(found.getNumberOfCopies()));
+		priceField.setText(String.valueOf(found.getPrice()));
+		allowedForStudents.setSelected(found.isAllowedForStudents());
+		isReference.setSelected(found.isReference());
+		keywordsField.setText(found.getKeyWords());
+		journalField.setText(found.getJournalName());
+		publisherField.setText(found.getPublisher());
+		issueField.setText(found.getIssue());
+		editorField.setText(found.getEditor());
+		dateField.setValue(found.getPublicationDate().toInstant()
+				.atZone(ZoneId.systemDefault()).toLocalDate());
+
+		JFXButton saveBtn = new JFXButton("SAVE");
+		saveBtn.setFont(new Font("Roboto Bold", 16));
+		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setFont(new Font("Roboto Bold", 16));
+		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+
+		HBox buttons = new HBox();
+		buttons.setSpacing(20);
+		buttons.getChildren().addAll(saveBtn, deleteBtn);
+
+		deleteBtn.setOnAction(event -> {
+			api.deleteDocument(selected.id);
+			initDocTable();
+			editArticleDialog.close();
+		});
+
+		dialogContainer.getChildren().addAll(editArticle, titleField,
+				authorsField, journalField, publisherField,
+				issueEditor, dateField, keywordsField,
+				checkboxes, countNPrice, buttons);
 	}
 
 	/**

@@ -1049,7 +1049,6 @@ public class Database {
 	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
 	public void editUserColumn(int userID, String column, String value) {
-
 		if (!hasUser(userID)) {
 			throw new NoSuchElementException("tools.Database: There is no such User with " + userID + " id");
 		}
@@ -1060,7 +1059,7 @@ public class Database {
 
 			try {
 				//noinspection ResultOfMethodCallIgnored
-				Integer.parseInt(value); // Removed unused variable, may produce bug. RS
+				Integer.parseInt(value); // Removed unused variable, may produce bug. Ruslan
 			} catch (NumberFormatException e) {
 				quotes1 = "\'";
 				quotes2 = "\'";
@@ -1093,7 +1092,6 @@ public class Database {
 		if (!hasUser(documentID)) {
 			throw new NoSuchElementException("tools.Database: There is no such Document with " + documentID + " id");
 		}
-
 
 		try {
 			String quotes1 = "";
