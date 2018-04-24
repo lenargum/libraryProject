@@ -472,7 +472,7 @@ public class DocumentManager {
 				titleField, authorsField,
 				publisherEdition, keywordsField,
 				allowedForStudents, isBestseller,
-				isReference, buttons);
+				isReference, countNPrice, buttons);
 
 		editBookDialog.setContent(dialogContainer);
 		editBookDialog.show(layout);

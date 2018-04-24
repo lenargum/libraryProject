@@ -1,18 +1,20 @@
 package graphicalUI;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXChipView;
-import com.jfoenix.controls.JFXMasonryPane;
+import com.jfoenix.controls.*;
 import com.jfoenix.svg.SVGGlyph;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,6 +35,19 @@ public class SearchView implements Initializable {
 	private JFXButton goBackBtn;
 	@FXML
 	private JFXMasonryPane docsPane;
+
+	private AnchorPane detailsLayout;
+	private JFXDrawer detailsDrawer;
+	private JFXDrawersStack drawerStack;
+
+	@FXML
+	private Pane coverContainer;
+	@FXML
+	private Text docTitle;
+	@FXML
+	private Text docAuthors;
+	@FXML
+	private JFXButton bookThisBtn;
 
 	public SearchView() {
 	}
@@ -79,13 +94,64 @@ public class SearchView implements Initializable {
 			}
 		});
 
-		scene = new Scene(layout);
+		drawerStack = new JFXDrawersStack();
+		drawerStack.setContent(layout);
+
+		scene = new Scene(drawerStack);
+
+		try {
+			detailsLayout = FXMLLoader.load(getClass().getResource("layout/DocDetails.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		coverContainer = (Pane) detailsLayout.lookup("#coverContainer");
+		docTitle = (Text) detailsLayout.lookup("#docTitle");
+		docAuthors = (Text) detailsLayout.lookup("#docAuthors");
+		bookThisBtn = (JFXButton) detailsLayout.lookup("#bookThisBtn");
+
+		detailsDrawer = new JFXDrawer();
+		detailsDrawer.setDirection(JFXDrawer.DrawerDirection.RIGHT);
+		detailsDrawer.setDefaultDrawerSize(350);
+
+		docsPane.setOnMouseClicked(event -> {
+			DocItem picked = getSelectedDocItemFromEvent(event);
+			if (picked == null) return;
+
+			coverContainer.getChildren().add(picked);
+			docTitle.setText(picked.getTitle());
+			docAuthors.setText(picked.getAuthor());
+
+			if (api.canTakeDocument(picked.getDocId())) {
+				bookThisBtn.setDisable(false);
+			}
+			bookThisBtn.setOnAction(event1 -> {
+				api.bookOrRequest(picked.getDocId());
+				bookThisBtn.setDisable(true);
+			});
+
+			detailsDrawer.setSidePane(detailsLayout);
+			drawerStack.toggle(detailsDrawer);
+		});
 	}
 
 	public void show() {
 		stage.setScene(scene);
 	}
 
+	/**
+	 * Get selected document.
+	 *
+	 * @param event Mouse event.
+	 * @return Clicked document item.
+	 * @throws NullPointerException If selected not document item.
+	 */
+	private DocItem getSelectedDocItemFromEvent(MouseEvent event) throws NullPointerException {
+		Node x = event.getPickResult().getIntersectedNode();
+		while (!(x instanceof DocItem)) {
+			x = x.getParent();
+		}
+		return ((DocItem) x).copy();
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
