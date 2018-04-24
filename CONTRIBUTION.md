@@ -1,3 +1,4 @@
+
 # Contribution
 ## [Madina Gafarova](https://github.com/gafmn)
 Core:
@@ -17,3 +18,4 @@ Database:
 
 ## [Ruslan Shakirov](https://github.com/Shakirovrrr)
 - Desktop App
+- Build system
