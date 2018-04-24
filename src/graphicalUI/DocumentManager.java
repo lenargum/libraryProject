@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import sun.reflect.Reflection;
+import users.Librarian;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -68,36 +68,40 @@ public class DocumentManager {
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
-		addDocBtn = (JFXButton) layout.lookup("#addDocBtn");
-		JFXPopup addDocPopup = new JFXPopup();
-		VBox popupContainer = new VBox();
+		if (api.getUser() instanceof Librarian) {
+			addDocBtn = (JFXButton) layout.lookup("#addDocBtn");
 
-		JFXButton addBookBtn = new JFXButton("Add book");
-		addBookBtn.setOnAction(event -> {
-			addDocPopup.hide();
-			showAddBookDialog();
-		});
+			JFXPopup addDocPopup = new JFXPopup();
+			VBox popupContainer = new VBox();
 
-		JFXButton addArticleBtn = new JFXButton("Add article");
-		addArticleBtn.setOnAction(event -> {
-			addDocPopup.hide();
-			showAddArticleDialog();
-		});
+			JFXButton addBookBtn = new JFXButton("Add book");
+			addBookBtn.setOnAction(event -> {
+				addDocPopup.hide();
+				showAddBookDialog();
+			});
 
-		JFXButton addAVBtn = new JFXButton("Add audio/video");
-		addAVBtn.setOnAction(event -> {
-			addDocPopup.hide();
-			showAddAVDialog();
-		});
+			JFXButton addArticleBtn = new JFXButton("Add article");
+			addArticleBtn.setOnAction(event -> {
+				addDocPopup.hide();
+				showAddArticleDialog();
+			});
 
-		popupContainer.getChildren().addAll(addBookBtn, addArticleBtn, addAVBtn);
-		addDocPopup.setPopupContent(popupContainer);
-		popupContainer.setSpacing(5);
-		popupContainer.setPadding(new Insets(5));
-		addDocBtn.setOnAction(event -> {
-			addDocPopup.show(addDocBtn);
+			JFXButton addAVBtn = new JFXButton("Add audio/video");
+			addAVBtn.setOnAction(event -> {
+				addDocPopup.hide();
+				showAddAVDialog();
+			});
 
-		});
+			popupContainer.getChildren().addAll(addBookBtn, addArticleBtn, addAVBtn);
+			addDocPopup.setPopupContent(popupContainer);
+			popupContainer.setSpacing(5);
+			popupContainer.setPadding(new Insets(5));
+			addDocBtn.setOnAction(event -> {
+				addDocPopup.show(addDocBtn);
+			});
+
+			addDocBtn.setDisable(false);
+		}
 
 		docsTable = (JFXTreeTableView<DocCell>) layout.lookup("#docsTable");
 		initDocTable();
@@ -443,6 +447,9 @@ public class DocumentManager {
 					countField.getText());
 			api.editDocument(selected.id, "price",
 					priceField.getText());
+
+			initDocTable();
+			editBookDialog.close();
 		});
 
 		JFXButton deleteButton = new JFXButton("DELETE");
@@ -567,6 +574,25 @@ public class DocumentManager {
 		buttons.setSpacing(20);
 		buttons.getChildren().addAll(saveBtn, deleteBtn);
 
+		saveBtn.setOnAction(event -> {
+			api.editDocument(selected.id, "name", titleField.getText());
+			api.editDocument(selected.id, "authors", authorsField.getText());
+			api.editDocument(selected.id, "num_of_copies", countField.getText());
+			api.editDocument(selected.id, "price", priceField.getText());
+			api.editDocument(selected.id, "is_allowed_for_students",
+					allowedForStudents.isSelected() ? "true" : "false");
+			api.editDocument(selected.id, "is_reference",
+					isReference.isSelected() ? "true" : "false");
+			api.editDocument(selected.id, "keywords", keywordsField.getText());
+			api.editDocument(selected.id, "journal_name", journalField.getText());
+			api.editDocument(selected.id, "publisher", publisherField.getText());
+			api.editDocument(selected.id, "issue", issueField.getText());
+			api.editDocument(selected.id, "editor", editorField.getText());
+			//api.editDocument(selected.id, "publication_date", dateField.getValue());
+			initDocTable();
+			editArticleDialog.close();
+		});
+
 		deleteBtn.setOnAction(event -> {
 			api.deleteDocument(selected.id);
 			initDocTable();
@@ -578,6 +604,8 @@ public class DocumentManager {
 				issueEditor, dateField, keywordsField,
 				checkboxes, countNPrice, buttons);
 	}
+
+	
 
 	/**
 	 * Table cell.

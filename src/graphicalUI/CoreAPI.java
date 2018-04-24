@@ -118,9 +118,13 @@ public class CoreAPI {
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
 						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
 			}
-		}
-		db.close();
+			for (User usr : db.getUsers()) {
+				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
+						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
+			}
+			db.close();
 
+		}
 		return list;
 	}
 
@@ -324,16 +328,6 @@ public class CoreAPI {
 			}
 			if (document instanceof AudioVideoMaterial) {
 				((Librarian) user).addAV((AudioVideoMaterial) document, db);
-			}
-		} else if (user instanceof Admin) {
-			if (document instanceof Book) {
-				((Admin) user).addBook((Book) document, db);
-			}
-			if (document instanceof JournalArticle) {
-				((Admin) user).addArticle((JournalArticle) document, db);
-			}
-			if (document instanceof AudioVideoMaterial) {
-				((Admin) user).addAV((AudioVideoMaterial) document, db);
 			}
 		}
 		db.close();
