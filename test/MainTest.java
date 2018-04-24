@@ -475,9 +475,9 @@ class MainTest {
         initialStateDelFour();
         database.connect();
 
-        l1 = new Librarian("loglib1", "passlib1", "Lib", "Lib", "27987328791", "Universitetskaya, 1");
-        l2 = new Librarian("loglib2", "passlib2", "Lab", "Lab", "57835937905", "Universitetskaya, 1");
-        l3 = new Librarian("loglib3", "passlib3", "Leb", "Leb", "23049320849", "Universitetskaya, 1");
+        l1 = new Librarian("loglib1", "passlib1", "Eugenia", "Rama", "27987328791", "Universitetskaya, 1");
+        l2 = new Librarian("loglib2", "passlib2", "Luie", "Ramos", "57835937905", "Universitetskaya, 1");
+        l3 = new Librarian("loglib3", "passlib3", "Ramon", "Valdez", "23049320849", "Universitetskaya, 1");
 
 
         admin.addLibrarian(l1, database);
