@@ -1163,6 +1163,7 @@ public class Database {
 			this.execute("DELETE FROM documents");
 			this.execute("DELETE FROM debts");
 			this.execute("DELETE FROM requests");
+			this.execute("DELETE FROM notifications");
 			System.out.println("tools.Database: Records cleared.");
 
 			this.execute("UPDATE sqlite_sequence SET seq=0");
@@ -1462,7 +1463,7 @@ public class Database {
 		try {
 			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID + " ORDER BY priority, date");
 
-			if (requestsSet.next()) {
+			while (requestsSet.next()) {
 				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
 						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
 				temp.setRequestId(requestsSet.getInt(1));
