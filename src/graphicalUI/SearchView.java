@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -68,12 +69,13 @@ public class SearchView implements Initializable {
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
 		goBackGraphic.setSize(20);
-		goBackGraphic.setFill(Paint.valueOf("8d8d8d"));
+		goBackGraphic.setFill(Paint.valueOf("#8d8d8d"));
 		goBackBtn.setGraphic(goBackGraphic);
 
 		docsPane = (JFXMasonryPane) layout.lookup("#docsPane");
 
 		keywordChips = (JFXChipView<String>) layout.lookup("#keywordChips");
+		keywordChips.setPadding(new Insets(5));
 		keywordChips.getSuggestions().addAll("book", "article", "audio/video");
 		keywordChips.setOnKeyReleased(event -> {
 			if (event.getCode() == KeyCode.ENTER) {

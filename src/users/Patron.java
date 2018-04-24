@@ -49,6 +49,7 @@ public class Patron extends User {
 		bookingSystem = new BookingSystem();
 		returningSystem = new ReturningSystem();
 	}
+
 	public Patron(String login, String password, String status, String name, String surname, String phone, String address) {
 		super(login, password, name, surname, phone, address);
 		this.setStatus(status);

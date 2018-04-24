@@ -2,6 +2,7 @@ package graphicalUI;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.svg.SVGGlyph;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -61,6 +62,11 @@ public class UserManager {
 		scene = new Scene(layout);
 
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
+		goBackBtn.setText("");
+		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
+		goBackGraphic.setSize(20, 20);
+		goBackGraphic.setFill(Paint.valueOf("#8d8d8d"));
+		goBackBtn.setGraphic(goBackGraphic);
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
 		addUserBtn = (JFXButton) layout.lookup("#addUserBtn");
@@ -206,7 +212,7 @@ public class UserManager {
 		if (selected == null) return;
 		int selectedIndex = usersTable.getSelectionModel().getSelectedIndex();
 
-		JFXDialog addUserDialog = new JFXDialog();
+		JFXDialog editUserDialog = new JFXDialog();
 
 		Label editUser = new Label("Edit user");
 		editUser.setFont(new Font("Roboto", 26));
@@ -255,9 +261,17 @@ public class UserManager {
 		JFXButton saveBtn = new JFXButton("SAVE");
 		saveBtn.setFont(new Font("Roboto Bold", 16));
 
+		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setFont(new Font("Roboto Bold", 16));
+		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+
+		HBox buttons = new HBox();
+		buttons.setSpacing(20);
+		buttons.getChildren().addAll(saveBtn, deleteBtn);
+
 		VBox container = new VBox();
 		container.getChildren().addAll(editUser, loginPassword,
-				nameSurname, phoneField, addressField, comboBox, saveBtn);
+				nameSurname, phoneField, addressField, comboBox, buttons);
 
 		container.setPadding(new Insets(20));
 		container.setSpacing(40);
@@ -286,11 +300,14 @@ public class UserManager {
 			api.editUser(selected.id, "phone", phoneField.getText());
 			api.editUser(selected.id, "address", addressField.getText());
 			initUserTable();
-			addUserDialog.close();
+			editUserDialog.close();
 		});
 
-		addUserDialog.setContent(container);
-		addUserDialog.show(layout);
+		// TODO deleteBtn.setOnAction(event -> {});
+
+		editUserDialog.setContent(container);
+		editUserDialog.setTransitionType(JFXDialog.DialogTransition.TOP);
+		editUserDialog.show(layout);
 	}
 
 	private User makePatronWithParameters(String login, String password,

@@ -2,6 +2,7 @@ package graphicalUI;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.svg.SVGGlyph;
 import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.JournalArticle;
@@ -66,6 +67,11 @@ public class DocumentManager {
 		scene = new Scene(layout);
 
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
+		goBackBtn.setText("");
+		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
+		goBackGraphic.setSize(20, 20);
+		goBackGraphic.setFill(Paint.valueOf("#8d8d8d"));
+		goBackBtn.setGraphic(goBackGraphic);
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
 		if (api.getUser() instanceof Librarian) {
@@ -147,17 +153,24 @@ public class DocumentManager {
 		docsTable.setRoot(tableRoot);
 		docsTable.setShowRoot(false);
 
-		docsTable.setOnMouseClicked(event -> {
-			try {
-				DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
-				if (selected == null) return;
+		if (api.getUser() instanceof Librarian) {
+			docsTable.setOnMouseClicked(event -> {
+				try {
+					DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
+					if (selected == null) return;
 
-				if (selected.type.getValue().equals("Book")) {
-					showEditBookDialog(selected);
+					switch (selected.type.getValue()) {
+						case "Book":
+							showEditBookDialog(selected);
+							break;
+						case "JournalArticle":
+							showEditArticleDialog(selected);
+							break;
+					}
+				} catch (NullPointerException ignored) {
 				}
-			} catch (NullPointerException ignored) {
-			}
-		});
+			});
+		}
 	}
 
 	private void showAddBookDialog() {
@@ -452,17 +465,17 @@ public class DocumentManager {
 			editBookDialog.close();
 		});
 
-		JFXButton deleteButton = new JFXButton("DELETE");
-		deleteButton.setFont(new Font("Roboto Bold", 16));
-		deleteButton.setTextFill(Paint.valueOf("#e53935"));
-		deleteButton.setOnAction(event -> {
+		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setFont(new Font("Roboto Bold", 16));
+		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+		deleteBtn.setOnAction(event -> {
 			api.deleteDocument(selected.id);
 			initDocTable();
 			editBookDialog.close();
 		});
 
 		HBox buttons = new HBox();
-		buttons.getChildren().addAll(saveBtn, deleteButton);
+		buttons.getChildren().addAll(saveBtn, deleteBtn);
 		buttons.setSpacing(20);
 
 		Book found = (Book) api.getDocumentByID(selected.id);
@@ -484,6 +497,7 @@ public class DocumentManager {
 				isReference, countNPrice, buttons);
 
 		editBookDialog.setContent(dialogContainer);
+		editBookDialog.setTransitionType(JFXDialog.DialogTransition.TOP);
 		editBookDialog.show(layout);
 	}
 
@@ -603,9 +617,12 @@ public class DocumentManager {
 				authorsField, journalField, publisherField,
 				issueEditor, dateField, keywordsField,
 				checkboxes, countNPrice, buttons);
+
+		editArticleDialog.setContent(dialogContainer);
+		editArticleDialog.setTransitionType(JFXDialog.DialogTransition.TOP);
+		editArticleDialog.show(layout);
 	}
 
-	
 
 	/**
 	 * Table cell.

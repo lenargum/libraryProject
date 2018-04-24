@@ -127,11 +127,11 @@ public class Database {
 	 * @throws SQLException user with such login already exists or inserted user with incorrect type.
 	 */
 	private void insertUser(String login, String password, String status,
-	                        String firstName, String lastName, String phone, String address,int privileges) throws SQLException {
+	                        String firstName, String lastName, String phone, String address, int privileges) throws SQLException {
 		this.execute("INSERT INTO users(login, password, status, firstname, lastname, phone, address, privileges)" +
 				" VALUES('" + login + "','" + password + "','"
 				+ status + "','" + firstName + "','" + lastName + "','" +
-				phone + "','" + address + "', "+privileges+")");
+				phone + "','" + address + "', " + privileges + ")");
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Database {
 	 */
 	public void insertPatron(Patron patron) {
 		try {
-			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress(),-1);
+			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress(), -1);
 			patron.setId(this.getPatronID(patron));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: User with such login already exists");
@@ -191,13 +191,12 @@ public class Database {
 	 */
 	public void insertLibrarian(Librarian librarian) {
 		try {
-			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress(),librarian.getPrivilege());
+			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress(), librarian.getPrivilege());
 			librarian.setId(this.getLibrarianID(librarian));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: User with such login already exists");
 		}
 	}
-
 
 
 	/**
@@ -331,7 +330,7 @@ public class Database {
 			while (librarianSet.next()) {
 				Librarian temp = new Librarian(librarianSet.getString(2),
 						librarianSet.getString(3), librarianSet.getString(5),
-						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8), librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
 				librarianList.add(temp);
 			}
@@ -619,7 +618,7 @@ public class Database {
 						temp = new Librarian(userSet.getString(2),
 								userSet.getString(3), userSet.getString(5),
 								userSet.getString(6), userSet.getString(7),
-								userSet.getString(8),userSet.getInt(9));
+								userSet.getString(8), userSet.getInt(9));
 						break;
 					case "STUDENT":
 						temp = new Student(userSet.getString(2),
@@ -684,7 +683,7 @@ public class Database {
 			if (librarianSet.next()) {
 				Librarian temp = new Librarian(librarianSet.getString(2),
 						librarianSet.getString(3), librarianSet.getString(5),
-						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8), librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
 				temp.setPrivilege(librarianSet.getInt(9));
 				return temp;
@@ -1662,12 +1661,12 @@ public class Database {
 	 */
 	public void insertAdmin(Admin admin) {
 
-		try{
+		try {
 			getAdmin();
 			System.err.println("tools.Database: One admin is already exist!");
 		} catch (NoSuchElementException e) {
 			try {
-				insertUser(admin.getLogin(),admin.getPassword(),"ADMIN", admin.getName(),admin.getSurname(),admin.getPhoneNumber(),admin.getAddress(),-1);
+				insertUser(admin.getLogin(), admin.getPassword(), "ADMIN", admin.getName(), admin.getSurname(), admin.getPhoneNumber(), admin.getAddress(), -1);
 				admin.setId(getAdmin().getId());
 			} catch (SQLException ex) {
 				ex.printStackTrace();
@@ -1682,10 +1681,10 @@ public class Database {
 	 * @throws NoSuchElementException Throws when there is no Admin in Database.
 	 */
 	public Admin getAdmin() {
-		try{
+		try {
 			//language=SQLite
 			ResultSet rs = executeQuery("SELECT * FROM users WHERE status = 'ADMIN'");
-			if(rs.next()) {
+			if (rs.next()) {
 				return new Admin(rs.getString(2),
 						rs.getString(3), rs.getString(5),
 						rs.getString(6), rs.getString(7),

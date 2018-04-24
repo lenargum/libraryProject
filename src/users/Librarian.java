@@ -4,7 +4,10 @@ import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
-import librarianTools.*;
+import librarianTools.BookingSystem;
+import librarianTools.Modify;
+import librarianTools.ModifyLibrary;
+import librarianTools.ReturningSystem;
 import tools.Constants;
 import tools.Database;
 import tools.OutstandingRequest;
@@ -52,12 +55,12 @@ public class Librarian extends User {
 	/**
 	 * Initialize new librarian.
 	 *
-	 * @param login    Login.
-	 * @param password Password.
-	 * @param name     First name.
-	 * @param surname  Last name.
-	 * @param phone    Phone number.
-	 * @param address  Living address.
+	 * @param login     Login.
+	 * @param password  Password.
+	 * @param name      First name.
+	 * @param surname   Last name.
+	 * @param phone     Phone number.
+	 * @param address   Living address.
 	 * @param privilege Privilege level
 	 */
 	public Librarian(String login, String password, String name, String surname, String phone, String address, int privilege) {

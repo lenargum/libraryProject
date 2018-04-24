@@ -51,11 +51,12 @@ public class TakeApproval {
 		}
 		scene = new Scene(layout);
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
-		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
+		goBackBtn.setText("");
 		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
 		goBackGraphic.setSize(20, 20);
-		goBackBtn.setTextFill(Paint.valueOf("#727272"));
+		goBackGraphic.setFill(Paint.valueOf("#8d8d8d"));
 		goBackBtn.setGraphic(goBackGraphic);
+		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
 		listView = (JFXListView<ApprovalCell>) layout.lookup("#approvalList");
 		listView.getItems().addAll(api.getTakeRequests());

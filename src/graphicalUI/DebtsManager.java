@@ -2,6 +2,7 @@ package graphicalUI;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.svg.SVGGlyph;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,6 +15,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -55,6 +57,11 @@ public class DebtsManager {
 		scene = new Scene(layout);
 
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
+		goBackBtn.setText("");
+		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
+		goBackGraphic.setSize(20, 20);
+		goBackGraphic.setFill(Paint.valueOf("#8d8d8d"));
+		goBackBtn.setGraphic(goBackGraphic);
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
 		debtsTable = (JFXTreeTableView<DebtCell>) layout.lookup("#debtsTable");

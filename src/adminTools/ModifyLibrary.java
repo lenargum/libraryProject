@@ -1,8 +1,7 @@
 package adminTools;
 
-import tools.Constants;
-import tools.OutstandingRequest;
 import tools.Database;
+import tools.OutstandingRequest;
 import users.Librarian;
 
 public class ModifyLibrary {
@@ -38,7 +37,7 @@ public class ModifyLibrary {
 		OutstandingRequest deletionDocument = new OutstandingRequest();
 		if (database.getDebtsForDocument(idDocument).size() == 0) {
 			//deletionDocument.makeDeletionRequest(idDocument, database);
-			if (database.getRequestsForDocument(idDocument).size() !=0)
+			if (database.getRequestsForDocument(idDocument).size() != 0)
 				database.deleteRequestsForDocument(idDocument);
 			else
 				database.deleteDocument(idDocument);
@@ -46,7 +45,6 @@ public class ModifyLibrary {
 			//deletionDocument.makeDeletionRequest(idDocument, database);
 		}
 	}
-
 
 
 }

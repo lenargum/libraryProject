@@ -112,19 +112,14 @@ public class CoreAPI {
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
 						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
 			}
-		} else {
+		} else if (user instanceof Librarian) {
 			for (User usr : db.getUsers()) {
 				if (usr instanceof Librarian || usr instanceof Admin) continue;
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
 						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
 			}
-			for (User usr : db.getUsers()) {
-				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
-						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
-			}
-			db.close();
-
 		}
+		db.close();
 		return list;
 	}
 
