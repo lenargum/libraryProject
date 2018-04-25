@@ -298,12 +298,10 @@ public class CoreAPI {
 	 */
 	void addNewUser(User newUser) {
 		db.connect();
-		if (newUser instanceof Librarian) {
-			db.insertLibrarian((Librarian) newUser);
-			newUser.setId(db.getLibrarianID((Librarian) newUser));
+		if (user instanceof Admin) {
+			((Admin) user).addLibrarian((Librarian) newUser, db);
 		} else {
-			db.insertPatron((Patron) newUser);
-			newUser.setId(db.getPatronID((Patron) newUser));
+			((Librarian) user).registerPatron((Patron) newUser, db);
 		}
 		db.close();
 	}
@@ -554,6 +552,7 @@ public class CoreAPI {
 			db.connect();
 			Request request = db.getRequest(requestID);
 			System.out.println("Submitting request " + request.getRequestId());
+			((Librarian) user).deleteRequest(request, db);
 			db.close();
 		} else {
 			System.out.println("Current user is not librarian.");

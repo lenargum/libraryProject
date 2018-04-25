@@ -98,6 +98,7 @@ class TestSuite4 {
 		l1.modifyDocumentCopies(b3.getID(), database, 3);
 		assertEquals(0, b3.getNumberOfCopies());
 
+		System.out.println(l1.getLibrary(database));
 		database.close();
 
 	}
@@ -130,6 +131,7 @@ class TestSuite4 {
 
 		assertEquals(5, database.getPatronList().size());
 
+		System.out.println(l2.getLibrary(database));
 		database.close();
 
 	}
@@ -142,6 +144,7 @@ class TestSuite4 {
 		l3.modifyDocumentCopies(b1.getID(), database, b1.getNumberOfCopies() - 1);
 		b1.setNumberOfCopies(database.getDocument(b1.getID()).getNumberOfCopies());
 		assertEquals(2, b1.getNumberOfCopies());
+		System.out.println(l2.getLibrary(database));
 		database.close();
 	}
 
@@ -295,5 +298,14 @@ class TestSuite4 {
 		assertTrue(searchResult.contains("Introduction to Algorithms"));
 		assertTrue(searchResult.contains("Algorithms + Data Structures = Programs"));
 		assertTrue(searchResult.contains("The Art of Computer Programming"));
+	}
+
+	@Test
+	void testCase15(){
+		testCase04();
+		database.connect();
+		//l3.deletePatron(p1.getId(), database);
+
+		database.close();
 	}
 }
