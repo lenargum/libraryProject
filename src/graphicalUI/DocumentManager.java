@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import users.Admin;
 import users.Librarian;
 
 import java.io.IOException;
@@ -466,8 +467,13 @@ public class DocumentManager {
 		});
 
 		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setDisable(true);
 		deleteBtn.setFont(new Font("Roboto Bold", 16));
 		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+		if (api.getUser() instanceof Admin ||
+				((Librarian) api.getUser()).getPrivilege() >= 3) {
+			deleteBtn.setDisable(false);
+		}
 		deleteBtn.setOnAction(event -> {
 			api.deleteDocument(selected.id);
 			initDocTable();
@@ -581,8 +587,13 @@ public class DocumentManager {
 		JFXButton saveBtn = new JFXButton("SAVE");
 		saveBtn.setFont(new Font("Roboto Bold", 16));
 		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setDisable(true);
 		deleteBtn.setFont(new Font("Roboto Bold", 16));
 		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+		if (api.getUser() instanceof Admin ||
+				((Librarian) api.getUser()).getPrivilege() >= 3) {
+			deleteBtn.setDisable(false);
+		}
 
 		HBox buttons = new HBox();
 		buttons.setSpacing(20);

@@ -470,6 +470,17 @@ public class CoreAPI {
 		return logs;
 	}
 
+	void deleteUser(int id) {
+		db.connect();
+		if (user instanceof Admin) {
+			((Admin) user).deleteLibrarian(id, db);
+		}
+		if (user instanceof Librarian) {
+			((Librarian) user).deletePatron(id, db);
+		}
+		db.close();
+	}
+
 	/**
 	 * Check whether current user can take document.
 	 *

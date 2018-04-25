@@ -103,8 +103,7 @@ public class ModifyLibrary {
 			else{
 				List<Request> requests = database.getRequestsForPatron(idPatron);
 				for(int i = 0; i < requests.size(); i++)
-					database.deleteRequest(idPatron, requests.get(i).getRequestId());
-
+					database.deleteRequest(idPatron, requests.get(i).getIdDocument());
 				database.deleteUser(idPatron);
 				database.log("Librarian " + librarianId + "id has deleted Patron " + idPatron + "id.");
 
