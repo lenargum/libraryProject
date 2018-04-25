@@ -80,7 +80,6 @@ public class Request {
 	 * @param idPatron   Associated patron's ID.
 	 * @param idDocument Associated document's ID.
 	 * @param database   Database
-	 * @throws SQLException something in database went wrong
 	 */
 	public void approveRequest(int idPatron, int idDocument, Database database) {
 		System.out.println("tools.Request <- Approving request for patron " + idPatron +
@@ -118,7 +117,6 @@ public class Request {
 	 * Approve request to renew document.
 	 *
 	 * @param database Database
-	 * @throws SQLException by deafult
 	 */
 	public void approveRenew(Database database) {
 		database.getPatron(idPatron).renewDocument(idDocument, database);

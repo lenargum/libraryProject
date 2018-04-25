@@ -2,7 +2,10 @@ package adminTools;
 
 import tools.Database;
 import tools.OutstandingRequest;
+import tools.Request;
 import users.Librarian;
+
+import java.util.List;
 
 public class ModifyLibrary {
 	public void addLibrarian(Librarian librarian, Database database) {
@@ -34,15 +37,17 @@ public class ModifyLibrary {
 
 
 	public void deleteDocument(int idDocument, Database database) {
-		OutstandingRequest deletionDocument = new OutstandingRequest();
-		if (database.getDebtsForDocument(idDocument).size() == 0) {
-			//deletionDocument.makeDeletionRequest(idDocument, database);
-			if (database.getRequestsForDocument(idDocument).size() != 0)
+		OutstandingRequest deletionNotification = new OutstandingRequest();
+		if (database.getDebtsForDocument(idDocument).size() != 0 && database.getRequestsForDocument(idDocument).size()!= 0) {
+
+			List<Request> requests = database.getRequestsForDocument(idDocument);
+			for (int i = 0; i < requests.size(); i++) {
+				deletionNotification.makeDeletionRequest(requests.get(i), database);
 				database.deleteRequestsForDocument(idDocument);
-			else
-				database.deleteDocument(idDocument);
-		} else {
-			//deletionDocument.makeDeletionRequest(idDocument, database);
+			}
+		}
+		else{
+			database.deleteDocument(idDocument);
 		}
 	}
 
