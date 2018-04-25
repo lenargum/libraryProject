@@ -11,8 +11,7 @@ public class OutstandingRequest {
 	public void makeOutstandingRequest(int librarianId, Request request, Database database) {
 		if (Logic.canSetRequest(librarianId, database)) {
 			database.log("Librarian " + librarianId + "id has made outstanding Request " + request.getRequestId() + "id.");
-			database.getDocument(request.getIdDocument()).setUnderOutstandingRequest(true);
-			//TODO: rewrite as editColumn
+			database.editDocumentColumn(request.getIdDocument(), "is_under_outstanding_request", "true");
 			sendNotificationsForOutstandingRequest(request, database);
 			database.deleteRequestsForDocument(request.getIdDocument());
 		}
@@ -26,7 +25,7 @@ public class OutstandingRequest {
 
 	public void setAvailability(int docID, Database database) {
 		if (database.getDocument(docID).getNumberOfCopies() > 0) {
-			database.getDocument(docID).setUnderOutstandingRequest(false);
+			database.editDocumentColumn(docID, "is_under_outstanding_request", "false");
 			sendNotificationsForAvailability(docID, database);
 		}
 	}
@@ -36,8 +35,9 @@ public class OutstandingRequest {
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
 			Document doc = db.getDocument(request.getIdDocument());
-			db.insertNotification(temp.getIdDocument(), temp.getIdPatron(),
+			db.insertNotification(request.getIdDocument(), temp.getIdPatron(),
 					"Outstanding request for " + doc.getTitle(), new Date());
+
 			db.log("Notification of not availability for User " + temp.getIdPatron() + "id has been sent");
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
@@ -45,6 +45,7 @@ public class OutstandingRequest {
 		for(Debt temp: debts){
 			db.insertNotification(temp.getDocumentId(), temp.getPatronId(),
 					"You need to return "  + doc.getTitle() + " because of outstanding request placed on it.", new Date());
+
 			db.log("Notification of need to return document " + doc.getID() + "id for User " + temp.getPatronId() + "id has been sent");
 		}
 	}
