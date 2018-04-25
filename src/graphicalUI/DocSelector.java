@@ -203,6 +203,8 @@ public class DocSelector {
 				bookThisBtn.setOnAction(event1 -> {
 					api.bookOrRequest(picked.getDocId());
 					bookThisBtn.setDisable(true);
+					JFXSnackbar snackbar = new JFXSnackbar(selectorLayout);
+					snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Document requested"));
 				});
 //				countBadge.setText("5 items");
 //				countBadge.refreshBadge();

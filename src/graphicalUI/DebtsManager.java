@@ -30,6 +30,7 @@ public class DebtsManager {
 	private AnchorPane layout;
 	private Stage stage;
 	private Scene scene;
+	private JFXSnackbar snackbar;
 	@FXML
 	private JFXButton goBackBtn;
 	@FXML
@@ -66,6 +67,8 @@ public class DebtsManager {
 
 		debtsTable = (JFXTreeTableView<DebtCell>) layout.lookup("#debtsTable");
 		initDebtsList();
+
+		snackbar = new JFXSnackbar(layout);
 	}
 
 	/**
@@ -119,17 +122,20 @@ public class DebtsManager {
 		} catch (NullPointerException e) {
 			return;
 		}
-		int selectedIndex = debtsTable.getSelectionModel().getSelectedIndex();
 		JFXButton outstandingBtn = new JFXButton("Outstanding request");
 		JFXButton confirmReturnBtn = new JFXButton("Confirm return");
 		JFXPopup popup = new JFXPopup();
 		outstandingBtn.setOnAction(event1 -> {
 			api.makeOutstandingRequest(selected.userID, selected.docID);
 			popup.hide();
+			initDebtsList();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Outstanding request sent"));
 		});
 		confirmReturnBtn.setOnAction(event1 -> {
 			api.confirmReturn(selected.debtID.get());
 			popup.hide();
+			initDebtsList();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Return confirmed"));
 		});
 
 		VBox container = new VBox();

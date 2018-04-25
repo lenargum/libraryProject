@@ -3,6 +3,7 @@ package graphicalUI;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.svg.SVGGlyph;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,7 @@ public class TakeApproval {
 	AnchorPane layout;
 	Stage stage;
 	Scene scene, previousScene;
+	JFXSnackbar snackbar;
 	@FXML
 	JFXButton goBackBtn;
 	JFXListView<ApprovalCell> listView;
@@ -62,6 +64,8 @@ public class TakeApproval {
 		listView.getItems().addAll(api.getTakeRequests());
 
 		listView.setOnMouseClicked(this::onListClicked);
+
+		snackbar = new JFXSnackbar(layout);
 	}
 
 	/**
@@ -82,16 +86,19 @@ public class TakeApproval {
 			api.acceptBookRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Accepted"));
 		});
 		reject.setOnAction(event1 -> {
 			api.rejectBookRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Rejected"));
 		});
 		outstandingRequest.setOnAction(event1 -> {
 			api.makeOutstandingRequest(selected.getRequestId());
 			listView.getItems().setAll(api.getTakeRequests());
 			popup.hide();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Outstanding request sent"));
 		});
 
 		container.getChildren().addAll(accept, reject, outstandingRequest);

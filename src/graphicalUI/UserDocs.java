@@ -123,6 +123,8 @@ public class UserDocs {
 		DocumentPopup popup = new DocumentPopup(selected.docTitle.getValue(), "Author", selected.debtID);
 		popup.setOnRenewAction(event1 -> {
 			api.makeRenewRequest(selected.debtID);
+			JFXSnackbar snackbar = new JFXSnackbar(layout);
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Request submitted"));
 			popup.hide();
 		});
 		popup.setOnReturnAction(event1 -> {
