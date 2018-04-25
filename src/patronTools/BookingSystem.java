@@ -32,6 +32,7 @@ public class BookingSystem {
 
 			Debt debt = new Debt(patron.getId(), idBook, dateBook, dateExpire, 0, true);
 			database.insertDebt(debt);
+			database.log("Patron with " + patron.getId() + " id has taken the book with " + idBook + "id.");
 
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id=" + idBook);
@@ -53,6 +54,8 @@ public class BookingSystem {
 			Date date2 = Logic.expireDate(patron.getId(), idAV, database);
 			Debt debt = new Debt(patron.getId(), idAV, date, date2, 0, true);
 			database.insertDebt(debt);
+			database.log("Patron with " + patron.getId() + " id has taken the audio/video material with " + idAV + "id.");
+
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idAV);
 		}
@@ -72,6 +75,7 @@ public class BookingSystem {
 			Date date = new Date();
 			Date date2 = Logic.expireDate(patron.getId(), idArticle, database);
 			Debt debt = new Debt(patron.getId(), idArticle, date, date2, 0, true);
+			database.log("Patron with " + patron.getId() + " id has taken the Journal article with " + idArticle + "id.");
 
 			database.insertDebt(debt);
 		} catch (NoSuchElementException e) {

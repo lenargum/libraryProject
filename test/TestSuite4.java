@@ -188,6 +188,9 @@ class TestSuite4 {
 		testCase06();
 		database.connect();
 
+		for(String i: database.getLog()){
+			System.out.println(i);
+		}
 
 		database.close();
 	}
@@ -197,6 +200,9 @@ class TestSuite4 {
 		testCase07();
 		database.connect();
 
+		for(String i: database.getLog()){
+			System.out.println(i);
+		}
 
 		database.close();
 	}

@@ -24,7 +24,14 @@ public class ModifyLibrary {
 //        librarian.setPhoneNumber(null);
 //        librarian.setLogin(null);
 //        librarian.setPassword(null);
-		database.deleteUser(idLibrarian);
+		List <Librarian> l = database.getLibrarianList();
+		for(Librarian i: l){
+			if(i.getId() == idLibrarian){
+				database.deleteUser(idLibrarian);
+				return;
+			}
+		}
+		System.out.println("Librarian with such id " + idLibrarian + "does not exist.");
 
 	}
 
