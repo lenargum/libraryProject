@@ -25,11 +25,11 @@ public class Notification {
 		this.id = id;
 	}
 
-	public int getRequestId() {
+	public int getDocumentId() {
 		return documentId;
 	}
 
-	public void setRequestId(int requestId) {
+	public void setDocumentId(int requestId) {
 		this.documentId = requestId;
 	}
 
