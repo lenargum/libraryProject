@@ -22,8 +22,7 @@ public class ModifyLibrary {
 	public void addBook(int librarianId, Book book, Database database) {
 		if (Logic.canAdd(librarianId, database)) {
 			database.insertBook(book);
-		} else {
-			//TODO: Log
+			database.log("Librarian " + librarianId + "id has added Book " + book.getAuthors() + " \"" + book.getTitle() + "\".");
 		}
 	}
 
@@ -36,8 +35,7 @@ public class ModifyLibrary {
 	public void addAV(int librarianId, AudioVideoMaterial AV, Database database) {
 		if (Logic.canAdd(librarianId, database)) {
 			database.insertAV(AV);
-		} else {
-			//TODO: Log
+			database.log("Librarian " + librarianId + "id has added AV " + AV.getAuthors() + " \"" + AV.getTitle() + "\".");
 		}
 	}
 
@@ -50,8 +48,7 @@ public class ModifyLibrary {
 	public void addArticle(int librarianId, JournalArticle journalArticle, Database database) {
 		if (Logic.canAdd(librarianId, database)) {
 			database.insertArticle(journalArticle);
-		} else {
-			//TODO: Log
+			database.log("Librarian " + librarianId + "id has added Article " + journalArticle.getAuthors() + " \"" + journalArticle.getTitle() + "\".");
 		}
 	}
 
@@ -65,8 +62,7 @@ public class ModifyLibrary {
 	public void registerPatron(int librarianId, Patron patron, Database database) {
 		if (Logic.canAdd(librarianId, database)) {
 			database.insertPatron(patron);
-		} else {
-			//TODO: Log
+			database.log("Librarian " + librarianId + "id has registered Patron " + patron.getId() + "id.");
 		}
 	}
 
@@ -85,6 +81,7 @@ public class ModifyLibrary {
 				deletionNotification.makeOutstandingRequest(librarianId, requests.get(i), database);
 			}
 			database.deleteRequestsForDocument(idDocument);
+			database.log("Librarian " + librarianId + "id has deleted Document " + idDocument + "id.");
 		}
 		else {
 			if (database.getDebtsForDocument(idDocument).size() == 0)
@@ -107,9 +104,9 @@ public class ModifyLibrary {
 				List<Request> requests = database.getRequestsForPatron(idPatron);
 				for(int i = 0; i < requests.size(); i++)
 					database.deleteRequest(idPatron, requests.get(i).getRequestId());
+
+				database.log("Librarian " + librarianId + "id has deleted Patron " + idPatron + "id.");
 			}
-		} else {
-			//TODO: Log
 		}
 	}
 
