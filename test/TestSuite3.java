@@ -343,7 +343,7 @@ class TestSuite3 {
 		librarian.makeOutstandingRequest(database.getRequest(s.getId(), d3.getID()), database);
 		assertEquals(database.getRequestsForDocument(d3.getID()).size(), 0);
 
-		assertEquals(5, database.getNotificationsList().size());
+		assertEquals(3, database.getNotificationsList().size());
 
 		database.close();
 	}
