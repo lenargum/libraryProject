@@ -9,8 +9,8 @@ public class Notification {
 	private Date date;
 	private String description;
 
-	public Notification(int requestId, int userId, String description, Date date) {
-		this.documentId = requestId;
+	public Notification(int documentId, int userId, String description, Date date) {
+		this.documentId = documentId;
 		this.userId = userId;
 		this.description = description;
 		this.date = date;
