@@ -50,10 +50,6 @@ tasks.withType(JavaCompile) {
 	options.incremental = true
 }
 
-test {
-	useJUnitPlatform()
-}
-
 task wrapper(type: Wrapper) {
 	gradleVersion = '4.6'
 }
@@ -75,4 +71,8 @@ task deploy(type: Copy) {
 		from "build/reports/tests"
 		into "app"
 	}
+}
+
+test {
+	useJUnitPlatform()
 }
