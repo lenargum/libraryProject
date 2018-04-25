@@ -68,7 +68,7 @@ public class Constants {
 	}
 
 	public static String patronNotifiedMessage(Patron patron, String mes){
-		return "Notification '" + mes + "' was sent to " + patron.getStatus() + " " + patron.getSurname();
+		return "Notification " + mes + " was sent to " + patron.getStatus() + " " + patron.getSurname();
 	}
 
 	public static Date setWeek() {
