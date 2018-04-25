@@ -32,6 +32,7 @@ public class ReturningSystem {
 			System.out.println("Return confirmed!");
 			int debtID = database.findDebtID(patron.getId(), idDocument);
 			database.deleteDebt(debtID);
+			database.log("Patron with id " + patron.getId() + " has returned document with id " + idDocument + ".");
 		} catch (NoSuchElementException | SQLException e) {
 			System.out.println("Incorrect id");
 		} catch (IndexOutOfBoundsException e) {
