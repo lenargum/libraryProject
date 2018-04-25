@@ -1074,7 +1074,7 @@ public class Database {
 
 			try {
 				//noinspection ResultOfMethodCallIgnored
-				Integer.parseInt(value); // Removed unused variable, may produce bug. Ruslan
+				Integer.parseInt(value);
 			} catch (NumberFormatException e) {
 				quotes1 = "\'";
 				quotes2 = "\'";
@@ -1519,7 +1519,7 @@ public class Database {
 
 			try {
 				//noinspection ResultOfMethodCallIgnored
-				Double.parseDouble(value); // Removed unused variable, may produce bug. RS
+				Double.parseDouble(value);
 			} catch (NumberFormatException e) {
 				quotes1 = "\'";
 				quotes2 = "\'";
