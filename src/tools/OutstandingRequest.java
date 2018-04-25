@@ -11,6 +11,8 @@ public class OutstandingRequest {
 	public void makeOutstandingRequest(int librarianId, Request request, Database database) {
 		if (Logic.canSetRequest(librarianId, database)) {
 			database.log("Librarian " + librarianId + "id has made outstanding Request " + request.getRequestId() + "id.");
+			database.getDocument(request.getIdDocument()).setUnderTheOutstandingRequest(true);
+			//TODO: rewrite as editColumn
 			sendNotificationsForOutstandingRequest(request, database);
 			database.deleteRequestsForDocument(request.getIdDocument());
 		}
@@ -24,6 +26,7 @@ public class OutstandingRequest {
 
 	public void setAvailability(int docID, Database database) {
 		if (database.getDocument(docID).getNumberOfCopies() > 0) {
+			database.getDocument(docID).setUnderTheOutstandingRequest(false);
 			sendNotificationsForAvailability(docID, database);
 		}
 	}

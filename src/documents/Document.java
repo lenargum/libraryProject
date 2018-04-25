@@ -73,7 +73,7 @@ public class Document {
 		setReference(IsReference);
 		setPrice(Price);
 		setKeyWords(KeyWords);
-		setisUnderTheOutstandingRequest(false);
+		setUnderTheOutstandingRequest(false);
 	}
 
 	/**
@@ -316,11 +316,16 @@ public class Document {
 		this.Price = price;
 	}
 
-	public void setisUnderTheOutstandingRequest(boolean isUnderTheOutstandingRequest){
+	public void setUnderTheOutstandingRequest(boolean isUnderTheOutstandingRequest){
 		this.isUnderTheOutstandingRequest = isUnderTheOutstandingRequest;
 	}
 
-	/**
+
+    public boolean isUnderTheOutstandingRequest() {
+        return isUnderTheOutstandingRequest;
+    }
+
+    /**
 	 * Compare two documents.
 	 *
 	 * @param document Another document to compare.
