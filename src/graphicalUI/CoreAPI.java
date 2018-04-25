@@ -212,11 +212,12 @@ public class CoreAPI {
 	ObservableList<UserDocs.MyDocsView> getUserDocs() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
 		List<Integer> documents = new ArrayList<>();
+
+		db.connect();
 		if (user instanceof Patron) {
 			documents = ((Patron) user).getListOfDocumentsPatron();
 		}
 
-		db.connect();
 		for (Integer id : documents) {
 			Document doc;
 			Debt debt;
