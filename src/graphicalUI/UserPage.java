@@ -103,6 +103,7 @@ public class UserPage {
 	public void updateViews() {
 		userDocs = new UserDocs(rootPage.getApi());
 		selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
+		controlPanel = new ControlPanel(rootPage.getApi());
 	}
 
 	/**
