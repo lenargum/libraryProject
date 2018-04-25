@@ -247,7 +247,7 @@ public class Database {
 					article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
 					"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 					article.getIssue(), article.getEditor(),
-					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()));
+					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()),article.setisUnderTheOutstandingRequest(););
 			article.setID(this.getDocumentID(article));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
@@ -389,6 +389,7 @@ public class Database {
 				}
 
 				temp.setID(documentSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 				documentList.add(temp);
 			}
 		} catch (SQLException | ParseException e) {
@@ -440,6 +441,7 @@ public class Database {
 						Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
 						bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
 				temp.setID(bookSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(bookSet.getString(17)));
 				bookList.add(temp);
 			}
 			if (bookList.size() != 0) {
@@ -468,6 +470,7 @@ public class Database {
 						AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
 						Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
 				temp.setID(AVSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(AVSet.getString(17)));
 				AVList.add(temp);
 			}
 			if (AVList.size() != 0) {
@@ -499,6 +502,7 @@ public class Database {
 						articleSet.getString(14), articleSet.getString(15),
 						new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
 				temp.setID(articleSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(articleSet.getString(17)));
 				articleList.add(temp);
 			}
 			if (articleList.size() != 0) {
@@ -729,6 +733,7 @@ public class Database {
 								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8),
 								documentSet.getString(10), documentSet.getInt(11), Boolean.parseBoolean(documentSet.getString(12)));
 						temp.setID(documentSet.getInt(1));
+						temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 						return temp;
 
 					case "AV":
@@ -736,6 +741,7 @@ public class Database {
 								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)), documentSet.getInt(5),
 								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8));
 						temp.setID(documentSet.getInt(1));
+						temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 						return temp;
 
 					case "ARTICLE":
@@ -748,6 +754,7 @@ public class Database {
 									documentSet.getString(14), documentSet.getString(15),
 									new SimpleDateFormat("yyyy-MM-dd").parse(documentSet.getString(16)));
 							temp.setID(documentSet.getInt(1));
+							temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 							return temp;
 						} catch (ParseException e) {
 							e.printStackTrace();
@@ -783,6 +790,7 @@ public class Database {
 						Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
 						bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
 				temp.setID(bookSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(bookSet.getString(17)));
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -807,6 +815,7 @@ public class Database {
 						AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
 						Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
 				temp.setID(AVSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(AVSet.getString(17)));
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -835,6 +844,7 @@ public class Database {
 						articleSet.getString(14), articleSet.getString(15),
 						new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
 				temp.setID(articleSet.getInt(1));
+				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(articleSet.getString(17)));
 				return temp;
 			}
 		} catch (SQLException e) {
