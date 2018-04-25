@@ -33,12 +33,17 @@ public class OutstandingRequest {
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
 			Document doc = db.getDocument(request.getIdDocument());
-			db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
+			db.insertNotification(temp.getIdDocument(), temp.getIdPatron(),
 					"Outstanding request for " + doc.getTitle(), new Date());
 			db.log("Notification of not availability for User " + temp.getIdPatron() + "id has sent");
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
 		Document doc = db.getDocument(request.getIdDocument());
+		for(Debt temp: debts){
+			db.insertNotification(temp.getDocumentId(), temp.getPatronId(),
+					"You need to return "  + doc.getTitle() + " because of outstanding request placed on it.", new Date());
+			db.log("Notification of need to return document " + doc.getID() + "id for User " + temp.getPatronId() + "id has sent");
+		}
 	}
 
 	private void sendNotificationsForAvailability(int docId, Database database) {
@@ -47,7 +52,7 @@ public class OutstandingRequest {
 		int i = 0;
 		while (i < database.getDocument(docId).getNumberOfCopies()) {
 			Request temp = requests.get(i);
-			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "Set available document", new Date());
+			database.insertNotification(temp.getIdDocument(), temp.getIdPatron(), "Set available document", new Date());
 			i++;
 		}
 	}
@@ -57,14 +62,14 @@ public class OutstandingRequest {
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
 			Document doc = db.getDocument(request.getIdDocument());
-			db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
+			db.insertNotification(temp.getIdDocument(), temp.getIdPatron(),
 					"Delete document " + doc.getTitle(), new Date());
 
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
 		Document doc = db.getDocument(request.getIdDocument());
 		for (Debt temp : debts) {
-			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Delete document " + doc.getTitle(), new Date());
+			db.insertNotification(temp.getDocumentId(), temp.getPatronId(), "Delete document " + doc.getTitle(), new Date());
 		}
 	}
 }

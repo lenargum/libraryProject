@@ -52,6 +52,8 @@ public class Document {
 	 */
 	private String Type;
 
+	private boolean isUnderTheOutstandingRequest;
+
 	/**
 	 * Initialize new documents.Document.
 	 *
@@ -71,6 +73,7 @@ public class Document {
 		setReference(IsReference);
 		setPrice(Price);
 		setKeyWords(KeyWords);
+		setisUnderTheOutstandingRequest(false);
 	}
 
 	/**
@@ -311,6 +314,10 @@ public class Document {
 	 */
 	public void setPrice(double price) {
 		this.Price = price;
+	}
+
+	public void setisUnderTheOutstandingRequest(boolean isUnderTheOutstandingRequest){
+		this.isUnderTheOutstandingRequest = isUnderTheOutstandingRequest;
 	}
 
 	/**

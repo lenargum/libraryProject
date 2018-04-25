@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class Notification {
 	private int id;
-	private int requestId;
+	private int documentId;
 	private int userId;
 	private Date date;
 	private String description;
 
 	public Notification(int requestId, int userId, String description, Date date) {
-		this.requestId = requestId;
+		this.documentId = requestId;
 		this.userId = userId;
 		this.description = description;
 		this.date = date;
@@ -26,11 +26,11 @@ public class Notification {
 	}
 
 	public int getRequestId() {
-		return requestId;
+		return documentId;
 	}
 
 	public void setRequestId(int requestId) {
-		this.requestId = requestId;
+		this.documentId = requestId;
 	}
 
 	public int getUserId() {
