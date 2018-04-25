@@ -68,6 +68,15 @@ public class Patron extends User {
 	}
 
 	/**
+	 * Set the patrons' documents IDs.
+	 *
+	 * @param listOfDocumentsPatron List of patrons' documents IDs.
+	 */
+	public void setListOfDocumentsPatron(ArrayList<Integer> listOfDocumentsPatron) {
+		this.listOfDocumentsPatron = listOfDocumentsPatron;
+	}
+
+	/**
 	 * Get the patron status. Possible values: {@code "instructor"}, {@code "student"}
 	 *
 	 * @return users.Patron status.

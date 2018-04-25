@@ -592,6 +592,13 @@ public class Database {
 				}
 
 				temp.setId(patronSet.getInt(1));
+
+				ArrayList<Integer> userDocs = new ArrayList<>();
+				for (Debt debt : this.getDebtsForUser(temp.getId())) {
+					userDocs.add(debt.getDocumentId());
+				}
+				temp.setListOfDocumentsPatron(userDocs);
+
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -662,6 +669,15 @@ public class Database {
 				}
 
 				temp.setId(userSet.getInt(1));
+
+				if (!(temp instanceof Librarian || temp instanceof Admin)) {
+					ArrayList<Integer> userDocs = new ArrayList<>();
+					for (Debt debt : this.getDebtsForUser(temp.getId())) {
+						userDocs.add(debt.getDocumentId());
+					}
+					((Patron) temp).setListOfDocumentsPatron(userDocs);
+				}
+
 				return temp;
 			}
 		} catch (SQLException e) {

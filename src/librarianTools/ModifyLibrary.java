@@ -6,7 +6,10 @@ import documents.JournalArticle;
 import tools.Database;
 import tools.Logic;
 import tools.OutstandingRequest;
+import tools.Request;
 import users.Patron;
+
+import java.util.List;
 
 
 public class ModifyLibrary {
@@ -75,15 +78,17 @@ public class ModifyLibrary {
 	 */
 	public void deleteDocument(int librarianId, int idDocument, Database database) {
 		OutstandingRequest deletionNotification = new OutstandingRequest();
-		if (Logic.canDelete(librarianId, database) && database.getDebtsForDocument(idDocument).size() == 0) {
-			//deletionNotification.makeDeletionRequest(idDocument, database);
-			if (database.getRequestsForDocument(idDocument).size() != 0)
-				database.deleteRequestsForDocument(idDocument);
-			else
+		if (Logic.canDelete(librarianId, database) &&
+				database.getRequestsForDocument(idDocument).size() != 0) {
+			List<Request> requests = database.getRequestsForDocument(idDocument);
+			for (int i = 0; i < requests.size(); i++) {
+				deletionNotification.makeOutstandingRequest(librarianId, requests.get(i), database);
+			}
+			database.deleteRequestsForDocument(idDocument);
+		}
+		else {
+			if (database.getDebtsForDocument(idDocument).size() == 0)
 				database.deleteDocument(idDocument);
-		} else {
-			//TODO: Log
-			//deletionNotification.makeDeletionRequest(idDocument, database);
 		}
 	}
 
