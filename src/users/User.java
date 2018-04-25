@@ -203,7 +203,8 @@ public abstract class User {
 	 * @see java.util.List
 	 * @see ArrayList
 	 */
-	public ArrayList<String> getLibrary(Database database) throws SQLException {
+	public ArrayList<String> getLibrary(Database database) {
+		database.log("User "+this.getId()+"id checked the Library");
 		return database.getDocumentStringList();
 	}
 
@@ -215,7 +216,7 @@ public abstract class User {
 	 * @see java.util.List
 	 * @see ArrayList
 	 */
-	public ArrayList<Book> getListOfBooks(Database database) throws SQLException {
+	public ArrayList<Book> getListOfBooks(Database database) {
 		return database.getBookList();
 	}
 
@@ -227,7 +228,7 @@ public abstract class User {
 	 * @see java.util.List
 	 * @see ArrayList
 	 */
-	public ArrayList<AudioVideoMaterial> getListOfAVs(Database database) throws SQLException {
+	public ArrayList<AudioVideoMaterial> getListOfAVs(Database database) {
 		return database.getAVList();
 	}
 
@@ -239,7 +240,7 @@ public abstract class User {
 	 * @see java.util.List
 	 * @see ArrayList
 	 */
-	public ArrayList<JournalArticle> getListOfArticles(Database database) throws SQLException, ParseException {
+	public ArrayList<JournalArticle> getListOfArticles(Database database) {
 		return database.getArticleList();
 	}
 }
