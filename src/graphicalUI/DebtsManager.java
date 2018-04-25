@@ -124,7 +124,7 @@ public class DebtsManager {
 		JFXButton confirmReturnBtn = new JFXButton("Confirm return");
 		JFXPopup popup = new JFXPopup();
 		outstandingBtn.setOnAction(event1 -> {
-			//api.makeOutstandingRequest();
+			api.makeOutstandingRequest(selected.userID, selected.docID);
 			popup.hide();
 		});
 		confirmReturnBtn.setOnAction(event1 -> {

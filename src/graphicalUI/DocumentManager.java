@@ -613,7 +613,7 @@ public class DocumentManager {
 			api.editDocument(selected.id, "publisher", publisherField.getText());
 			api.editDocument(selected.id, "issue", issueField.getText());
 			api.editDocument(selected.id, "editor", editorField.getText());
-			//api.editDocument(selected.id, "publication_date", dateField.getValue());
+			//api.editDocument(selected.debtID, "publication_date", dateField.getValue());
 			initDocTable();
 			editArticleDialog.close();
 		});

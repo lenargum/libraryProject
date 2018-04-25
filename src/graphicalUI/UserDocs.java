@@ -120,7 +120,16 @@ public class UserDocs {
 	 */
 	private void onDocsTableClicked(MouseEvent event) {
 		MyDocsView selected = myDocsTable.getSelectionModel().getSelectedItem().getValue();
-		DocumentPopup popup = new DocumentPopup(selected.docTitle.getValue(), "Author", selected.id);
+		DocumentPopup popup = new DocumentPopup(selected.docTitle.getValue(), "Author", selected.debtID);
+		popup.setOnRenewAction(event1 -> {
+			api.makeRenewRequest(selected.debtID);
+			popup.hide();
+		});
+		popup.setOnReturnAction(event1 -> {
+			JFXSnackbar snackbar = new JFXSnackbar(layout);
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("To return book, please go to your company's library"));
+			popup.hide();
+		});
 		popup.show(myDocsTable, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());
 	}
 
@@ -152,12 +161,12 @@ public class UserDocs {
 	 * User documents table cell.
 	 */
 	public static class MyDocsView extends RecursiveTreeObject<MyDocsView> {
-		int id;
+		int debtID;
 		StringProperty docTitle;
 		IntegerProperty daysLeft;
 
-		public MyDocsView(String docTitle, Integer daysLeft, int id) {
-			this.id = id;
+		public MyDocsView(String docTitle, Integer daysLeft, int debtID) {
+			this.debtID = debtID;
 			this.docTitle = new SimpleStringProperty(docTitle);
 			this.daysLeft = new SimpleIntegerProperty(daysLeft);
 		}
