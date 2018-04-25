@@ -1177,6 +1177,7 @@ public class Database {
 			this.execute("DELETE FROM debts");
 			this.execute("DELETE FROM requests");
 			this.execute("DELETE FROM notifications");
+			this.execute("DELETE FROM logs");
 			System.out.println("tools.Database: Records cleared.");
 
 			this.execute("UPDATE sqlite_sequence SET seq=0");
@@ -1785,7 +1786,7 @@ public class Database {
 		try {
 			String time = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date());
 			//language=SQLite
-			executeUpdate("INSERT INTO log (log) VALUES (\'[" + time + "]: " + log + "\')");
+			executeUpdate("INSERT INTO log (log_content) VALUES (\'[" + time + "]: " + log + "\')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
