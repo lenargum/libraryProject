@@ -1783,7 +1783,7 @@ public class Database {
 	 */
 	public void log(String log) {
 		try {
-			String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
+			String time = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date());
 			//language=SQLite
 			executeUpdate("INSERT INTO log (log) VALUES (\'[" + time + "]: " + log + "\')");
 		} catch (SQLException e) {
