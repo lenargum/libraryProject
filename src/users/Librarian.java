@@ -90,7 +90,7 @@ public class Librarian extends User {
 	 */
 	public void addBook(Book book, Database database) {
 		this.modifyLibrary.addBook(this.getId(), book, database);
-		database.log("Librarian "+this.getId()+"id has added Book "+book.getAuthors()+" \""+book.getTitle()+"\".");
+		database.log("Librarian " + this.getId() + "id has added Book " + book.getAuthors() + " \"" + book.getTitle() + "\".");
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class Librarian extends User {
 	 */
 	public void addAV(AudioVideoMaterial AV, Database database) {
 		this.modifyLibrary.addAV(this.getId(), AV, database);
-		database.log("Librarian "+this.getId()+"id has added AV "+AV.getAuthors()+" \""+AV.getTitle()+"\".");
+		database.log("Librarian " + this.getId() + "id has added AV " + AV.getAuthors() + " \"" + AV.getTitle() + "\".");
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class Librarian extends User {
 	 */
 	public void addArticle(JournalArticle journalArticle, Database database) {
 		this.modifyLibrary.addArticle(this.getId(), journalArticle, database);
-		database.log("Librarian "+this.getId()+"id has added Article "+journalArticle.getAuthors()+" \""+journalArticle.getTitle()+"\".");
+		database.log("Librarian " + this.getId() + "id has added Article " + journalArticle.getAuthors() + " \"" + journalArticle.getTitle() + "\".");
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class Librarian extends User {
 	 */
 	public void registerPatron(Patron patron, Database database) {
 		this.modifyLibrary.registerPatron(this.getId(), patron, database);
-		database.log("Librarian "+this.getId()+"id has registered Patron "+patron.getId()+"id.");
+		database.log("Librarian " + this.getId() + "id has registered Patron " + patron.getId() + "id.");
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Librarian extends User {
 	 */
 	public void deleteDocument(int idDocument, Database database) {
 		this.modifyLibrary.deleteDocument(this.getId(), idDocument, database);
-		database.log("Librarian "+this.getId()+"id has deleted Document "+idDocument+"id.");
+		database.log("Librarian " + this.getId() + "id has deleted Document " + idDocument + "id.");
 
 	}
 
@@ -146,7 +146,7 @@ public class Librarian extends User {
 	 */
 	public void deletePatron(int idPatron, Database database) {
 		this.modifyLibrary.deletePatron(this.getId(), idPatron, database);
-		database.log("Librarian "+this.getId()+"id has deleted Patron "+idPatron+"id.");
+		database.log("Librarian " + this.getId() + "id has deleted Patron " + idPatron + "id.");
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class Librarian extends User {
 	 */
 	public void modifyDocumentPrice(int idDocument, Database database, double price) {
 		this.modify.modifyDocumentPrice(this.getId(), idDocument, database, price);
-		database.log("Librarian "+this.getId()+"id has edited Price to " +price+" of Document "+idDocument+"id.");
+		database.log("Librarian " + this.getId() + "id has edited Price to " + price + " of Document " + idDocument + "id.");
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class Librarian extends User {
 	 */
 	public void modifyBookEdition(int idBook, Database database, int edition) {
 		this.modify.modifyBookEdition(this.getId(), idBook, database, edition);
-		database.log("Librarian "+this.getId()+"id has edited Edition to " +edition+" of Book "+idBook+"id.");
+		database.log("Librarian " + this.getId() + "id has edited Edition to " + edition + " of Book " + idBook + "id.");
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class Librarian extends User {
 	 */
 	public void modifyDocumentAllowance(int idDocument, Database database, boolean isAllowedForStudents) {
 		this.modify.modifyDocumentAllowance(this.getId(), idDocument, database, isAllowedForStudents);
-		database.log("Librarian "+this.getId()+"id has edited Allowance to " +isAllowedForStudents+" of Document "+idDocument+"id.");
+		database.log("Librarian " + this.getId() + "id has edited Allowance to " + isAllowedForStudents + " of Document " + idDocument + "id.");
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class Librarian extends User {
 	 */
 	public void modifyDocumentCopies(int idDocument, Database database, int countOfCopies) {
 		this.modify.modifyDocumentCopies(this.getId(), idDocument, database, countOfCopies);
-		database.log("Librarian "+this.getId()+"id has edited number_of_copies to " +countOfCopies+" of Document "+idDocument+"id.");
+		database.log("Librarian " + this.getId() + "id has edited number of copies to " + countOfCopies + " of Document " + idDocument + "id.");
 	}
 
 	/**
@@ -206,6 +206,19 @@ public class Librarian extends User {
 	 */
 	public void modifyBookBestseller(int idBook, Database database, boolean bestseller) {
 		this.modify.modifyBookBestseller(this.getId(), idBook, database, bestseller);
+		database.log("Librarian " + this.getId() + "id has edited isBestSeller to " + bestseller + " of Book " + idBook + "id.");
+	}
+
+	/**
+	 * Modify the last name of patron stored in database.
+	 *
+	 * @param idPatron ID of patron which is going to be modified.
+	 * @param database tools.Database that stores the information.
+	 * @param name     New Name.
+	 */
+	public void modifyPatronName(int idPatron, Database database, String name) {
+		this.modify.modifyPatronName(this.getId(), idPatron, database, name);
+		database.log("Librarian " + this.getId() + "id has edited Name to " + name + " of Patron " + idPatron + "id.");
 	}
 
 	/**
@@ -217,6 +230,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronSurname(int idPatron, Database database, String surname) {
 		this.modify.modifyPatronSurname(this.getId(), idPatron, database, surname);
+		database.log("Librarian " + this.getId() + "id has edited Surname to " + surname + " of Patron " + idPatron + "id.");
 	}
 
 	/**
@@ -228,6 +242,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronAddress(int idPatron, Database database, String address) {
 		this.modify.modifyPatronAddress(this.getId(), idPatron, database, address);
+		database.log("Librarian " + this.getId() + "id has edited Address to " + address + " of Patron " + idPatron + "id.");
 	}
 
 	/**
@@ -239,6 +254,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronPhoneNumber(int idPatron, Database database, String phoneNumber) {
 		this.modify.modifyPatronPhoneNumber(this.getId(), idPatron, database, phoneNumber);
+		database.log("Librarian " + this.getId() + "id has edited PhoneNumber to " + phoneNumber + " of Patron " + idPatron + "id.");
 	}
 
 	/**
@@ -251,6 +267,7 @@ public class Librarian extends User {
 	 */
 	public void modifyPatronStatus(int idPatron, Database database, String status) {
 		this.modify.modifyPatronStatus(this.getId(), idPatron, database, status);
+		database.log("Librarian " + this.getId() + "id has edited Status to " + status + " of Patron " + idPatron + "id.");
 	}
 
 	/**
@@ -286,6 +303,7 @@ public class Librarian extends User {
 	 */
 	public void confirmReturn(int debtID, Database database) {
 		this.returningSystem.confirmReturn(debtID, database);
+		database.log("Librarian " + this.getId() + "id has confirmed return of Debt " + debtID + "id.");
 	}
 
 	/**
@@ -296,6 +314,7 @@ public class Librarian extends User {
 	 */
 	public void confirmRenew(Request request, Database database) {
 		this.returningSystem.confirmRenew(request, database);
+		database.log("Librarian " + this.getId() + "id has confirmed renew of Request " + request.getRequestId() + "id.");
 	}
 
 
@@ -317,6 +336,7 @@ public class Librarian extends User {
 	 */
 	public void submitRequest(Request request, Database database) {
 		this.bookingSystem.submitRequest(request, database);
+		database.log("Librarian " + this.getId() + "id has submitted Request " + request.getRequestId() + "id.");
 	}
 
 	/**
@@ -327,14 +347,17 @@ public class Librarian extends User {
 	 */
 	public void deleteRequest(Request request, Database database) {
 		this.bookingSystem.deleteRequest(request, database);
+		database.log("Librarian " + this.getId() + "id has deleted Request " + request.getRequestId() + "id.");
 	}
 
 	public void makeOutstandingRequest(Request request, Database database) {
 		this.outstandingRequest.makeOutstandingRequest(this.getId(), request, database);
+		database.log("Librarian " + this.getId() + "id has made outstanding Request " + request.getRequestId() + "id.");
 	}
 
 	public void setAvailability(int docID, Database database) {
 		this.outstandingRequest.setAvailability(docID, database);
+		database.log("Librarian " + this.getId() + "id has set availability of Document " + docID + "id.");
 	}
 
 }

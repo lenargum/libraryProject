@@ -16,8 +16,6 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getDocument(idDocument).setPrice(price);
 			database.editDocumentColumn(idDocument, "price", Double.toString(price));
-		} else {
-			//TODO: Log
 		}
 	}
 
@@ -33,8 +31,6 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getBook(idBook).setEdition(edition);
 			database.editDocumentColumn(idBook, "edition", Integer.toString(edition));
-		} else {
-			//TODO: Log
 		}
 	}
 
@@ -50,8 +46,6 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getDocument(idDocument).setAllowedForStudents(isAllowedForStudents);
 			database.editDocumentColumn(idDocument, "is_allowed_for_students", Boolean.toString(isAllowedForStudents));
-		} else {
-			//TODO: Log
 		}
 	}
 
@@ -66,8 +60,6 @@ public class Modify {
 		if (Logic.canAdd(librarianId, database)) {
 			database.getDocument(idDocument).setNumberOfCopies(countOfCopies);
 			database.editDocumentColumn(idDocument, "num_of_copies", Integer.toString(countOfCopies));
-		} else {
-			//TODO: Log
 		}
 	}
 
@@ -82,8 +74,20 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getBook(idBook).setBestseller(bestseller);
 			database.editDocumentColumn(idBook, "bestseller", Boolean.toString(bestseller));
-		} else {
-			//TODO: Log
+		}
+	}
+
+	/**
+	 * Modify the last name of patron stored in database.
+	 *
+	 * @param idPatron ID of patron which is going to be modified.
+	 * @param database tools.Database that stores the information.
+	 * @param name  New name.
+	 */
+	public void modifyPatronName(int librarianId, int idPatron, Database database, String name) {
+		if (Logic.canModify(librarianId, database)) {
+			database.getPatron(idPatron).setName(name);
+			database.editUserColumn(idPatron, "name", name);
 		}
 	}
 
@@ -98,10 +102,7 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getPatron(idPatron).setSurname(surname);
 			database.editUserColumn(idPatron, "lastname", surname);
-		} else {
-			//TODO: Log
 		}
-
 	}
 
 	/**
@@ -115,8 +116,6 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getPatron(idPatron).setAddress(address);
 			database.editUserColumn(idPatron, "address", address);
-		} else {
-			//TODO: Log
 		}
 	}
 
@@ -131,8 +130,6 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getPatron(idPatron).setPhoneNumber(phoneNumber);
 			database.editUserColumn(idPatron, "phone", phoneNumber);
-		} else {
-			//TODO: Log
 		}
 	}
 
@@ -148,8 +145,6 @@ public class Modify {
 		if (Logic.canModify(librarianId, database)) {
 			database.getPatron(idPatron).setStatus(status);
 			database.editDocumentColumn(idPatron, "status", status);
-		} else {
-			//TODO: Log
 		}
 	}
 }

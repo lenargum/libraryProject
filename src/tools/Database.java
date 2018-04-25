@@ -1177,7 +1177,7 @@ public class Database {
 			this.execute("DELETE FROM debts");
 			this.execute("DELETE FROM requests");
 			this.execute("DELETE FROM notifications");
-			this.execute("DELETE FROM logs");
+			this.execute("DELETE FROM log");
 			System.out.println("tools.Database: Records cleared.");
 
 			this.execute("UPDATE sqlite_sequence SET seq=0");
@@ -1803,7 +1803,7 @@ public class Database {
 			//language=SQLite
 			ResultSet temp = executeQuery("SELECT * FROM log");
 			while (temp.next()) {
-				logs.add(temp.getString(0));
+				logs.add(temp.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
