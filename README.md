@@ -34,15 +34,17 @@ The compiled application will be stored in `/app` directory.
 ## Using
 To use application you need to authorize first.
 Please use one of these credentials:
-| Login      | Password     |
-|------------|--------------|
-| `patron1`  | `patpass`    |
-| `patron2`  | `patpass`    |
-| `patron3`  | `patpass`    |
-| `patron4`  | `patpass`    |
-| `patron5`  | `patpass`    |
-| `librarian`| `lib-pass`   |
-| `admin`    | `admin-pass` |
+| Login     | Password   |
+|-----------|------------|
+| `login`   | `password` |
+| `patron1` | `patpass`  |
+| `patron2` | `patpass`  |
+| `patron3` | `patpass`  |
+| `patron4` | `patpass`  |
+| `patron5` | `patpass`  |
+| `loglib1` | `passlib1` |
+| `loglib2` | `passlib2` |
+| `loglib3` | `passlib3` |
 These users are being added to database after running tests.
 
 ## Testing
