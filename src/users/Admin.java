@@ -53,6 +53,12 @@ public class Admin extends User {
 
 	}
 
+	public void setBasicPrivilegeLibrarian(Librarian librarian, Database database) {
+		this.modify.setBasicPrivilegeLibrarian(librarian, database);
+		database.log("ADMIN has edited Privilege to level \"Basic\" of Librarian "+librarian.getId()+"id");
+
+	}
+
 	public void setDeletePrivilegeLibrarian(Librarian librarian, Database database) {
 		this.modify.setDeletePrivilegeLibrarian(librarian, database);
 		database.log("ADMIN has edited Privilege to level \"Delete\" of Librarian "+librarian.getId()+"id");
