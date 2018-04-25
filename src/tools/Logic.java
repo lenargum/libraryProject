@@ -31,7 +31,7 @@ public class Logic {
 		try {
 			Patron patron = database.getPatron(patronId);
 			Document doc = database.getDocument(idDocument);
-			if(doc.isUnderTheOutstandingRequest()){
+			if(doc.isUnderOutstandingRequest()){
 				System.out.println("document is under the outstanding request");
 				return false;
 			}
@@ -92,7 +92,7 @@ public class Logic {
 	 */
 	public static boolean canRenewDocument(int documentId, int patronId, Database database) {
 		Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
-		if(database.getDocument(debt.getDocumentId()).isUnderTheOutstandingRequest()){
+		if(database.getDocument(debt.getDocumentId()).isUnderOutstandingRequest()){
 			return false;
 		}
 		if (debt.canRenew()) return true;
