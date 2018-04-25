@@ -457,6 +457,20 @@ public class CoreAPI {
 	}
 
 	/**
+	 * Get list of logs.
+	 *
+	 * @return List of logs.
+	 */
+	ObservableList<String> getLogs() {
+		ObservableList<String> logs = FXCollections.observableArrayList();
+		db.connect();
+		logs.addAll(db.getLog());
+		db.close();
+
+		return logs;
+	}
+
+	/**
 	 * Check whether current user can take document.
 	 *
 	 * @param docID Document ID.

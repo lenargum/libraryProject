@@ -24,6 +24,7 @@ public class ControlPanel {
 	private DebtsManager debtsManager;
 	private UserManager userManager;
 	private DocumentManager documentManager;
+	private LogsView logsView;
 
 	// FXML bindings
 	@FXML
@@ -75,6 +76,7 @@ public class ControlPanel {
 		debtsManager = new DebtsManager(stage, scene, api);
 		userManager = new UserManager(stage, scene, api);
 		documentManager = new DocumentManager(stage, scene, api);
+		logsView = new LogsView(stage, scene, api);
 
 		takeApprovalBtn.setOnAction(event -> takeApproval.show());
 		renewApprovalBtn.setOnAction(event -> renewApproval.show());
@@ -83,8 +85,7 @@ public class ControlPanel {
 		manageDocsBtn.setOnAction(event -> documentManager.show());
 
 		if (api.getUser() instanceof Admin) {
-			viewLogsBtn.setOnAction(event -> {
-			});
+			viewLogsBtn.setOnAction(event -> logsView.show());
 			viewLogsBtn.setVisible(true);
 			viewLogsBtn.setDisable(false);
 			logsLabel.setVisible(true);
