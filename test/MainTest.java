@@ -23,7 +23,7 @@ class MainTest {
 	void initialState() {
 		database.connect();
 		database.clear();
-		admin = new Admin("admin", "admin-pass", "Ledina", "Minakirova", "12334567788", "Imaginarium");
+		admin = new Admin("admin", "admin-pass", "Ruslan", "Gumerov", "12334567788", "Imaginarium");
 		librarian = new Librarian("librarian", "lib-pass", "Maria", "Nikolaeva", "81234567890", "Universitetskaya street, 1");
 		d1 = new Book("Introduction to Algorithms", "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein", true, 3, false, 5000, "algorithms, programming", "MIT Press", 3, false);
 		d2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm", true, 3, false, 1700, "OOP, programming", "Addison-Wesley Professional", 1, false);
