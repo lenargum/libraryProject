@@ -10,9 +10,9 @@ import java.util.List;
 public class OutstandingRequest {
 	public void makeOutstandingRequest(int librarianId, Request request, Database database) {
 		if (Logic.canSetRequest(librarianId, database)) {
-			database.deleteRequestsForDocument(request.getIdDocument());
 			database.log("Librarian " + librarianId + "id has made outstanding Request " + request.getRequestId() + "id.");
 			sendNotificationsForOutstandingRequest(request, database);
+			database.deleteRequestsForDocument(request.getIdDocument());
 		}
 	}
 
