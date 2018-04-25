@@ -159,6 +159,9 @@ class TestSuite4 {
 		s.makeRequest(b3.getID(), database);
 		v.makeRequest(b3.getID(), database);
 
+		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()),database);
+		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()),database);
+
 		l1.makeOutstandingRequest(database.getRequest(p1.getId(), b3.getID()), database);
 
 		assertEquals(0, database.getNotificationsList().size());

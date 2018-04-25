@@ -1558,6 +1558,7 @@ public class Database {
 	public void deleteRequestsForDocument(int documentId) {
 		try {
 			executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
+			log("Waiting list for Document "+documentId+"id deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
