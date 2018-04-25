@@ -203,7 +203,7 @@ public abstract class User {
 	 * @see java.util.List
 	 * @see ArrayList
 	 */
-	public ArrayList<String> getLibrary(Database database) throws SQLException {
+	public ArrayList<String> getLibrary(Database database)  {
 		return database.getDocumentStringList();
 	}
 
