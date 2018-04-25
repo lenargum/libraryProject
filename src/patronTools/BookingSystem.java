@@ -135,7 +135,7 @@ public class BookingSystem {
 			debt.setExpireDate(expDate);
 			database.editDebtColumn(debt.getDebtId(), "expire_date",
 					(new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()));
-
+            database.log("Patron with id " + patron.getId() + " has renewed document with id " + docID + ".");
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id");
 		}
@@ -155,6 +155,7 @@ public class BookingSystem {
 			Date date = new Date();
 			Request request = new Request(patron, doc, date, true);
 			database.insertRequest(request);
+			database.log("Patron with id " + patron.getId() + " has tried to renew document with id " + debt.getDocumentId() + ".");
 		}
 
 	}
