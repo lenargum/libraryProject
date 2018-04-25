@@ -93,6 +93,7 @@ public class UserPage {
 			System.out.print("Loading document selector in parallel thread:\n\t");
 			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
 		});
+		initSelector.setDaemon(true);
 		initSelector.start();
 
 		initialize();
