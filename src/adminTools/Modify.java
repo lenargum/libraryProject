@@ -40,8 +40,15 @@ public class Modify {
 	}
 
 	public void setDeletePrivilegeLibrarian(Librarian librarian, Database database) {
+
 		librarian.setPrivilege(Constants.deletePrivilege);
 		editPrivilegeLibrarian(librarian, Constants.deletePrivilege, database);
+
+	}
+
+	public void setBasicPrivilegeLibrarian(Librarian librarian, Database database) {
+		librarian.setPrivilege(Constants.deletePrivilege);
+		editPrivilegeLibrarian(librarian, Constants.basicPrivilege, database);
 
 	}
 
