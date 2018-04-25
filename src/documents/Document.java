@@ -316,15 +316,13 @@ public class Document {
 		this.Price = price;
 	}
 
-	public void setUnderOutstandingRequest(boolean isUnderOutstandingRequest){
-		this.isUnderOutstandingRequest = isUnderOutstandingRequest;
-	}
-
 	public boolean isUnderOutstandingRequest() {
 		return isUnderOutstandingRequest;
 	}
 
-
+	public void setUnderOutstandingRequest(boolean isUnderOutstandingRequest) {
+		this.isUnderOutstandingRequest = isUnderOutstandingRequest;
+	}
 
 	/**
 	 * Compare two documents.

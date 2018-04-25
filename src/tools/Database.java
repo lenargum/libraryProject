@@ -164,7 +164,7 @@ public class Database {
 				" VALUES('" + name + "','" + authors + "','" + isAllowedForStudents + "',"
 				+ numOfCopies + ",'" + isReference + "'," + price + ",'" + keywords + "','" + type + "','"
 				+ publisher + "'," + edition + ",'" + bestseller + "','" + journalName + "','" + issue + "','"
-				+ editor + "','" + publicationDate + "','"+isUnderOutstandingRequest+"')");
+				+ editor + "','" + publicationDate + "','" + isUnderOutstandingRequest + "')");
 
 	}
 
@@ -247,7 +247,7 @@ public class Database {
 					article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
 					"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 					article.getIssue(), article.getEditor(),
-					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()),article.isUnderOutstandingRequest());
+					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()), article.isUnderOutstandingRequest());
 			article.setID(this.getDocumentID(article));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
@@ -1568,7 +1568,7 @@ public class Database {
 	public void deleteRequestsForDocument(int documentId) {
 		try {
 			executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
-			log("Waiting list for Document "+documentId+"id deleted.");
+			log("Waiting list for Document " + documentId + "id deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1577,7 +1577,7 @@ public class Database {
 	/**
 	 * Method for inserting Notification into database.
 	 *
-	 * @param documentId   Request's ID.
+	 * @param documentId  Request's ID.
 	 * @param userId      User's ID.
 	 * @param description Description of Notification.
 	 * @param date        Date of Notification.

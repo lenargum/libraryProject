@@ -1,7 +1,6 @@
 package tools;
 
 import documents.Document;
-import sun.awt.geom.AreaOp;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,9 +41,9 @@ public class OutstandingRequest {
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
 		Document doc = db.getDocument(request.getIdDocument());
-		for(Debt temp: debts){
+		for (Debt temp : debts) {
 			db.insertNotification(temp.getDocumentId(), temp.getPatronId(),
-					"You need to return "  + doc.getTitle() + " because of outstanding request placed on it.", new Date());
+					"You need to return " + doc.getTitle() + " because of outstanding request placed on it.", new Date());
 
 			db.log("Notification of need to return document " + doc.getID() + "id for User " + temp.getPatronId() + "id has been sent");
 		}

@@ -1,12 +1,7 @@
 package adminTools;
 
 import tools.Database;
-import tools.Logic;
-import tools.OutstandingRequest;
-import tools.Request;
 import users.Librarian;
-
-import java.util.List;
 
 public class ModifyLibrary {
 	public void addLibrarian(Librarian librarian, Database database) {

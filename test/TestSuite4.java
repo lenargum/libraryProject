@@ -159,8 +159,8 @@ class TestSuite4 {
 		s.makeRequest(b3.getID(), database);
 		v.makeRequest(b3.getID(), database);
 
-		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()),database);
-		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()),database);
+		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()), database);
+		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()), database);
 
 		l1.makeOutstandingRequest(database.getRequest(p3.getId(), b3.getID()), database);
 
@@ -182,8 +182,8 @@ class TestSuite4 {
 		s.makeRequest(b3.getID(), database);
 		v.makeRequest(b3.getID(), database);
 
-		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()),database);
-		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()),database);
+		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()), database);
+		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()), database);
 
 		l3.makeOutstandingRequest(database.getRequest(p3.getId(), b3.getID()), database);
 
@@ -198,7 +198,7 @@ class TestSuite4 {
 		testCase06();
 		database.connect();
 
-		for(String i: database.getLog()){
+		for (String i : database.getLog()) {
 			System.out.println(i);
 		}
 
@@ -210,7 +210,7 @@ class TestSuite4 {
 		testCase07();
 		database.connect();
 
-		for(String i: database.getLog()){
+		for (String i : database.getLog()) {
 			System.out.println(i);
 		}
 

@@ -31,7 +31,7 @@ public class Logic {
 		try {
 			Patron patron = database.getPatron(patronId);
 			Document doc = database.getDocument(idDocument);
-			if(doc.isUnderOutstandingRequest()){
+			if (doc.isUnderOutstandingRequest()) {
 				System.out.println("document is under the outstanding request");
 				return false;
 			}
@@ -92,7 +92,7 @@ public class Logic {
 	 */
 	public static boolean canRenewDocument(int documentId, int patronId, Database database) {
 		Debt debt = database.getDebt(database.findDebtID(patronId, documentId));
-		if(database.getDocument(debt.getDocumentId()).isUnderOutstandingRequest()){
+		if (database.getDocument(debt.getDocumentId()).isUnderOutstandingRequest()) {
 			return false;
 		}
 		if (debt.canRenew() || database.getPatron(patronId) instanceof VisitingProfessor) return true;
@@ -200,9 +200,10 @@ public class Logic {
 	private static Date dateForBooks(int patronId, int bookId, Database database) {
 		Book book = database.getBook(bookId);
 		Patron patron = database.getPatron(patronId);
-		Date date;if (patron instanceof VisitingProfessor) {
-			date = Constants.setWeek();}
-		else if (patron instanceof Student) {
+		Date date;
+		if (patron instanceof VisitingProfessor) {
+			date = Constants.setWeek();
+		} else if (patron instanceof Student) {
 			if (book.isBestseller()) date = Constants.setTwoWeeks();
 			else date = Constants.setThreeWeeks();
 

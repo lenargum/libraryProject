@@ -91,7 +91,7 @@ public class Modify {
 	 *
 	 * @param idPatron ID of patron which is going to be modified.
 	 * @param database tools.Database that stores the information.
-	 * @param name  New name.
+	 * @param name     New name.
 	 */
 	public void modifyPatronName(int librarianId, int idPatron, Database database, String name) {
 		if (Logic.canModify(librarianId, database)) {
