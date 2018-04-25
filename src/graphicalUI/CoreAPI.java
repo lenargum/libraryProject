@@ -432,13 +432,35 @@ public class CoreAPI {
 	/**
 	 * Make outstanding request.
 	 *
-	 * @param requestID Request ID.
+	 * @param patronID   Patron's ID.
+	 * @param documentID Document ID.
 	 */
-	void makeOutstandingRequest(int requestID) {
-		db.connect();
-		Request request = db.getRequest(requestID);
-		((Librarian) user).makeOutstandingRequest(request, db);
-		db.close();
+	void makeOutstandingRequest(int patronID, int documentID) {
+		if (user instanceof Librarian) {
+			db.connect();
+			Patron patron = db.getPatron(patronID);
+			Document document = db.getDocument(documentID);
+			Request request = new Request(patron, document, new Date(), false);
+			((Librarian) user).makeOutstandingRequest(request, db);
+			db.close();
+		}
+	}
+
+	void makeOutstandingRequest(int requestID){
+		if (user instanceof Librarian){
+			db.connect();
+			Request request = db.getRequest(requestID);
+			((Librarian) user).makeOutstandingRequest(request, db);
+			db.close();
+		}
+	}
+
+	void confirmReturn(int debtID) {
+		if (user instanceof Librarian) {
+			db.connect();
+			((Librarian) user).confirmReturn(debtID, db);
+			db.close();
+		}
 	}
 
 	/**

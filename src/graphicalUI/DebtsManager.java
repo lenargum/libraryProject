@@ -120,20 +120,20 @@ public class DebtsManager {
 			return;
 		}
 		int selectedIndex = debtsTable.getSelectionModel().getSelectedIndex();
-		JFXButton outstanding = new JFXButton("Outstanding request");
-		JFXButton delete = new JFXButton("Delete");
+		JFXButton outstandingBtn = new JFXButton("Outstanding request");
+		JFXButton confirmReturnBtn = new JFXButton("Confirm return");
 		JFXPopup popup = new JFXPopup();
-		outstanding.setOnAction(event1 -> {
+		outstandingBtn.setOnAction(event1 -> {
 			//api.makeOutstandingRequest();
 			popup.hide();
 		});
-		delete.setOnAction(event1 -> {
-
+		confirmReturnBtn.setOnAction(event1 -> {
+			api.confirmReturn(selected.debtID.get());
 			popup.hide();
 		});
 
 		VBox container = new VBox();
-		container.getChildren().addAll(outstanding, delete);
+		container.getChildren().addAll(outstandingBtn, confirmReturnBtn);
 		container.setPadding(new Insets(5));
 		popup.setPopupContent(container);
 		popup.show(debtsTable, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());
