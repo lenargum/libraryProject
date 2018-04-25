@@ -11,6 +11,7 @@ public class OutstandingRequest {
 		if (Logic.canSetRequest(librarianId, database)) {
 			sendNotificationsForOutstandingRequest(request, database);
 			database.deleteRequestsForDocument(request.getIdDocument());
+			database.log(Constants.placeOutstandingRequestMessage(database.getLibrarian(librarianId), database.getDocument(request.getIdDocument())));
 		} else {
 
 		}
@@ -35,12 +36,14 @@ public class OutstandingRequest {
 			Document doc = db.getDocument(request.getIdDocument());
 			db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
 					"Outstanding request for " + doc.getTitle(), new Date());
+			db.log(Constants.patronNotifiedMessage(db.getPatron(temp.getIdPatron()), "Outstanding request for " + doc.getTitle()));
 			//}
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
 		Document doc = db.getDocument(request.getIdDocument());
 		for (Debt temp : debts) {
 			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Outstanding request for " + doc.getTitle(), new Date());
+			db.log(Constants.patronNotifiedMessage(db.getPatron(temp.getPatronId()), "Outstanding request for " + doc.getTitle()));
 		}
 	}
 
@@ -51,6 +54,7 @@ public class OutstandingRequest {
 		while (i < database.getDocument(docId).getNumberOfCopies()) {
 			Request temp = requests.get(i);
 			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "Set available document", new Date());
+			database.log(Constants.patronNotifiedMessage(database.getPatron(temp.getIdPatron() ), "Set available document " + temp.getIdDocument()));
 			i++;
 		}
 	}
@@ -62,6 +66,7 @@ public class OutstandingRequest {
 		while (i < n) {
 			Request temp = requests.get(i);
 			database.insertNotification(temp.getRequestId(), temp.getIdPatron(), "This document is deleted", new Date());
+			database.log(Constants.patronNotifiedMessage(database.getPatron(temp.getIdPatron() ), "This document is deleted " + temp.getIdDocument()));
 		}
 	}
 

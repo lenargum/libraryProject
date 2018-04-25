@@ -67,6 +67,10 @@ public class Constants {
 		return patron.getStatus() + " " + patron.getSurname() + " renewed " + doc.getType() + " " + doc.getTitle();
 	}
 
+	public static String patronNotifiedMessage(Patron patron, String mes){
+		return "Notification '" + mes + "' was sent to " + patron.getStatus() + " " + patron.getSurname();
+	}
+
 	public static Date setWeek() {
 		Date date = new Date();
 		date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
