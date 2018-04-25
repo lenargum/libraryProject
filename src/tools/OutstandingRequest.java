@@ -1,6 +1,7 @@
 package tools;
 
 import documents.Document;
+import sun.awt.geom.AreaOp;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +42,7 @@ public class OutstandingRequest {
 		Document doc = db.getDocument(request.getIdDocument());
 		for (Debt temp : debts) {
 			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Outstanding request for " + doc.getTitle(), new Date());
+			db.log(Constants.patronNotifiedMessage(db.getPatron(temp.getPatronId()), "Outstanding request " + doc.getTitle()));
 		}
 	}
 
@@ -68,6 +70,7 @@ public class OutstandingRequest {
 		Document doc = db.getDocument(request.getIdDocument());
 		for (Debt temp : debts) {
 			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Delete document " + doc.getTitle(), new Date());
+
 		}
 	}
 
