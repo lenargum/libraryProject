@@ -3,7 +3,6 @@ package tools;
 import documents.Document;
 import users.Patron;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

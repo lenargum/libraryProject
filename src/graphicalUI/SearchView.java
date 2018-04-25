@@ -129,6 +129,8 @@ public class SearchView implements Initializable {
 			bookThisBtn.setOnAction(event1 -> {
 				api.bookOrRequest(picked.getDocId());
 				bookThisBtn.setDisable(true);
+				JFXSnackbar snackbar = new JFXSnackbar(layout);
+				snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Document requested"));
 			});
 
 			detailsDrawer.setSidePane(detailsLayout);

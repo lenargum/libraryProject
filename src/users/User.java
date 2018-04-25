@@ -204,7 +204,7 @@ public abstract class User {
 	 * @see ArrayList
 	 */
 	public ArrayList<String> getLibrary(Database database) {
-		database.log("User "+this.getId()+"id checked the Library");
+		database.log("User " + this.getId() + "id checked the Library");
 		return database.getDocumentStringList();
 	}
 

@@ -15,7 +15,7 @@ public class Admin extends User {
 	}
 
 	public void addLibrarian(Librarian librarian, Database database) {
-		this.modifyLibrary.addLibrarian(librarian,database);
+		this.modifyLibrary.addLibrarian(librarian, database);
 	}
 
 	public void editLibrarianName(int idLibrarian, String newName, Database database) {

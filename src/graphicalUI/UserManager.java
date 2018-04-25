@@ -32,6 +32,7 @@ public class UserManager {
 	private Stage stage;
 	private Scene scene;
 	private StackPane layout;
+	private JFXSnackbar snackbar;
 	@FXML
 	private JFXButton goBackBtn;
 	@FXML
@@ -77,6 +78,8 @@ public class UserManager {
 
 		usersTable = (JFXTreeTableView<UserCell>) layout.lookup("#usersTable");
 		initUserTable();
+
+		snackbar = new JFXSnackbar(layout);
 	}
 
 	/**
@@ -224,6 +227,9 @@ public class UserManager {
 			usersTable.getRoot().getChildren().add(newCell);
 
 			addUserDialog.close();
+
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Registered "
+					+ nameField.getText() + " " + surnameField.getText()));
 		});
 
 		addUserDialog.setContent(container);
@@ -360,12 +366,18 @@ public class UserManager {
 
 			initUserTable();
 			editUserDialog.close();
+
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Saved "
+					+ nameField.getText() + " " + surnameField.getText()));
 		});
 
 		deleteBtn.setOnAction(event -> {
 			api.deleteUser(selected.id);
 			initUserTable();
 			editUserDialog.close();
+
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Deleted "
+					+ nameField.getText() + " " + surnameField.getText()));
 		});
 
 		editUserDialog.setContent(container);

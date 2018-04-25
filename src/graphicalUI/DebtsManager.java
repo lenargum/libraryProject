@@ -30,6 +30,7 @@ public class DebtsManager {
 	private AnchorPane layout;
 	private Stage stage;
 	private Scene scene;
+	private JFXSnackbar snackbar;
 	@FXML
 	private JFXButton goBackBtn;
 	@FXML
@@ -66,6 +67,8 @@ public class DebtsManager {
 
 		debtsTable = (JFXTreeTableView<DebtCell>) layout.lookup("#debtsTable");
 		initDebtsList();
+
+		snackbar = new JFXSnackbar(layout);
 	}
 
 	/**
@@ -119,21 +122,24 @@ public class DebtsManager {
 		} catch (NullPointerException e) {
 			return;
 		}
-		int selectedIndex = debtsTable.getSelectionModel().getSelectedIndex();
-		JFXButton outstanding = new JFXButton("Outstanding request");
-		JFXButton delete = new JFXButton("Delete");
+		JFXButton outstandingBtn = new JFXButton("Outstanding request");
+		JFXButton confirmReturnBtn = new JFXButton("Confirm return");
 		JFXPopup popup = new JFXPopup();
-		outstanding.setOnAction(event1 -> {
-			//api.makeOutstandingRequest();
+		outstandingBtn.setOnAction(event1 -> {
+			api.makeOutstandingRequest(selected.userID, selected.docID);
 			popup.hide();
+			initDebtsList();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Outstanding request sent"));
 		});
-		delete.setOnAction(event1 -> {
-
+		confirmReturnBtn.setOnAction(event1 -> {
+			api.confirmReturn(selected.debtID.get());
 			popup.hide();
+			initDebtsList();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Return confirmed"));
 		});
 
 		VBox container = new VBox();
-		container.getChildren().addAll(outstanding, delete);
+		container.getChildren().addAll(outstandingBtn, confirmReturnBtn);
 		container.setPadding(new Insets(5));
 		popup.setPopupContent(container);
 		popup.show(debtsTable, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, event.getX() - 600, event.getY());

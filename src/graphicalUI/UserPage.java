@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import tools.Notification;
 import users.Admin;
 import users.Librarian;
+import users.Patron;
 
 import java.io.IOException;
 
@@ -92,6 +93,7 @@ public class UserPage {
 			System.out.print("Loading document selector in parallel thread:\n\t");
 			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
 		});
+		initSelector.setDaemon(true);
 		initSelector.start();
 
 		initialize();
@@ -103,7 +105,10 @@ public class UserPage {
 	public void updateViews() {
 		userDocs = new UserDocs(rootPage.getApi());
 		selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
-		controlPanel = new ControlPanel(rootPage.getApi());
+		initNotifications();
+		if (!(rootPage.getApi().getUser() instanceof Patron)) {
+			controlPanel = new ControlPanel(rootPage.getApi());
+		}
 	}
 
 	/**
@@ -174,6 +179,10 @@ public class UserPage {
 		refreshBtn = (JFXButton) userLayout.lookup("#refreshBtn");
 		refreshBtn.setOnAction(event -> updateViews());
 
+		initNotifications();
+	}
+
+	private void initNotifications() {
 		ObservableList<Label> notifications = FXCollections.observableArrayList();
 		for (Notification notification : rootPage.getApi().getUserNotifications()) {
 			Label text = new Label(notification.getDescription());

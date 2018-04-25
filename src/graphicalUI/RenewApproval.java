@@ -3,6 +3,7 @@ package graphicalUI;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.svg.SVGGlyph;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,7 @@ public class RenewApproval {
 	AnchorPane layout;
 	Stage stage;
 	Scene scene, previousScene;
+	JFXSnackbar snackbar;
 	@FXML
 	JFXButton goBackBtn;
 	JFXListView<ApprovalCell> listView;
@@ -62,6 +64,8 @@ public class RenewApproval {
 		listView.getItems().addAll(api.getRenewRequests());
 
 		listView.setOnMouseClicked(this::onListClicked);
+
+		snackbar = new JFXSnackbar(layout);
 	}
 
 	/**
@@ -76,18 +80,20 @@ public class RenewApproval {
 
 		JFXPopup popup = new JFXPopup();
 		VBox container = new VBox();
-		JFXButton accept = new JFXButton("ACCEPT");
-		JFXButton reject = new JFXButton("REJECT");
+		JFXButton accept = new JFXButton("Accept");
+		JFXButton reject = new JFXButton("Reject");
 
 		accept.setOnAction(event1 -> {
 			api.acceptRenewRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Accepted"));
 		});
 		reject.setOnAction(event1 -> {
 			api.rejectRenewRequest(selected.getRequestId());
 			listView.getItems().remove(selectedIndex);
 			popup.hide();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Rejected"));
 		});
 
 		container.getChildren().addAll(accept, reject);

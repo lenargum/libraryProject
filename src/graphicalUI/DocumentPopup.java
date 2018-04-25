@@ -2,6 +2,8 @@ package graphicalUI;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 
@@ -14,6 +16,7 @@ public class DocumentPopup extends JFXPopup {
 	private int id;
 	private String title;
 	private String author;
+	private JFXButton renewBtn, returnBtn;
 
 	public DocumentPopup() {
 	}
@@ -34,11 +37,22 @@ public class DocumentPopup extends JFXPopup {
 
 		DocItem item = new DocItem(title, author, id);
 
-		container.getChildren().addAll(item, new JFXButton("RENEW"), new JFXButton("RETURN"));
+		renewBtn = new JFXButton("RENEW");
+		returnBtn = new JFXButton("RETURN");
+
+		container.getChildren().addAll(item, renewBtn, returnBtn);
 
 		container.setPadding(new Insets(20));
 
 		setPopupContent(container);
+	}
+
+	public void setOnRenewAction(EventHandler<ActionEvent> value) {
+		renewBtn.setOnAction(value);
+	}
+
+	public void setOnReturnAction(EventHandler<ActionEvent> value) {
+		returnBtn.setOnAction(value);
 	}
 
 	public int getDocumentId() {

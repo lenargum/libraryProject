@@ -211,22 +211,18 @@ public class CoreAPI {
 	 */
 	ObservableList<UserDocs.MyDocsView> getUserDocs() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
-		List<Integer> documents = new ArrayList<>();
+		List<Debt> debts = new ArrayList<>();
 
 		db.connect();
 		if (user instanceof Patron) {
-			documents = ((Patron) user).getListOfDocumentsPatron();
+			debts = db.getDebtsForUser(user.getId());
 		}
 
-		for (Integer id : documents) {
-			Document doc;
-			Debt debt;
-			doc = db.getDocument(id);
-			debt = db.getDebt(db.findDebtID(user.getId(), id));
+		for (Debt debt : debts) {
+			Document doc = db.getDocument(debt.getDocumentId());
 
 			assert doc != null;
-			assert debt != null;
-			list.add(new UserDocs.MyDocsView(doc.getTitle(), debt.daysLeft(), id));
+			list.add(new UserDocs.MyDocsView(doc.getTitle(), debt.daysLeft(), debt.getDebtId()));
 		}
 		db.close();
 
@@ -432,13 +428,35 @@ public class CoreAPI {
 	/**
 	 * Make outstanding request.
 	 *
-	 * @param requestID Request ID.
+	 * @param patronID   Patron's ID.
+	 * @param documentID Document ID.
 	 */
+	void makeOutstandingRequest(int patronID, int documentID) {
+		if (user instanceof Librarian) {
+			db.connect();
+			Patron patron = db.getPatron(patronID);
+			Document document = db.getDocument(documentID);
+			Request request = new Request(patron, document, new Date(), false);
+			((Librarian) user).makeOutstandingRequest(request, db);
+			db.close();
+		}
+	}
+
 	void makeOutstandingRequest(int requestID) {
-		db.connect();
-		Request request = db.getRequest(requestID);
-		((Librarian) user).makeOutstandingRequest(request, db);
-		db.close();
+		if (user instanceof Librarian) {
+			db.connect();
+			Request request = db.getRequest(requestID);
+			((Librarian) user).makeOutstandingRequest(request, db);
+			db.close();
+		}
+	}
+
+	void confirmReturn(int debtID) {
+		if (user instanceof Librarian) {
+			db.connect();
+			((Librarian) user).confirmReturn(debtID, db);
+			db.close();
+		}
 	}
 
 	/**
@@ -508,6 +526,28 @@ public class CoreAPI {
 		if (canTakeDocument(docID)) {
 			db.connect();
 			((Patron) user).makeRequest(docID, db);
+			db.close();
+		}
+	}
+
+	/**
+	 * Make renew request.
+	 *
+	 * @param debtID Debt to renew.
+	 */
+	void makeRenewRequest(int debtID) {
+		if (user instanceof Patron) {
+			db.connect();
+			((Patron) user).sendRenewRequest(debtID, db);
+			db.close();
+		}
+	}
+
+	void makeReturnRequest(int debtID) {
+		if (user instanceof Patron) {
+			db.connect();
+			Debt debt = db.getDebt(debtID);
+			((Patron) user).returnDocument(debt.getDocumentId(), db);
 			db.close();
 		}
 	}

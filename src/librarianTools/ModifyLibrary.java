@@ -82,8 +82,7 @@ public class ModifyLibrary {
 			}
 			database.deleteRequestsForDocument(idDocument);
 			database.log("Librarian " + librarianId + "id has deleted Document " + idDocument + "id.");
-		}
-		else {
+		} else {
 			if (database.getDebtsForDocument(idDocument).size() == 0)
 				database.deleteDocument(idDocument);
 		}
@@ -100,9 +99,9 @@ public class ModifyLibrary {
 				database.getDebtsForUser(idPatron).size() == 0) {
 			if (database.getRequestsForPatron(idPatron).size() == 0)
 				database.deleteUser(idPatron);
-			else{
+			else {
 				List<Request> requests = database.getRequestsForPatron(idPatron);
-				for(int i = 0; i < requests.size(); i++)
+				for (int i = 0; i < requests.size(); i++)
 					database.deleteRequest(idPatron, requests.get(i).getIdDocument());
 				database.deleteUser(idPatron);
 				database.log("Librarian " + librarianId + "id has deleted Patron " + idPatron + "id.");
