@@ -73,7 +73,7 @@ public class Document {
 		setReference(IsReference);
 		setPrice(Price);
 		setKeyWords(KeyWords);
-		setIsUnderOutstandingRequest(false);
+		setUnderOutstandingRequest(false);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class Document {
 		this.Price = price;
 	}
 
-	public void setIsUnderOutstandingRequest(boolean isUnderOutstandingRequest){
+	public void setUnderOutstandingRequest(boolean isUnderOutstandingRequest){
 		this.isUnderOutstandingRequest = isUnderOutstandingRequest;
 	}
 
