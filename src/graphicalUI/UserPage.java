@@ -47,7 +47,6 @@ public class UserPage {
 	private Scene mainScene;
 	@FXML
 	private JFXListView<Label> notificationList;
-	private JFXPopup detailsPopup;
 	@FXML
 	private JFXButton seeMoreBtn;
 	@FXML
@@ -103,6 +102,7 @@ public class UserPage {
 	 */
 	public void updateViews() {
 		userDocs = new UserDocs(rootPage.getApi());
+		selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
 	}
 
 	/**

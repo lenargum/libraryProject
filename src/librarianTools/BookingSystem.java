@@ -3,8 +3,6 @@ package librarianTools;
 import tools.Database;
 import tools.Request;
 
-import java.sql.SQLException;
-
 public class BookingSystem {
 	/**
 	 * taking document request confirmation

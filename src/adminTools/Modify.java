@@ -4,8 +4,6 @@ import tools.Constants;
 import tools.Database;
 import users.Librarian;
 
-import javax.xml.crypto.Data;
-
 public class Modify {
 
 	public void editLibrarianName(int idLibrarian, String newName, Database database) {
@@ -47,7 +45,7 @@ public class Modify {
 
 	}
 
-	private void editPrivilegeLibrarian(Librarian librarian, int newPrivilege, Database database){
+	private void editPrivilegeLibrarian(Librarian librarian, int newPrivilege, Database database) {
 		database.editUserColumn(librarian.getId(), "privileges", Integer.toString(newPrivilege));
 	}
 

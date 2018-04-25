@@ -112,7 +112,7 @@ public class CoreAPI {
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
 						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
 			}
-		} else {
+		} else if (user instanceof Librarian) {
 			for (User usr : db.getUsers()) {
 				if (usr instanceof Librarian || usr instanceof Admin) continue;
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
@@ -120,7 +120,6 @@ public class CoreAPI {
 			}
 		}
 		db.close();
-
 		return list;
 	}
 
@@ -315,14 +314,16 @@ public class CoreAPI {
 	 */
 	void addNewDocument(Document document) {
 		db.connect();
-		if (document instanceof Book) {
-			db.insertBook((Book) document);
-		}
-		if (document instanceof JournalArticle) {
-			db.insertArticle((JournalArticle) document);
-		}
-		if (document instanceof AudioVideoMaterial) {
-			db.insertAV((AudioVideoMaterial) document);
+		if (user instanceof Librarian) {
+			if (document instanceof Book) {
+				((Librarian) user).addBook((Book) document, db);
+			}
+			if (document instanceof JournalArticle) {
+				((Librarian) user).addArticle((JournalArticle) document, db);
+			}
+			if (document instanceof AudioVideoMaterial) {
+				((Librarian) user).addAV((AudioVideoMaterial) document, db);
+			}
 		}
 		db.close();
 	}
@@ -355,7 +356,12 @@ public class CoreAPI {
 
 	void deleteDocument(int docID) {
 		db.connect();
-		((Librarian) user).deleteDocument(docID, db);
+		if (user instanceof Librarian) {
+			((Librarian) user).deleteDocument(docID, db);
+		}
+		if (user instanceof Admin) {
+			((Admin) user).deleteDocument(docID, db);
+		}
 		db.close();
 	}
 

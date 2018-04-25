@@ -34,14 +34,15 @@ The compiled application will be stored in `/app` directory.
 ## Using
 To use application you need to authorize first.
 Please use one of these credentials:
-| Login      | Password   |
-|--------    |----------- |
-| `patron1`  | `patpass`  |
-| `patron2`  | `patpass`  |
-| `patron3`  | `patpass`  |
-| `patron4`  | `patpass`  |
-| `patron5`  | `patpass`  |
-| `librarian`| `lib-pass` |
+| Login      | Password     |
+|------------|--------------|
+| `patron1`  | `patpass`    |
+| `patron2`  | `patpass`    |
+| `patron3`  | `patpass`    |
+| `patron4`  | `patpass`    |
+| `patron5`  | `patpass`    |
+| `librarian`| `lib-pass`   |
+| `admin`    | `admin-pass` |
 These users are being added to database after running tests.
 
 ## Testing
@@ -51,7 +52,7 @@ Test results will be available after building in `/app/test/index.html`.
 
 ## Team contribution
 
-_See CONTRIBUTION.md_
+_See_ [_CONTRIBUTION.md_](https://github.com/lenargum/libraryProject/blob/master/CONTRIBUTION.md)
 
 - [Lenar Gumerov](https://github.com/lenargum) – tools.Database routines and its API
 - [Anastasia Minakova](https://github.com/stalem9) – Core, Document entities
