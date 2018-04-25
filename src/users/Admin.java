@@ -99,7 +99,5 @@ public class Admin extends User {
 		this.modify.editBookIsBestseller(idBook, isBestseller, database);
 	}
 
-	public void deleteDocument(int idDocument, Database database) {
-		this.modifyLibrary.deleteDocument(idDocument, database);
-	}
+
 }

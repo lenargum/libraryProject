@@ -17,7 +17,7 @@ public class OutstandingRequest {
 	}
 
 	public void makeDeletionRequest(Request request, Database database) {
-		sendNotificationDeletionDocument(request, database);
+		sendNotificationsDeletion(request, database);
 	}
 
 	public void setAvailability(int docID, Database database) {
@@ -55,20 +55,22 @@ public class OutstandingRequest {
 		}
 	}
 
-	private void sendNotificationDeletionDocument(Request request, Database db) {
-		ArrayList<Request> requests;
+	private void sendNotificationsDeletion(Request request, Database db) {
+		ArrayList<Request> requests = null;
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
 			Document doc = db.getDocument(request.getIdDocument());
 			db.insertNotification(temp.getRequestId(), temp.getIdPatron(),
-					"Delete document  " + doc.getTitle(), new Date());
+					"Delete document " + doc.getTitle(), new Date());
 
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
 		Document doc = db.getDocument(request.getIdDocument());
 		for (Debt temp : debts) {
-			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Document is deleted " + doc.getTitle(), new Date());
+			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Delete document " + doc.getTitle(), new Date());
 		}
 	}
+
+
 
 }

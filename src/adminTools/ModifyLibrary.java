@@ -1,6 +1,7 @@
 package adminTools;
 
 import tools.Database;
+import tools.Logic;
 import tools.OutstandingRequest;
 import tools.Request;
 import users.Librarian;
@@ -34,22 +35,5 @@ public class ModifyLibrary {
 		else
 			System.out.println("This user did not return documents!");
 	}
-
-
-	public void deleteDocument(int idDocument, Database database) {
-		OutstandingRequest deletionNotification = new OutstandingRequest();
-		if (database.getDebtsForDocument(idDocument).size() != 0 && database.getRequestsForDocument(idDocument).size()!= 0) {
-
-			List<Request> requests = database.getRequestsForDocument(idDocument);
-			for (int i = 0; i < requests.size(); i++) {
-				deletionNotification.makeDeletionRequest(requests.get(i), database);
-				database.deleteRequestsForDocument(idDocument);
-			}
-		}
-		else{
-			database.deleteDocument(idDocument);
-		}
-	}
-
 
 }

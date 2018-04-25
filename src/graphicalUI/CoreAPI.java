@@ -360,9 +360,7 @@ public class CoreAPI {
 		if (user instanceof Librarian) {
 			((Librarian) user).deleteDocument(docID, db);
 		}
-		if (user instanceof Admin) {
-			((Admin) user).deleteDocument(docID, db);
-		}
+
 		db.close();
 	}
 

@@ -99,8 +99,15 @@ public class ModifyLibrary {
 	 * @param database tools.Database that stores the information.
 	 */
 	public void deletePatron(int librarianId, int idPatron, Database database) {
-		if (Logic.canDelete(librarianId, database)) {
-			database.deleteUser(idPatron);
+		if (Logic.canDelete(librarianId, database) &&
+				database.getDebtsForUser(idPatron).size() == 0) {
+			if (database.getRequestsForPatron(idPatron).size() == 0)
+				database.deleteUser(idPatron);
+			else{
+				List<Request> requests = database.getRequestsForPatron(idPatron);
+				for(int i = 0; i < requests.size(); i++)
+					database.deleteRequest(idPatron, requests.get(i).getRequestId());
+			}
 		} else {
 			//TODO: Log
 		}
