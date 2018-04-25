@@ -1114,7 +1114,7 @@ public class Database {
 	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
 	public void editDocumentColumn(int documentID, String column, String value) {
-		if (!hasUser(documentID)) {
+		if (!hasDocument(documentID)) {
 			throw new NoSuchElementException("tools.Database: There is no such Document with " + documentID + " id");
 		}
 
@@ -1154,7 +1154,7 @@ public class Database {
 	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
 	public void editDebtColumn(int debtID, String column, String value) {
-		if (hasUser(debtID)) {
+		if (!hasDebt(debtID)) {
 			throw new NoSuchElementException("tools.Database: There is no such Debt with " + debtID + " id");
 		}
 		try {

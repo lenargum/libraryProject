@@ -204,21 +204,21 @@ class TestSuite3 {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(27, debt1.daysLeft());
+		assertEquals(55, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
 		assertEquals(1, database.getDebtsForUser(s.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(s.getId(), d3.getID()));
 		debt1.countFee(database);
-		assertEquals(13, debt1.daysLeft());
+		assertEquals(27, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(v.getId()));
 		assertEquals(1, database.getDebtsForUser(v.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(v.getId(), d3.getID()));
 		debt1.countFee(database);
-		assertEquals(6, debt1.daysLeft());
+		assertEquals(13, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
 
@@ -244,7 +244,7 @@ class TestSuite3 {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(27, debt1.daysLeft());
+		assertEquals(55, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
@@ -408,12 +408,12 @@ class TestSuite3 {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(27, debt1.daysLeft());
+		assertEquals(55, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 		assertEquals(1, database.getDebtsForUser(v.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(v.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(6, debt1.daysLeft());
+		assertEquals(20, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 		database.close();
 	}

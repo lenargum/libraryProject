@@ -126,7 +126,6 @@ public class BookingSystem {
 	 */
 	public void renewDocument(Patron patron, int docID, Database database) {
 
-		try {
 			Debt debt = database.getDebt(database.findDebtID(patron.getId(), docID));
 			Date expDate = Logic.renewExpireDate(debt.getDebtId(), database);
 			if (!patron.getStatus().equals("vp")) {
@@ -136,9 +135,7 @@ public class BookingSystem {
 			database.editDebtColumn(debt.getDebtId(), "expire_date",
 					(new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()));
             database.log("Patron with id " + patron.getId() + " has renewed document with id " + docID + ".");
-		} catch (NoSuchElementException e) {
-			System.out.println("Incorrect id");
-		}
+
 	}
 
 	/**

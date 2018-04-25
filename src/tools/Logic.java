@@ -95,7 +95,7 @@ public class Logic {
 		if(database.getDocument(debt.getDocumentId()).isUnderOutstandingRequest()){
 			return false;
 		}
-		if (debt.canRenew()) return true;
+		if (debt.canRenew() || database.getPatron(patronId) instanceof VisitingProfessor) return true;
 		System.out.println("The document is already renewed, so you need to return it!");
 		return false;
 	}
@@ -200,12 +200,12 @@ public class Logic {
 	private static Date dateForBooks(int patronId, int bookId, Database database) {
 		Book book = database.getBook(bookId);
 		Patron patron = database.getPatron(patronId);
-		Date date;
-		if (patron instanceof Student) {
+		Date date;if (patron instanceof VisitingProfessor) {
+			date = Constants.setWeek();}
+		else if (patron instanceof Student) {
 			if (book.isBestseller()) date = Constants.setTwoWeeks();
 			else date = Constants.setThreeWeeks();
-		} else if (patron instanceof VisitingProfessor) {
-			date = Constants.setWeek();
+
 		} else if (patron instanceof Instructor || patron instanceof Professor || patron instanceof TeachingAssistant) {
 			if (book.isBestseller()) date = Constants.setTwoWeeks();
 			else date = Constants.setFourWeeks();
