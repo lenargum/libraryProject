@@ -62,7 +62,7 @@ public class OutstandingRequest {
 	}
 
 	private void sendNotificationsDeletion(Request request, Database db) {
-		ArrayList<Request> requests = null;
+		ArrayList<Request> requests = new ArrayList<>();
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
 			Document doc = db.getDocument(request.getIdDocument());

@@ -166,6 +166,7 @@ class TestSuite4 {
 
 		assertEquals(0, database.getNotificationsList().size());
 		assertEquals(3, database.getRequests().size());
+		assertEquals(2, database.getDebtsForDocument(b3.getID()).size());
 
 		database.close();
 	}
@@ -186,7 +187,7 @@ class TestSuite4 {
 
 		l3.makeOutstandingRequest(database.getRequest(p3.getId(), b3.getID()), database);
 
-		assertEquals(3, database.getNotificationsList().size());
+		assertEquals(5, database.getNotificationsList().size());
 		assertEquals(0, database.getRequests().size());
 
 		database.close();
@@ -304,14 +305,5 @@ class TestSuite4 {
 		assertTrue(searchResult.contains("Introduction to Algorithms"));
 		assertTrue(searchResult.contains("Algorithms + Data Structures = Programs"));
 		assertTrue(searchResult.contains("The Art of Computer Programming"));
-	}
-
-	@Test
-	void testCase15(){
-		testCase04();
-		database.connect();
-		//l3.deletePatron(p1.getId(), database);
-
-		database.close();
 	}
 }
