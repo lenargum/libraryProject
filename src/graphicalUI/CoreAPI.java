@@ -180,7 +180,7 @@ public class CoreAPI {
 		loggedIn = false;
 	}
 
-	ObservableList<DocItem> search(List<String> keywords) {
+	public ObservableList<DocItem> search(List<String> keywords) {
 		HashSet<Document> searchResult = new HashSet<>();
 
 		db.connect();
@@ -411,7 +411,9 @@ public class CoreAPI {
 	}
 
 	/**
-	 * @return
+	 * All debts.
+	 *
+	 * @return Get debts.
 	 */
 	ObservableList<DebtsManager.DebtCell> getAllDebts() {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
@@ -548,7 +550,7 @@ public class CoreAPI {
 	 *
 	 * @param requestID Request ID.
 	 */
-	public void rejectRenewRequest(int requestID) {
+	void rejectRenewRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
 			db.connect();
