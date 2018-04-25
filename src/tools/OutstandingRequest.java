@@ -39,10 +39,6 @@ public class OutstandingRequest {
 		}
 		ArrayList<Debt> debts = db.getDebtsForDocument(request.getIdDocument());
 		Document doc = db.getDocument(request.getIdDocument());
-		for (Debt temp : debts) {
-			db.insertNotification(temp.getDebtId(), temp.getPatronId(), "Outstanding request for " + doc.getTitle(), new Date());
-			db.log("Notification of returning document for User " + temp.getPatronId() + "id has sent");
-		}
 	}
 
 	private void sendNotificationsForAvailability(int docId, Database database) {

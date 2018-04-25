@@ -162,10 +162,10 @@ class TestSuite4 {
 		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()),database);
 		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()),database);
 
-		l1.makeOutstandingRequest(database.getRequest(p1.getId(), b3.getID()), database);
+		l1.makeOutstandingRequest(database.getRequest(p3.getId(), b3.getID()), database);
 
 		assertEquals(0, database.getNotificationsList().size());
-		assertEquals(5, database.getRequests().size());
+		assertEquals(3, database.getRequests().size());
 
 		database.close();
 	}
@@ -181,9 +181,12 @@ class TestSuite4 {
 		s.makeRequest(b3.getID(), database);
 		v.makeRequest(b3.getID(), database);
 
-		l3.makeOutstandingRequest(database.getRequest(p1.getId(), b3.getID()), database);
+		l1.submitRequest(database.getRequest(p1.getId(), b3.getID()),database);
+		l1.submitRequest(database.getRequest(p2.getId(), b3.getID()),database);
 
-		assertEquals(5, database.getNotificationsList().size());
+		l3.makeOutstandingRequest(database.getRequest(p3.getId(), b3.getID()), database);
+
+		assertEquals(3, database.getNotificationsList().size());
 		assertEquals(0, database.getRequests().size());
 
 		database.close();
