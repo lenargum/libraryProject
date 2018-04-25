@@ -1,15 +1,17 @@
 package adminTools;
 
-import tools.Constants;
-import tools.OutstandingRequest;
 import tools.Database;
+import tools.Logic;
+import tools.OutstandingRequest;
+import tools.Request;
 import users.Librarian;
+
+import java.util.List;
 
 public class ModifyLibrary {
 	public void addLibrarian(Librarian librarian, Database database) {
-
 		database.insertLibrarian(librarian);
-
+		database.log("ADMIN has added Librarian " + librarian.getId() + "id");
 	}
 
 	public void deleteLibrarian(int idLibrarian, Database database) {
@@ -22,31 +24,16 @@ public class ModifyLibrary {
 //        librarian.setLogin(null);
 //        librarian.setPassword(null);
 		database.deleteUser(idLibrarian);
-
+		database.log("ADMIN has deleted Librarian " + idLibrarian + "id");
 	}
 
 	public void deletePatron(int idPatron, Database database) {
 
-		if (database.getPatron(idPatron).getListOfDocumentsPatron().isEmpty())
+		if (database.getPatron(idPatron).getListOfDocumentsPatron().isEmpty()) {
 			database.deleteUser(idPatron);
-		else
-			System.out.println("This user did not return documents!");
-	}
-
-
-	public void deleteDocument(int idDocument, Database database) {
-		OutstandingRequest deletionDocument = new OutstandingRequest();
-		if (database.getDebtsForDocument(idDocument).size() == 0) {
-			//deletionDocument.makeDeletionRequest(idDocument, database);
-			if (database.getRequestsForDocument(idDocument).size() !=0)
-				database.deleteRequestsForDocument(idDocument);
-			else
-				database.deleteDocument(idDocument);
+			database.log("ADMIN has deleted Patron " + idPatron + "id");
 		} else {
-			//deletionDocument.makeDeletionRequest(idDocument, database);
+			System.out.println("This user did not return documents!");
 		}
 	}
-
-
-
 }

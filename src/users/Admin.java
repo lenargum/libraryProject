@@ -15,7 +15,7 @@ public class Admin extends User {
 	}
 
 	public void addLibrarian(Librarian librarian, Database database) {
-		this.modifyLibrary.addLibrarian(librarian, database);
+		this.modifyLibrary.addLibrarian(librarian,database);
 	}
 
 	public void editLibrarianName(int idLibrarian, String newName, Database database) {
@@ -40,6 +40,10 @@ public class Admin extends User {
 
 	public void setAddPrivilegeLibrarian(Librarian librarian, Database database) {
 		this.modify.setAddPrivilegeLibrarian(librarian, database);
+	}
+
+	public void setBasicPrivilegeLibrarian(Librarian librarian, Database database) {
+		this.modify.setBasicPrivilegeLibrarian(librarian, database);
 	}
 
 	public void setDeletePrivilegeLibrarian(Librarian librarian, Database database) {
@@ -73,33 +77,5 @@ public class Admin extends User {
 
 	public void deletePatron(int idPatron, Database database) {
 		this.modifyLibrary.deletePatron(idPatron, database);
-	}
-
-	public void editDocumentNumberOdCopies(int idDocument, int newNumberOfCopies, Database database) {
-		this.modify.editDocumentNumberOdCopies(idDocument, newNumberOfCopies, database);
-	}
-
-	public void editDocumentIsAllowedForStudents(int idDocument, boolean isAllowed, Database database) {
-		this.modify.editDocumentIsAllowedForStudents(idDocument, isAllowed, database);
-	}
-
-	public void editDocumentPrice(int idDocument, double newPrice, Database database) {
-		this.modify.editDocumentPrice(idDocument, newPrice, database);
-	}
-
-	public void editDocumentIsReference(int idDocument, boolean isReference, Database database) {
-		this.modify.editDocumentIsReference(idDocument, isReference, database);
-	}
-
-	public void editBookEdition(int idBook, int newEdition, Database database) {
-		this.modify.editBookEdition(idBook, newEdition, database);
-	}
-
-	public void editBookIsBestseller(int idBook, boolean isBestseller, Database database) {
-		this.modify.editBookIsBestseller(idBook, isBestseller, database);
-	}
-
-	public void deleteDocument(int idDocument, Database database) {
-		this.modifyLibrary.deleteDocument(idDocument, database);
 	}
 }

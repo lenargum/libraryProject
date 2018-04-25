@@ -32,6 +32,7 @@ public class BookingSystem {
 
 			Debt debt = new Debt(patron.getId(), idBook, dateBook, dateExpire, 0, true);
 			database.insertDebt(debt);
+			database.log("Patron with " + patron.getId() + " id has taken the book with id " + idBook + ".");
 
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id=" + idBook);
@@ -53,6 +54,8 @@ public class BookingSystem {
 			Date date2 = Logic.expireDate(patron.getId(), idAV, database);
 			Debt debt = new Debt(patron.getId(), idAV, date, date2, 0, true);
 			database.insertDebt(debt);
+			database.log("Patron with " + patron.getId() + " id has taken the audio/video material with id " + idAV + ".");
+
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idAV);
 		}
@@ -72,6 +75,7 @@ public class BookingSystem {
 			Date date = new Date();
 			Date date2 = Logic.expireDate(patron.getId(), idArticle, database);
 			Debt debt = new Debt(patron.getId(), idArticle, date, date2, 0, true);
+			database.log("Patron with " + patron.getId() + " id has taken the Journal article with id " + idArticle + ".");
 
 			database.insertDebt(debt);
 		} catch (NoSuchElementException e) {
@@ -106,6 +110,7 @@ public class BookingSystem {
 			if (Logic.canRequestDocument(idDocument, patron.getId(), database)) {
 				Request request = new Request(patron, database.getDocument(idDocument), new Date(), false);
 				database.insertRequest(request);
+				database.log("Patron with id " + patron.getId() + " has requested document with id " + idDocument + ".");
 			}
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id" + idDocument);
@@ -130,7 +135,7 @@ public class BookingSystem {
 			debt.setExpireDate(expDate);
 			database.editDebtColumn(debt.getDebtId(), "expire_date",
 					(new SimpleDateFormat("yyyy-MM-dd")).format(debt.getExpireDate()));
-
+            database.log("Patron with id " + patron.getId() + " has renewed document with id " + docID + ".");
 		} catch (NoSuchElementException e) {
 			System.out.println("Incorrect id");
 		}
@@ -150,6 +155,7 @@ public class BookingSystem {
 			Date date = new Date();
 			Request request = new Request(patron, doc, date, true);
 			database.insertRequest(request);
+			database.log("Patron with id " + patron.getId() + " has tried to renew document with id " + debt.getDocumentId() + ".");
 		}
 
 	}

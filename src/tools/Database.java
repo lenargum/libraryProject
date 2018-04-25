@@ -127,11 +127,11 @@ public class Database {
 	 * @throws SQLException user with such login already exists or inserted user with incorrect type.
 	 */
 	private void insertUser(String login, String password, String status,
-	                        String firstName, String lastName, String phone, String address,int privileges) throws SQLException {
+	                        String firstName, String lastName, String phone, String address, int privileges) throws SQLException {
 		this.execute("INSERT INTO users(login, password, status, firstname, lastname, phone, address, privileges)" +
 				" VALUES('" + login + "','" + password + "','"
 				+ status + "','" + firstName + "','" + lastName + "','" +
-				phone + "','" + address + "', "+privileges+")");
+				phone + "','" + address + "', " + privileges + ")");
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Database {
 	 */
 	public void insertPatron(Patron patron) {
 		try {
-			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress(),-1);
+			insertUser(patron.getLogin(), patron.getPassword(), patron.getStatus().toUpperCase(), patron.getName(), patron.getSurname(), patron.getPhoneNumber(), patron.getAddress(), -1);
 			patron.setId(this.getPatronID(patron));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: User with such login already exists");
@@ -191,13 +191,12 @@ public class Database {
 	 */
 	public void insertLibrarian(Librarian librarian) {
 		try {
-			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress(),librarian.getPrivilege());
+			insertUser(librarian.getLogin(), librarian.getPassword(), "LIBRARIAN", librarian.getName(), librarian.getSurname(), librarian.getPhoneNumber(), librarian.getAddress(), librarian.getPrivilege());
 			librarian.setId(this.getLibrarianID(librarian));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: User with such login already exists");
 		}
 	}
-
 
 
 	/**
@@ -331,7 +330,7 @@ public class Database {
 			while (librarianSet.next()) {
 				Librarian temp = new Librarian(librarianSet.getString(2),
 						librarianSet.getString(3), librarianSet.getString(5),
-						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8), librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
 				librarianList.add(temp);
 			}
@@ -593,6 +592,13 @@ public class Database {
 				}
 
 				temp.setId(patronSet.getInt(1));
+
+				ArrayList<Integer> userDocs = new ArrayList<>();
+				for (Debt debt : this.getDebtsForUser(temp.getId())) {
+					userDocs.add(debt.getDocumentId());
+				}
+				temp.setListOfDocumentsPatron(userDocs);
+
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -619,7 +625,7 @@ public class Database {
 						temp = new Librarian(userSet.getString(2),
 								userSet.getString(3), userSet.getString(5),
 								userSet.getString(6), userSet.getString(7),
-								userSet.getString(8),userSet.getInt(9));
+								userSet.getString(8), userSet.getInt(9));
 						break;
 					case "STUDENT":
 						temp = new Student(userSet.getString(2),
@@ -663,6 +669,15 @@ public class Database {
 				}
 
 				temp.setId(userSet.getInt(1));
+
+				if (!(temp instanceof Librarian || temp instanceof Admin)) {
+					ArrayList<Integer> userDocs = new ArrayList<>();
+					for (Debt debt : this.getDebtsForUser(temp.getId())) {
+						userDocs.add(debt.getDocumentId());
+					}
+					((Patron) temp).setListOfDocumentsPatron(userDocs);
+				}
+
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -684,7 +699,7 @@ public class Database {
 			if (librarianSet.next()) {
 				Librarian temp = new Librarian(librarianSet.getString(2),
 						librarianSet.getString(3), librarianSet.getString(5),
-						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8),librarianSet.getInt(9));
+						librarianSet.getString(6), librarianSet.getString(7), librarianSet.getString(8), librarianSet.getInt(9));
 				temp.setId(librarianSet.getInt(1));
 				temp.setPrivilege(librarianSet.getInt(9));
 				return temp;
@@ -1049,7 +1064,6 @@ public class Database {
 	 * @throws InputMismatchException Throws when column name or value inserted incorrectly.
 	 */
 	public void editUserColumn(int userID, String column, String value) {
-
 		if (!hasUser(userID)) {
 			throw new NoSuchElementException("tools.Database: There is no such User with " + userID + " id");
 		}
@@ -1060,7 +1074,7 @@ public class Database {
 
 			try {
 				//noinspection ResultOfMethodCallIgnored
-				Integer.parseInt(value); // Removed unused variable, may produce bug. RS
+				Integer.parseInt(value);
 			} catch (NumberFormatException e) {
 				quotes1 = "\'";
 				quotes2 = "\'";
@@ -1093,7 +1107,6 @@ public class Database {
 		if (!hasUser(documentID)) {
 			throw new NoSuchElementException("tools.Database: There is no such Document with " + documentID + " id");
 		}
-
 
 		try {
 			String quotes1 = "";
@@ -1163,6 +1176,8 @@ public class Database {
 			this.execute("DELETE FROM documents");
 			this.execute("DELETE FROM debts");
 			this.execute("DELETE FROM requests");
+			this.execute("DELETE FROM notifications");
+			this.execute("DELETE FROM log");
 			System.out.println("tools.Database: Records cleared.");
 
 			this.execute("UPDATE sqlite_sequence SET seq=0");
@@ -1462,7 +1477,7 @@ public class Database {
 		try {
 			ResultSet requestsSet = executeQuery("SELECT * FROM requests WHERE document_id = " + docID + " ORDER BY priority, date");
 
-			if (requestsSet.next()) {
+			while (requestsSet.next()) {
 				Request temp = new Request(this.getPatron(requestsSet.getInt(2)), this.getDocument(requestsSet.getInt(5)),
 						new SimpleDateFormat("yyyy-MM-dd").parse(requestsSet.getString(7)), Boolean.parseBoolean(requestsSet.getString(8)));
 				temp.setRequestId(requestsSet.getInt(1));
@@ -1504,7 +1519,7 @@ public class Database {
 
 			try {
 				//noinspection ResultOfMethodCallIgnored
-				Double.parseDouble(value); // Removed unused variable, may produce bug. RS
+				Double.parseDouble(value);
 			} catch (NumberFormatException e) {
 				quotes1 = "\'";
 				quotes2 = "\'";
@@ -1543,6 +1558,7 @@ public class Database {
 	public void deleteRequestsForDocument(int documentId) {
 		try {
 			executeUpdate("DELETE FROM requests WHERE document_id = " + documentId);
+			log("Waiting list for Document "+documentId+"id deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1663,12 +1679,12 @@ public class Database {
 	 */
 	public void insertAdmin(Admin admin) {
 
-		try{
+		try {
 			getAdmin();
 			System.err.println("tools.Database: One admin is already exist!");
 		} catch (NoSuchElementException e) {
 			try {
-				insertUser(admin.getLogin(),admin.getPassword(),"ADMIN", admin.getName(),admin.getSurname(),admin.getPhoneNumber(),admin.getAddress(),-1);
+				insertUser(admin.getLogin(), admin.getPassword(), "ADMIN", admin.getName(), admin.getSurname(), admin.getPhoneNumber(), admin.getAddress(), -1);
 				admin.setId(getAdmin().getId());
 			} catch (SQLException ex) {
 				ex.printStackTrace();
@@ -1683,10 +1699,10 @@ public class Database {
 	 * @throws NoSuchElementException Throws when there is no Admin in Database.
 	 */
 	public Admin getAdmin() {
-		try{
+		try {
 			//language=SQLite
 			ResultSet rs = executeQuery("SELECT * FROM users WHERE status = 'ADMIN'");
-			if(rs.next()) {
+			if (rs.next()) {
 				return new Admin(rs.getString(2),
 						rs.getString(3), rs.getString(5),
 						rs.getString(6), rs.getString(7),
@@ -1769,9 +1785,9 @@ public class Database {
 	 */
 	public void log(String log) {
 		try {
-			String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
+			String time = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date());
 			//language=SQLite
-			executeUpdate("INSERT INTO log (log) VALUES (\'[" + time + "]: " + log + "\')");
+			executeUpdate("INSERT INTO log (log_content) VALUES (\'[" + time + "]: " + log + "\')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1788,7 +1804,7 @@ public class Database {
 			//language=SQLite
 			ResultSet temp = executeQuery("SELECT * FROM log");
 			while (temp.next()) {
-				logs.add(temp.getString(0));
+				logs.add(temp.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

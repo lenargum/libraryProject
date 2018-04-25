@@ -4,7 +4,10 @@ import documents.AudioVideoMaterial;
 import documents.Book;
 import documents.Document;
 import documents.JournalArticle;
-import librarianTools.*;
+import librarianTools.BookingSystem;
+import librarianTools.Modify;
+import librarianTools.ModifyLibrary;
+import librarianTools.ReturningSystem;
 import tools.Constants;
 import tools.Database;
 import tools.OutstandingRequest;
@@ -52,12 +55,12 @@ public class Librarian extends User {
 	/**
 	 * Initialize new librarian.
 	 *
-	 * @param login    Login.
-	 * @param password Password.
-	 * @param name     First name.
-	 * @param surname  Last name.
-	 * @param phone    Phone number.
-	 * @param address  Living address.
+	 * @param login     Login.
+	 * @param password  Password.
+	 * @param name      First name.
+	 * @param surname   Last name.
+	 * @param phone     Phone number.
+	 * @param address   Living address.
 	 * @param privilege Privilege level
 	 */
 	public Librarian(String login, String password, String name, String surname, String phone, String address, int privilege) {
@@ -127,6 +130,7 @@ public class Librarian extends User {
 	 */
 	public void deleteDocument(int idDocument, Database database) {
 		this.modifyLibrary.deleteDocument(this.getId(), idDocument, database);
+
 	}
 
 	/**
@@ -192,6 +196,17 @@ public class Librarian extends User {
 	 */
 	public void modifyBookBestseller(int idBook, Database database, boolean bestseller) {
 		this.modify.modifyBookBestseller(this.getId(), idBook, database, bestseller);
+	}
+
+	/**
+	 * Modify the last name of patron stored in database.
+	 *
+	 * @param idPatron ID of patron which is going to be modified.
+	 * @param database tools.Database that stores the information.
+	 * @param name     New Name.
+	 */
+	public void modifyPatronName(int idPatron, Database database, String name) {
+		this.modify.modifyPatronName(this.getId(), idPatron, database, name);
 	}
 
 	/**
@@ -272,6 +287,7 @@ public class Librarian extends User {
 	 */
 	public void confirmReturn(int debtID, Database database) {
 		this.returningSystem.confirmReturn(debtID, database);
+		database.log("Librarian " + this.getId() + "id has confirmed return of Debt " + debtID + "id.");
 	}
 
 	/**
@@ -282,6 +298,7 @@ public class Librarian extends User {
 	 */
 	public void confirmRenew(Request request, Database database) {
 		this.returningSystem.confirmRenew(request, database);
+		database.log("Librarian " + this.getId() + "id has confirmed renew of Request " + request.getRequestId() + "id.");
 	}
 
 
@@ -303,6 +320,7 @@ public class Librarian extends User {
 	 */
 	public void submitRequest(Request request, Database database) {
 		this.bookingSystem.submitRequest(request, database);
+		database.log("Librarian " + this.getId() + "id has submitted Request " + request.getRequestId() + "id.");
 	}
 
 	/**
@@ -313,6 +331,7 @@ public class Librarian extends User {
 	 */
 	public void deleteRequest(Request request, Database database) {
 		this.bookingSystem.deleteRequest(request, database);
+		database.log("Librarian " + this.getId() + "id has deleted Request " + request.getRequestId() + "id.");
 	}
 
 	public void makeOutstandingRequest(Request request, Database database) {
@@ -321,6 +340,7 @@ public class Librarian extends User {
 
 	public void setAvailability(int docID, Database database) {
 		this.outstandingRequest.setAvailability(docID, database);
+		database.log("Librarian " + this.getId() + "id has set availability of Document " + docID + "id.");
 	}
 
 }

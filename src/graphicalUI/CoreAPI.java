@@ -112,7 +112,7 @@ public class CoreAPI {
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
 						usr.getAddress(), usr.getPhoneNumber(), usr.getClass().getSimpleName()));
 			}
-		} else {
+		} else if (user instanceof Librarian) {
 			for (User usr : db.getUsers()) {
 				if (usr instanceof Librarian || usr instanceof Admin) continue;
 				list.add(new UserManager.UserCell(usr.getId(), usr.getName(), usr.getSurname(),
@@ -120,7 +120,6 @@ public class CoreAPI {
 			}
 		}
 		db.close();
-
 		return list;
 	}
 
@@ -181,7 +180,7 @@ public class CoreAPI {
 		loggedIn = false;
 	}
 
-	ObservableList<DocItem> search(List<String> keywords) {
+	public ObservableList<DocItem> search(List<String> keywords) {
 		HashSet<Document> searchResult = new HashSet<>();
 
 		db.connect();
@@ -213,11 +212,12 @@ public class CoreAPI {
 	ObservableList<UserDocs.MyDocsView> getUserDocs() {
 		ObservableList<UserDocs.MyDocsView> list = FXCollections.observableArrayList();
 		List<Integer> documents = new ArrayList<>();
+
+		db.connect();
 		if (user instanceof Patron) {
 			documents = ((Patron) user).getListOfDocumentsPatron();
 		}
 
-		db.connect();
 		for (Integer id : documents) {
 			Document doc;
 			Debt debt;
@@ -298,12 +298,10 @@ public class CoreAPI {
 	 */
 	void addNewUser(User newUser) {
 		db.connect();
-		if (newUser instanceof Librarian) {
-			db.insertLibrarian((Librarian) newUser);
-			newUser.setId(db.getLibrarianID((Librarian) newUser));
+		if (user instanceof Admin) {
+			((Admin) user).addLibrarian((Librarian) newUser, db);
 		} else {
-			db.insertPatron((Patron) newUser);
-			newUser.setId(db.getPatronID((Patron) newUser));
+			((Librarian) user).registerPatron((Patron) newUser, db);
 		}
 		db.close();
 	}
@@ -315,14 +313,16 @@ public class CoreAPI {
 	 */
 	void addNewDocument(Document document) {
 		db.connect();
-		if (document instanceof Book) {
-			db.insertBook((Book) document);
-		}
-		if (document instanceof JournalArticle) {
-			db.insertArticle((JournalArticle) document);
-		}
-		if (document instanceof AudioVideoMaterial) {
-			db.insertAV((AudioVideoMaterial) document);
+		if (user instanceof Librarian) {
+			if (document instanceof Book) {
+				((Librarian) user).addBook((Book) document, db);
+			}
+			if (document instanceof JournalArticle) {
+				((Librarian) user).addArticle((JournalArticle) document, db);
+			}
+			if (document instanceof AudioVideoMaterial) {
+				((Librarian) user).addAV((AudioVideoMaterial) document, db);
+			}
 		}
 		db.close();
 	}
@@ -355,7 +355,10 @@ public class CoreAPI {
 
 	void deleteDocument(int docID) {
 		db.connect();
-		((Librarian) user).deleteDocument(docID, db);
+		if (user instanceof Librarian) {
+			((Librarian) user).deleteDocument(docID, db);
+		}
+
 		db.close();
 	}
 
@@ -404,7 +407,9 @@ public class CoreAPI {
 	}
 
 	/**
-	 * @return
+	 * All debts.
+	 *
+	 * @return Get debts.
 	 */
 	ObservableList<DebtsManager.DebtCell> getAllDebts() {
 		ObservableList<DebtsManager.DebtCell> list = FXCollections.observableArrayList();
@@ -449,6 +454,31 @@ public class CoreAPI {
 		db.close();
 
 		return list;
+	}
+
+	/**
+	 * Get list of logs.
+	 *
+	 * @return List of logs.
+	 */
+	ObservableList<String> getLogs() {
+		ObservableList<String> logs = FXCollections.observableArrayList();
+		db.connect();
+		logs.addAll(db.getLog());
+		db.close();
+
+		return logs;
+	}
+
+	void deleteUser(int id) {
+		db.connect();
+		if (user instanceof Admin) {
+			((Admin) user).deleteLibrarian(id, db);
+		}
+		if (user instanceof Librarian) {
+			((Librarian) user).deletePatron(id, db);
+		}
+		db.close();
 	}
 
 	/**
@@ -541,12 +571,13 @@ public class CoreAPI {
 	 *
 	 * @param requestID Request ID.
 	 */
-	public void rejectRenewRequest(int requestID) {
+	void rejectRenewRequest(int requestID) {
 		if (user instanceof Librarian) {
 			System.out.println("Current user is librarian, asking database to accept...");
 			db.connect();
 			Request request = db.getRequest(requestID);
 			System.out.println("Submitting request " + request.getRequestId());
+			((Librarian) user).deleteRequest(request, db);
 			db.close();
 		} else {
 			System.out.println("Current user is not librarian.");

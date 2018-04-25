@@ -3,41 +3,34 @@ import documents.Book;
 import org.junit.jupiter.api.Test;
 import tools.Database;
 import tools.Debt;
-import tools.OutstandingRequest;
-import tools.Request;
 import users.*;
-
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class MainTest {
-	private Book d1, d2;
-	private AudioVideoMaterial av1, av2, d3;
+class TestSuite3 {
+	private Book d1;
+	private Book d2;
+	private AudioVideoMaterial d3;
 	private Patron p1, p2, p3, s, v;
 	private Librarian librarian;
-	private Admin admin;
 	private Database database = new Database();
 
-
-	void initialState()  {
+	private void initialState() {
 		database.connect();
 		database.clear();
-		admin = new Admin("admin", "admin-pass", "Ledina", "Minakirova", "12334567788", "Imaginarium");
+		Admin admin = new Admin("admin", "admin-pass", "Ruslan", "Gumerov", "12334567788", "Imaginarium");
 		librarian = new Librarian("librarian", "lib-pass", "Maria", "Nikolaeva", "81234567890", "Universitetskaya street, 1");
-		d1 = new Book("Introduction to Algorithms", "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein", true, 3, false, 5000, "algorithms, programming", "MIT Press", 3, true);
-		d2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm", true, 3, false, 1700, "OOP, programming", "Addison-Wesley Professional", 1, true);
+		d1 = new Book("Introduction to Algorithms", "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein", true, 3, false, 5000, "algorithms, programming", "MIT Press", 3, false);
+		d2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm", true, 3, false, 1700, "OOP, programming", "Addison-Wesley Professional", 1, false);
 		d3 = new AudioVideoMaterial("Null References: The Billion Dollar Mistake", "Tony Hoare", true, 2, false, 700, "programming");
-		p1 = new Professor("patron1", "patpass",  "Sergey", "Afonso", "30001", "Via Margutta, 3");
+		p1 = new Professor("patron1", "patpass", "Sergey", "Afonso", "30001", "Via Margutta, 3");
 		p2 = new Professor("patron2", "patpass", "Nadia", "Teixeira", "30002", "Via Scara, 13");
 		p3 = new Professor("patron3", "patpass", "Elvira", "Espindola", "30003", "Via del Corso, 22");
-		s = new Student("patron4", "patpass",  "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
+		s = new Student("patron4", "patpass", "Andrey", "Velo", "30004", "Avenida Mazatlan, 350");
 		v = new VisitingProfessor("patron5", "patpass", "Veronika", "Rama", "30005", "Stret Atocha, 27");
 
-        database.insertAdmin(admin);
+		database.insertAdmin(admin);
 
 		admin.addLibrarian(librarian, database);
 		admin.setDeletePrivilegeLibrarian(librarian, database);
@@ -62,11 +55,10 @@ class MainTest {
 		//System.out.println(librarian.getPrivilege());
 
 
-
 		database.close();
 	}
 
-	void initialStateTC1() {
+	private void initialStateTC1() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -75,7 +67,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC2() {
+	private void initialStateTC2() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -95,7 +87,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC34()  {
+	private void initialStateTC34() {
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
 		librarian.submitRequest(database.getRequest(p1.getId(), d1.getID()), database);
@@ -108,7 +100,7 @@ class MainTest {
 		database.close();
 	}
 
-	void initialStateTC10(){
+	private void initialStateTC10() {
 		database.connect();
 		database.connect();
 		p1.makeRequest(d1.getID(), database);
@@ -125,7 +117,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase01() {
+	void testCase01() {
 		System.out.println("Test Case 1");
 		initialState();
 		initialStateTC1();
@@ -150,7 +142,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase02()  {
+	void testCase02() {
 		System.out.println("Test Case 2");
 		initialState();
 		initialStateTC2();
@@ -162,8 +154,8 @@ class MainTest {
 		Debt debt2 = database.getDebt(database.findDebtID(p1.getId(), d2.getID()));
 		debt1.countFee(database);
 		debt2.countFee(database);
-		assertEquals(13, debt1.daysLeft());
-		assertEquals(13, debt2.daysLeft());
+		assertEquals(27, debt1.daysLeft());
+		assertEquals(27, debt2.daysLeft());
 		assertEquals(0, debt1.getFee());
 		assertEquals(0, debt2.getFee());
 
@@ -173,8 +165,8 @@ class MainTest {
 		debt2 = database.getDebt(database.findDebtID(s.getId(), d2.getID()));
 		debt1.countFee(database);
 		debt2.countFee(database);
-		assertEquals(13, debt1.daysLeft());
-		assertEquals(13, debt2.daysLeft());
+		assertEquals(20, debt1.daysLeft());
+		assertEquals(20, debt2.daysLeft());
 		assertEquals(0, debt1.getFee());
 		assertEquals(0, debt2.getFee());
 
@@ -193,7 +185,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase03() throws SQLException, ParseException {
+	void testCase03() {
 		System.out.println("Test Case 3");
 		initialState();
 		initialStateTC34();
@@ -212,7 +204,7 @@ class MainTest {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(13, debt1.daysLeft());
+		assertEquals(27, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
@@ -234,7 +226,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase04() throws SQLException, ParseException {
+	void testCase04() {
 		System.out.println("Test Case 4");
 		initialState();
 		initialStateTC34();
@@ -252,7 +244,7 @@ class MainTest {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(13, debt1.daysLeft());
+		assertEquals(27, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
 		System.out.println(database.getDebtsForUser(s.getId()));
@@ -273,7 +265,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase05() throws SQLException, ParseException {
+	void testCase05() {
 		System.out.println("Test Case 5");
 		initialState();
 		database.connect();
@@ -302,11 +294,13 @@ class MainTest {
 		System.out.println(database.getDebtsForUser(v.getId()));
 		assertEquals(0, database.getDebtsForUser(v.getId()).size());
 
+		assertEquals(1, database.getRequests().size());
+
 		database.close();
 	}
 
 	@Test
-	void TestCase06() throws SQLException, ParseException {
+	void testCase06() {
 		System.out.println("Test Case 6");
 		initialState();
 		database.connect();
@@ -334,28 +328,31 @@ class MainTest {
 		assertEquals(13, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 
+		assertEquals(3, database.getRequests().size());
+
 		database.close();
 	}
 
 	@Test
-	void TestCase07() throws SQLException, ParseException {
+	void testCase07() {
 		System.out.println("Test Case 7");
 		initialState();
-		TestCase06();
+		testCase06();
 		database.connect();
 
 		librarian.makeOutstandingRequest(database.getRequest(s.getId(), d3.getID()), database);
 		assertEquals(database.getRequestsForDocument(d3.getID()).size(), 0);
 
+		assertEquals(3, database.getNotificationsList().size());
 
 		database.close();
 	}
 
 	@Test
-	void TestCase08() throws SQLException, ParseException {
+	void testCase08() {
 		System.out.println("Test Case 8");
 		initialState();
-		TestCase06();
+		testCase06();
 		database.connect();
 
 		librarian.confirmReturn(database.findDebtID(p2.getId(), d3.getID()), database);
@@ -368,14 +365,16 @@ class MainTest {
 		assertEquals(0, debt1.getFee());
 		assertEquals(0, database.getDebtsForUser(p2.getId()).size());
 
+		librarian.setAvailability(d3.getID(), database);
+		assertEquals(1, database.getNotificationsList().size());
 		database.close();
 	}
 
 	@Test
-	void TestCase09() throws SQLException, ParseException {
+	void testCase09() {
 		System.out.println("Test Case 9");
 		initialState();
-		TestCase06();
+		testCase06();
 		database.connect();
 
 		p1.sendRenewRequest(database.findDebtID(p1.getId(), d3.getID()), database);
@@ -395,7 +394,7 @@ class MainTest {
 	}
 
 	@Test
-	void TestCase10() throws SQLException, ParseException {
+	void testCase10() {
 		System.out.println("Test Case 10");
 		initialState();
 		initialStateTC10();
@@ -409,7 +408,7 @@ class MainTest {
 		assertEquals(1, database.getDebtsForUser(p1.getId()).size());
 		Debt debt1 = database.getDebt(database.findDebtID(p1.getId(), d1.getID()));
 		debt1.countFee(database);
-		assertEquals(13, debt1.daysLeft());
+		assertEquals(27, debt1.daysLeft());
 		assertEquals(0, debt1.getFee());
 		assertEquals(1, database.getDebtsForUser(v.getId()).size());
 		debt1 = database.getDebt(database.findDebtID(v.getId(), d1.getID()));

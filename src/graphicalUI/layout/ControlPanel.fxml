@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<AnchorPane minHeight="600.0" minWidth="500.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUI.ControlPanel">
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="600.0" minWidth="500.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="graphicalUI.ControlPanel">
 	<children>
-		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Control panel" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Control panel" AnchorPane.leftAnchor="50.0"
+		      AnchorPane.topAnchor="50.0">
 			<font>
-				<Font name="Roboto" size="30.0" />
+				<Font name="Roboto" size="30.0"/>
 			</font>
 		</Text>
-		<Text layoutX="50.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Requests" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
+		<Text layoutX="50.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Requests"
+		      AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
 			<font>
-				<Font name="Roboto" size="22.0" />
+				<Font name="Roboto" size="22.0"/>
 			</font>
 		</Text>
-		<VBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="135.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="135.0">
+		<VBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="135.0" AnchorPane.leftAnchor="50.0"
+		      AnchorPane.topAnchor="135.0">
 			<children>
-				<JFXButton fx:id="takeApprovalBtn" mnemonicParsing="false" text="Booking approval" />
-				<JFXButton fx:id="renewApprovalBtn" mnemonicParsing="false" text="Renew approval" />
+				<JFXButton fx:id="takeApprovalBtn" mnemonicParsing="false" text="Booking approval"/>
+				<JFXButton fx:id="renewApprovalBtn" mnemonicParsing="false" text="Renew approval"/>
 			</children>
 		</VBox>
-		<Text layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Debts" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="215.0">
+		<Text layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Debts" AnchorPane.leftAnchor="50.0"
+		      AnchorPane.topAnchor="215.0">
 			<font>
-				<Font name="Roboto" size="22.0" />
+				<Font name="Roboto" size="22.0"/>
 			</font>
 		</Text>
-		<JFXButton fx:id="manageDebtsBtn" mnemonicParsing="false" text="Manage debts" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="245.0" />
-		<Text layoutX="50.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entities" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="300.0">
+		<JFXButton fx:id="manageDebtsBtn" mnemonicParsing="false" text="Manage debts" AnchorPane.leftAnchor="50.0"
+		           AnchorPane.topAnchor="245.0"/>
+		<Text layoutX="50.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entities"
+		      AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="300.0">
 			<font>
-				<Font name="Roboto" size="22.0" />
+				<Font name="Roboto" size="22.0"/>
 			</font>
 		</Text>
-		<VBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="362.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="330.0">
+		<VBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="362.0" AnchorPane.leftAnchor="50.0"
+		      AnchorPane.topAnchor="330.0">
 			<children>
-				<JFXButton fx:id="manageUsersBtn" mnemonicParsing="false" text="Manage users" />
-				<JFXButton fx:id="manageDocsBtn" mnemonicParsing="false" text="Manage documents" />
+				<JFXButton fx:id="manageUsersBtn" mnemonicParsing="false" text="Manage users"/>
+				<JFXButton fx:id="manageDocsBtn" mnemonicParsing="false" text="Manage documents"/>
 			</children>
 		</VBox>
-      <Text fx:id="logsLabel" layoutX="47.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logs" visible="false">
-         <font>
-            <Font name="Roboto" size="22.0" />
-         </font>
-      </Text>
-      <VBox alignment="CENTER_LEFT" layoutX="47.0" layoutY="437.0">
-         <children>
-            <JFXButton fx:id="viewLogsBtn" disable="true" mnemonicParsing="false" text="View logs" visible="false" />
-         </children>
-      </VBox>
+		<Text fx:id="logsLabel" layoutX="47.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logs"
+		      visible="false">
+			<font>
+				<Font name="Roboto" size="22.0"/>
+			</font>
+		</Text>
+		<VBox alignment="CENTER_LEFT" layoutX="47.0" layoutY="437.0">
+			<children>
+				<JFXButton fx:id="viewLogsBtn" disable="true" mnemonicParsing="false" text="View logs" visible="false"/>
+			</children>
+		</VBox>
 	</children>
 </AnchorPane>

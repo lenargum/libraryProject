@@ -2,6 +2,7 @@ package graphicalUI;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.svg.SVGGlyph;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -61,10 +62,18 @@ public class UserManager {
 		scene = new Scene(layout);
 
 		goBackBtn = (JFXButton) layout.lookup("#goBackBtn");
+		goBackBtn.setText("");
+		SVGGlyph goBackGraphic = Glyphs.ARROW_BACK();
+		goBackGraphic.setSize(20, 20);
+		goBackGraphic.setFill(Paint.valueOf("#8d8d8d"));
+		goBackBtn.setGraphic(goBackGraphic);
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
 		addUserBtn = (JFXButton) layout.lookup("#addUserBtn");
-		addUserBtn.setOnAction(event -> showAddDialog());
+		if (api.getUser() instanceof Admin ||
+				((Librarian) api.getUser()).getPrivilege() >= 2) {
+			addUserBtn.setOnAction(event -> showAddDialog());
+		}
 
 		usersTable = (JFXTreeTableView<UserCell>) layout.lookup("#usersTable");
 		initUserTable();
@@ -106,7 +115,10 @@ public class UserManager {
 		usersTable.setRoot(tableRoot);
 		usersTable.setShowRoot(false);
 
-		usersTable.setOnMouseClicked(event -> showEditDialog());
+		if (api.getUser() instanceof Admin ||
+				((Librarian) api.getUser()).getPrivilege() >= 1) {
+			usersTable.setOnMouseClicked(event -> showEditDialog());
+		}
 	}
 
 	/**
@@ -115,7 +127,12 @@ public class UserManager {
 	private void showAddDialog() {
 		JFXDialog addUserDialog = new JFXDialog();
 
-		Label addUser = new Label("Add user");
+		Label addUser = new Label();
+		if (api.getUser() instanceof Admin) {
+			addUser.setText("Add librarian");
+		} else {
+			addUser.setText("Add patron");
+		}
 		addUser.setFont(new Font("Roboto", 26));
 
 		JFXTextField loginField = new JFXTextField();
@@ -151,20 +168,34 @@ public class UserManager {
 		addressField.setLabelFloat(true);
 
 		JFXComboBox<String> comboBox = new JFXComboBox<>();
-		comboBox.getItems().addAll("Student", "Instructor",
-				"Teaching assistant", "Visiting professor",
-				"Professor", "Librarian");
-		if (api.getUser() instanceof Admin) {
+		if (api.getUser() instanceof Librarian) {
+			comboBox.getItems().setAll("Student", "Instructor",
+					"Teaching assistant", "Visiting professor",
+					"Professor");
+		} else {
 			comboBox.getItems().add("Librarian");
+			comboBox.setValue("Librarian");
 		}
 		comboBox.setPromptText("Select status");
+
+		JFXSlider privilegeSlider = new JFXSlider();
+		privilegeSlider.setMin(0);
+		privilegeSlider.setMax(3);
+		privilegeSlider.setMinorTickCount(1);
+		privilegeSlider.setBlockIncrement(1);
 
 		JFXButton addBtn = new JFXButton("ADD");
 		addBtn.setFont(new Font("Roboto Bold", 16));
 
 		VBox container = new VBox();
 		container.getChildren().addAll(addUser, loginPassword,
-				nameSurname, phoneField, addressField, comboBox, addBtn);
+				nameSurname, phoneField, addressField);
+		if (api.getUser() instanceof Admin) {
+			container.getChildren().add(privilegeSlider);
+		} else {
+			container.getChildren().add(comboBox);
+		}
+		container.getChildren().add(addBtn);
 
 		container.setSpacing(40);
 		container.setPadding(new Insets(20));
@@ -177,6 +208,7 @@ public class UserManager {
 				newUser = new Librarian(loginField.getText(), passwordField.getText(),
 						nameField.getText(), surnameField.getText(),
 						phoneField.getText(), addressField.getText());
+				((Librarian) newUser).setPrivilege((int) Math.round(privilegeSlider.getValue()));
 			} else {
 				newUser = makePatronWithParameters(loginField.getText(), passwordField.getText(),
 						comboBox.getValue(),
@@ -204,11 +236,17 @@ public class UserManager {
 	private void showEditDialog() {
 		UserCell selected = usersTable.getSelectionModel().getSelectedItem().getValue();
 		if (selected == null) return;
-		int selectedIndex = usersTable.getSelectionModel().getSelectedIndex();
+		if (api.getUser() instanceof Admin &&
+				!selected.status.getValue().equals("Librarian")) return;
 
-		JFXDialog addUserDialog = new JFXDialog();
+		JFXDialog editUserDialog = new JFXDialog();
 
-		Label editUser = new Label("Edit user");
+		Label editUser = new Label();
+		if (api.getUser() instanceof Admin) {
+			editUser.setText("Edit librarian");
+		} else {
+			editUser.setText("Edit patron");
+		}
 		editUser.setFont(new Font("Roboto", 26));
 
 		JFXTextField loginField = new JFXTextField();
@@ -248,16 +286,42 @@ public class UserManager {
 				"Teaching assistant", "Visiting professor",
 				"Professor");
 		if (api.getUser() instanceof Admin) {
-			comboBox.getItems().add("Librarian");
+			comboBox.getItems().setAll("Librarian");
+			comboBox.setValue("Librarian");
 		}
 		comboBox.setPromptText("Select status");
 
 		JFXButton saveBtn = new JFXButton("SAVE");
 		saveBtn.setFont(new Font("Roboto Bold", 16));
 
+		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setDisable(true);
+		deleteBtn.setFont(new Font("Roboto Bold", 16));
+		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+		if (api.getUser() instanceof Admin ||
+				((Librarian) api.getUser()).getPrivilege() >= 3) {
+			deleteBtn.setDisable(false);
+		}
+
+		JFXSlider privilegeSlider = new JFXSlider();
+		privilegeSlider.setMin(0);
+		privilegeSlider.setMax(3);
+		privilegeSlider.setMinorTickCount(1);
+		privilegeSlider.setBlockIncrement(1);
+
+		HBox buttons = new HBox();
+		buttons.setSpacing(20);
+		buttons.getChildren().addAll(saveBtn, deleteBtn);
+
 		VBox container = new VBox();
 		container.getChildren().addAll(editUser, loginPassword,
-				nameSurname, phoneField, addressField, comboBox, saveBtn);
+				nameSurname, phoneField, addressField);
+		if (api.getUser() instanceof Admin) {
+			container.getChildren().add(privilegeSlider);
+		} else {
+			container.getChildren().add(comboBox);
+		}
+		container.getChildren().add(buttons);
 
 		container.setPadding(new Insets(20));
 		container.setSpacing(40);
@@ -270,7 +334,10 @@ public class UserManager {
 		surnameField.setText(selected.surname.getValue());
 		phoneField.setText(selected.phone.getValue());
 		addressField.setText(selected.address.getValue());
-		comboBox.setValue(determineComboBoxValue(selected.status.toString().toLowerCase()));
+		comboBox.setValue(determineComboBoxValue(selected.status.getValue().toLowerCase()));
+		if (api.getUser() instanceof Admin) {
+			privilegeSlider.setValue(((Librarian) found).getPrivilege());
+		}
 
 		saveBtn.setOnAction(event -> {
 			try {
@@ -285,12 +352,25 @@ public class UserManager {
 			api.editUser(selected.id, "lastname", surnameField.getText());
 			api.editUser(selected.id, "phone", phoneField.getText());
 			api.editUser(selected.id, "address", addressField.getText());
+
+			if (api.getUser() instanceof Admin) {
+				api.editUser(selected.id, "privileges",
+						String.valueOf(Math.round(privilegeSlider.getValue())));
+			}
+
 			initUserTable();
-			addUserDialog.close();
+			editUserDialog.close();
 		});
 
-		addUserDialog.setContent(container);
-		addUserDialog.show(layout);
+		deleteBtn.setOnAction(event -> {
+			api.deleteUser(selected.id);
+			initUserTable();
+			editUserDialog.close();
+		});
+
+		editUserDialog.setContent(container);
+		editUserDialog.setTransitionType(JFXDialog.DialogTransition.TOP);
+		editUserDialog.show(layout);
 	}
 
 	private User makePatronWithParameters(String login, String password,
@@ -336,6 +416,8 @@ public class UserManager {
 				return "vp";
 			case "Professor":
 				return "professor";
+			case "Librarian":
+				return "librarian";
 			default:
 				throw new WrongUserTypeException();
 		}
@@ -348,20 +430,23 @@ public class UserManager {
 	 * @return Showing value.
 	 */
 	private String determineComboBoxValue(String status) {
+		System.out.println(status);
 		switch (status) {
 			case "student":
 				return "Student";
 			case "instructor":
 				return "Instructor";
-			case "ta":
+			case "teachingassistant":
 				return "Teaching assistant";
-			case "vp":
+			case "visitingprofessor":
 				return "Visiting professor";
 			case "professor":
 				return "Professor";
+			case "librarian":
+				return "Librarian";
+			default:
+				throw new WrongUserTypeException();
 		}
-
-		return "Eke";
 	}
 
 	/**
