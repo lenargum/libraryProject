@@ -78,7 +78,7 @@ public class ModifyLibrary {
 				database.getRequestsForDocument(idDocument).size() != 0) {
 			List<Request> requests = database.getRequestsForDocument(idDocument);
 			for (int i = 0; i < requests.size(); i++) {
-				deletionNotification.makeOutstandingRequest(librarianId, requests.get(i), database);
+				deletionNotification.makeDeletionRequest(requests.get(i), database);
 			}
 			database.deleteRequestsForDocument(idDocument);
 			database.log("Librarian " + librarianId + "id has deleted Document " + idDocument + "id.");
@@ -105,7 +105,9 @@ public class ModifyLibrary {
 				for(int i = 0; i < requests.size(); i++)
 					database.deleteRequest(idPatron, requests.get(i).getRequestId());
 
+				database.deleteUser(idPatron);
 				database.log("Librarian " + librarianId + "id has deleted Patron " + idPatron + "id.");
+
 			}
 		}
 	}
