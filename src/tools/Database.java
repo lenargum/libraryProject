@@ -1577,15 +1577,15 @@ public class Database {
 	/**
 	 * Method for inserting Notification into database.
 	 *
-	 * @param requestId   Request's ID.
+	 * @param documentId   Request's ID.
 	 * @param userId      User's ID.
 	 * @param description Description of Notification.
 	 * @param date        Date of Notification.
 	 */
-	public void insertNotification(int requestId, int userId, String description, Date date) {
+	public void insertNotification(int documentId, int userId, String description, Date date) {
 		try {
-			execute(String.format("INSERT INTO notifications (request_id, user_id, description, date)" +
-					" VALUES (%d,%d,'%s','%s')", requestId, userId, description, (new SimpleDateFormat("yyyy-MM-dd")).format(date)));
+			execute(String.format("INSERT INTO notifications (document_id, user_id, description, date)" +
+					" VALUES (%d,%d,'%s','%s')", documentId, userId, description, (new SimpleDateFormat("yyyy-MM-dd")).format(date)));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
