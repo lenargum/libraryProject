@@ -69,6 +69,7 @@ public class WelcomePage {
 			selector = new DocSelector(primaryStage, mainScene, rootPage.getApi());
 			System.out.println("Done.");
 		});
+		initSelector.setDaemon(true);
 		initSelector.start();
 
 		JFXButton showLoginBtn = (JFXButton) welcomeLayout.lookup("#showLoginBtn");

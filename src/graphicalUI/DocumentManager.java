@@ -36,6 +36,7 @@ public class DocumentManager {
 	private Stage stage;
 	private Scene scene;
 	private StackPane layout;
+	private JFXSnackbar snackbar;
 
 	// FXML bindings
 	@FXML
@@ -75,7 +76,7 @@ public class DocumentManager {
 		goBackBtn.setGraphic(goBackGraphic);
 		goBackBtn.setOnAction(event -> stage.setScene(previousScene));
 
-		if (api.getUser() instanceof Librarian) {
+		if (api.getUser() instanceof Librarian && ((Librarian) api.getUser()).getPrivilege() >= 2) {
 			addDocBtn = (JFXButton) layout.lookup("#addDocBtn");
 
 			JFXPopup addDocPopup = new JFXPopup();
@@ -112,6 +113,8 @@ public class DocumentManager {
 
 		docsTable = (JFXTreeTableView<DocCell>) layout.lookup("#docsTable");
 		initDocTable();
+
+		snackbar = new JFXSnackbar(layout);
 	}
 
 	/**
@@ -154,7 +157,7 @@ public class DocumentManager {
 		docsTable.setRoot(tableRoot);
 		docsTable.setShowRoot(false);
 
-		if (api.getUser() instanceof Librarian) {
+		if (api.getUser() instanceof Librarian && ((Librarian) api.getUser()).getPrivilege() >= 1) {
 			docsTable.setOnMouseClicked(event -> {
 				try {
 					DocCell selected = docsTable.getSelectionModel().getSelectedItem().getValue();
@@ -166,6 +169,9 @@ public class DocumentManager {
 							break;
 						case "JournalArticle":
 							showEditArticleDialog(selected);
+							break;
+						case "AudioVideoMaterial":
+							showEditAVDialog(selected);
 							break;
 					}
 				} catch (NullPointerException ignored) {
@@ -236,6 +242,7 @@ public class DocumentManager {
 			api.addNewDocument(newBook);
 			addBookDialog.close();
 			initDocTable();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Added " + titleField.getText()));
 		});
 
 		dialogContainer.getChildren().addAll(addBook,
@@ -325,6 +332,7 @@ public class DocumentManager {
 			api.addNewDocument(article);
 			addArticleDialog.close();
 			initDocTable();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Added " + titleField.getText()));
 		});
 
 		dialogContainer.getChildren().addAll(addArticle, titleField,
@@ -385,6 +393,7 @@ public class DocumentManager {
 			api.addNewDocument(newAv);
 			addBookDialog.close();
 			initDocTable();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Added " + titleField.getText()));
 		});
 
 		dialogContainer.getChildren().addAll(addAV, titleField, authorsField,
@@ -464,6 +473,7 @@ public class DocumentManager {
 
 			initDocTable();
 			editBookDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Saved " + titleField.getText()));
 		});
 
 		JFXButton deleteBtn = new JFXButton("DELETE");
@@ -478,6 +488,7 @@ public class DocumentManager {
 			api.deleteDocument(selected.id);
 			initDocTable();
 			editBookDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Deleted " + selected.title.getValue()));
 		});
 
 		HBox buttons = new HBox();
@@ -616,12 +627,14 @@ public class DocumentManager {
 			//api.editDocument(selected.debtID, "publication_date", dateField.getValue());
 			initDocTable();
 			editArticleDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Saved " + titleField.getText()));
 		});
 
 		deleteBtn.setOnAction(event -> {
 			api.deleteDocument(selected.id);
 			initDocTable();
 			editArticleDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Deleted " + selected.title.getValue()));
 		});
 
 		dialogContainer.getChildren().addAll(editArticle, titleField,
@@ -634,6 +647,96 @@ public class DocumentManager {
 		editArticleDialog.show(layout);
 	}
 
+	private void showEditAVDialog(DocCell selected) {
+		JFXDialog editAVDialog = new JFXDialog();
+		VBox dialogContainer = new VBox();
+		dialogContainer.setSpacing(20);
+		dialogContainer.setPadding(new Insets(20));
+
+		Label editAV = new Label("Edit audio/video");
+		editAV.setFont(new Font("Roboto", 26));
+
+		JFXTextField titleField = new JFXTextField();
+		titleField.setPromptText("Title");
+		titleField.setLabelFloat(true);
+
+		JFXTextField authorsField = new JFXTextField();
+		authorsField.setPromptText("Authors");
+		authorsField.setLabelFloat(true);
+
+		JFXTextField keywordsField = new JFXTextField();
+		keywordsField.setPromptText("Keywords");
+		keywordsField.setLabelFloat(true);
+
+		JFXTextField countField = new JFXTextField();
+		countField.setPromptText("Count");
+		countField.setLabelFloat(true);
+
+		JFXTextField priceField = new JFXTextField();
+		priceField.setPromptText("Price");
+		priceField.setLabelFloat(true);
+
+		HBox countNPrice = new HBox();
+		countNPrice.setSpacing(20);
+		countNPrice.getChildren().addAll(countField, priceField);
+
+		JFXCheckBox allowedForStudents = new JFXCheckBox("Allowed for students");
+		JFXCheckBox isReference = new JFXCheckBox("Reference");
+		HBox checkboxes = new HBox();
+		checkboxes.setSpacing(20);
+		checkboxes.getChildren().addAll(allowedForStudents, isReference);
+
+		JFXButton saveBtn = new JFXButton("SAVE");
+		saveBtn.setFont(new Font("Roboto Bold", 16));
+		saveBtn.setOnAction(event -> {
+			api.editDocument(selected.id, "name", titleField.getText());
+			api.editDocument(selected.id, "authors", authorsField.getText());
+			api.editDocument(selected.id, "keywords", keywordsField.getText());
+			api.editDocument(selected.id, "num_of_copies", countField.getText());
+			api.editDocument(selected.id, "price", priceField.getText());
+			api.editDocument(selected.id, "is_allowed_for_students",
+					allowedForStudents.isSelected() ? "true" : "false");
+			api.editDocument(selected.id, "is_reference",
+					isReference.isSelected() ? "true" : "false");
+			initDocTable();
+			editAVDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Saved " + titleField.getText()));
+		});
+
+		JFXButton deleteBtn = new JFXButton("DELETE");
+		deleteBtn.setDisable(true);
+		deleteBtn.setFont(new Font("Roboto Bold", 16));
+		deleteBtn.setTextFill(Paint.valueOf("#e53935"));
+		if (api.getUser() instanceof Admin ||
+				((Librarian) api.getUser()).getPrivilege() >= 3) {
+			deleteBtn.setDisable(false);
+		}
+		deleteBtn.setOnAction(event -> {
+			api.deleteDocument(selected.id);
+			initDocTable();
+			editAVDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Deleted " + selected.title.getValue()));
+		});
+
+		HBox buttons = new HBox();
+		buttons.setSpacing(20);
+		buttons.getChildren().addAll(saveBtn, deleteBtn);
+
+		AudioVideoMaterial found = (AudioVideoMaterial) api.getDocumentByID(selected.id);
+		titleField.setText(found.getTitle());
+		authorsField.setText(found.getAuthors());
+		keywordsField.setText(found.getKeyWords());
+		countField.setText(String.valueOf(found.getNumberOfCopies()));
+		priceField.setText(String.valueOf(found.getPrice()));
+		allowedForStudents.setSelected(found.isAllowedForStudents());
+		isReference.setSelected(found.isReference());
+
+		dialogContainer.getChildren().addAll(editAV, titleField, authorsField,
+				keywordsField, checkboxes, countNPrice, buttons);
+		editAVDialog.setContent(dialogContainer);
+		editAVDialog.setTransitionType(JFXDialog.DialogTransition.TOP);
+		editAVDialog.show(layout);
+	}
 
 	/**
 	 * Table cell.
