@@ -203,7 +203,8 @@ public abstract class User {
 	 * @see java.util.List
 	 * @see ArrayList
 	 */
-	public ArrayList<String> getLibrary(Database database)  {
+	public ArrayList<String> getLibrary(Database database) {
+		database.log("User "+this.getId()+"id checked the Library");
 		return database.getDocumentStringList();
 	}
 
