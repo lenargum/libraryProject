@@ -362,7 +362,11 @@ public class UserManager {
 			editUserDialog.close();
 		});
 
-		// TODO deleteBtn.setOnAction(event -> {});
+		deleteBtn.setOnAction(event -> {
+			api.deleteUser(selected.id);
+			initUserTable();
+			editUserDialog.close();
+		});
 
 		editUserDialog.setContent(container);
 		editUserDialog.setTransitionType(JFXDialog.DialogTransition.TOP);
