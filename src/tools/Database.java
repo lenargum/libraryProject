@@ -157,14 +157,14 @@ public class Database {
 	private void insertDocument(String name, String authors, boolean isAllowedForStudents, int numOfCopies,
 	                            boolean isReference, double price, String keywords, String type, String publisher,
 	                            int edition, boolean bestseller, String journalName, String issue, String editor,
-	                            String publicationDate) throws SQLException {
+	                            String publicationDate, boolean isUnderOutstandingRequest) throws SQLException {
 		this.execute("INSERT INTO documents(name, authors, is_allowed_for_students," +
 				" num_of_copies, is_reference, price, keywords, type, publisher, edition, bestseller," +
-				" journal_name, issue, editor, publication_date)" +
+				" journal_name, issue, editor, publication_date, is_under_outstanding_request)" +
 				" VALUES('" + name + "','" + authors + "','" + isAllowedForStudents + "',"
 				+ numOfCopies + ",'" + isReference + "'," + price + ",'" + keywords + "','" + type + "','"
 				+ publisher + "'," + edition + ",'" + bestseller + "','" + journalName + "','" + issue + "','"
-				+ editor + "','" + publicationDate + "')");
+				+ editor + "','" + publicationDate + "','"+isUnderOutstandingRequest+"')");
 
 	}
 
@@ -211,7 +211,7 @@ public class Database {
 
 			insertDocument(book.getTitle(), book.getAuthors(), book.isAllowedForStudents(), book.getNumberOfCopies(),
 					book.isReference(), book.getPrice(), book.getKeyWords(), type, book.getPublisher(), book.getEdition(),
-					book.isBestseller(), "-", "-", "-", "NULL");
+					book.isBestseller(), "-", "-", "-", "NULL", book.isUnderOutstandingRequest());
 			book.setID(this.getDocumentID(book));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
@@ -228,7 +228,7 @@ public class Database {
 		try {
 			insertDocument(av.getTitle(), av.getAuthors(), av.isAllowedForStudents(), av.getNumberOfCopies(),
 					av.isReference(), av.getPrice(), av.getKeyWords(), "AV", "-", 0, false,
-					"-", "-", "-", "NULL");
+					"-", "-", "-", "NULL", av.isUnderOutstandingRequest());
 			av.setID(this.getDocumentID(av));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
@@ -247,7 +247,7 @@ public class Database {
 					article.getNumberOfCopies(), article.isReference(), article.getPrice(), article.getKeyWords(),
 					"ARTICLE", article.getPublisher(), 0, false, article.getJournalName(),
 					article.getIssue(), article.getEditor(),
-					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()),article.setisUnderTheOutstandingRequest(););
+					(new SimpleDateFormat("yyyy-MM-dd")).format(article.getPublicationDate()),article.isUnderOutstandingRequest());
 			article.setID(this.getDocumentID(article));
 		} catch (SQLException e) {
 			System.err.println("tools.Database: One of obligatory fields is empty or null (name, authors, num_of_copies, price, or type)");
@@ -389,7 +389,7 @@ public class Database {
 				}
 
 				temp.setID(documentSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 				documentList.add(temp);
 			}
 		} catch (SQLException | ParseException e) {
@@ -441,7 +441,7 @@ public class Database {
 						Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
 						bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
 				temp.setID(bookSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(bookSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(bookSet.getString(17)));
 				bookList.add(temp);
 			}
 			if (bookList.size() != 0) {
@@ -470,7 +470,7 @@ public class Database {
 						AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
 						Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
 				temp.setID(AVSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(AVSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(AVSet.getString(17)));
 				AVList.add(temp);
 			}
 			if (AVList.size() != 0) {
@@ -502,7 +502,7 @@ public class Database {
 						articleSet.getString(14), articleSet.getString(15),
 						new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
 				temp.setID(articleSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(articleSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(articleSet.getString(17)));
 				articleList.add(temp);
 			}
 			if (articleList.size() != 0) {
@@ -733,7 +733,7 @@ public class Database {
 								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8),
 								documentSet.getString(10), documentSet.getInt(11), Boolean.parseBoolean(documentSet.getString(12)));
 						temp.setID(documentSet.getInt(1));
-						temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
+						temp.setUnderOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 						return temp;
 
 					case "AV":
@@ -741,7 +741,7 @@ public class Database {
 								documentSet.getString(3), Boolean.parseBoolean(documentSet.getString(4)), documentSet.getInt(5),
 								Boolean.parseBoolean(documentSet.getString(6)), documentSet.getDouble(7), documentSet.getString(8));
 						temp.setID(documentSet.getInt(1));
-						temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
+						temp.setUnderOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 						return temp;
 
 					case "ARTICLE":
@@ -754,7 +754,7 @@ public class Database {
 									documentSet.getString(14), documentSet.getString(15),
 									new SimpleDateFormat("yyyy-MM-dd").parse(documentSet.getString(16)));
 							temp.setID(documentSet.getInt(1));
-							temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
+							temp.setUnderOutstandingRequest(Boolean.parseBoolean(documentSet.getString(17)));
 							return temp;
 						} catch (ParseException e) {
 							e.printStackTrace();
@@ -790,7 +790,7 @@ public class Database {
 						Boolean.parseBoolean(bookSet.getString(6)), bookSet.getDouble(7), bookSet.getString(8),
 						bookSet.getString(10), bookSet.getInt(11), Boolean.parseBoolean(bookSet.getString(12)));
 				temp.setID(bookSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(bookSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(bookSet.getString(17)));
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -815,7 +815,7 @@ public class Database {
 						AVSet.getString(3), Boolean.parseBoolean(AVSet.getString(4)), AVSet.getInt(5),
 						Boolean.parseBoolean(AVSet.getString(6)), AVSet.getDouble(7), AVSet.getString(8));
 				temp.setID(AVSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(AVSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(AVSet.getString(17)));
 				return temp;
 			}
 		} catch (SQLException e) {
@@ -844,7 +844,7 @@ public class Database {
 						articleSet.getString(14), articleSet.getString(15),
 						new SimpleDateFormat("yyyy-MM-dd").parse(articleSet.getString(16)));
 				temp.setID(articleSet.getInt(1));
-				temp.setisUnderTheOutstandingRequest(Boolean.parseBoolean(articleSet.getString(17)));
+				temp.setUnderOutstandingRequest(Boolean.parseBoolean(articleSet.getString(17)));
 				return temp;
 			}
 		} catch (SQLException e) {
