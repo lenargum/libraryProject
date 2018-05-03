@@ -14,7 +14,6 @@ dependencies() {
 	testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 }
 
-
 sourceSets {
 	main {
 		resources {
