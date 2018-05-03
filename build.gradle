@@ -52,7 +52,10 @@ tasks.withType(JavaCompile) {
 
 task Testing(type: Test) {
 	dependsOn JavaCompile
-	useJUnitPlatform()
+
+	test {
+		useJUnitPlatform()
+	}
 }
 
 task deploy(type: Copy) {
