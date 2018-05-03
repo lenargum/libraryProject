@@ -28,3 +28,7 @@ out/**
 !gradle/**
 build/**
 app/**
+
+*.iml
+*.ipr
+*.iws
