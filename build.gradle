@@ -17,8 +17,8 @@ dependencies() {
 sourceSets {
 	main {
 		resources {
-			srcDirs = ["src"]
-			includes = ["**/*.fxml"]
+			srcDirs = ['src']
+			includes = ['**/*.fxml']
 		}
 
 		java {
@@ -54,14 +54,15 @@ test {
 }
 
 task deploy(type: Copy) {
-	from "build/libs"
-	into "app"
-	include "*.jar"
+	from 'build/libs'
+	into 'app'
+	include '*.jar'
 
-	from "/"
-	into "app"
-	include "*.db"
+	from './'
+	into 'app'
+	include '*.db'
 
-	from "build/reports/tests"
-	into "app"
+	from './build/reports/tests'
+	into 'app'
+	include 'test/**'
 }
