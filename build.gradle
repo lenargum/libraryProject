@@ -58,6 +58,7 @@ task Testing(type: Test) {
 }
 
 task deploy(type: Copy) {
+	dependsOn jar
 	dependsOn Testing
 
 	copy {
