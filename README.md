@@ -33,6 +33,9 @@ The compiled application will be stored in `/app` directory.
 **ATTENTION! If there is NO `jar` file in `/app` directory, run build script again.**
 
 ## Using
+
+
+
 To use application you need to authorize first.
 Please use one of these credentials:
 
