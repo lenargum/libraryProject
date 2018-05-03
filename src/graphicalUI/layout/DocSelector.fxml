@@ -17,15 +17,15 @@
 						<content>
 						</content>
 					</Tab>
-					<Tab closable="false" text="BOOKS">
+					<Tab closable="false" text="BOOKSHELF">
 						<content>
 						</content>
 					</Tab>
-					<Tab closable="false" text="ARTICLES">
+					<Tab closable="false">
 						<content>
 						</content>
 					</Tab>
-					<Tab closable="false" text="AUDIO / VIDEO">
+					<Tab closable="false">
 						<content>
 						</content>
 					</Tab>

@@ -63,7 +63,7 @@ public class Database {
 	 *
 	 * @return {@code true} if connection established, {@code false} otherwise.
 	 */
-	private boolean isConnected() {
+	public boolean isConnected() {
 		return this.connected;
 	}
 

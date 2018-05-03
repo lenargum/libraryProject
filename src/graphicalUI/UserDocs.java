@@ -110,7 +110,6 @@ public class UserDocs {
 		waitlistTable.getColumns().setAll(docTitles, peopleWaiting);
 		waitlistTable.setRoot(tableRoot);
 		waitlistTable.setShowRoot(false);
-
 	}
 
 	/**
@@ -119,7 +118,13 @@ public class UserDocs {
 	 * @param event Mouse event.
 	 */
 	private void onDocsTableClicked(MouseEvent event) {
-		MyDocsView selected = myDocsTable.getSelectionModel().getSelectedItem().getValue();
+		MyDocsView selected;
+		try {
+			selected = myDocsTable.getSelectionModel().getSelectedItem().getValue();
+		} catch (NullPointerException e) {
+			return;
+		}
+
 		DocumentPopup popup = new DocumentPopup(selected.docTitle.getValue(), "Author", selected.debtID);
 		popup.setOnRenewAction(event1 -> {
 			api.makeRenewRequest(selected.debtID);

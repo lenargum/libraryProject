@@ -27,7 +27,7 @@
 			<children>
 				<JFXButton fx:id="bookThisBtn" buttonType="RAISED" disable="true" mnemonicParsing="false"
 				           prefHeight="40.0" prefWidth="180.0" ripplerFill="#80e27e"
-				           style="-fx-background-color: #4caf50; -fx-background-radius: 30;" text="BOOK THES"
+				           style="-fx-background-color: #4caf50; -fx-background-radius: 30;" text="BOOK THIS"
 				           textAlignment="CENTER" textFill="#fafafa">
 					<font>
 						<Font name="Roboto Bold" size="18.0"/>
