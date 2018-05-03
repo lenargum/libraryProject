@@ -75,7 +75,3 @@ task deploy(type: Copy) {
 		into "app"
 	}
 }
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '4.6'
-}
