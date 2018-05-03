@@ -1,1 +1,1 @@
-.\gradlew.bat clean build --info
+.\gradlew.bat clean build deploy --info

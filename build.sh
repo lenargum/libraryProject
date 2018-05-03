@@ -1,1 +1,1 @@
-./gradlew clean build --info
+./gradlew clean build deploy --info
