@@ -499,6 +499,9 @@ public class DocumentManager {
 		}
 		unoutstandBtn.setOnAction(event -> {
 			api.unoutstandDocument(selected.id);
+			editBookDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Outstanding request removed for " +
+					selected.title.getValue()));
 		});
 
 		HBox buttons = new HBox();
@@ -625,6 +628,9 @@ public class DocumentManager {
 		}
 		unoutstandBtn.setOnAction(event -> {
 			api.unoutstandDocument(selected.id);
+			editArticleDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Outstanding request removed for " +
+					selected.title.getValue()));
 		});
 
 		HBox buttons = new HBox();
@@ -747,6 +753,9 @@ public class DocumentManager {
 		}
 		unoutstandBtn.setOnAction(event -> {
 			api.unoutstandDocument(selected.id);
+			editAVDialog.close();
+			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Outstanding request removed for " +
+					selected.title.getValue()));
 		});
 
 		HBox buttons = new HBox();
