@@ -181,6 +181,7 @@ public class UserManager {
 		}
 		comboBox.setPromptText("Select status");
 
+		Label privilegeLabel = new Label("Privilege");
 		JFXSlider privilegeSlider = new JFXSlider();
 		privilegeSlider.setMin(0);
 		privilegeSlider.setMax(3);
@@ -194,7 +195,7 @@ public class UserManager {
 		container.getChildren().addAll(addUser, loginPassword,
 				nameSurname, phoneField, addressField);
 		if (api.getUser() instanceof Admin) {
-			container.getChildren().add(privilegeSlider);
+			container.getChildren().addAll(privilegeLabel, privilegeSlider);
 		} else {
 			container.getChildren().add(comboBox);
 		}
@@ -309,6 +310,7 @@ public class UserManager {
 			deleteBtn.setDisable(false);
 		}
 
+		Label privilegeLabel = new Label("Privilege");
 		JFXSlider privilegeSlider = new JFXSlider();
 		privilegeSlider.setMin(0);
 		privilegeSlider.setMax(3);
@@ -323,7 +325,7 @@ public class UserManager {
 		container.getChildren().addAll(editUser, loginPassword,
 				nameSurname, phoneField, addressField);
 		if (api.getUser() instanceof Admin) {
-			container.getChildren().add(privilegeSlider);
+			container.getChildren().addAll(privilegeLabel, privilegeSlider);
 		} else {
 			container.getChildren().add(comboBox);
 		}

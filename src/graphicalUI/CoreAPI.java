@@ -525,7 +525,7 @@ public class CoreAPI {
 	 */
 	boolean canTakeDocument(int docID) {
 		if (user == null) return false;
-		if (user instanceof Librarian) {
+		if (user instanceof Librarian || user instanceof Admin) {
 			return false;
 		} else {
 			connectToDatabase();
