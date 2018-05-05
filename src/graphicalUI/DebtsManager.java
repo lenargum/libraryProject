@@ -12,7 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -107,7 +107,7 @@ public class DebtsManager {
 		debtsTable.setRoot(tableRoot);
 		debtsTable.setShowRoot(false);
 
-		debtsTable.setOnMouseClicked(this::onTableClicked);
+		debtsTable.setOnContextMenuRequested(this::onTableClicked);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class DebtsManager {
 	 *
 	 * @param event Mouse event.
 	 */
-	private void onTableClicked(MouseEvent event) {
+	private void onTableClicked(ContextMenuEvent event) {
 		DebtCell selected;
 		try {
 			selected = debtsTable.getSelectionModel().getSelectedItem().getValue();

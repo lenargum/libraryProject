@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -63,7 +63,7 @@ public class RenewApproval {
 		listView = (JFXListView<ApprovalCell>) layout.lookup("#approvalList");
 		listView.getItems().addAll(api.getRenewRequests());
 
-		listView.setOnMouseClicked(this::onListClicked);
+		listView.setOnContextMenuRequested(this::onListClicked);
 
 		snackbar = new JFXSnackbar(layout);
 	}
@@ -73,7 +73,7 @@ public class RenewApproval {
 	 *
 	 * @param event Mouse event.
 	 */
-	private void onListClicked(MouseEvent event) {
+	private void onListClicked(ContextMenuEvent event) {
 		ApprovalCell selected = listView.getSelectionModel().getSelectedItem();
 		if (selected == null) return;
 		int selectedIndex = listView.getSelectionModel().getSelectedIndex();

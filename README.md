@@ -34,22 +34,28 @@ The compiled application will be stored in `/app` directory.
 
 ## Using
 
+### Start app
 
+Application can be started by running `.jar` file.
+To start application, please run `java -jar <jar file>` 
+from `/app` directory in system terminal.
+
+### Log in
 
 To use application you need to authorize first.
 Please use one of these credentials:
 
-| Login     | Password   |
-|-----------|------------|
-| `login`   | `password` |
-| `patron1` | `patpass`  |
-| `patron2` | `patpass`  |
-| `patron3` | `patpass`  |
-| `patron4` | `patpass`  |
-| `patron5` | `patpass`  |
-| `loglib1` | `passlib1` |
-| `loglib2` | `passlib2` |
-| `loglib3` | `passlib3` |
+| Login     | Password   | Type      |
+|-----------|------------|-----------|
+| `login`   | `password` | Admin     |
+| `patron1` | `patpass`  | Patron    |
+| `patron2` | `patpass`  | Patron    |
+| `patron3` | `patpass`  | Patron    |
+| `patron4` | `patpass`  | Patron    |
+| `patron5` | `patpass`  | Patron    |
+| `loglib1` | `passlib1` | Librarian |
+| `loglib2` | `passlib2` | Librarian |
+| `loglib3` | `passlib3` | Librarian |
 
 These users are being added to database after running tests.
 
