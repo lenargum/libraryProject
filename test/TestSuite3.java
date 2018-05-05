@@ -366,7 +366,7 @@ class TestSuite3 {
 		assertEquals(0, database.getDebtsForUser(p2.getId()).size());
 
 		librarian.setAvailability(d3.getID(), database);
-		assertEquals(1, database.getNotificationsList().size());
+		assertEquals(3, database.getNotificationsList().size());
 		database.close();
 	}
 

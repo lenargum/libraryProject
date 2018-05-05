@@ -491,8 +491,18 @@ public class DocumentManager {
 			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Deleted " + selected.title.getValue()));
 		});
 
+		JFXButton unoutstandBtn = new JFXButton("UN-OUTSTAND");
+		unoutstandBtn.setFont(new Font("Roboto Bold", 16));
+		unoutstandBtn.setTextFill(Paint.valueOf("#43a047"));
+		if (!api.getDocumentByID(selected.id).isUnderOutstandingRequest()) {
+			unoutstandBtn.setDisable(true);
+		}
+		unoutstandBtn.setOnAction(event -> {
+			api.unoutstandDocument(selected.id);
+		});
+
 		HBox buttons = new HBox();
-		buttons.getChildren().addAll(saveBtn, deleteBtn);
+		buttons.getChildren().addAll(saveBtn, deleteBtn, unoutstandBtn);
 		buttons.setSpacing(20);
 
 		Book found = (Book) api.getDocumentByID(selected.id);
@@ -597,6 +607,7 @@ public class DocumentManager {
 
 		JFXButton saveBtn = new JFXButton("SAVE");
 		saveBtn.setFont(new Font("Roboto Bold", 16));
+
 		JFXButton deleteBtn = new JFXButton("DELETE");
 		deleteBtn.setDisable(true);
 		deleteBtn.setFont(new Font("Roboto Bold", 16));
@@ -606,9 +617,19 @@ public class DocumentManager {
 			deleteBtn.setDisable(false);
 		}
 
+		JFXButton unoutstandBtn = new JFXButton("UN-OUTSTAND");
+		unoutstandBtn.setFont(new Font("Roboto Bold", 16));
+		unoutstandBtn.setTextFill(Paint.valueOf("#43a047"));
+		if (!api.getDocumentByID(selected.id).isUnderOutstandingRequest()) {
+			unoutstandBtn.setDisable(true);
+		}
+		unoutstandBtn.setOnAction(event -> {
+			api.unoutstandDocument(selected.id);
+		});
+
 		HBox buttons = new HBox();
 		buttons.setSpacing(20);
-		buttons.getChildren().addAll(saveBtn, deleteBtn);
+		buttons.getChildren().addAll(saveBtn, deleteBtn, unoutstandBtn);
 
 		saveBtn.setOnAction(event -> {
 			api.editDocument(selected.id, "name", titleField.getText());
@@ -718,9 +739,19 @@ public class DocumentManager {
 			snackbar.enqueue(new JFXSnackbar.SnackbarEvent("Deleted " + selected.title.getValue()));
 		});
 
+		JFXButton unoutstandBtn = new JFXButton("UN-OUTSTAND");
+		unoutstandBtn.setFont(new Font("Roboto Bold", 16));
+		unoutstandBtn.setTextFill(Paint.valueOf("#43a047"));
+		if (!api.getDocumentByID(selected.id).isUnderOutstandingRequest()) {
+			unoutstandBtn.setDisable(true);
+		}
+		unoutstandBtn.setOnAction(event -> {
+			api.unoutstandDocument(selected.id);
+		});
+
 		HBox buttons = new HBox();
 		buttons.setSpacing(20);
-		buttons.getChildren().addAll(saveBtn, deleteBtn);
+		buttons.getChildren().addAll(saveBtn, deleteBtn, unoutstandBtn);
 
 		AudioVideoMaterial found = (AudioVideoMaterial) api.getDocumentByID(selected.id);
 		titleField.setText(found.getTitle());

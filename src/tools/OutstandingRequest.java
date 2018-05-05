@@ -50,18 +50,17 @@ public class OutstandingRequest {
 	}
 
 	private void sendNotificationsForAvailability(int docId, Database database) {
-		List<Request> requests = null;
+		List<Request> requests;
 		requests = database.getRequestsForDocument(docId);
-		int i = 0;
-		while (i < database.getDocument(docId).getNumberOfCopies()) {
-			Request temp = requests.get(i);
+
+		for (Request temp: requests) {
 			database.insertNotification(temp.getIdDocument(), temp.getIdPatron(), "Set available document", new Date());
-			i++;
+
 		}
 	}
 
 	private void sendNotificationsDeletion(Request request, Database db) {
-		ArrayList<Request> requests = new ArrayList<>();
+		ArrayList<Request> requests;
 		requests = db.getRequestsForDocument(request.getIdDocument());
 		for (Request temp : requests) {
 			Document doc = db.getDocument(request.getIdDocument());

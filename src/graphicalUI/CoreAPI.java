@@ -641,6 +641,19 @@ public class CoreAPI {
 	}
 
 	/**
+	 * Remove outstanding status from document.
+	 *
+	 * @param docID Document ID.
+	 */
+	void unoutstandDocument(int docID) {
+		connectToDatabase();
+		Document doc = db.getDocument(docID);
+		if (doc.isUnderOutstandingRequest()) {
+			((Librarian) user).setAvailability(docID, db);
+		}
+	}
+
+	/**
 	 * Determines user type.
 	 *
 	 * @param usr User to check.
